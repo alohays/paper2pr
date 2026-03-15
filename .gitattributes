@@ -1,0 +1,4 @@
+# Strip speaker notes from QMD files before committing.
+# Notes remain in working directory but never enter git history.
+# Setup: ./scripts/setup-git-filters.sh (run once after clone)
+Quarto/*.qmd filter=strip-speaker-notes

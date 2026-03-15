@@ -15,6 +15,7 @@ format:
     transition: fade
     transition-speed: fast
     fig-align: center
+    html-math-method: katex
 bibliography: ../Bibliography_base.bib
 ---
 
@@ -29,7 +30,10 @@ bibliography: ../Bibliography_base.bib
 ![](../Figures/DreamZero/dreamzero-header-v2.svg){fig-align="center" width="85%"}
 :::
 
+
 <!-- Slide 2: The Second Pre-training Paradigm -->
+
+
 ## The Second Pre-training Paradigm
 
 [**1st Paradigm:**]{.hi} Next-word prediction
@@ -44,7 +48,10 @@ $\rightarrow$ Embodied intelligence (World Models)
 
 [--- Jim Fan (NVIDIA)]{style="display: block; text-align: right;"}
 
+
 <!-- Slide 2b: Why Not Just Use VLMs? -->
+
+
 ## Why Not Just Use VLMs for Robots?
 
 - VLMs are [**language-first**]{.negative} --- vision is a "second-class citizen"
@@ -55,7 +62,10 @@ $\rightarrow$ Embodied intelligence (World Models)
 [**Commentary:**]{.hi-gold} "Language is a bottleneck, a scaffold, not a foundation" for physical intelligence.
 :::
 
+
 <!-- Slide 3: The Data Problem (1/2) -->
+
+
 ## The Data Problem in Robotics (1/2)
 
 [**How much data does each domain have?**]{.hi}
@@ -73,7 +83,10 @@ Text and images are "in-the-wild" --- generated continuously.
 Robot data is "on-demand" --- requires expensive teleoperation.
 :::
 
+
 <!-- Slide 3b: The Data Problem (2/2) -->
+
+
 ## The Data Problem in Robotics (2/2)
 
 ::: {.quotebox}
@@ -86,7 +99,10 @@ You can't teleoperate your way to the long tail.
 
 $\Rightarrow$ Robotics needs [**vastly more experience**]{.hi-gold} to match human-level physical intelligence.
 
+
 <!-- Slide 4: VLAs and Their Limitations -->
+
+
 ## The Rise of VLAs and Their Limitations
 
 [**Vision-Language-Action Models (VLAs):**]{.hi}
@@ -101,7 +117,10 @@ $\Rightarrow$ Robotics needs [**vastly more experience**]{.hi-gold} to match hum
 - Fail on novel *motions*: "untie the shoelace"
 - Scaling model size alone [**does not help**]{.negative}
 
+
 <!-- Slide 4b: VLAs — The Evidence -->
+
+
 ## VLAs: The Evidence
 
 ![](../Figures/DreamZero/eval_bar_chart.svg){fig-align="center" width="75%"}
@@ -112,7 +131,10 @@ $\Rightarrow$ Robotics needs [**vastly more experience**]{.hi-gold} to match hum
 [**Commentary:**]{.hi-gold} The fundamental gap --- VLMs encode "[**what**]{.hi} to do" but not "[**how**]{.hi} to move".
 :::
 
+
 <!-- Slide 5: Video as Dense Representation -->
+
+
 ## Key Insight: Video as Dense Physical Representation
 
 ::: {.keybox}
@@ -125,7 +147,10 @@ Video diffusion models trained on web-scale data encode:
 - Every consecutive frame pair $\rightarrow$ [**dense supervision**]{.positive} (vs. sparse task-level labels in VLAs)
 - "Generating pixels is the only way for humans to *verify* that the model truly understands" --- Joel Jang
 
+
 <!-- Slide 5b: The Paradigm Shift -->
+
+
 ## The Paradigm Shift
 
 ::: {.quotebox}
@@ -138,7 +163,10 @@ Apes may not have good language models, but they surely have a robust mental pic
 [**Commentary:**]{.hi-gold} This is the core paradigm shift --- from discrete task policies to [**continuous world modeling**]{.hi}.
 :::
 
+
 <!-- Slide 6: WAM Big Picture -->
+
+
 ## World Action Models: The Big Picture
 
 [**WAM**]{.hi} = Video Prediction $\times$ Inverse Dynamics Model
@@ -157,7 +185,10 @@ $$
 - Instead of two separate models $\rightarrow$ [**single end-to-end model**]{.hi}
 - [**DreamZero:**]{.hi} 14B autoregressive WAM built on [**Wan2.1**]{.hi-gold} video backbone [@wan2025wan]
 
+
 <!-- Slide 6b: Headline Results -->
+
+
 ## DreamZero: Headline Results
 
 ::: {.resultbox}
@@ -168,7 +199,10 @@ $$
 - [**Cross-embodiment transfer**]{.positive} from video-only data
 :::
 
+
 <!-- Slide 7: Human Data Scaling -->
+
+
 ## The Human Data Scaling Pathway
 
 ::: {.quotebox}
@@ -186,7 +220,10 @@ Humans are robots that have already been deployed at scale.
 [**The vision:**]{.hi}
 "Train once on human experience, deploy everywhere with calibration"
 
+
 <!-- Slide 7b: Early Signal -->
+
+
 ## Human Data: Early Signal
 
 ::: {.resultbox}
@@ -200,19 +237,25 @@ $\rightarrow$ [**>42% relative improvement**]{.positive} on unseen robot tasks
 [**Commentary:**]{.hi-gold} This is the sleeper insight --- human video as the ultimate robot training data.
 :::
 
+
 <!---------------------------------------------------------------------------->
 <!-- PART 2: DREAMZERO ARCHITECTURE                                         -->
 <!---------------------------------------------------------------------------->
 
 <!-- Slide: Section Divider — Architecture -->
+
+
 # How Does DreamZero Work? {background-color="#E8EDF5"}
 
 [**Architecture & Training**]{.hi-gold}
 
+
 <!-- Slide 8: Architecture Overview -->
+
+
 ## Architecture Overview
 
-![](../Figures/DreamZero/dreamzero_model.svg){fig-align="center" width="100%"}
+![](../Figures/DreamZero/dreamzero_model.svg){fig-align="center" width="88%"}
 
 :::: {.columns}
 ::: {.column width="32%"}
@@ -236,7 +279,10 @@ Joint video frames
 :::
 ::::
 
+
 <!-- Slide 9: Why AR? -->
+
+
 ## Why Autoregressive? AR vs. Bidirectional
 
 :::: {.columns}
@@ -260,7 +306,10 @@ Joint video frames
 :::
 ::::
 
+
 <!-- Slide 9b: AR — Commentary -->
+
+
 ## AR vs. Bidirectional: Commentary
 
 ::: {.softbox}
@@ -270,7 +319,10 @@ Joint video frames
 - [**Speed:**]{.hi} KV-cache gives $3$--$4\times$ speedup --- bidirectional cannot cache
 - [**Quality:**]{.hi} native frame rate preserves the temporal signal that the IDM needs
 
+
 <!-- Slide 10: Chunk-wise Generation -->
+
+
 ## Chunk-wise Generation
 
 ::: {.methodbox}
@@ -288,7 +340,10 @@ Joint video frames
 - Video at 5 FPS, actions at 30Hz (AgiBot)
 - 33 raw frames $\rightarrow$ 8 latent frames ($4 \times 2$)
 
+
 <!-- Slide 11: Flow Matching Intuition -->
+
+
 ## Flow Matching: Intuition
 
 ::: {.keybox}
@@ -303,7 +358,10 @@ Learn a [**velocity field**]{.hi} that transports noise to data along straight p
 - The model predicts the [**velocity**]{.hi} pointing from noise to data.
 - [**Shared timestep**]{.hi} $t_k$ for video and action $\rightarrow$ aligned convergence.
 
+
 <!-- Slide 11b: Flow Matching Equations -->
+
+
 ## Flow Matching: Equations
 
 ::: {.eqbox}
@@ -330,7 +388,10 @@ $$
 $$
 :::
 
+
 <!-- Slide 11c: Flow Matching Notation -->
+
+
 ## Flow Matching: Notation Guide
 
 [**Key Symbols:**]{.hi}
@@ -343,7 +404,10 @@ $$
 
 [**Teacher forcing:**]{.hi} denoise noisy current chunk conditioned on [**clean**]{.positive} previous chunks (like LLM training with ground-truth tokens).
 
+
 <!-- Slide 12: Attention Masking -->
+
+
 ## Attention Masking Strategy
 
 ![](../Figures/DreamZero/dreamzero_attention_figure.svg){fig-align="center" width="78%"}
@@ -355,7 +419,10 @@ $$
 - [**No cross-attention**]{.hi} between noisy video and noisy actions within same chunk
 :::
 
+
 <!-- Slide 13: Ground-Truth Injection -->
+
+
 ## Inference: Ground-Truth Injection
 
 ::: {.keybox}
@@ -372,7 +439,10 @@ $$
 - Pure video generation: errors compound
 - WAMs operate in [**closed-loop**]{.positive} --- reality corrects the model
 
+
 <!-- Slide 13b: GT Injection — Commentary -->
+
+
 ## Ground-Truth Injection: Commentary
 
 ::: {.softbox}
@@ -382,7 +452,10 @@ $$
 - Closes the sim-to-real gap *by design*, not by domain randomization
 - Compare to pure video generation (e.g. Sora) where errors compound indefinitely
 
+
 <!-- Slide 14: DreamZero-Flash -->
+
+
 ## DreamZero-Flash: Faster Inference
 
 [**Problem:**]{.hi} 4 denoising steps = 350ms (too slow for some applications)
@@ -395,7 +468,10 @@ $$
 
 Trains actions to denoise from *predominantly noisy* visual context.
 
+
 <!-- Slide 14b: Flash Results -->
+
+
 ## DreamZero-Flash: Results
 
 ![](../Figures/DreamZero/dreamzero-flash_noise_distribution_comparison.svg){fig-align="center" width="60%"}
@@ -406,7 +482,10 @@ Trains actions to denoise from *predominantly noisy* visual context.
 1-step: [**74%**]{.positive} task progress (only 9% drop from 4-step at 83%)
 :::
 
+
 <!-- Slide 15: 38x Speedup -->
+
+
 ## $38\times$ Inference Speedup Breakdown {.smaller}
 
 | **Optimization** | **H100** | **GB200** |
@@ -424,11 +503,14 @@ Trains actions to denoise from *predominantly noisy* visual context.
 
 [**Final:**]{.hi} 14B at [**7Hz**]{.positive} on $2 \times \text{GB200}$ (150ms per chunk)
 
+
 <!---------------------------------------------------------------------------->
 <!-- PART 3: DATA & TRAINING                                                -->
 <!---------------------------------------------------------------------------->
 
 <!-- Slide 16: Data Philosophy -->
+
+
 ## Data Philosophy: Diversity Over Repetition
 
 ::: {.resultbox}
@@ -446,7 +528,10 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 - Robust IDM requires [**diverse state-action correspondences**]{.positive}
 - Repetitive data $\rightarrow$ narrow IDM
 
+
 <!-- Slide 17a: AgiBot Dataset -->
+
+
 ## AgiBot G1 Dataset
 
 :::: {.columns}
@@ -466,7 +551,10 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 :::
 ::::
 
+
 <!-- Slide 17b: Training Config -->
+
+
 ## Training Configuration
 
 :::: {.columns}
@@ -487,7 +575,10 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 :::
 ::::
 
+
 <!-- Slide 18a: Evaluation Setup -->
+
+
 ## Evaluation Protocol: Setup
 
 ![](../Figures/DreamZero/main_eval_setting.svg){fig-align="center" width="80%"}
@@ -495,7 +586,10 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 Default: [**unseen environments**]{.hi}, [**unseen objects**]{.hi}
 Training and evaluation in [**different geographic locations**]{.negative}
 
+
 <!-- Slide 18b: Evaluation Details -->
+
+
 ## Evaluation Protocol: Details
 
 ::: {.methodbox}
@@ -506,16 +600,22 @@ Training and evaluation in [**different geographic locations**]{.negative}
 - Baselines: GR00T N1, $\pi_{0.5}$ (from-scratch & from-pretrained)
 :::
 
+
 <!---------------------------------------------------------------------------->
 <!-- PART 4: RESULTS                                                        -->
 <!---------------------------------------------------------------------------->
 
 <!-- Slide: Section Divider — Results -->
+
+
 # Does It Actually Work? {background-color="#E8EDF5"}
 
 [**Experimental Results**]{.hi-gold}
 
+
 <!-- Slide 19: Seen Tasks -->
+
+
 ## Seen Tasks: $2\times$ Improvement
 
 ![](../Figures/DreamZero/eval_bar_chart.svg){fig-align="center" width="78%"}
@@ -526,7 +626,10 @@ Best VLA (pretrained): 27.4% $\rightarrow$ [**$2.3\times$**]{.positive}
 VLA from-scratch: [**$\sim$0%**]{.negative}
 :::
 
+
 <!-- Slide 20: Unseen Tasks -->
+
+
 ## Unseen Tasks: Zero-shot Generalization
 
 ![](../Figures/DreamZero/unseen_success_rates.svg){fig-align="center" width="78%"}
@@ -536,7 +639,10 @@ DreamZero: [**39.5%**]{.positive} on novel tasks
 Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 :::
 
+
 <!-- Slide 20b: Unseen Tasks Details -->
+
+
 ## Unseen Tasks: Standout Results
 
 [**Standout tasks:**]{.hi}
@@ -550,7 +656,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Commentary:**]{.hi-gold} The key result --- DreamZero does things it was [**NEVER trained to do**]{.hi}.
 :::
 
+
 <!-- Slide 21: Joint Video-Action -->
+
+
 ## Joint Video-Action Prediction in Action
 
 ![](../Figures/DreamZero/dreamzero_gen.svg){fig-align="center" width="85%"}
@@ -558,7 +667,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - Tight alignment between predicted and actual trajectories
 - Most failures: video generation errors, not action extraction
 
+
 <!-- Slide 22: Post-training -->
+
+
 ## Post-training: Retained Generalization
 
 ![](../Figures/DreamZero/posttrain.svg){fig-align="center" width="78%"}
@@ -566,7 +678,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - [**Matches or outperforms**]{.positive} pretrained VLAs
 - Evaluated in [**unseen environments**]{.hi} even after task-specific training
 
+
 <!-- Slide 23: Cross-Embodiment Transfer -->
+
+
 ## Cross-Embodiment Transfer
 
 ![](../Figures/DreamZero/embodiment_transfer.svg){fig-align="center" width="75%"}
@@ -577,7 +692,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 | + Robot2Robot (YAM, 20 min) | [**55.4%**]{.positive} (+44.6% rel.) |
 | + Human2Robot (12 min) | [**54.3%**]{.positive} (+41.8% rel.) |
 
+
 <!-- Slide 23b: Cross-Embodiment Commentary -->
+
+
 ## Cross-Embodiment Transfer: Commentary
 
 ::: {.softbox}
@@ -587,7 +705,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - YouTube alone hosts [**>800M hours**]{.positive} of how-to and activity video
 - The bottleneck shifts from "collect robot data" to "build a better IDM"
 
+
 <!-- Slide 24: Few-shot -->
+
+
 ## Few-shot Adaptation to New Robot
 
 ![](../Figures/DreamZero/yam_transfer.svg){fig-align="center" width="82%"}
@@ -595,7 +716,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - 55 trajectories ($\sim$30 min play data) on YAM robot
 - Retains [**language following**]{.positive} + generalizes to novel objects
 
+
 <!-- Slide 25: Free-form -->
+
+
 ## Free-form Evaluation
 
 ![](../Figures/DreamZero/free_form.svg){fig-align="center" width="85%"}
@@ -603,11 +727,14 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**100+ novel tasks**]{.hi} via natural language instructions
 "Pop the balloon", "Press elevator button", "Paint", "Iron clothes"
 
+
 <!---------------------------------------------------------------------------->
 <!-- PART 5: ABLATIONS & ANALYSIS                                           -->
 <!---------------------------------------------------------------------------->
 
 <!-- Slide 26: Ablation -->
+
+
 ## Ablation: What Matters Most? {.smaller}
 
 | | **Arch** | **Size** | **Data** | **Progress** |
@@ -626,7 +753,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 [All on PnP Easy, 50K steps, batch 32. DZ = DreamZero.]{style="font-size: 0.7em;"}
 
+
 <!-- Slide 27: VLA vs WAM -->
+
+
 ## Why VLAs Fail While WAMs Succeed
 
 :::: {.columns}
@@ -647,7 +777,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 :::
 ::::
 
+
 <!-- Slide 27b: VLA vs WAM — Commentary -->
+
+
 ## VLA vs. WAM: Commentary
 
 ::: {.softbox}
@@ -657,7 +790,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - This echoes the "bitter lesson": the right *representation* (video) matters more than scale
 - Expect hybrid approaches that combine VLM semantics with WAM physics
 
+
 <!-- Slide 28: Failure Analysis -->
+
+
 ## Failure Analysis: When DreamZero Breaks
 
 ![](../Figures/DreamZero/generated.svg){fig-align="center" width="75%"}
@@ -667,7 +803,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Primary failure mode:**]{.hi}
 [**video generation errors**]{.negative} (hallucinations, wrong physics)
 
+
 <!-- Slide 28b: Failure Causal Chain -->
+
+
 ## Failure: Error Causal Chain
 
 [**Error causal chain:**]{.hi}
@@ -681,16 +820,22 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Commentary:**]{.hi-gold} The tight coupling is both strength and weakness --- [**video quality is the bottleneck**]{.hi}.
 :::
 
+
 <!---------------------------------------------------------------------------->
 <!-- PART 6: CODE-LEVEL INSIGHTS                                            -->
 <!---------------------------------------------------------------------------->
 
 <!-- Slide: Section Divider — Code -->
+
+
 # Under the Hood {background-color="#E8EDF5"}
 
 [**Code-Level Insights**]{.hi-gold}
 
+
 <!-- Slide 29: Multi-Embodiment -->
+
+
 ## Code: Multi-Embodiment Architecture
 
 ::: {.methodbox}
@@ -706,7 +851,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Commentary (from code):**]{.hi-gold} Each robot gets its own "translator" while sharing the world model.
 :::
 
+
 <!-- Slide 30a: Engineering -->
+
+
 ## Code: Making 14B Real-Time
 
 ::: {.methodbox}
@@ -718,7 +866,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - [**DiT caching:**]{.hi} skip forward pass when velocity vectors converge
 :::
 
+
 <!-- Slide 30b: Quantization -->
+
+
 ## Code: Quantization Stack
 
 [**Precision hierarchy:**]{.hi}
@@ -733,7 +884,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Commentary (from code):**]{.hi-gold} Far beyond typical research code --- production-grade systems engineering.
 :::
 
+
 <!-- Slide 31: Data Pipeline -->
+
+
 ## Code: Data Pipeline
 
 ::: {.methodbox}
@@ -749,16 +903,22 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Commentary (from code):**]{.hi-gold} Data infrastructure is as important as the model architecture.
 :::
 
+
 <!---------------------------------------------------------------------------->
 <!-- PART 7: DISCUSSION & TAKEAWAYS                                         -->
 <!---------------------------------------------------------------------------->
 
 <!-- Slide: Section Divider — Discussion -->
+
+
 # What Does It All Mean? {background-color="#E8EDF5"}
 
 [**Discussion & Takeaways**]{.hi-gold}
 
+
 <!-- Slide 32: Limitations -->
+
+
 ## Limitations
 
 [**From the paper:**]{.hi}
@@ -769,7 +929,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 4. Inherits behavior cloning limitations on [**sub-centimeter precision**]{.negative}
 5. Separate training per embodiment
 
+
 <!-- Slide 32b: Computational Requirements -->
+
+
 ## Limitations: Computational Requirements
 
 [**Computational requirements:**]{.hi}
@@ -783,7 +946,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - 6.6s context $\rightarrow$ System 1 only
 - Needs System 2 planner for extended tasks
 
+
 <!-- Slide 33: Unsolved IDM -->
+
+
 ## The Unsolved Inverse Dynamics Problem
 
 [**Adaptation is not free.**]{.hi}
@@ -800,7 +966,10 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - Dexterous hands: much harder
 - Full humanoids: [**hardest**]{.negative}
 
+
 <!-- Slide 34: Hardware vs Algorithm -->
+
+
 ## The Hardware vs. Algorithm Race
 
 :::: {.columns}
@@ -832,7 +1001,10 @@ Both paths converge on the same data:
 :::
 ::::
 
+
 <!-- Slide 35: Critical Assessment Strengths -->
+
+
 ## Critical Assessment: Strengths
 
 [**Strengths:**]{.hi}
@@ -848,7 +1020,10 @@ Both paths converge on the same data:
 - Will this work on consumer GPUs?
 - Long-horizon tasks (>6.6s)?
 
+
 <!-- Slide 35b: Critical Assessment — Missing -->
+
+
 ## Critical Assessment: What's Missing
 
 [**Missing:**]{.hi}
@@ -861,7 +1036,10 @@ Both paths converge on the same data:
 [**Commentary:**]{.hi-gold} Current zero-shot is "AI Slop" phase (Joel Jang) --- correct direction, but [**not deployment-ready**]{.hi} yet.
 :::
 
+
 <!-- Slide 36a: Field Impact (1/2) -->
+
+
 ## What DreamZero Means for the Field (1/2)
 
 ::: {.keybox}
@@ -872,7 +1050,10 @@ Both paths converge on the same data:
 3. "Diversity > repetition" could [**reshape robot data collection**]{.positive}
 :::
 
+
 <!-- Slide 36b: Field Impact (2/2) -->
+
+
 ## What DreamZero Means for the Field (2/2)
 
 ::: {.keybox}
@@ -883,7 +1064,10 @@ Both paths converge on the same data:
 6. "Chain of thought in [**visual space**]{.hi} rather than language space"
 :::
 
+
 <!-- Slide 37: Key Takeaways -->
+
+
 ## Key Takeaways
 
 1. [**WAMs jointly predict video + action**]{.hi} $\rightarrow$ better generalization
@@ -897,7 +1081,10 @@ Both paths converge on the same data:
 [**The future of robotics is video-native, not language-native.**]{.hi}
 :::
 
+
 <!-- Slide 38: Thank You -->
+
+
 ## Thank You & References
 
 :::: {.columns}
@@ -928,7 +1115,10 @@ Both paths converge on the same data:
 [**Q&A**]{.hi}
 :::
 
+
 <!-- Slide: References -->
+
+
 ## References
 
 ::: {#refs}

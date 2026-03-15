@@ -54,6 +54,7 @@ CLAUDE.local.md
 # Quarto rendered HTML (regenerable via quarto render)
 Quarto/*.html
 Quarto/*_files/
+Quarto/Figures
 
 # Output artifacts — uncomment lines below based on your preference
 # *.rds
@@ -63,6 +64,14 @@ Quarto/*_files/
 target-papers/
 
 **/*.quarto_ipynb
+
+# Speaker notes backup (local only, not shared)
+.speaker-notes/
+
+# Quarto project-level build artifacts
+_site/
+index.html
+index_files/
 
 # Override global gitignore: RevealJS dist/ must be tracked for GitHub Pages
 !docs/**/dist/

@@ -59,6 +59,10 @@ for html in *.html; do
     fi
 done
 
+# 2b. Strip speaker notes from deployed HTML (keep notes local-only)
+echo "Stripping speaker notes from public HTML..."
+python3 "$REPO_ROOT/scripts/strip_speaker_notes.py" "$DOCS_DIR/slides/"*.html
+
 # 3. Sync Beamer PDFs to docs/slides/
 echo "Syncing Beamer PDFs..."
 for pdf in "$REPO_ROOT/Slides/"*.pdf; do

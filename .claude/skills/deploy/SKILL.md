@@ -37,5 +37,12 @@ Render Quarto slides and sync all files to `docs/` for GitHub Pages deployment.
 ## What the sync script does:
 - Renders all `.qmd` files in `Quarto/` (skips `*_backup*` files)
 - Copies HTML and `_files/` directories to `docs/slides/`
+- **Strips speaker notes** from deployed HTML (`scripts/strip_speaker_notes.py`)
 - Copies Beamer PDFs from `Slides/` to `docs/slides/`
 - Syncs `Figures/` to `docs/Figures/` using rsync
+
+## Speaker Notes Policy
+- QMD source always contains `::: {.notes}` blocks (single source of truth)
+- **Local** (`Quarto/*.html`): notes included — press `S` for speaker view
+- **Public** (`docs/slides/*.html`): notes stripped at deploy time
+- No separate branches needed — `strip_speaker_notes.py` handles this automatically

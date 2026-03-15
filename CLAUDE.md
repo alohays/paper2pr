@@ -14,6 +14,30 @@
 - **Single source of truth** -- Beamer `.tex` is authoritative; Quarto `.qmd` derives from it
 - **Quality gates** -- nothing ships below 80/100
 - **[LEARN] tags** -- when corrected, save `[LEARN:category] wrong → right` to MEMORY.md
+- **English only** -- all content committed to git must be in English (see Language Policy below)
+
+---
+
+## Language Policy
+
+**All content pushed to GitHub must be in English.** This includes documentation, session logs, commit messages, comments, and slide content.
+
+**Exceptions:**
+- `.claude/skills/` and `.claude/agents/` may contain Korean examples for bilingual functionality
+- Speaker notes in QMD files are automatically stripped by the git clean filter (see Speaker Notes below)
+
+**Enforcement:**
+- Pre-commit hook (`scripts/check-korean-pre-commit.sh`) blocks Korean text in staged files
+- Exempt paths: `.claude/skills/`, `.claude/agents/`
+
+## Speaker Notes Policy
+
+Speaker notes (`::: {.notes}` blocks in QMD) are **local-only** and never reach git:
+
+1. **Git clean filter** strips notes from QMD before staging (`.gitattributes` + `scripts/strip_qmd_notes.py`)
+2. **Deploy script** strips notes from HTML before syncing to `docs/` (`scripts/strip_speaker_notes.py`)
+3. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [PaperName]`
+4. **Setup** (run once after clone): `bash scripts/setup-git-filters.sh`
 
 ---
 
@@ -58,7 +82,7 @@ TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
 # Quarto render
 cd Quarto && quarto render PaperName.qmd
 
-# Deploy to GitHub Pages
+# Deploy to GitHub Pages (strips speaker notes from public HTML)
 ./scripts/sync_to_docs.sh PaperName
 
 # Quality score
@@ -142,6 +166,31 @@ python scripts/quality_score.py Quarto/PaperName.qmd
 | `.keybox` | Gold-bordered div | Key insights |
 | `.highlightbox` | Yellow-bordered div | Notable findings |
 | `.resultbox` | Gold-bordered with shadow | Main results |
+
+---
+
+## Speaker Notes Policy
+
+Speaker notes (`::: {.notes}`) live in the working directory QMD only. Two layers of protection:
+
+| Layer | What | How |
+|-------|------|-----|
+| **Git** | QMD committed without notes | `git clean filter` via `.gitattributes` |
+| **Deploy** | HTML deployed without notes | `strip_speaker_notes.py` via `sync_to_docs.sh` |
+
+```bash
+# One-time setup (after clone)
+./scripts/setup-git-filters.sh
+
+# Backup notes (insurance against git checkout)
+python3 scripts/backup_notes.py backup DreamZero
+
+# Restore notes (after clone or accidental checkout)
+python3 scripts/backup_notes.py restore DreamZero
+```
+
+- **Never maintain separate branches** for notes vs no-notes
+- Notes backup: `.speaker-notes/` (gitignored)
 
 ---
 

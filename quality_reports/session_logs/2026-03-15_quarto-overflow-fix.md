@@ -43,6 +43,12 @@
 - [ ] Deploy to docs/
 - [ ] Commit
 
+## Quarto Preview Setup
+
+- Root `_quarto.yml` caused pandoc errors → removed
+- Created `scripts/preview.sh`: runs `quarto preview DreamZero.qmd` from Quarto/ directory
+- Figures images not displayed in preview due to path restrictions (expected); use /deploy for full check
+
 ## Open Questions
 
-- Architecture Overview image still slightly clipped at 95%, bumped to 100%
+- Image display limitation in preview (`../Figures/` path is outside server root)

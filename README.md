@@ -1,8 +1,6 @@
 # Paper2PR
 
-AI/ML 논문을 발표 가능한 Beamer + Quarto (RevealJS) 슬라이드로 변환하는 Claude Code 멀티 에이전트 워크플로우.
-
-> Takes AI/ML papers and generates presentation-ready slide decks using specialized AI agents for quality control, adversarial review, and automated deployment.
+A Claude Code multi-agent workflow that converts AI/ML papers into presentation-ready Beamer + Quarto (RevealJS) slide decks with automated quality control, adversarial review, and deployment.
 
 **Organization:** WoRV / MaumAI
 

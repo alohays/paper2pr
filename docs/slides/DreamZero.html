@@ -6,7 +6,7 @@
 <script src="DreamZero_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="DreamZero_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="DreamZero_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="DreamZero_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="DreamZero_files/libs/quarto-html/quarto-syntax-highlighting-5f1e3b374e1a03061dc0f8bdf500b1f5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Yunsung Lee">
@@ -50,6 +50,22 @@
       margin-left: 2em;
     }  </style>
   <link rel="stylesheet" href="DreamZero_files/libs/revealjs/dist/theme/quarto-af773df83a1c5cf1973a4214289f99c9.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
   <link href="DreamZero_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="DreamZero_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="DreamZero_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -179,28 +195,31 @@ Yunsung Lee
 </div>
 </div>
 <!-- Slide 2: The Second Pre-training Paradigm -->
+
 </section>
 <section id="the-second-pre-training-paradigm" class="slide level2">
 <h2>The Second Pre-training Paradigm</h2>
-<p><span class="hi"><strong>1st Paradigm:</strong></span> Next-word prediction <span class="math inline">\(\rightarrow\)</span> Language intelligence (LLMs)</p>
-<p><span class="hi"><strong>2nd Paradigm:</strong></span> <span class="hi-gold"><strong>Next physical state prediction</strong></span> <span class="math inline">\(\rightarrow\)</span> Embodied intelligence (World Models)</p>
+<p><span class="hi"><strong>1st Paradigm:</strong></span> Next-word prediction <span class="math inline">\rightarrow</span> Language intelligence (LLMs)</p>
+<p><span class="hi"><strong>2nd Paradigm:</strong></span> <span class="hi-gold"><strong>Next physical state prediction</strong></span> <span class="math inline">\rightarrow</span> Embodied intelligence (World Models)</p>
 <div class="quotebox">
 <p>2026 will go down as the first year that Large World Models lay real foundations for robotics.</p>
 </div>
 <p><span style="display: block; text-align: right;">— Jim Fan (NVIDIA)</span></p>
 <!-- Slide 2b: Why Not Just Use VLMs? -->
+
 </section>
 <section id="why-not-just-use-vlms-for-robots" class="slide level2">
 <h2>Why Not Just Use VLMs for Robots?</h2>
 <ul>
 <li>VLMs are <span class="negative"><strong>language-first</strong></span> — vision is a “second-class citizen”</li>
 <li>Most VLM parameters encode <em>knowledge</em>, not <em>physics</em></li>
-<li>Static image–text pretraining <span class="math inline">\(\neq\)</span> spatiotemporal understanding</li>
+<li>Static image–text pretraining <span class="math inline">\neq</span> spatiotemporal understanding</li>
 </ul>
 <div class="softbox">
 <p><span class="hi-gold"><strong>Commentary:</strong></span> “Language is a bottleneck, a scaffold, not a foundation” for physical intelligence.</p>
 </div>
 <!-- Slide 3: The Data Problem (1/2) -->
+
 </section>
 <section id="the-data-problem-in-robotics-12" class="slide level2">
 <h2>The Data Problem in Robotics (1/2)</h2>
@@ -208,13 +227,14 @@ Yunsung Lee
 <ul>
 <li><p><span class="hi"><strong>LLMs:</strong></span> text from <span class="positive"><strong>billions of people</strong></span> across history</p></li>
 <li><p><span class="hi"><strong>Vision:</strong></span> images from <span class="positive"><strong>billions of cameras</strong></span> over decades</p></li>
-<li><p><span class="hi"><strong>Robotics:</strong></span> <span class="negative"><strong>thousands of hours</strong></span> of teleoperation <span class="math inline">\(\rightarrow\)</span> <span class="negative"><strong>massive gap</strong></span></p></li>
+<li><p><span class="hi"><strong>Robotics:</strong></span> <span class="negative"><strong>thousands of hours</strong></span> of teleoperation <span class="math inline">\rightarrow</span> <span class="negative"><strong>massive gap</strong></span></p></li>
 </ul>
 <div class="highlightbox">
 <p><strong>In-the-wild vs.&nbsp;On-demand Data</strong></p>
 <p>Text and images are “in-the-wild” — generated continuously. Robot data is “on-demand” — requires expensive teleoperation.</p>
 </div>
 <!-- Slide 3b: The Data Problem (2/2) -->
+
 </section>
 <section id="the-data-problem-in-robotics-22" class="slide level2">
 <h2>The Data Problem in Robotics (2/2)</h2>
@@ -223,24 +243,26 @@ Yunsung Lee
 </div>
 <p><span style="display: block; text-align: right;">— Joel Jang</span></p>
 <p><em>“Intelligence is a function of experience.”</em></p>
-<p><span class="math inline">\(\Rightarrow\)</span> Robotics needs <span class="hi-gold"><strong>vastly more experience</strong></span> to match human-level physical intelligence.</p>
+<p><span class="math inline">\Rightarrow</span> Robotics needs <span class="hi-gold"><strong>vastly more experience</strong></span> to match human-level physical intelligence.</p>
 <!-- Slide 4: VLAs and Their Limitations -->
+
 </section>
 <section id="the-rise-of-vlas-and-their-limitations" class="slide level2">
 <h2>The Rise of VLAs and Their Limitations</h2>
 <p><span class="hi"><strong>Vision-Language-Action Models (VLAs):</strong></span></p>
 <ul>
-<li>RT-2, OpenVLA, GR00T, <span class="math inline">\(\pi_0\)</span> <span class="citation" data-cites="rt22023arxiv kim2024openvla bjorck2025gr00t black2024pi0">(<a href="#/references" role="doc-biblioref" onclick="">Brohan et al. 2023</a>; <a href="#/references" role="doc-biblioref" onclick="">Kim et al. 2024</a>; <a href="#/references" role="doc-biblioref" onclick="">Bjorck et al. 2025</a>; <a href="#/references" role="doc-biblioref" onclick="">Black et al. 2024</a>)</span></li>
-<li>Extend VLMs <span class="math inline">\(\rightarrow\)</span> predict motor actions</li>
+<li>RT-2, OpenVLA, GR00T, <span class="math inline">\pi_0</span> <span class="citation" data-cites="rt22023arxiv kim2024openvla bjorck2025gr00t black2024pi0">(<a href="#/references" role="doc-biblioref" onclick="">Brohan et al. 2023</a>; <a href="#/references" role="doc-biblioref" onclick="">Kim et al. 2024</a>; <a href="#/references" role="doc-biblioref" onclick="">Bjorck et al. 2025</a>; <a href="#/references" role="doc-biblioref" onclick="">Black et al. 2024</a>)</span></li>
+<li>Extend VLMs <span class="math inline">\rightarrow</span> predict motor actions</li>
 <li><span class="positive"><strong>Strong semantic understanding</strong></span>: “pick up the red cup”</li>
 </ul>
 <p><span class="hi"><strong>But:</strong></span></p>
 <ul>
-<li>Trained on <span class="negative"><strong>static images</strong></span> <span class="math inline">\(\rightarrow\)</span> lack spatiotemporal priors</li>
+<li>Trained on <span class="negative"><strong>static images</strong></span> <span class="math inline">\rightarrow</span> lack spatiotemporal priors</li>
 <li>Fail on novel <em>motions</em>: “untie the shoelace”</li>
 <li>Scaling model size alone <span class="negative"><strong>does not help</strong></span></li>
 </ul>
 <!-- Slide 4b: VLAs — The Evidence -->
+
 </section>
 <section id="vlas-the-evidence" class="slide level2">
 <h2>VLAs: The Evidence</h2>
@@ -250,18 +272,20 @@ Yunsung Lee
 <p><span class="hi-gold"><strong>Commentary:</strong></span> The fundamental gap — VLMs encode “<span class="hi"><strong>what</strong></span> to do” but not “<span class="hi"><strong>how</strong></span> to move”.</p>
 </div>
 <!-- Slide 5: Video as Dense Representation -->
+
 </section>
 <section id="key-insight-video-as-dense-physical-representation" class="slide level2">
 <h2>Key Insight: Video as Dense Physical Representation</h2>
 <div class="keybox">
 <p><strong>Core Idea</strong></p>
-<p>Video diffusion models trained on web-scale data encode: <span class="hi"><strong>spatial geometry</strong></span> <span class="math inline">\(\cdot\)</span> <span class="hi"><strong>object dynamics</strong></span> <span class="math inline">\(\cdot\)</span> <span class="hi"><strong>contact physics</strong></span> <span class="math inline">\(\cdot\)</span> <span class="hi"><strong>motion patterns</strong></span></p>
+<p>Video diffusion models trained on web-scale data encode: <span class="hi"><strong>spatial geometry</strong></span> <span class="math inline">\cdot</span> <span class="hi"><strong>object dynamics</strong></span> <span class="math inline">\cdot</span> <span class="hi"><strong>contact physics</strong></span> <span class="math inline">\cdot</span> <span class="hi"><strong>motion patterns</strong></span></p>
 </div>
 <ul>
-<li>Every consecutive frame pair <span class="math inline">\(\rightarrow\)</span> <span class="positive"><strong>dense supervision</strong></span> (vs.&nbsp;sparse task-level labels in VLAs)</li>
+<li>Every consecutive frame pair <span class="math inline">\rightarrow</span> <span class="positive"><strong>dense supervision</strong></span> (vs.&nbsp;sparse task-level labels in VLAs)</li>
 <li>“Generating pixels is the only way for humans to <em>verify</em> that the model truly understands” — Joel Jang</li>
 </ul>
 <!-- Slide 5b: The Paradigm Shift -->
+
 </section>
 <section id="the-paradigm-shift" class="slide level2">
 <h2>The Paradigm Shift</h2>
@@ -273,36 +297,39 @@ Yunsung Lee
 <p><span class="hi-gold"><strong>Commentary:</strong></span> This is the core paradigm shift — from discrete task policies to <span class="hi"><strong>continuous world modeling</strong></span>.</p>
 </div>
 <!-- Slide 6: WAM Big Picture -->
+
 </section>
 <section id="world-action-models-the-big-picture" class="slide level2">
 <h2>World Action Models: The Big Picture</h2>
-<p><span class="hi"><strong>WAM</strong></span> = Video Prediction <span class="math inline">\(\times\)</span> Inverse Dynamics Model</p>
+<p><span class="hi"><strong>WAM</strong></span> = Video Prediction <span class="math inline">\times</span> Inverse Dynamics Model</p>
 <div class="eqbox">
-<p><span class="math display">\[
+<p><span class="math display">
 \underbrace{P(\mathbf{O}, \mathbf{A} \mid \text{ctx})}_{\text{DreamZero}}
   = \underbrace{P(\mathbf{O} \mid \text{ctx})}_{\text{video pred.}}
   \times \underbrace{P(\mathbf{A} \mid \mathbf{O},
   \text{ctx})}_{\text{IDM}}
-\]</span></p>
+</span></p>
 </div>
 <p><span class="hi"><strong>IDM (Inverse Dynamics Model):</strong></span> observes a sequence of states and infers what actions caused those transitions — watching video and reverse-engineering motor commands.</p>
 <ul>
-<li>Instead of two separate models <span class="math inline">\(\rightarrow\)</span> <span class="hi"><strong>single end-to-end model</strong></span></li>
+<li>Instead of two separate models <span class="math inline">\rightarrow</span> <span class="hi"><strong>single end-to-end model</strong></span></li>
 <li><span class="hi"><strong>DreamZero:</strong></span> 14B autoregressive WAM built on <span class="hi-gold"><strong>Wan2.1</strong></span> video backbone <span class="citation" data-cites="wan2025wan">(<a href="#/references" role="doc-biblioref" onclick="">Team Wan 2025</a>)</span></li>
 </ul>
 <!-- Slide 6b: Headline Results -->
+
 </section>
 <section id="dreamzero-headline-results" class="slide level2">
 <h2>DreamZero: Headline Results</h2>
 <div class="resultbox">
 <p><strong>Key Achievements</strong></p>
 <ul>
-<li><span class="positive"><strong><span class="math inline">\(2\times\)</span> improvement</strong></span> over state-of-the-art VLAs</li>
-<li><span class="positive"><strong><span class="math inline">\(38\times\)</span> inference speedup</strong></span> <span class="math inline">\(\rightarrow\)</span> real-time at 7Hz</li>
+<li><span class="positive"><strong><span class="math inline">2\times</span> improvement</strong></span> over state-of-the-art VLAs</li>
+<li><span class="positive"><strong><span class="math inline">38\times</span> inference speedup</strong></span> <span class="math inline">\rightarrow</span> real-time at 7Hz</li>
 <li><span class="positive"><strong>Cross-embodiment transfer</strong></span> from video-only data</li>
 </ul>
 </div>
 <!-- Slide 7: Human Data Scaling -->
+
 </section>
 <section id="the-human-data-scaling-pathway" class="slide level2">
 <h2>The Human Data Scaling Pathway</h2>
@@ -312,18 +339,19 @@ Yunsung Lee
 <p><span style="display: block; text-align: right;">— Joel Jang</span></p>
 <p><span class="hi"><strong>The math:</strong></span></p>
 <ul>
-<li>8 billion “units” <span class="math inline">\(\times\)</span> 16 waking hrs/day <span class="math inline">\(=\)</span> 128B person-hours <em>per day</em></li>
-<li>Even capturing 0.1% <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(\approx\)</span> 100M hours of usable video</li>
-<li><span class="math inline">\(\approx\)</span> 150 human lifetimes of experience</li>
+<li>8 billion “units” <span class="math inline">\times</span> 16 waking hrs/day <span class="math inline">=</span> 128B person-hours <em>per day</em></li>
+<li>Even capturing 0.1% <span class="math inline">\rightarrow</span> <span class="math inline">\approx</span> 100M hours of usable video</li>
+<li><span class="math inline">\approx</span> 150 human lifetimes of experience</li>
 </ul>
 <p><span class="hi"><strong>The vision:</strong></span> “Train once on human experience, deploy everywhere with calibration”</p>
 <!-- Slide 7b: Early Signal -->
+
 </section>
 <section id="human-data-early-signal" class="slide level2">
 <h2>Human Data: Early Signal</h2>
 <div class="resultbox">
 <p><strong>Cross-Embodiment Transfer</strong></p>
-<p>12 min of human egocentric video <span class="math inline">\(\rightarrow\)</span> <span class="positive"><strong>&gt;42% relative improvement</strong></span> on unseen robot tasks</p>
+<p>12 min of human egocentric video <span class="math inline">\rightarrow</span> <span class="positive"><strong>&gt;42% relative improvement</strong></span> on unseen robot tasks</p>
 </div>
 <div class="softbox">
 <p><span class="hi-gold"><strong>Commentary:</strong></span> This is the sleeper insight — human video as the ultimate robot training data.</p>
@@ -332,17 +360,19 @@ Yunsung Lee
 <!-- PART 2: DREAMZERO ARCHITECTURE                                         -->
 <!---------------------------------------------------------------------------->
 <!-- Slide: Section Divider — Architecture -->
+
 </section>
 <section>
 <section id="how-does-dreamzero-work" class="title-slide slide level1 center" data-background-color="#E8EDF5">
 <h1>How Does DreamZero Work?</h1>
 <p><span class="hi-gold"><strong>Architecture &amp; Training</strong></span></p>
 <!-- Slide 8: Architecture Overview -->
+
 </section>
 <section id="architecture-overview" class="slide level2">
 <h2>Architecture Overview</h2>
 
-<img data-src="../Figures/DreamZero/dreamzero_model.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><div class="columns">
+<img data-src="../Figures/DreamZero/dreamzero_model.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><div class="columns">
 <div class="column" style="width:32%;">
 <p><span class="hi"><strong>Inputs:</strong></span> Visual context (VAE) Language (text encoder) Proprioceptive state</p>
 </div><div class="column" style="width:32%;">
@@ -351,6 +381,7 @@ Yunsung Lee
 <p><span class="hi"><strong>Outputs:</strong></span> Joint video frames + action chunks</p>
 </div></div>
 <!-- Slide 9: Why AR? -->
+
 </section>
 <section id="why-autoregressive-ar-vs.-bidirectional" class="slide level2">
 <h2>Why Autoregressive? AR vs.&nbsp;Bidirectional</h2>
@@ -358,8 +389,8 @@ Yunsung Lee
 <div class="column" style="width:48%;">
 <p><span class="hi"><strong>Bidirectional problems:</strong></span></p>
 <ul>
-<li>Fixed-length sequences <span class="math inline">\(\rightarrow\)</span> <span class="negative"><strong>video subsampling</strong></span></li>
-<li>Distorts native FPS <span class="math inline">\(\rightarrow\)</span> breaks alignment</li>
+<li>Fixed-length sequences <span class="math inline">\rightarrow</span> <span class="negative"><strong>video subsampling</strong></span></li>
+<li>Distorts native FPS <span class="math inline">\rightarrow</span> breaks alignment</li>
 <li>Especially harmful mid-task</li>
 </ul>
 <div class="quarto-figure quarto-figure-center">
@@ -371,12 +402,13 @@ Yunsung Lee
 <p><span class="hi"><strong>Autoregressive advantages:</strong></span></p>
 <ul>
 <li>Preserves <span class="positive"><strong>native frame rate</strong></span></li>
-<li><span class="positive"><strong>KV-cache</strong></span> for <span class="math inline">\(3\)</span>–<span class="math inline">\(4\times\)</span> speedup</li>
+<li><span class="positive"><strong>KV-cache</strong></span> for <span class="math inline">3</span>–<span class="math inline">4\times</span> speedup</li>
 <li>Natural modality alignment</li>
 <li>Variable-length training</li>
 </ul>
 </div></div>
 <!-- Slide 9b: AR — Commentary -->
+
 </section>
 <section id="ar-vs.-bidirectional-commentary" class="slide level2">
 <h2>AR vs.&nbsp;Bidirectional: Commentary</h2>
@@ -384,29 +416,31 @@ Yunsung Lee
 <p><span class="hi-gold"><strong>Commentary:</strong></span> AR wins on both quality AND speed — a rare “have your cake and eat it too” situation.</p>
 </div>
 <ul>
-<li><span class="hi"><strong>Speed:</strong></span> KV-cache gives <span class="math inline">\(3\)</span>–<span class="math inline">\(4\times\)</span> speedup — bidirectional cannot cache</li>
+<li><span class="hi"><strong>Speed:</strong></span> KV-cache gives <span class="math inline">3</span>–<span class="math inline">4\times</span> speedup — bidirectional cannot cache</li>
 <li><span class="hi"><strong>Quality:</strong></span> native frame rate preserves the temporal signal that the IDM needs</li>
 </ul>
 <!-- Slide 10: Chunk-wise Generation -->
+
 </section>
 <section id="chunk-wise-generation" class="slide level2">
 <h2>Chunk-wise Generation</h2>
 <div class="methodbox">
 <p><strong>Chunking Strategy</strong></p>
 <ul>
-<li>Video: <span class="hi"><strong><span class="math inline">\(K=2\)</span> latent frames</strong></span> per chunk</li>
-<li>Action horizon: <span class="hi"><strong><span class="math inline">\(H=48\)</span></strong></span> (AgiBot, 30Hz) or <span class="hi"><strong><span class="math inline">\(H=24\)</span></strong></span> (DROID, 15Hz)</li>
-<li>Each chunk <span class="math inline">\(\approx\)</span> <span class="hi-gold"><strong>1.6 seconds</strong></span></li>
-<li>Max 4 chunks <span class="math inline">\(\rightarrow\)</span> <span class="hi-gold"><strong>6.6 seconds</strong></span> context</li>
+<li>Video: <span class="hi"><strong><span class="math inline">K=2</span> latent frames</strong></span> per chunk</li>
+<li>Action horizon: <span class="hi"><strong><span class="math inline">H=48</span></strong></span> (AgiBot, 30Hz) or <span class="hi"><strong><span class="math inline">H=24</span></strong></span> (DROID, 15Hz)</li>
+<li>Each chunk <span class="math inline">\approx</span> <span class="hi-gold"><strong>1.6 seconds</strong></span></li>
+<li>Max 4 chunks <span class="math inline">\rightarrow</span> <span class="hi-gold"><strong>6.6 seconds</strong></span> context</li>
 </ul>
 </div>
 <p><span class="hi"><strong>Key design choices:</strong></span></p>
 <ul>
 <li>Variable-length training (like LLM token sequences)</li>
 <li>Video at 5 FPS, actions at 30Hz (AgiBot)</li>
-<li>33 raw frames <span class="math inline">\(\rightarrow\)</span> 8 latent frames (<span class="math inline">\(4 \times 2\)</span>)</li>
+<li>33 raw frames <span class="math inline">\rightarrow</span> 8 latent frames (<span class="math inline">4 \times 2</span>)</li>
 </ul>
 <!-- Slide 11: Flow Matching Intuition -->
+
 </section>
 <section id="flow-matching-intuition" class="slide level2">
 <h2>Flow Matching: Intuition</h2>
@@ -416,47 +450,50 @@ Yunsung Lee
 </div>
 <p><em>Analogy:</em> Think of a GPS that plots a straight-line route from “lost” (noise) to “home” (data). Flow matching learns that route; standard diffusion takes a random walk.</p>
 <ul>
-<li>At <span class="math inline">\(t=0\)</span>: pure noise. At <span class="math inline">\(t=1\)</span>: clean data.</li>
+<li>At <span class="math inline">t=0</span>: pure noise. At <span class="math inline">t=1</span>: clean data.</li>
 <li>The model predicts the <span class="hi"><strong>velocity</strong></span> pointing from noise to data.</li>
-<li><span class="hi"><strong>Shared timestep</strong></span> <span class="math inline">\(t_k\)</span> for video and action <span class="math inline">\(\rightarrow\)</span> aligned convergence.</li>
+<li><span class="hi"><strong>Shared timestep</strong></span> <span class="math inline">t_k</span> for video and action <span class="math inline">\rightarrow</span> aligned convergence.</li>
 </ul>
 <!-- Slide 11b: Flow Matching Equations -->
+
 </section>
 <section id="flow-matching-equations" class="slide level2">
 <h2>Flow Matching: Equations</h2>
 <div class="eqbox">
 <p><span class="hi"><strong>Noisy interpolation:</strong></span></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathbf{z}_{t_k}^k = t_k \mathbf{z}_1^k
   + (1-t_k)\mathbf{z}_0^k, \quad
 \mathbf{a}_{t_k}^k = t_k \mathbf{a}_1^k
   + (1-t_k)\mathbf{a}_0^k
-\]</span></p>
-<p>where <span class="math inline">\(\mathbf{z}_0^k, \mathbf{a}_0^k \sim \mathcal{N}(\mathbf{0}, \mathbf{I})\)</span> and <span class="math inline">\(t_k \in [0,1]\)</span>.</p>
+</span></p>
+<p>where <span class="math inline">\mathbf{z}_0^k, \mathbf{a}_0^k \sim \mathcal{N}(\mathbf{0}, \mathbf{I})</span> and <span class="math inline">t_k \in [0,1]</span>.</p>
 </div>
 <div class="eqbox">
 <p><span class="hi"><strong>Velocity prediction loss:</strong></span></p>
-<p><span class="math display">\[
+<p><span class="math display">
 \mathcal{L}(\theta) = \mathbb{E}\Bigg[
   \frac{1}{K}\sum_{k=1}^{K} w(t_k)
   \Big\lVert \mathbf{u}_\theta(\cdots)
   - \mathbf{v}^k \Big\rVert^2\Bigg]
-\]</span></p>
+</span></p>
 </div>
 <!-- Slide 11c: Flow Matching Notation -->
+
 </section>
 <section id="flow-matching-notation-guide" class="slide level2">
 <h2>Flow Matching: Notation Guide</h2>
 <p><span class="hi"><strong>Key Symbols:</strong></span></p>
 <ul>
-<li><span class="math inline">\(\mathbf{u}_\theta\)</span>: the DiT model (predicts velocity)</li>
-<li><span class="math inline">\(\mathcal{C}_k\)</span>: clean context from previous chunks</li>
-<li><span class="math inline">\(\mathbf{c}\)</span>: language instruction</li>
-<li><span class="math inline">\(\mathbf{q}_k\)</span>: proprioceptive state</li>
-<li><span class="math inline">\(w(t_k)\)</span>: predefined weight function</li>
+<li><span class="math inline">\mathbf{u}_\theta</span>: the DiT model (predicts velocity)</li>
+<li><span class="math inline">\mathcal{C}_k</span>: clean context from previous chunks</li>
+<li><span class="math inline">\mathbf{c}</span>: language instruction</li>
+<li><span class="math inline">\mathbf{q}_k</span>: proprioceptive state</li>
+<li><span class="math inline">w(t_k)</span>: predefined weight function</li>
 </ul>
 <p><span class="hi"><strong>Teacher forcing:</strong></span> denoise noisy current chunk conditioned on <span class="positive"><strong>clean</strong></span> previous chunks (like LLM training with ground-truth tokens).</p>
 <!-- Slide 12: Attention Masking -->
+
 </section>
 <section id="attention-masking-strategy" class="slide level2">
 <h2>Attention Masking Strategy</h2>
@@ -469,6 +506,7 @@ Yunsung Lee
 </ul>
 </div>
 <!-- Slide 13: Ground-Truth Injection -->
+
 </section>
 <section id="inference-ground-truth-injection" class="slide level2">
 <h2>Inference: Ground-Truth Injection</h2>
@@ -476,7 +514,7 @@ Yunsung Lee
 <p><strong>The Elegant Trick</strong></p>
 <ol type="1">
 <li>Denoise one chunk at a time (autoregressive)</li>
-<li>Execute action chunk on robot <span class="math inline">\(\rightarrow\)</span> get <span class="hi"><strong>real observation</strong></span></li>
+<li>Execute action chunk on robot <span class="math inline">\rightarrow</span> get <span class="hi"><strong>real observation</strong></span></li>
 <li><span class="hi-gold"><strong>Replace predicted frame with ground-truth</strong></span> in KV cache</li>
 <li>This <span class="positive"><strong>eliminates error accumulation!</strong></span></li>
 </ol>
@@ -487,6 +525,7 @@ Yunsung Lee
 <li>WAMs operate in <span class="positive"><strong>closed-loop</strong></span> — reality corrects the model</li>
 </ul>
 <!-- Slide 13b: GT Injection — Commentary -->
+
 </section>
 <section id="ground-truth-injection-commentary" class="slide level2">
 <h2>Ground-Truth Injection: Commentary</h2>
@@ -498,17 +537,19 @@ Yunsung Lee
 <li>Compare to pure video generation (e.g.&nbsp;Sora) where errors compound indefinitely</li>
 </ul>
 <!-- Slide 14: DreamZero-Flash -->
+
 </section>
 <section id="dreamzero-flash-faster-inference" class="slide level2">
 <h2>DreamZero-Flash: Faster Inference</h2>
 <p><span class="hi"><strong>Problem:</strong></span> 4 denoising steps = 350ms (too slow for some applications)</p>
 <p><span class="hi"><strong>Solution:</strong></span> <span class="hi-gold"><strong>Decoupled noise scheduling</strong></span></p>
 <ul>
-<li>Video: <span class="math inline">\(t_{\text{vid}} = 1 - \eta\)</span>, <span class="math inline">\(\eta \sim \text{Beta}(7,1)\)</span> <span class="math inline">\(\rightarrow\)</span> biased toward <span class="negative"><strong>high-noise</strong></span> (mean <span class="math inline">\(t \approx 0.125\)</span>)</li>
-<li>Action: <span class="math inline">\(t_{\text{act}} \sim \text{Uniform}[0,1]\)</span> <span class="math inline">\(\rightarrow\)</span> standard</li>
+<li>Video: <span class="math inline">t_{\text{vid}} = 1 - \eta</span>, <span class="math inline">\eta \sim \text{Beta}(7,1)</span> <span class="math inline">\rightarrow</span> biased toward <span class="negative"><strong>high-noise</strong></span> (mean <span class="math inline">t \approx 0.125</span>)</li>
+<li>Action: <span class="math inline">t_{\text{act}} \sim \text{Uniform}[0,1]</span> <span class="math inline">\rightarrow</span> standard</li>
 </ul>
 <p>Trains actions to denoise from <em>predominantly noisy</em> visual context.</p>
 <!-- Slide 14b: Flash Results -->
+
 </section>
 <section id="dreamzero-flash-results" class="slide level2">
 <h2>DreamZero-Flash: Results</h2>
@@ -518,9 +559,10 @@ Yunsung Lee
 <p>1-step: <span class="positive"><strong>74%</strong></span> task progress (only 9% drop from 4-step at 83%)</p>
 </div>
 <!-- Slide 15: 38x Speedup -->
+
 </section>
 <section id="times-inference-speedup-breakdown" class="slide level2 smaller">
-<h2><span class="math inline">\(38\times\)</span> Inference Speedup Breakdown</h2>
+<h2><span class="math inline">38\times</span> Inference Speedup Breakdown</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -532,8 +574,8 @@ Yunsung Lee
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Baseline</td>
-<td style="text-align: center;"><span class="math inline">\(1\times\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1.1\times\)</span></td>
+<td style="text-align: center;"><span class="math inline">1\times</span></td>
+<td style="text-align: center;"><span class="math inline">1.1\times</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><em>System-level</em></td>
@@ -542,13 +584,13 @@ Yunsung Lee
 </tr>
 <tr class="odd">
 <td style="text-align: left;">+ CFG Parallelism</td>
-<td style="text-align: center;"><span class="math inline">\(1.9\times\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(1.8\times\)</span></td>
+<td style="text-align: center;"><span class="math inline">1.9\times</span></td>
+<td style="text-align: center;"><span class="math inline">1.8\times</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">+ DiT Caching</td>
-<td style="text-align: center;"><span class="math inline">\(5.5\times\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(5.4\times\)</span></td>
+<td style="text-align: center;"><span class="math inline">5.5\times</span></td>
+<td style="text-align: center;"><span class="math inline">5.4\times</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><em>Implementation-level</em></td>
@@ -557,18 +599,18 @@ Yunsung Lee
 </tr>
 <tr class="even">
 <td style="text-align: left;">+ torch.compile</td>
-<td style="text-align: center;"><span class="math inline">\(8.9\times\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(10.9\times\)</span></td>
+<td style="text-align: center;"><span class="math inline">8.9\times</span></td>
+<td style="text-align: center;"><span class="math inline">10.9\times</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">+ Kernel &amp; Scheduler</td>
-<td style="text-align: center;"><span class="math inline">\(9.6\times\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(14.8\times\)</span></td>
+<td style="text-align: center;"><span class="math inline">9.6\times</span></td>
+<td style="text-align: center;"><span class="math inline">14.8\times</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">+ Quantization</td>
 <td style="text-align: center;">—</td>
-<td style="text-align: center;"><span class="math inline">\(16.6\times\)</span></td>
+<td style="text-align: center;"><span class="math inline">16.6\times</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><em>Model-level</em></td>
@@ -578,29 +620,31 @@ Yunsung Lee
 <tr class="even">
 <td style="text-align: left;">+ DreamZero-Flash</td>
 <td style="text-align: center;">—</td>
-<td style="text-align: center;"><span class="hi-gold"><strong><span class="math inline">\(38\times\)</span></strong></span></td>
+<td style="text-align: center;"><span class="hi-gold"><strong><span class="math inline">38\times</span></strong></span></td>
 </tr>
 </tbody>
 </table>
-<p><span class="hi"><strong>Final:</strong></span> 14B at <span class="positive"><strong>7Hz</strong></span> on <span class="math inline">\(2 \times \text{GB200}\)</span> (150ms per chunk)</p>
+<p><span class="hi"><strong>Final:</strong></span> 14B at <span class="positive"><strong>7Hz</strong></span> on <span class="math inline">2 \times \text{GB200}</span> (150ms per chunk)</p>
 <!---------------------------------------------------------------------------->
 <!-- PART 3: DATA & TRAINING                                                -->
 <!---------------------------------------------------------------------------->
 <!-- Slide 16: Data Philosophy -->
+
 </section>
 <section id="data-philosophy-diversity-over-repetition" class="slide level2">
 <h2>Data Philosophy: Diversity Over Repetition</h2>
 <div class="resultbox">
 <p><strong>Counterintuitive Finding</strong></p>
-<p>Same 500 hours of data: <span class="hi"><strong>Diverse</strong></span> (22 envs, long-tail skills): <span class="positive"><strong>50% task progress</strong></span> <span class="hi"><strong>Repetitive</strong></span> (70 tasks, many reps): <span class="negative"><strong>33% task progress</strong></span> <span class="math inline">\(\rightarrow\)</span> <span class="positive"><strong>+51% relative improvement</strong></span> from diversity</p>
+<p>Same 500 hours of data: <span class="hi"><strong>Diverse</strong></span> (22 envs, long-tail skills): <span class="positive"><strong>50% task progress</strong></span> <span class="hi"><strong>Repetitive</strong></span> (70 tasks, many reps): <span class="negative"><strong>33% task progress</strong></span> <span class="math inline">\rightarrow</span> <span class="positive"><strong>+51% relative improvement</strong></span> from diversity</p>
 </div>
 <p><span class="hi"><strong>Why?</strong></span></p>
 <ul>
 <li>Video prediction inherited from pretraining</li>
 <li>Robust IDM requires <span class="positive"><strong>diverse state-action correspondences</strong></span></li>
-<li>Repetitive data <span class="math inline">\(\rightarrow\)</span> narrow IDM</li>
+<li>Repetitive data <span class="math inline">\rightarrow</span> narrow IDM</li>
 </ul>
 <!-- Slide 17a: AgiBot Dataset -->
+
 </section>
 <section id="agibot-g1-dataset" class="slide level2">
 <h2>AgiBot G1 Dataset</h2>
@@ -622,6 +666,7 @@ Yunsung Lee
 <p><span style="font-size: 0.75em;">22 diverse environments</span></p>
 </div></div>
 <!-- Slide 17b: Training Config -->
+
 </section>
 <section id="training-configuration" class="slide level2">
 <h2>Training Configuration</h2>
@@ -644,49 +689,55 @@ Yunsung Lee
 <p><span style="font-size: 0.75em;">Skill distribution</span></p>
 </div></div>
 <!-- Slide 18a: Evaluation Setup -->
+
 </section>
 <section id="evaluation-protocol-setup" class="slide level2">
 <h2>Evaluation Protocol: Setup</h2>
 
 <img data-src="../Figures/DreamZero/main_eval_setting.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p>Default: <span class="hi"><strong>unseen environments</strong></span>, <span class="hi"><strong>unseen objects</strong></span> Training and evaluation in <span class="negative"><strong>different geographic locations</strong></span></p>
 <!-- Slide 18b: Evaluation Details -->
+
 </section>
 <section id="evaluation-protocol-details" class="slide level2">
 <h2>Evaluation Protocol: Details</h2>
 <div class="methodbox">
 <p><strong>True Out-of-Distribution</strong></p>
 <ul>
-<li>Seen tasks: 10 tasks <span class="math inline">\(\times\)</span> 8 rollouts <span class="math inline">\(\times\)</span> 4 robots = 80 rollouts</li>
+<li>Seen tasks: 10 tasks <span class="math inline">\times</span> 8 rollouts <span class="math inline">\times</span> 4 robots = 80 rollouts</li>
 <li>Unseen tasks: 10 tasks absent from training</li>
-<li>Baselines: GR00T N1, <span class="math inline">\(\pi_{0.5}\)</span> (from-scratch &amp; from-pretrained)</li>
+<li>Baselines: GR00T N1, <span class="math inline">\pi_{0.5}</span> (from-scratch &amp; from-pretrained)</li>
 </ul>
 </div>
 <!---------------------------------------------------------------------------->
 <!-- PART 4: RESULTS                                                        -->
 <!---------------------------------------------------------------------------->
 <!-- Slide: Section Divider — Results -->
+
 </section></section>
 <section>
 <section id="does-it-actually-work" class="title-slide slide level1 center" data-background-color="#E8EDF5">
 <h1>Does It Actually Work?</h1>
 <p><span class="hi-gold"><strong>Experimental Results</strong></span></p>
 <!-- Slide 19: Seen Tasks -->
+
 </section>
 <section id="seen-tasks-2times-improvement" class="slide level2">
-<h2>Seen Tasks: <span class="math inline">\(2\times\)</span> Improvement</h2>
+<h2>Seen Tasks: <span class="math inline">2\times</span> Improvement</h2>
 
 <img data-src="../Figures/DreamZero/eval_bar_chart.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><div class="resultbox">
-<p>DreamZero: <span class="positive"><strong>62.2%</strong></span> avg. task progress Best VLA (pretrained): 27.4% <span class="math inline">\(\rightarrow\)</span> <span class="positive"><strong><span class="math inline">\(2.3\times\)</span></strong></span> VLA from-scratch: <span class="negative"><strong>$$0%</strong></span></p>
+<p>DreamZero: <span class="positive"><strong>62.2%</strong></span> avg. task progress Best VLA (pretrained): 27.4% <span class="math inline">\rightarrow</span> <span class="positive"><strong><span class="math inline">2.3\times</span></strong></span> VLA from-scratch: <span class="negative"><strong>$$0%</strong></span></p>
 </div>
 <!-- Slide 20: Unseen Tasks -->
+
 </section>
 <section id="unseen-tasks-zero-shot-generalization" class="slide level2">
 <h2>Unseen Tasks: Zero-shot Generalization</h2>
 
 <img data-src="../Figures/DreamZero/unseen_success_rates.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><div class="resultbox">
-<p>DreamZero: <span class="positive"><strong>39.5%</strong></span> on novel tasks Best VLA (pretrained): 16.3% <span class="math inline">\(\rightarrow\)</span> <span class="positive"><strong><span class="math inline">\(2.4\times\)</span></strong></span></p>
+<p>DreamZero: <span class="positive"><strong>39.5%</strong></span> on novel tasks Best VLA (pretrained): 16.3% <span class="math inline">\rightarrow</span> <span class="positive"><strong><span class="math inline">2.4\times</span></strong></span></p>
 </div>
 <!-- Slide 20b: Unseen Tasks Details -->
+
 </section>
 <section id="unseen-tasks-standout-results" class="slide level2">
 <h2>Unseen Tasks: Standout Results</h2>
@@ -700,6 +751,7 @@ Yunsung Lee
 <p><span class="hi-gold"><strong>Commentary:</strong></span> The key result — DreamZero does things it was <span class="hi"><strong>NEVER trained to do</strong></span>.</p>
 </div>
 <!-- Slide 21: Joint Video-Action -->
+
 </section>
 <section id="joint-video-action-prediction-in-action" class="slide level2">
 <h2>Joint Video-Action Prediction in Action</h2>
@@ -709,6 +761,7 @@ Yunsung Lee
 <li>Most failures: video generation errors, not action extraction</li>
 </ul>
 <!-- Slide 22: Post-training -->
+
 </section>
 <section id="post-training-retained-generalization" class="slide level2">
 <h2>Post-training: Retained Generalization</h2>
@@ -718,6 +771,7 @@ Yunsung Lee
 <li>Evaluated in <span class="hi"><strong>unseen environments</strong></span> even after task-specific training</li>
 </ul>
 <!-- Slide 23: Cross-Embodiment Transfer -->
+
 </section>
 <section id="cross-embodiment-transfer" class="slide level2">
 <h2>Cross-Embodiment Transfer</h2>
@@ -745,6 +799,7 @@ Yunsung Lee
 </tbody>
 </table>
 <!-- Slide 23b: Cross-Embodiment Commentary -->
+
 </section>
 <section id="cross-embodiment-transfer-commentary" class="slide level2">
 <h2>Cross-Embodiment Transfer: Commentary</h2>
@@ -756,6 +811,7 @@ Yunsung Lee
 <li>The bottleneck shifts from “collect robot data” to “build a better IDM”</li>
 </ul>
 <!-- Slide 24: Few-shot -->
+
 </section>
 <section id="few-shot-adaptation-to-new-robot" class="slide level2">
 <h2>Few-shot Adaptation to New Robot</h2>
@@ -765,6 +821,7 @@ Yunsung Lee
 <li>Retains <span class="positive"><strong>language following</strong></span> + generalizes to novel objects</li>
 </ul>
 <!-- Slide 25: Free-form -->
+
 </section>
 <section id="free-form-evaluation" class="slide level2">
 <h2>Free-form Evaluation</h2>
@@ -774,6 +831,7 @@ Yunsung Lee
 <!-- PART 5: ABLATIONS & ANALYSIS                                           -->
 <!---------------------------------------------------------------------------->
 <!-- Slide 26: Ablation -->
+
 </section>
 <section id="ablation-what-matters-most" class="slide level2 smaller">
 <h2>Ablation: What Matters Most?</h2>
@@ -869,6 +927,7 @@ Yunsung Lee
 </table>
 <p><span style="font-size: 0.7em;">All on PnP Easy, 50K steps, batch 32. DZ = DreamZero.</span></p>
 <!-- Slide 27: VLA vs WAM -->
+
 </section>
 <section id="why-vlas-fail-while-wams-succeed" class="slide level2">
 <h2>Why VLAs Fail While WAMs Succeed</h2>
@@ -876,19 +935,20 @@ Yunsung Lee
 <div class="column" style="width:48%;">
 <p><span class="hi"><strong>VLAs:</strong></span></p>
 <ul>
-<li><span class="negative"><strong>Static images</strong></span> <span class="math inline">\(\rightarrow\)</span> no temporal dynamics</li>
+<li><span class="negative"><strong>Static images</strong></span> <span class="math inline">\rightarrow</span> no temporal dynamics</li>
 <li>Scaling does not help: <span class="negative"><strong>0% at 5B and 14B</strong></span></li>
 <li>Repetitive data + static priors = <span class="negative"><strong>overfitting</strong></span></li>
 </ul>
 </div><div class="column" style="width:48%;">
 <p><span class="hi"><strong>WAMs:</strong></span></p>
 <ul>
-<li><span class="positive"><strong>Video</strong></span> <span class="math inline">\(\rightarrow\)</span> rich temporal dynamics</li>
-<li>Scaling improves video quality <span class="math inline">\(\rightarrow\)</span> <span class="positive"><strong>better actions</strong></span></li>
+<li><span class="positive"><strong>Video</strong></span> <span class="math inline">\rightarrow</span> rich temporal dynamics</li>
+<li>Scaling improves video quality <span class="math inline">\rightarrow</span> <span class="positive"><strong>better actions</strong></span></li>
 <li>Diverse data + video priors = <span class="positive"><strong>generalization</strong></span></li>
 </ul>
 </div></div>
 <!-- Slide 27b: VLA vs WAM — Commentary -->
+
 </section>
 <section id="vla-vs.-wam-commentary" class="slide level2">
 <h2>VLA vs.&nbsp;WAM: Commentary</h2>
@@ -900,6 +960,7 @@ Yunsung Lee
 <li>Expect hybrid approaches that combine VLM semantics with WAM physics</li>
 </ul>
 <!-- Slide 28: Failure Analysis -->
+
 </section>
 <section id="failure-analysis-when-dreamzero-breaks" class="slide level2">
 <h2>Failure Analysis: When DreamZero Breaks</h2>
@@ -907,6 +968,7 @@ Yunsung Lee
 <img data-src="../Figures/DreamZero/generated.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"><p><span style="font-size: 0.75em;">Generated vs.&nbsp;executed trajectory pairs</span></p>
 <p><span class="hi"><strong>Primary failure mode:</strong></span> <span class="negative"><strong>video generation errors</strong></span> (hallucinations, wrong physics)</p>
 <!-- Slide 28b: Failure Causal Chain -->
+
 </section>
 <section id="failure-error-causal-chain" class="slide level2">
 <h2>Failure: Error Causal Chain</h2>
@@ -924,12 +986,14 @@ Yunsung Lee
 <!-- PART 6: CODE-LEVEL INSIGHTS                                            -->
 <!---------------------------------------------------------------------------->
 <!-- Slide: Section Divider — Code -->
+
 </section></section>
 <section>
 <section id="under-the-hood" class="title-slide slide level1 center" data-background-color="#E8EDF5">
 <h1>Under the Hood</h1>
 <p><span class="hi-gold"><strong>Code-Level Insights</strong></span></p>
 <!-- Slide 29: Multi-Embodiment -->
+
 </section>
 <section id="code-multi-embodiment-architecture" class="slide level2">
 <h2>Code: Multi-Embodiment Architecture</h2>
@@ -946,6 +1010,7 @@ Yunsung Lee
 <p><span class="hi-gold"><strong>Commentary (from code):</strong></span> Each robot gets its own “translator” while sharing the world model.</p>
 </div>
 <!-- Slide 30a: Engineering -->
+
 </section>
 <section id="code-making-14b-real-time" class="slide level2">
 <h2>Code: Making 14B Real-Time</h2>
@@ -959,6 +1024,7 @@ Yunsung Lee
 </ul>
 </div>
 <!-- Slide 30b: Quantization -->
+
 </section>
 <section id="code-quantization-stack" class="slide level2">
 <h2>Code: Quantization Stack</h2>
@@ -968,11 +1034,12 @@ Yunsung Lee
 <li>QKV, Softmax: FP8</li>
 <li>Non-linear ops: FP16</li>
 </ul>
-<p><span class="hi"><strong>Frame sequence:</strong></span> 880 tokens (33 frames <span class="math inline">\(\times\)</span> $$27 tokens/frame)</p>
+<p><span class="hi"><strong>Frame sequence:</strong></span> 880 tokens (33 frames <span class="math inline">\times</span> $$27 tokens/frame)</p>
 <div class="softbox">
 <p><span class="hi-gold"><strong>Commentary (from code):</strong></span> Far beyond typical research code — production-grade systems engineering.</p>
 </div>
 <!-- Slide 31: Data Pipeline -->
+
 </section>
 <section id="code-data-pipeline" class="slide level2">
 <h2>Code: Data Pipeline</h2>
@@ -992,12 +1059,14 @@ Yunsung Lee
 <!-- PART 7: DISCUSSION & TAKEAWAYS                                         -->
 <!---------------------------------------------------------------------------->
 <!-- Slide: Section Divider — Discussion -->
+
 </section></section>
 <section>
 <section id="what-does-it-all-mean" class="title-slide slide level1 center" data-background-color="#E8EDF5">
 <h1>What Does It All Mean?</h1>
 <p><span class="hi-gold"><strong>Discussion &amp; Takeaways</strong></span></p>
 <!-- Slide 32: Limitations -->
+
 </section>
 <section id="limitations" class="slide level2">
 <h2>Limitations</h2>
@@ -1010,21 +1079,23 @@ Yunsung Lee
 <li>Separate training per embodiment</li>
 </ol>
 <!-- Slide 32b: Computational Requirements -->
+
 </section>
 <section id="limitations-computational-requirements" class="slide level2">
 <h2>Limitations: Computational Requirements</h2>
 <p><span class="hi"><strong>Computational requirements:</strong></span></p>
 <ul>
-<li><span class="math inline">\(2 \times \text{GB200}\)</span> GPUs for real-time control</li>
+<li><span class="math inline">2 \times \text{GB200}</span> GPUs for real-time control</li>
 <li>Not yet feasible on consumer hardware</li>
 <li>14B parameters = significant VRAM</li>
 </ul>
 <p><span class="hi"><strong>Long-horizon:</strong></span></p>
 <ul>
-<li>6.6s context <span class="math inline">\(\rightarrow\)</span> System 1 only</li>
+<li>6.6s context <span class="math inline">\rightarrow</span> System 1 only</li>
 <li>Needs System 2 planner for extended tasks</li>
 </ul>
 <!-- Slide 33: Unsolved IDM -->
+
 </section>
 <section id="the-unsolved-inverse-dynamics-problem" class="slide level2">
 <h2>The Unsolved Inverse Dynamics Problem</h2>
@@ -1042,6 +1113,7 @@ Yunsung Lee
 <li>Full humanoids: <span class="negative"><strong>hardest</strong></span></li>
 </ul>
 <!-- Slide 34: Hardware vs Algorithm -->
+
 </section>
 <section id="the-hardware-vs.-algorithm-race" class="slide level2">
 <h2>The Hardware vs.&nbsp;Algorithm Race</h2>
@@ -1049,11 +1121,11 @@ Yunsung Lee
 <div class="column" style="width:48%;">
 <div class="keybox">
 <p><strong>Hardware Path</strong></p>
-<p>If humanoid actuators mature quickly <span class="math inline">\(\rightarrow\)</span> embodiment matching eliminates transfer loss</p>
+<p>If humanoid actuators mature quickly <span class="math inline">\rightarrow</span> embodiment matching eliminates transfer loss</p>
 </div>
 <div class="keybox">
 <p><strong>Algorithm Path</strong></p>
-<p>If embodiment adaptation improves faster <span class="math inline">\(\rightarrow\)</span> intermediate morphologies remain viable</p>
+<p>If embodiment adaptation improves faster <span class="math inline">\rightarrow</span> intermediate morphologies remain viable</p>
 </div>
 </div><div class="column" style="width:48%;">
 <div class="quotebox">
@@ -1063,6 +1135,7 @@ Yunsung Lee
 <p>Both paths converge on the same data: <span class="hi-gold"><strong>human video</strong></span></p>
 </div></div>
 <!-- Slide 35: Critical Assessment Strengths -->
+
 </section>
 <section id="critical-assessment-strengths" class="slide level2">
 <h2>Critical Assessment: Strengths</h2>
@@ -1080,6 +1153,7 @@ Yunsung Lee
 <li>Long-horizon tasks (&gt;6.6s)?</li>
 </ul>
 <!-- Slide 35b: Critical Assessment — Missing -->
+
 </section>
 <section id="critical-assessment-whats-missing" class="slide level2">
 <h2>Critical Assessment: What’s Missing</h2>
@@ -1093,6 +1167,7 @@ Yunsung Lee
 <p><span class="hi-gold"><strong>Commentary:</strong></span> Current zero-shot is “AI Slop” phase (Joel Jang) — correct direction, but <span class="hi"><strong>not deployment-ready</strong></span> yet.</p>
 </div>
 <!-- Slide 36a: Field Impact (1/2) -->
+
 </section>
 <section id="what-dreamzero-means-for-the-field-12" class="slide level2">
 <h2>What DreamZero Means for the Field (1/2)</h2>
@@ -1105,6 +1180,7 @@ Yunsung Lee
 </ol>
 </div>
 <!-- Slide 36b: Field Impact (2/2) -->
+
 </section>
 <section id="what-dreamzero-means-for-the-field-22" class="slide level2">
 <h2>What DreamZero Means for the Field (2/2)</h2>
@@ -1112,19 +1188,20 @@ Yunsung Lee
 <p><strong>Personal Assessment (cont.)</strong></p>
 <ol start="4" type="1">
 <li>Cross-embodiment transfer via video-only data is the <span class="hi"><strong>sleeper result</strong></span></li>
-<li>Video backbone quality = policy quality <span class="math inline">\(\rightarrow\)</span> Watch for video model improvements</li>
+<li>Video backbone quality = policy quality <span class="math inline">\rightarrow</span> Watch for video model improvements</li>
 <li>“Chain of thought in <span class="hi"><strong>visual space</strong></span> rather than language space”</li>
 </ol>
 </div>
 <!-- Slide 37: Key Takeaways -->
+
 </section>
 <section id="key-takeaways" class="slide level2">
 <h2>Key Takeaways</h2>
 <ol type="1">
-<li><span class="hi"><strong>WAMs jointly predict video + action</strong></span> <span class="math inline">\(\rightarrow\)</span> better generalization</li>
+<li><span class="hi"><strong>WAMs jointly predict video + action</strong></span> <span class="math inline">\rightarrow</span> better generalization</li>
 <li><span class="hi"><strong>Diverse data + video priors</strong></span> = zero-shot robot skills</li>
 <li><span class="hi"><strong>AR + teacher forcing + GT injection</strong></span> = elegant inference</li>
-<li><span class="hi"><strong><span class="math inline">\(38\times\)</span> speedup</strong></span> makes 14B practical</li>
+<li><span class="hi"><strong><span class="math inline">38\times</span> speedup</strong></span> makes 14B practical</li>
 <li><span class="hi"><strong>Cross-embodiment transfer</strong></span> via video-only data</li>
 <li><span class="hi-gold"><strong>“Train once on human experience, deploy everywhere”</strong></span></li>
 </ol>
@@ -1132,6 +1209,7 @@ Yunsung Lee
 <p><span class="hi"><strong>The future of robotics is video-native, not language-native.</strong></span></p>
 </div>
 <!-- Slide 38: Thank You -->
+
 </section>
 <section id="thank-you-references" class="slide level2">
 <h2>Thank You &amp; References</h2>
@@ -1152,7 +1230,7 @@ Yunsung Lee
 <ul>
 <li>Wan2.1 <span class="citation" data-cites="wan2025wan">(<a href="#/references" role="doc-biblioref" onclick="">Team Wan 2025</a>)</span></li>
 <li>GR00T N1 <span class="citation" data-cites="bjorck2025gr00t">(<a href="#/references" role="doc-biblioref" onclick="">Bjorck et al. 2025</a>)</span></li>
-<li><span class="math inline">\(\pi_0\)</span> / <span class="math inline">\(\pi_{0.5}\)</span> <span class="citation" data-cites="black2024pi0 intelligence2025pi05">(<a href="#/references" role="doc-biblioref" onclick="">Black et al. 2024</a>; <a href="#/references" role="doc-biblioref" onclick="">Physical Intelligence 2025</a>)</span></li>
+<li><span class="math inline">\pi_0</span> / <span class="math inline">\pi_{0.5}</span> <span class="citation" data-cites="black2024pi0 intelligence2025pi05">(<a href="#/references" role="doc-biblioref" onclick="">Black et al. 2024</a>; <a href="#/references" role="doc-biblioref" onclick="">Physical Intelligence 2025</a>)</span></li>
 <li>Flow matching <span class="citation" data-cites="liu2022flow lipman2022flow">(<a href="#/references" role="doc-biblioref" onclick="">Liu, Gong, and Liu 2022</a>; <a href="#/references" role="doc-biblioref" onclick="">Lipman et al. 2022</a>)</span></li>
 <li>DROID <span class="citation" data-cites="khazatsky2024droid">(<a href="#/references" role="doc-biblioref" onclick="">Khazatsky et al. 2024</a>)</span></li>
 </ul>
@@ -1161,6 +1239,7 @@ Yunsung Lee
 <p><span class="hi"><strong>Q&amp;A</strong></span></p>
 </div>
 <!-- Slide: References -->
+
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
@@ -1169,7 +1248,7 @@ Yunsung Lee
 Bjorck, Johan, Fernando Castañeda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi Fan, Yu Fang, et al. 2025. <span>“<span>GR00T</span> <span>N1</span>: An Open Foundation Model for Generalist Humanoid Robots.”</span> <em>arXiv Preprint arXiv:2503.14734</em>.
 </div>
 <div id="ref-black2024pi0" class="csl-entry" role="listitem">
-Black, Kevin, Noah Brown, Danny Driess, Adnan Esmail, Michael Equi, Chelsea Finn, Niccolo Fusai, et al. 2024. <span>“<span class="math inline">\(\pi_0\)</span>: A Vision-Language-Action Flow Model for General Robot Control.”</span> <em>arXiv Preprint arXiv:2410.24164</em>.
+Black, Kevin, Noah Brown, Danny Driess, Adnan Esmail, Michael Equi, Chelsea Finn, Niccolo Fusai, et al. 2024. <span>“<span class="math inline">\pi_0</span>: A Vision-Language-Action Flow Model for General Robot Control.”</span> <em>arXiv Preprint arXiv:2410.24164</em>.
 </div>
 <div id="ref-rt22023arxiv" class="csl-entry" role="listitem">
 Brohan, Anthony, Noah Brown, Justice Carbajal, Yevgen Chebotar, Xi Chen, Krzysztof Choromanski, et al. 2023. <span>“<span>RT-2</span>: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control.”</span> In <em>arXiv Preprint arXiv:2307.15818</em>.
@@ -1187,7 +1266,7 @@ Lipman, Yaron, Ricky TQ Chen, Heli Ben-Hamu, Maximilian Nickel, and Matt Le. 202
 Liu, Xingchao, Chengyue Gong, and Qiang Liu. 2022. <span>“Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow.”</span> <em>arXiv Preprint arXiv:2209.03003</em>.
 </div>
 <div id="ref-intelligence2025pi05" class="csl-entry" role="listitem">
-Physical Intelligence. 2025. <span>“<span class="math inline">\(\pi_{0.5}\)</span>: A Vision-Language-Action Model with Open-World Generalization.”</span> <em>arXiv Preprint arXiv:2504.16054</em>.
+Physical Intelligence. 2025. <span>“<span class="math inline">\pi_{0.5}</span>: A Vision-Language-Action Model with Open-World Generalization.”</span> <em>arXiv Preprint arXiv:2504.16054</em>.
 </div>
 <div id="ref-wan2025wan" class="csl-entry" role="listitem">
 Team Wan. 2025. <span>“Wan: Open and Advanced Large-Scale Video Generative Models.”</span> <em>arXiv Preprint arXiv:2503.20314</em>.
@@ -1218,7 +1297,6 @@ Ye, Seonghyeon, Yunhao Ge, Kaiyuan Zheng, Shenyuan Gao, Sihyun Yu, George Kurian
   <script src="DreamZero_files/libs/revealjs/plugin/notes/notes.js"></script>
   <script src="DreamZero_files/libs/revealjs/plugin/search/search.js"></script>
   <script src="DreamZero_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="DreamZero_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1386,27 +1464,9 @@ Ye, Seonghyeon, Yunhao Ge, Kaiyuan Zheng, Shenyuan Gao, Sihyun Yu, George Kurian
         // Factor of the display size that should remain empty around the content
         margin: 5.0e-2,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom
