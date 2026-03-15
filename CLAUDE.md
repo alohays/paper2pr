@@ -102,6 +102,7 @@ python scripts/quality_score.py Quarto/PaperName.qmd
 | `/review-r [file]` | R code review for quality and reproducibility |
 | `/learn [skill-name]` | Extract discovery into persistent skill |
 | `/context-status` | Show session health + context usage |
+| `/write-speaker-notes [PaperName] [--lang en\|ko]` | Generate presentation script (speaker notes) for Quarto slides |
 | `/deep-audit` | Repository-wide consistency audit |
 
 ---

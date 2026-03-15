@@ -52,7 +52,7 @@ $\rightarrow$ Embodied intelligence (World Models)
 - Static image--text pretraining $\neq$ spatiotemporal understanding
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} "Language is a bottleneck, a scaffold, not a foundation" for physical intelligence.
+[**Commentary:**]{.hi-gold} "Language is a bottleneck, a scaffold, not a foundation" for physical intelligence.
 :::
 
 <!-- Slide 3: The Data Problem (1/2) -->
@@ -109,7 +109,7 @@ $\Rightarrow$ Robotics needs [**vastly more experience**]{.hi-gold} to match hum
 [VLA from-scratch at $\sim$0% on diverse data]{style="font-size: 0.75em;"}
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} The fundamental gap --- VLMs encode "[**what**]{.hi} to do" but not "[**how**]{.hi} to move".
+[**Commentary:**]{.hi-gold} The fundamental gap --- VLMs encode "[**what**]{.hi} to do" but not "[**how**]{.hi} to move".
 :::
 
 <!-- Slide 5: Video as Dense Representation -->
@@ -135,7 +135,7 @@ Apes may not have good language models, but they surely have a robust mental pic
 [--- Jim Fan]{style="display: block; text-align: right;"}
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} This is the core paradigm shift --- from discrete task policies to [**continuous world modeling**]{.hi}.
+[**Commentary:**]{.hi-gold} This is the core paradigm shift --- from discrete task policies to [**continuous world modeling**]{.hi}.
 :::
 
 <!-- Slide 6: WAM Big Picture -->
@@ -197,7 +197,7 @@ $\rightarrow$ [**>42% relative improvement**]{.positive} on unseen robot tasks
 :::
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} This is the sleeper insight --- human video as the ultimate robot training data.
+[**Commentary:**]{.hi-gold} This is the sleeper insight --- human video as the ultimate robot training data.
 :::
 
 <!---------------------------------------------------------------------------->
@@ -212,7 +212,7 @@ $\rightarrow$ [**>42% relative improvement**]{.positive} on unseen robot tasks
 <!-- Slide 8: Architecture Overview -->
 ## Architecture Overview
 
-![](../Figures/DreamZero/dreamzero_model.svg){fig-align="center" width="88%"}
+![](../Figures/DreamZero/dreamzero_model.svg){fig-align="center" width="100%"}
 
 :::: {.columns}
 ::: {.column width="32%"}
@@ -260,11 +260,11 @@ Joint video frames
 :::
 ::::
 
-<!-- Slide 9b: AR — My Take -->
-## AR vs. Bidirectional: My Take
+<!-- Slide 9b: AR — Commentary -->
+## AR vs. Bidirectional: Commentary
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} AR wins on both quality AND speed --- a rare "have your cake and eat it too" situation.
+[**Commentary:**]{.hi-gold} AR wins on both quality AND speed --- a rare "have your cake and eat it too" situation.
 :::
 
 - [**Speed:**]{.hi} KV-cache gives $3$--$4\times$ speedup --- bidirectional cannot cache
@@ -372,11 +372,11 @@ $$
 - Pure video generation: errors compound
 - WAMs operate in [**closed-loop**]{.positive} --- reality corrects the model
 
-<!-- Slide 13b: GT Injection — My Take -->
-## Ground-Truth Injection: My Take
+<!-- Slide 13b: GT Injection — Commentary -->
+## Ground-Truth Injection: Commentary
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} WAMs [**self-correct via reality**]{.hi}. No other paradigm gets this for free.
+[**Commentary:**]{.hi-gold} WAMs [**self-correct via reality**]{.hi}. No other paradigm gets this for free.
 :::
 
 - Closes the sim-to-real gap *by design*, not by domain randomization
@@ -547,7 +547,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**VLAs overfit**]{.hi} to pick-and-place regardless of instruction.
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} The key result --- DreamZero does things it was [**NEVER trained to do**]{.hi}.
+[**Commentary:**]{.hi-gold} The key result --- DreamZero does things it was [**NEVER trained to do**]{.hi}.
 :::
 
 <!-- Slide 21: Joint Video-Action -->
@@ -577,11 +577,11 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 | + Robot2Robot (YAM, 20 min) | [**55.4%**]{.positive} (+44.6% rel.) |
 | + Human2Robot (12 min) | [**54.3%**]{.positive} (+41.8% rel.) |
 
-<!-- Slide 23b: Cross-Embodiment My Take -->
-## Cross-Embodiment Transfer: My Take
+<!-- Slide 23b: Cross-Embodiment Commentary -->
+## Cross-Embodiment Transfer: Commentary
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} Video-only data (no action labels!) opens a [**massive scaling pathway**]{.hi}. Human video is orders of magnitude more abundant than robot data.
+[**Commentary:**]{.hi-gold} Video-only data (no action labels!) opens a [**massive scaling pathway**]{.hi}. Human video is orders of magnitude more abundant than robot data.
 :::
 
 - YouTube alone hosts [**>800M hours**]{.positive} of how-to and activity video
@@ -647,11 +647,11 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 :::
 ::::
 
-<!-- Slide 27b: VLA vs WAM — My Take -->
-## VLA vs. WAM: My Take
+<!-- Slide 27b: VLA vs WAM — Commentary -->
+## VLA vs. WAM: Commentary
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} A [**fundamental architectural difference**]{.hi}, not data/compute. VLMs encode semantics; video models encode physics. For robotics, physics wins.
+[**Commentary:**]{.hi-gold} A [**fundamental architectural difference**]{.hi}, not data/compute. VLMs encode semantics; video models encode physics. For robotics, physics wins.
 :::
 
 - This echoes the "bitter lesson": the right *representation* (video) matters more than scale
@@ -678,7 +678,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 4. Robot executes incorrect motion
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} The tight coupling is both strength and weakness --- [**video quality is the bottleneck**]{.hi}.
+[**Commentary:**]{.hi-gold} The tight coupling is both strength and weakness --- [**video quality is the bottleneck**]{.hi}.
 :::
 
 <!---------------------------------------------------------------------------->
@@ -703,7 +703,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 :::
 
 ::: {.softbox}
-[**My Take (from code):**]{.hi-gold} Each robot gets its own "translator" while sharing the world model.
+[**Commentary (from code):**]{.hi-gold} Each robot gets its own "translator" while sharing the world model.
 :::
 
 <!-- Slide 30a: Engineering -->
@@ -730,7 +730,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 [**Frame sequence:**]{.hi} 880 tokens (33 frames $\times$ $\sim$27 tokens/frame)
 
 ::: {.softbox}
-[**My Take (from code):**]{.hi-gold} Far beyond typical research code --- production-grade systems engineering.
+[**Commentary (from code):**]{.hi-gold} Far beyond typical research code --- production-grade systems engineering.
 :::
 
 <!-- Slide 31: Data Pipeline -->
@@ -746,7 +746,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 :::
 
 ::: {.softbox}
-[**My Take (from code):**]{.hi-gold} Data infrastructure is as important as the model architecture.
+[**Commentary (from code):**]{.hi-gold} Data infrastructure is as important as the model architecture.
 :::
 
 <!---------------------------------------------------------------------------->
@@ -858,7 +858,7 @@ Both paths converge on the same data:
 - Multi-embodiment *unified* training
 
 ::: {.softbox}
-[**My Take:**]{.hi-gold} Current zero-shot is "AI Slop" phase (Joel Jang) --- correct direction, but [**not deployment-ready**]{.hi} yet.
+[**Commentary:**]{.hi-gold} Current zero-shot is "AI Slop" phase (Joel Jang) --- correct direction, but [**not deployment-ready**]{.hi} yet.
 :::
 
 <!-- Slide 36a: Field Impact (1/2) -->
