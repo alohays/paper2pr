@@ -61,3 +61,8 @@ Quarto/*_files/
 
 # Target paper sources (copyrighted content, not for distribution)
 target-papers/
+
+**/*.quarto_ipynb
+
+# Override global gitignore: RevealJS dist/ must be tracked for GitHub Pages
+!docs/**/dist/
