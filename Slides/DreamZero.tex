@@ -1,0 +1,1235 @@
+% ==============================================================================
+% DreamZero: World Action Models are Zero-shot Policies
+% Paper Review Presentation — WoRV / MaumAI
+% ==============================================================================
+
+\input{../Preambles/header}
+
+\addbibresource{../Bibliography_base.bib}
+
+\title{DreamZero: World Action Models\\are Zero-shot Policies}
+\subtitle{Ye, Ge, Zheng, Gao, Yu et al.\ (NVIDIA, 2026)}
+\author{Yunsung Lee}
+\institute{WoRV / MaumAI}
+\date{}
+
+\begin{document}
+
+% ==============================================================================
+% PART 1: MOTIVATION & BACKGROUND
+% ==============================================================================
+
+% --- Slide 1: Title ---
+\begin{frame}[plain]
+\maketitle
+\vfill
+\begin{center}
+\includegraphics[width=0.85\textwidth,
+  height=0.55\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/dreamzero-header-v2.pdf}
+\end{center}
+\end{frame}
+
+% --- Slide 2: The Second Pre-training Paradigm ---
+\begin{frame}{The Second Pre-training Paradigm}
+\hi{1st Paradigm:} Next-word prediction
+$\rightarrow$ Language intelligence (LLMs)
+
+\vspace{0.5em}
+\hi{2nd Paradigm:} \higold{Next physical state prediction}
+$\rightarrow$ Embodied intelligence (World Models)
+
+\vspace{0.5em}
+\begin{quotebox}
+2026 will go down as the first year that Large World Models
+lay real foundations for robotics.
+\end{quotebox}
+\hfill --- Jim Fan (NVIDIA)
+\end{frame}
+
+% --- Slide 2b: Why Not Just Use VLMs? ---
+\begin{frame}{Why Not Just Use VLMs for Robots?}
+\begin{itemize}
+    \item VLMs are \negative{language-first} ---
+          vision is a ``second-class citizen''
+    \item Most VLM parameters encode \emph{knowledge},
+          not \emph{physics}
+    \item Static image--text pretraining
+          $\neq$ spatiotemporal understanding
+\end{itemize}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} ``Language is a bottleneck, a scaffold,
+not a foundation'' for physical intelligence.
+\end{softbox}
+\end{frame}
+
+% --- Slide 3: The Data Problem (1/2) ---
+\begin{frame}{The Data Problem in Robotics (1/2)}
+\hi{How much data does each domain have?}
+\begin{itemize}
+    \item \hi{LLMs:} text from \positive{billions of people}
+          across history
+    \item \hi{Vision:} images from \positive{billions of cameras}
+          over decades
+    \item \hi{Robotics:} \negative{thousands of hours}
+          of teleoperation $\rightarrow$ \negative{massive gap}
+\end{itemize}
+
+\vspace{0.5em}
+\begin{highlightbox}[In-the-wild vs.\ On-demand Data]
+Text and images are ``in-the-wild'' --- generated continuously.\\
+Robot data is ``on-demand'' --- requires expensive teleoperation.
+\end{highlightbox}
+\end{frame}
+
+% --- Slide 3b: The Data Problem (2/2) ---
+\begin{frame}{The Data Problem in Robotics (2/2)}
+\begin{quotebox}
+You can't teleoperate your way to the long tail.
+\end{quotebox}
+\hfill --- Joel Jang
+
+\vspace{0.5em}
+\emph{``Intelligence is a function of experience.''}
+
+\vspace{0.5em}
+$\Rightarrow$ Robotics needs \higold{vastly more experience}
+to match human-level physical intelligence.
+\end{frame}
+
+% --- Slide 4: VLAs and Their Limitations ---
+\begin{frame}{The Rise of VLAs and Their Limitations}
+\hi{Vision-Language-Action Models (VLAs):}
+\begin{itemize}
+    \item RT-2, OpenVLA, GR00T, $\pi_0$
+          \citep{rt22023arxiv,kim2024openvla,bjorck2025gr00t,black2024pi0}
+    \item Extend VLMs $\rightarrow$ predict motor actions
+    \item \positive{Strong semantic understanding}:
+          ``pick up the red cup''
+\end{itemize}
+
+\vspace{0.5em}
+\hi{But:}
+\begin{itemize}
+    \item Trained on \negative{static images}
+          $\rightarrow$ lack spatiotemporal priors
+    \item Fail on novel \emph{motions}:
+          ``untie the shoelace''
+    \item Scaling model size alone
+          \negative{does not help}
+\end{itemize}
+\end{frame}
+
+% --- Slide 4b: VLAs — The Evidence ---
+\begin{frame}{VLAs: The Evidence}
+\begin{center}
+\includegraphics[width=0.75\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/eval_bar_chart.pdf}
+\end{center}
+
+{\small VLA from-scratch at $\sim$0\% on diverse data}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} The fundamental gap --- VLMs encode
+``\hi{what} to do'' but not ``\hi{how} to move''.
+\end{softbox}
+\end{frame}
+
+% --- Slide 5: Video as Dense Representation ---
+\begin{frame}{Key Insight: Video as Dense Physical Representation}
+\begin{keybox}[Core Idea]
+Video diffusion models trained on web-scale data encode:\\
+\hi{spatial geometry} $\cdot$ \hi{object dynamics}
+$\cdot$ \hi{contact physics} $\cdot$ \hi{motion patterns}
+\end{keybox}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item Every consecutive frame pair
+          $\rightarrow$ \positive{dense supervision}
+          (vs.\ sparse task-level labels in VLAs)
+    \item ``Generating pixels is the only way for humans
+          to \emph{verify} that the model truly understands''
+          --- Joel Jang
+\end{itemize}
+\end{frame}
+
+% --- Slide 5b: The Paradigm Shift ---
+\begin{frame}{The Paradigm Shift}
+\begin{quotebox}
+Apes may not have good language models, but they surely
+have a robust mental picture of counterfactuals.
+\end{quotebox}
+\hfill --- Jim Fan
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} This is the core paradigm shift ---
+from discrete task policies to
+\hi{continuous world modeling}.
+\end{softbox}
+\end{frame}
+
+% --- Slide 6: WAM Big Picture ---
+\begin{frame}{World Action Models: The Big Picture}
+\hi{WAM} = Video Prediction $\times$ Inverse Dynamics Model
+
+\vspace{0.5em}
+\begin{eqbox}
+\begin{equation*}
+\underbrace{P(\mathbf{O}, \mathbf{A} \mid \text{ctx})}_{\text{DreamZero}}
+  = \underbrace{P(\mathbf{O} \mid \text{ctx})}_{\text{video pred.}}
+  \times \underbrace{P(\mathbf{A} \mid \mathbf{O},
+  \text{ctx})}_{\text{IDM}}
+\end{equation*}
+\end{eqbox}
+
+\vspace{0.3em}
+{\small\hi{IDM (Inverse Dynamics Model):} observes a sequence of states
+and infers what actions caused those transitions ---
+watching video and reverse-engineering motor commands.}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item Instead of two separate models
+          $\rightarrow$ \hi{single end-to-end model}
+    \item \hi{DreamZero:} 14B autoregressive WAM built on
+          \higold{Wan2.1} video backbone \citep{wan2025wan}
+\end{itemize}
+\end{frame}
+
+% --- Slide 6b: Headline Results ---
+\begin{frame}{DreamZero: Headline Results}
+\begin{resultbox}[Key Achievements]
+\begin{itemize}
+    \item \positive{2$\times$ improvement}
+          over state-of-the-art VLAs
+    \item \positive{38$\times$ inference speedup}
+          $\rightarrow$ real-time at 7Hz
+    \item \positive{Cross-embodiment transfer}
+          from video-only data
+\end{itemize}
+\end{resultbox}
+\end{frame}
+
+% --- Slide 7: Human Data Scaling ---
+\begin{frame}{The Human Data Scaling Pathway}
+\begin{quotebox}
+Humans are robots that have already been deployed at scale.
+\end{quotebox}
+\hfill --- Joel Jang
+
+\vspace{0.5em}
+\hi{The math:}
+\begin{itemize}
+    \item 8 billion ``units'' $\times$ 16 waking hrs/day
+          $=$ 128B person-hours \emph{per day}
+    \item Even capturing 0.1\% $\rightarrow$
+          $\approx$ 100M hours of usable video
+    \item $\approx$ 150 human lifetimes of experience
+\end{itemize}
+
+\vspace{0.5em}
+\hi{The vision:}
+``Train once on human experience,
+deploy everywhere with calibration''
+\end{frame}
+
+% --- Slide 7b: Early Signal ---
+\begin{frame}{Human Data: Early Signal}
+\begin{resultbox}[Cross-Embodiment Transfer]
+12 min of human egocentric video\\
+$\rightarrow$ \positive{$>$42\% relative improvement}
+on unseen robot tasks
+\end{resultbox}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} This is the sleeper insight ---
+human video as the ultimate robot training data.
+\end{softbox}
+\end{frame}
+
+% ==============================================================================
+% PART 2: DREAMZERO ARCHITECTURE
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{How Does DreamZero Work?}}\\[1em]
+{\large\higold{Architecture \& Training}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 8: Architecture Overview ---
+\begin{frame}{Architecture Overview}
+\begin{center}
+\includegraphics[width=0.88\textwidth,
+  height=0.50\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/dreamzero_model.pdf}
+\end{center}
+
+\begin{columns}[T]
+\column{0.32\textwidth}
+\hi{Inputs:}\\
+Visual context (VAE)\\
+Language (text encoder)\\
+Proprioceptive state
+\column{0.32\textwidth}
+\hi{Backbone:}\\
+Autoregressive DiT\\
+{\small(Diffusion Transformer)}\\
+with flow matching
+\column{0.32\textwidth}
+\hi{Outputs:}\\
+Joint video frames\\
++ action chunks
+\end{columns}
+\end{frame}
+
+% --- Slide 9: Why AR? ---
+\begin{frame}{Why Autoregressive? AR vs.\ Bidirectional}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Bidirectional problems:}
+\begin{itemize}
+    \item Fixed-length sequences
+          $\rightarrow$ \negative{video subsampling}
+    \item Distorts native FPS
+          $\rightarrow$ breaks alignment
+    \item Especially harmful mid-task
+\end{itemize}
+
+\vspace{0.3em}
+\includegraphics[width=\textwidth,
+  height=0.28\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/bidiraug.pdf}
+
+\column{0.48\textwidth}
+\hi{Autoregressive advantages:}
+\begin{itemize}
+    \item Preserves \positive{native frame rate}
+    \item \positive{KV-cache} for 3--4$\times$ speedup
+    \item Natural modality alignment
+    \item Variable-length training
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% --- Slide 9b: AR — My Take ---
+\begin{frame}{AR vs.\ Bidirectional: My Take}
+\begin{softbox}
+\higold{My Take:} AR wins on both quality AND speed ---
+a rare ``have your cake and eat it too'' situation.
+\end{softbox}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item \hi{Speed:} KV-cache gives 3--4$\times$ speedup ---
+          bidirectional cannot cache
+    \item \hi{Quality:} native frame rate preserves the temporal
+          signal that the IDM needs
+\end{itemize}
+\end{frame}
+
+% --- Slide 10: Chunk-wise Generation ---
+\begin{frame}{Chunk-wise Generation}
+\begin{methodbox}[Chunking Strategy]
+\begin{itemize}
+    \item Video: \hi{$K=2$ latent frames} per chunk
+    \item Action horizon: \hi{$H=48$} (AgiBot, 30Hz)
+          or \hi{$H=24$} (DROID, 15Hz)
+    \item Each chunk $\approx$ \higold{1.6 seconds}
+    \item Max 4 chunks $\rightarrow$ \higold{6.6 seconds} context
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.5em}
+\hi{Key design choices:}
+\begin{itemize}
+    \item Variable-length training (like LLM token sequences)
+    \item Video at 5 FPS, actions at 30Hz (AgiBot)
+    \item 33 raw frames $\rightarrow$ 8 latent frames ($4\times2$)
+\end{itemize}
+\end{frame}
+
+% --- Slide 11: Flow Matching Intuition ---
+\begin{frame}{Flow Matching: Intuition}
+\begin{keybox}[What is Flow Matching?]
+Learn a \hi{velocity field} that transports noise to data
+along straight paths --- simpler and faster than
+standard diffusion.
+\end{keybox}
+
+\vspace{0.3em}
+{\small\emph{Analogy:} Think of a GPS that plots a
+straight-line route from ``lost'' (noise) to ``home'' (data).
+Flow matching learns that route; standard diffusion
+takes a random walk.}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item At $t=0$: pure noise. At $t=1$: clean data.
+    \item The model predicts the \hi{velocity}
+          pointing from noise to data.
+    \item \hi{Shared timestep} $t_k$ for video and action
+          $\rightarrow$ aligned convergence.
+\end{itemize}
+\end{frame}
+
+% --- Slide 11b: Flow Matching Equations ---
+\begin{frame}{Flow Matching: Equations}
+\begin{eqbox}
+\hi{Noisy interpolation:}
+\begin{equation*}
+\mathbf{z}_{t_k}^k = t_k \mathbf{z}_1^k
+  + (1-t_k)\mathbf{z}_0^k, \quad
+\mathbf{a}_{t_k}^k = t_k \mathbf{a}_1^k
+  + (1-t_k)\mathbf{a}_0^k
+\end{equation*}
+where $\mathbf{z}_0^k, \mathbf{a}_0^k
+  \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$
+and $t_k \in [0,1]$.
+\end{eqbox}
+
+\vspace{0.5em}
+\begin{eqbox}
+\hi{Velocity prediction loss:}
+\begin{equation*}
+\mathcal{L}(\theta) = \mathbb{E}\Bigg[
+  \frac{1}{K}\sum_{k=1}^{K} w(t_k)
+  \Big\lVert \mathbf{u}_\theta(\cdots)
+  - \mathbf{v}^k \Big\rVert^2\Bigg]
+\end{equation*}
+\end{eqbox}
+\end{frame}
+
+% --- Slide 11c: Flow Matching Notation ---
+\begin{frame}{Flow Matching: Notation Guide}
+\hi{Key Symbols:}
+\begin{itemize}
+    \item $\mathbf{u}_\theta$: the DiT model
+          (predicts velocity)
+    \item $\mathcal{C}_k$: clean context
+          from previous chunks
+    \item $\mathbf{c}$: language instruction
+    \item $\mathbf{q}_k$: proprioceptive state
+    \item $w(t_k)$: predefined weight function
+\end{itemize}
+
+\vspace{0.5em}
+\hi{Teacher forcing:} denoise noisy current chunk
+conditioned on \positive{clean} previous chunks
+(like LLM training with ground-truth tokens).
+\end{frame}
+
+% --- Slide 12: Attention Masking ---
+\begin{frame}{Attention Masking Strategy}
+\begin{center}
+\includegraphics[width=0.78\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/dreamzero_attention_figure.pdf}
+\end{center}
+
+\begin{methodbox}[Key Rules]
+\begin{itemize}
+    \item \hi{Training:} noisy chunk attends ONLY to
+          \positive{clean context}
+    \item \hi{No cross-attention} between noisy video
+          and noisy actions within same chunk
+\end{itemize}
+\end{methodbox}
+\end{frame}
+
+% --- Slide 13: Ground-Truth Injection ---
+\begin{frame}{Inference: Ground-Truth Injection}
+\begin{keybox}[The Elegant Trick]
+\begin{enumerate}
+    \item Denoise one chunk at a time (autoregressive)
+    \item Execute action chunk on robot
+          $\rightarrow$ get \hi{real observation}
+    \item \higold{Replace predicted frame with ground-truth}
+          in KV cache
+    \item This \positive{eliminates error accumulation!}
+\end{enumerate}
+\end{keybox}
+
+\vspace{0.5em}
+\hi{Why this is unique to WAMs:}
+\begin{itemize}
+    \item Pure video generation: errors compound
+    \item WAMs operate in \positive{closed-loop} ---
+          reality corrects the model
+\end{itemize}
+\end{frame}
+
+% --- Slide 13b: GT Injection — My Take ---
+\begin{frame}{Ground-Truth Injection: My Take}
+\begin{softbox}
+\higold{My Take:} WAMs \hi{self-correct via reality}.
+No other paradigm gets this for free.
+\end{softbox}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item Closes the sim-to-real gap \emph{by design},
+          not by domain randomization
+    \item Compare to pure video generation
+          (e.g.\ Sora) where errors compound indefinitely
+\end{itemize}
+\end{frame}
+
+% --- Slide 14: DreamZero-Flash ---
+\begin{frame}{DreamZero-Flash: Faster Inference}
+\hi{Problem:} 4 denoising steps = 350ms
+(too slow for some applications)
+
+\vspace{0.5em}
+\hi{Solution:} \higold{Decoupled noise scheduling}
+\begin{itemize}
+    \item Video: $t_{\text{vid}} = 1 - \eta$,
+          $\eta \sim \text{Beta}(7,1)$\\
+          $\rightarrow$ biased toward \negative{high-noise}
+          (mean $t \approx 0.125$)
+    \item Action: $t_{\text{act}} \sim \text{Uniform}[0,1]$
+          $\rightarrow$ standard
+\end{itemize}
+
+\vspace{0.3em}
+Trains actions to denoise from
+\emph{predominantly noisy} visual context.
+\end{frame}
+
+% --- Slide 14b: Flash Results ---
+\begin{frame}{DreamZero-Flash: Results}
+\begin{center}
+\includegraphics[width=0.60\textwidth,
+  height=0.40\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/%
+  dreamzero-flash_noise_distribution_comparison.pdf}
+\end{center}
+
+\begin{resultbox}[Result]
+1-step: \positive{74\%} task progress
+(only 9\% drop from 4-step at 83\%)
+\end{resultbox}
+\end{frame}
+
+% --- Slide 15: 38x Speedup ---
+\begin{frame}{38$\times$ Inference Speedup Breakdown}
+\begin{center}
+{\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Optimization} & \textbf{H100} & \textbf{GB200}\\
+\midrule
+Baseline & $1\times$ & $1.1\times$ \\
+\midrule
+\multicolumn{3}{l}{\textit{System-level}} \\
+\quad + CFG Parallelism & $1.9\times$ & $1.8\times$ \\
+\quad + DiT Caching & $5.5\times$ & $5.4\times$ \\
+\midrule
+\multicolumn{3}{l}{\textit{Implementation-level}} \\
+\quad + torch.compile & $8.9\times$ & $10.9\times$ \\
+\quad + Kernel \& Scheduler & $9.6\times$ & $14.8\times$ \\
+\quad + Quantization & --- & $16.6\times$ \\
+\midrule
+\multicolumn{3}{l}{\textit{Model-level}} \\
+\quad + DreamZero-Flash & --- & \higold{$38\times$} \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\hi{Final:} 14B at \positive{7Hz} on 2$\times$GB200
+(150ms per chunk)
+\end{frame}
+
+% ==============================================================================
+% PART 3: DATA & TRAINING
+% ==============================================================================
+
+% --- Slide 16: Data Philosophy ---
+\begin{frame}{Data Philosophy: Diversity Over Repetition}
+\begin{resultbox}[Counterintuitive Finding]
+Same 500 hours of data:\\
+\hi{Diverse} (22 envs, long-tail skills):
+  \positive{50\% task progress}\\
+\hi{Repetitive} (70 tasks, many reps):
+  \negative{33\% task progress}\\
+$\rightarrow$ \positive{+51\% relative improvement} from diversity
+\end{resultbox}
+
+\vspace{0.5em}
+\hi{Why?}
+\begin{itemize}
+    \item Video prediction inherited from pretraining
+    \item Robust IDM requires
+          \positive{diverse state-action correspondences}
+    \item Repetitive data $\rightarrow$ narrow IDM
+\end{itemize}
+\end{frame}
+
+% --- Slide 17a: AgiBot Dataset ---
+\begin{frame}{AgiBot G1 Dataset}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\hi{Data:}
+\begin{itemize}
+    \item \higold{500 hours} teleoperation
+    \item 7.2K episodes
+    \item \higold{22} real-world environments
+    \item Avg episode: 4.4 min, $\sim$42 subtasks
+\end{itemize}
+
+\column{0.46\textwidth}
+\includegraphics[width=\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/agibot_dc_envs.pdf}
+
+{\small 22 diverse environments}
+\end{columns}
+\end{frame}
+
+% --- Slide 17b: Training Config ---
+\begin{frame}{Training Configuration}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\hi{Training:}
+\begin{itemize}
+    \item Backbone: \hi{Wan2.1-I2V-14B}
+    \item 100K steps, batch size 128
+    \item \positive{Freeze:} text enc, image enc, VAE
+    \item \hi{Update:} DiT + state/action enc/dec
+    \item Post-training: 50K steps per task
+\end{itemize}
+
+\column{0.46\textwidth}
+\includegraphics[width=\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/agibot_stats_3.pdf}
+
+{\small Skill distribution}
+\end{columns}
+\end{frame}
+
+% --- Slide 18a: Evaluation Setup ---
+\begin{frame}{Evaluation Protocol: Setup}
+\begin{center}
+\includegraphics[width=0.80\textwidth,
+  height=0.55\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/main_eval_setting.pdf}
+\end{center}
+
+Default: \hi{unseen environments}, \hi{unseen objects}\\
+Training and evaluation in
+\negative{different geographic locations}
+\end{frame}
+
+% --- Slide 18b: Evaluation Details ---
+\begin{frame}{Evaluation Protocol: Details}
+\begin{methodbox}[True Out-of-Distribution]
+\begin{itemize}
+    \item Seen tasks: 10 tasks $\times$ 8 rollouts
+          $\times$ 4 robots = 80 rollouts
+    \item Unseen tasks: 10 tasks absent from training
+    \item Baselines: GR00T N1, $\pi_{0.5}$
+          (from-scratch \& from-pretrained)
+\end{itemize}
+\end{methodbox}
+\end{frame}
+
+% ==============================================================================
+% PART 4: RESULTS
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{Does It Actually Work?}}\\[1em]
+{\large\higold{Experimental Results}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 19: Seen Tasks ---
+\begin{frame}{Seen Tasks: 2$\times$ Improvement}
+\begin{center}
+\includegraphics[width=0.78\textwidth,
+  height=0.50\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/eval_bar_chart.pdf}
+\end{center}
+
+\begin{resultbox}
+DreamZero: \positive{62.2\%} avg.\ task progress\\
+Best VLA (pretrained): 27.4\%
+$\rightarrow$ \positive{2.3$\times$}\\
+VLA from-scratch: \negative{$\sim$0\%}
+\end{resultbox}
+\end{frame}
+
+% --- Slide 20: Unseen Tasks ---
+\begin{frame}{Unseen Tasks: Zero-shot Generalization}
+\begin{center}
+\includegraphics[width=0.78\textwidth,
+  height=0.50\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/unseen_success_rates.pdf}
+\end{center}
+
+\begin{resultbox}
+DreamZero: \positive{39.5\%} on novel tasks\\
+Best VLA (pretrained): 16.3\%
+$\rightarrow$ \positive{2.4$\times$}
+\end{resultbox}
+\end{frame}
+
+% --- Slide 20b: Unseen Tasks Details ---
+\begin{frame}{Unseen Tasks: Standout Results}
+\hi{Standout tasks:}
+\begin{itemize}
+    \item Remove hat: \positive{85.7\%}
+    \item Shake hands: \positive{59.2\%}
+\end{itemize}
+
+\vspace{0.3em}
+\hi{VLAs overfit} to pick-and-place
+regardless of instruction.
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} The key result --- DreamZero does
+things it was \hi{NEVER trained to do}.
+\end{softbox}
+\end{frame}
+
+% --- Slide 21: Joint Video-Action ---
+\begin{frame}{Joint Video-Action Prediction in Action}
+\begin{center}
+\includegraphics[width=0.85\textwidth,
+  height=0.50\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/dreamzero_gen.pdf}
+\end{center}
+
+\begin{itemize}
+    \item Tight alignment between predicted
+          and actual trajectories
+    \item Most failures: video generation errors,
+          not action extraction
+\end{itemize}
+\end{frame}
+
+% --- Slide 22: Post-training ---
+\begin{frame}{Post-training: Retained Generalization}
+\begin{center}
+\includegraphics[width=0.78\textwidth,
+  height=0.50\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/posttrain.pdf}
+\end{center}
+
+\begin{itemize}
+    \item \positive{Matches or outperforms} pretrained VLAs
+    \item Evaluated in \hi{unseen environments}
+          even after task-specific training
+\end{itemize}
+\end{frame}
+
+% --- Slide 23: Cross-Embodiment Transfer ---
+\begin{frame}{Cross-Embodiment Transfer}
+\begin{center}
+\includegraphics[width=0.75\textwidth,
+  height=0.40\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/embodiment_transfer.pdf}
+\end{center}
+
+\begin{center}
+{\small
+\begin{tabular}{lc}
+\toprule
+\textbf{Method} & \textbf{Task Progress}\\
+\midrule
+DreamZero (baseline) & 38.3\%\\
++ Robot2Robot (YAM, 20 min)
+  & \positive{55.4\%} (+44.6\% rel.)\\
++ Human2Robot (12 min)
+  & \positive{54.3\%} (+41.8\% rel.)\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+\end{frame}
+
+% --- Slide 23b: Cross-Embodiment My Take ---
+\begin{frame}{Cross-Embodiment Transfer: My Take}
+\begin{softbox}
+\higold{My Take:} Video-only data (no action labels!)
+opens a \hi{massive scaling pathway}.
+Human video is orders of magnitude more abundant
+than robot data.
+\end{softbox}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item YouTube alone hosts \positive{$>$800M hours} of
+          how-to and activity video
+    \item The bottleneck shifts from ``collect robot data''
+          to ``build a better IDM''
+\end{itemize}
+\end{frame}
+
+% --- Slide 24: Few-shot ---
+\begin{frame}{Few-shot Adaptation to New Robot}
+\begin{center}
+\includegraphics[width=0.82\textwidth,
+  height=0.50\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/yam_transfer.pdf}
+\end{center}
+
+\begin{itemize}
+    \item 55 trajectories ($\sim$30 min play data)
+          on YAM robot
+    \item Retains \positive{language following}
+          + generalizes to novel objects
+\end{itemize}
+\end{frame}
+
+% --- Slide 25: Free-form ---
+\begin{frame}{Free-form Evaluation}
+\begin{center}
+\includegraphics[width=0.85\textwidth,
+  height=0.55\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/free_form.pdf}
+\end{center}
+
+\hi{100+ novel tasks} via natural language instructions\\
+``Pop the balloon'', ``Press elevator button'',
+``Paint'', ``Iron clothes''
+\end{frame}
+
+% ==============================================================================
+% PART 5: ABLATIONS & ANALYSIS
+% ==============================================================================
+
+% --- Slide 26: Ablation ---
+\begin{frame}{Ablation: What Matters Most?}
+\begin{center}
+{\small
+\begin{tabular}{llccc}
+\toprule
+& \textbf{Arch} & \textbf{Size} & \textbf{Data}
+  & \textbf{Progress}\\
+\midrule
+\multicolumn{5}{l}{\textit{Q1.\ Data Diversity}} \\
+& DZ (AR) & 14B & Repetitive
+  & 33\% \\
+& DZ (AR) & 14B & Diverse
+  & \positive{50\%} \\
+\midrule
+\multicolumn{5}{l}{\textit{Q2.\ Model Scale}} \\
+& DZ (AR) & 5B & Diverse & 21\% \\
+& DZ (AR) & 14B & Diverse & \positive{50\%} \\
+& VLA & 5B & Diverse & \negative{0\%} \\
+& VLA & 14B & Diverse & \negative{0\%} \\
+\midrule
+\multicolumn{5}{l}{\textit{Q3.\ Architecture}} \\
+& DZ (BD) & 14B & Diverse & 50\% \\
+& DZ (AR) & 14B & Diverse & \positive{50\%} \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+{\small All on PnP Easy, 50K steps, batch 32.
+DZ = DreamZero.}
+\end{frame}
+
+% --- Slide 27: VLA vs WAM ---
+\begin{frame}{Why VLAs Fail While WAMs Succeed}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{VLAs:}
+\begin{itemize}
+    \item \negative{Static images}
+          $\rightarrow$ no temporal dynamics
+    \item Scaling does not help:
+          \negative{0\% at 5B and 14B}
+    \item Repetitive data + static priors
+          = \negative{overfitting}
+\end{itemize}
+
+\column{0.48\textwidth}
+\hi{WAMs:}
+\begin{itemize}
+    \item \positive{Video}
+          $\rightarrow$ rich temporal dynamics
+    \item Scaling improves video quality
+          $\rightarrow$ \positive{better actions}
+    \item Diverse data + video priors
+          = \positive{generalization}
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% --- Slide 27b: VLA vs WAM — My Take ---
+\begin{frame}{VLA vs.\ WAM: My Take}
+\begin{softbox}
+\higold{My Take:} A \hi{fundamental architectural
+difference}, not data/compute. VLMs encode semantics;
+video models encode physics. For robotics, physics wins.
+\end{softbox}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item This echoes the ``bitter lesson'':
+          the right \emph{representation}
+          (video) matters more than scale
+    \item Expect hybrid approaches that combine
+          VLM semantics with WAM physics
+\end{itemize}
+\end{frame}
+
+% --- Slide 28: Failure Analysis ---
+\begin{frame}{Failure Analysis: When DreamZero Breaks}
+\begin{center}
+\includegraphics[width=0.75\textwidth,
+  height=0.40\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/generated.pdf}
+\end{center}
+{\small Generated vs.\ executed trajectory pairs}
+
+\vspace{0.3em}
+\hi{Primary failure mode:}
+\negative{video generation errors}
+(hallucinations, wrong physics)
+\end{frame}
+
+% --- Slide 28b: Failure Causal Chain ---
+\begin{frame}{Failure: Error Causal Chain}
+\hi{Error causal chain:}
+\begin{enumerate}
+    \item Video backbone hallucinates
+    \item Predicted frames show wrong trajectory
+    \item IDM faithfully extracts actions from wrong video
+    \item Robot executes incorrect motion
+\end{enumerate}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} The tight coupling is both strength
+and weakness --- \hi{video quality is the bottleneck}.
+\end{softbox}
+\end{frame}
+
+% ==============================================================================
+% PART 6: CODE-LEVEL INSIGHTS
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{Under the Hood}}\\[1em]
+{\large\higold{Code-Level Insights}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 29: Multi-Embodiment ---
+\begin{frame}{Code: Multi-Embodiment Architecture}
+\begin{methodbox}[Key Code Patterns]
+\begin{itemize}
+    \item \texttt{CategorySpecificLinear}:
+          separate weights per embodiment
+    \item \texttt{MultiEmbodimentActionEncoder}:
+          category-specific MLPs
+    \item Supports up to \hi{32 embodiments}
+    \item Relative action normalization
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take (from code):} Each robot gets its own
+``translator'' while sharing the world model.
+\end{softbox}
+\end{frame}
+
+% --- Slide 30a: Engineering ---
+\begin{frame}{Code: Making 14B Real-Time}
+\begin{methodbox}[Production-Grade Engineering]
+\begin{itemize}
+    \item \hi{VRAM management:} dynamic GPU--CPU offloading
+    \item \hi{FP8 inference:} automatic scaling
+    \item \hi{WebSocket server:} distributed multi-GPU
+    \item \hi{DiT caching:} skip forward pass
+          when velocity vectors converge
+\end{itemize}
+\end{methodbox}
+\end{frame}
+
+% --- Slide 30b: Quantization ---
+\begin{frame}{Code: Quantization Stack}
+\hi{Precision hierarchy:}
+\begin{itemize}
+    \item Weights + activations: NVFP4
+    \item QKV, Softmax: FP8
+    \item Non-linear ops: FP16
+\end{itemize}
+
+\vspace{0.3em}
+\hi{Frame sequence:} 880 tokens
+(33 frames $\times$ $\sim$27 tokens/frame)
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take (from code):} Far beyond typical
+research code --- production-grade systems engineering.
+\end{softbox}
+\end{frame}
+
+% --- Slide 31: Data Pipeline ---
+\begin{frame}{Code: Data Pipeline}
+\begin{methodbox}[Data Infrastructure]
+\begin{itemize}
+    \item \hi{LeRobot v2 format} with GEAR metadata
+    \item Multi-view camera alignment
+    \item Sharded dataset loading (10\% per shard)
+    \item Action filtering: remove idle actions
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take (from code):} Data infrastructure is
+as important as the model architecture.
+\end{softbox}
+\end{frame}
+
+% ==============================================================================
+% PART 7: DISCUSSION & TAKEAWAYS
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{What Does It All Mean?}}\\[1em]
+{\large\higold{Discussion \& Takeaways}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 32: Limitations ---
+\begin{frame}{Limitations}
+\hi{From the paper:}
+\begin{enumerate}
+    \item No established \negative{scaling laws} for WAMs
+    \item Context window limited to \negative{6.6 seconds}
+    \item Still \negative{7Hz} vs.\ 20Hz+ for VLAs
+    \item Inherits behavior cloning limitations
+          on \negative{sub-centimeter precision}
+    \item Separate training per embodiment
+\end{enumerate}
+\end{frame}
+
+% --- Slide 32b: Computational Requirements ---
+\begin{frame}{Limitations: Computational Requirements}
+\hi{Computational requirements:}
+\begin{itemize}
+    \item 2$\times$GB200 GPUs for real-time control
+    \item Not yet feasible on consumer hardware
+    \item 14B parameters = significant VRAM
+\end{itemize}
+
+\vspace{0.5em}
+\hi{Long-horizon:}
+\begin{itemize}
+    \item 6.6s context $\rightarrow$ System 1 only
+    \item Needs System 2 planner for extended tasks
+\end{itemize}
+\end{frame}
+
+% --- Slide 33: Unsolved IDM ---
+\begin{frame}{The Unsolved Inverse Dynamics Problem}
+\hi{Adaptation is not free.}
+
+\vspace{0.5em}
+\hi{The credit card analogy:}
+\begin{itemize}
+    \item Dexterous hands: slide + pinch
+    \item Grippers: push from edge
+    \item \emph{Same task, different motions}
+\end{itemize}
+
+\vspace{0.5em}
+\hi{IDM complexity scales with DOF:}
+\begin{itemize}
+    \item Simple grippers: relatively easy
+    \item Dexterous hands: much harder
+    \item Full humanoids: \negative{hardest}
+\end{itemize}
+\end{frame}
+
+% --- Slide 34: Hardware vs Algorithm ---
+\begin{frame}{The Hardware vs.\ Algorithm Race}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Hardware Path:}\\
+If humanoid actuators mature quickly
+$\rightarrow$ embodiment matching removes transfer loss
+
+\vspace{0.5em}
+\hi{Algorithm Path:}\\
+If embodiment adaptation improves faster
+$\rightarrow$ intermediate morphologies remain viable
+
+\column{0.48\textwidth}
+\begin{quotebox}
+We are back to the age of research ---
+fundamentals matter again.
+\end{quotebox}
+\hfill --- Jim Fan
+
+\vspace{0.5em}
+Both paths converge on the same data:\\
+\higold{human video}
+\end{columns}
+\end{frame}
+
+% --- Slide 35: Critical Assessment ---
+\begin{frame}{Critical Assessment: Strengths}
+\hi{Strengths:}
+\begin{itemize}
+    \item[\positive{\checkmark}] Comprehensive evaluation protocol
+    \item[\positive{\checkmark}] Honest failure analysis
+    \item[\positive{\checkmark}] Code and weights released
+    \item[\positive{\checkmark}] Multiple embodiments tested
+\end{itemize}
+
+\vspace{0.5em}
+\hi{Questions:}
+\begin{itemize}
+    \item How dependent on GB200 hardware?
+    \item Will this work on consumer GPUs?
+    \item Long-horizon tasks ($>$6.6s)?
+\end{itemize}
+\end{frame}
+
+% --- Slide 35b: Critical Assessment — Missing ---
+\begin{frame}{Critical Assessment: What's Missing}
+\hi{Missing:}
+\begin{itemize}
+    \item Comparison with other recent WAMs
+          (Cosmos Policy, UVAM) on same benchmarks
+    \item ``From-pretrained'' baseline used
+          \emph{different data}
+    \item Multi-embodiment \emph{unified} training
+\end{itemize}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} Current zero-shot is ``AI Slop'' phase
+(Joel Jang) --- correct direction, but
+\hi{not deployment-ready} yet.
+\end{softbox}
+\end{frame}
+
+% --- Slide 36a: Field Impact (1/2) ---
+\begin{frame}{What DreamZero Means for the Field (1/2)}
+\begin{keybox}[Personal Assessment]
+\begin{enumerate}
+    \item WAMs represent a \hi{paradigm shift}:
+          from ``policy learning'' to ``world understanding''
+    \item Jim Fan's ``second pre-training paradigm''
+          is happening \higold{NOW}
+    \item ``Diversity $>$ repetition'' could
+          \positive{reshape robot data collection}
+\end{enumerate}
+\end{keybox}
+\end{frame}
+
+% --- Slide 36b: Field Impact (2/2) ---
+\begin{frame}{What DreamZero Means for the Field (2/2)}
+\begin{keybox}[Personal Assessment (cont.)]
+\begin{enumerate}
+    \setcounter{enumi}{3}
+    \item Cross-embodiment transfer via video-only data
+          is the \hi{sleeper result}
+    \item Video backbone quality = policy quality\\
+          $\rightarrow$ Watch for video model improvements
+    \item ``Chain of thought in \hi{visual space}
+          rather than language space''
+\end{enumerate}
+\end{keybox}
+\end{frame}
+
+% --- Slide 37: Key Takeaways ---
+\begin{frame}{Key Takeaways}
+\begin{enumerate}
+    \item \hi{WAMs jointly predict video + action}
+          $\rightarrow$ better generalization
+    \item \hi{Diverse data + video priors}
+          = zero-shot robot skills
+    \item \hi{AR + teacher forcing + GT injection}
+          = elegant inference
+    \item \hi{38$\times$ speedup} makes 14B practical
+    \item \hi{Cross-embodiment transfer}
+          via video-only data
+    \item \higold{``Train once on human experience,
+          deploy everywhere''}
+\end{enumerate}
+
+\vspace{0.3em}
+\begin{center}
+\hi{The future of robotics is video-native,
+not language-native.}
+\end{center}
+\end{frame}
+
+% --- Slide 38: Thank You ---
+\begin{frame}{Thank You \& References}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Paper \& Code:}
+\begin{itemize}
+    \item \citet{ye2026dreamzero}
+    \item \texttt{dreamzero0.github.io}
+\end{itemize}
+
+\vspace{0.3em}
+\hi{Blog Posts:}
+\begin{itemize}
+    \item Joel Jang: ``World Models for Robotics''
+    \item Jim Fan: ``The Second Pre-training Paradigm''
+\end{itemize}
+
+\column{0.48\textwidth}
+\hi{Key References:}
+\begin{itemize}
+    \item Wan2.1 \citep{wan2025wan}
+    \item GR00T N1 \citep{bjorck2025gr00t}
+    \item $\pi_0$/$\pi_{0.5}$
+          \citep{black2024pi0,intelligence2025pi05}
+    \item Flow matching \citep{liu2022flow,lipman2022flow}
+    \item DROID \citep{khazatsky2024droid}
+\end{itemize}
+\end{columns}
+
+\vspace{0.5em}
+\begin{center}
+\Large\hi{Q\&A}
+\end{center}
+\end{frame}
+
+% --- Bibliography ---
+\begin{frame}[allowframebreaks]{References}
+\printbibliography[heading=none]
+\end{frame}
+
+\end{document}

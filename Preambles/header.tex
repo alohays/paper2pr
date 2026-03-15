@@ -1,0 +1,199 @@
+% ==============================================================================
+% Paper2PR — Shared Beamer Preamble
+% ==============================================================================
+% Paper-agnostic preamble for all paper review presentations.
+% Colors and environments match Quarto clean-academic.scss theme.
+% ==============================================================================
+
+\documentclass[aspectratio=169, 10pt]{beamer}
+
+% --- Theme ---
+\usetheme{default}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+% --- Colors (matching Quarto clean-academic.scss) ---
+\usepackage{xcolor}
+\definecolor{primaryblue}{HTML}{012169}
+\definecolor{primarygold}{HTML}{B9975B}
+\definecolor{highlightyellow}{HTML}{F2A900}
+\definecolor{lightbg}{HTML}{E8EDF5}
+\definecolor{jet}{HTML}{1A1A1A}
+\definecolor{positivegreen}{HTML}{15803D}
+\definecolor{negativered}{HTML}{B91C1C}
+
+\setbeamercolor{title}{fg=primaryblue}
+\setbeamercolor{subtitle}{fg=primarygold}
+\setbeamercolor{frametitle}{fg=primaryblue}
+\setbeamercolor{structure}{fg=primaryblue}
+\setbeamercolor{normal text}{fg=jet}
+\setbeamercolor{itemize item}{fg=primaryblue}
+\setbeamercolor{itemize subitem}{fg=primarygold}
+\setbeamercolor{enumerate item}{fg=highlightyellow}
+
+% --- Fonts (XeLaTeX) ---
+\usepackage{fontspec}
+% Source Sans Pro (static OTF from TexLive — explicit path for reliability)
+\setsansfont{SourceSansPro}[
+  Path = /usr/local/texlive/2024/texmf-dist/fonts/opentype/adobe/sourcesanspro/,
+  UprightFont = SourceSansPro-Regular.otf,
+  BoldFont = SourceSansPro-Bold.otf,
+  ItalicFont = SourceSansPro-RegularIt.otf,
+  BoldItalicFont = SourceSansPro-BoldIt.otf,
+  Scale = 1.0
+]
+\usefonttheme{professionalfonts}
+
+% --- Math ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{mathtools}
+
+% --- Graphics ---
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{hyperref}
+
+% --- tcolorbox for custom environments ---
+\usepackage[most]{tcolorbox}
+
+% methodbox — Blue-bordered for technical details
+\newtcolorbox{methodbox}[1][]{%
+  colback=primaryblue!6,
+  colframe=primaryblue,
+  coltitle=white,
+  fonttitle=\bfseries,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=0pt, leftrule=4pt,
+  arc=4pt,
+  title={#1}
+}
+
+% keybox — Gold-bordered for key insights
+\newtcolorbox{keybox}[1][]{%
+  colback=primarygold!12,
+  colframe=primarygold,
+  coltitle=white,
+  fonttitle=\bfseries,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=0pt, leftrule=4pt,
+  arc=4pt,
+  title={#1}
+}
+
+% highlightbox — Yellow-bordered for notable findings
+\newtcolorbox{highlightbox}[1][]{%
+  colback=highlightyellow!8,
+  colframe=highlightyellow,
+  coltitle=white,
+  fonttitle=\bfseries,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=0pt, leftrule=4pt,
+  arc=4pt,
+  title={#1}
+}
+
+% assumptionbox — Gold full-border for assumptions
+\newtcolorbox{assumptionbox}[1][]{%
+  colback=primarygold!8,
+  colframe=primarygold,
+  coltitle=white,
+  fonttitle=\bfseries,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=2pt,
+  arc=4pt,
+  title={#1}
+}
+
+% resultbox — Gold-bordered with shadow for main results
+\newtcolorbox{resultbox}[1][]{%
+  colback=primarygold!15,
+  colframe=primarygold,
+  coltitle=white,
+  fonttitle=\bfseries,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=2pt,
+  arc=4pt,
+  shadow={1pt}{-1pt}{0pt}{black!12},
+  title={#1}
+}
+
+% eqbox — Subtle blue background for equations
+\newtcolorbox{eqbox}{%
+  colback=primaryblue!4,
+  colframe=primaryblue!4,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  boxrule=0pt,
+  arc=0pt
+}
+
+% softbox — Subtle gold italic for remarks
+\newtcolorbox{softbox}{%
+  colback=primarygold!6,
+  colframe=primarygold!6,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  boxrule=0pt,
+  arc=0pt,
+  fontupper=\itshape
+}
+
+% quotebox — Italic with decorative quote mark
+\newtcolorbox{quotebox}{%
+  colback=primarygold!8,
+  colframe=primarygold!80!black,
+  left=16pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=0pt, leftrule=4pt,
+  arc=0pt, outer arc=4pt,
+  fontupper=\itshape,
+  before upper={\textcolor{primarygold!40}{\Large``}\,}
+}
+
+% --- Text color commands ---
+\newcommand{\hi}[1]{{\bfseries\color{primaryblue}#1}}
+\newcommand{\higold}[1]{{\bfseries\color{primarygold}#1}}
+\newcommand{\hiyellow}[1]{{\bfseries\color{highlightyellow}#1}}
+\newcommand{\higreen}[1]{{\bfseries\color{positivegreen}#1}}
+\newcommand{\hired}[1]{{\bfseries\color{negativered}#1}}
+\newcommand{\positive}[1]{{\bfseries\color{positivegreen}#1}}
+\newcommand{\negative}[1]{{\bfseries\color{negativered}#1}}
+\newcommand{\neutral}[1]{{\color{gray}#1}}
+
+% --- Bibliography ---
+\usepackage[
+  backend=bibtex,
+  style=authoryear,
+  natbib=true,
+  maxcitenames=2
+]{biblatex}
+
+% --- Title page template (compact, no internal \vfill) ---
+\setbeamertemplate{title page}{
+  \begin{center}
+    \vspace{1em}
+    {\Large\bfseries\color{primaryblue}\inserttitle}
+
+    \vspace{0.4em}
+    {\normalsize\color{primarygold}\insertsubtitle}
+
+    \vspace{0.8em}
+    {\normalsize\insertauthor}
+
+    \vspace{0.2em}
+    {\small\textcolor{primarygold}{\insertinstitute}}
+  \end{center}
+}
+
+% --- Frame title formatting ---
+\setbeamerfont{frametitle}{size=\large, series=\bfseries}
+\setbeamertemplate{frametitle}{%
+  \vspace{0.3em}
+  \insertframetitle
+  \vspace{0.1em}
+  {\color{primarygold!30}\hrule height 2pt}
+}
