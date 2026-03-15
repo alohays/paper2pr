@@ -1,7 +1,7 @@
 ---
 name: review-r
 description: Run the R code review protocol on R scripts. Checks code quality, reproducibility, domain correctness, and professional standards. Produces a report without editing files.
-argument-hint: "[filename or 'all' or 'LectureN']"
+argument-hint: "[filename or 'all' or 'PaperName']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
 
@@ -13,7 +13,7 @@ Run the comprehensive R code review protocol.
 
 1. **Identify scripts to review:**
    - If `$ARGUMENTS` is a specific `.R` filename: review that file only
-   - If `$ARGUMENTS` is `LectureN`: review all R scripts matching that lecture
+   - If `$ARGUMENTS` is `PaperName`: review all R scripts matching that paper
    - If `$ARGUMENTS` is `all`: review all R scripts in `scripts/R/` and `Figures/*/`
 
 2. **For each script, launch the `r-reviewer` agent** with instructions to:

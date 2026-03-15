@@ -1,31 +1,304 @@
-% ==============================================================================
-% Bibliography Template
-% ==============================================================================
+% =============================================================================
+% Bibliography for DreamZero Paper Review Presentation
+% "World Action Models are Zero-shot Policies"
+% Ye, Ge, Zheng, Gao, Yu, et al. (NVIDIA, 2026)
 %
-% Add your course bibliography entries here.
-% This file is referenced by both Beamer (.tex) and Quarto (.qmd) slides.
-%
-% Naming convention: AuthorYear_keyword
-% Example: Angrist2009_mostly_harmless
-%
-% ==============================================================================
+% Curated ~30 entries covering:
+%   - The DreamZero paper itself
+%   - VLA baselines (pi-0, pi-0.5, GR00T N1, OpenVLA, RT-2, Gemini Robotics)
+%   - Video diffusion foundations (Wan 2.1, MAGI-1, flow matching)
+%   - World Action Models / WAMs (Cosmos Policy, Genie Envisioner, UVAM, mimic-video)
+%   - Dreamer lineage / latent world models (Dreamer v1-v3)
+%   - Video-based robot learning (GR-2, DreamGen, Video Language Planning)
+%   - Datasets (DROID, AgiBot World, BridgeData V2)
+%   - Training techniques (flow matching, LoRA, UniPC scheduler)
+%   - Foundation model concepts (scaling laws, V-JEPA 2, LeCun)
+% =============================================================================
 
-% --- Example entries (replace with your own) ---
+% ---------------------------------------------------------------------------
+% THE PAPER UNDER REVIEW
+% ---------------------------------------------------------------------------
 
-@book{Angrist2009_mostly_harmless,
-  author    = {Angrist, Joshua D. and Pischke, J{\"o}rn-Steffen},
-  title     = {Mostly Harmless Econometrics: An Empiricist's Companion},
-  publisher = {Princeton University Press},
-  year      = {2009},
-  address   = {Princeton, NJ}
+@article{ye2026dreamzero,
+  title   = {World Action Models are Zero-shot Policies},
+  author  = {Ye, Seonghyeon and Ge, Yunhao and Zheng, Kaiyuan and Gao, Shenyuan and Yu, Sihyun and Kurian, George and Indupuru, Suneel and Tan, You Liang and Zhu, Chuning and Xiang, Jiannan and Malik, Ayaan and Lee, Kyungmin and Liang, William and Ranawaka, Nadun and Gu, Jiasheng and Xu, Yinzhen and Wang, Guanzhi and Hu, Fengyuan and Narayan, Avnish and Bjorck, Johan and Wang, Jing and Kim, Gwanghyun and Lam, Grace and Zettlemoyer, Luke and Fox, Dieter and Kautz, Jan and Reed, Scott and Zhu, Yuke and Fan, Linxi},
+  journal = {arXiv preprint},
+  year    = {2026},
+  note    = {NVIDIA Research}
 }
 
-@article{Imbens2004_nonparametric,
-  author  = {Imbens, Guido W.},
-  title   = {Nonparametric Estimation of Average Treatment Effects Under Exogeneity: A Review},
-  journal = {Review of Economics and Statistics},
-  volume  = {86},
-  number  = {1},
-  pages   = {4--29},
-  year    = {2004}
+% ---------------------------------------------------------------------------
+% VLA BASELINES
+% ---------------------------------------------------------------------------
+
+@article{black2024pi0,
+  title   = {$\pi_0$: A Vision-Language-Action Flow Model for General Robot Control},
+  author  = {Black, Kevin and Brown, Noah and Driess, Danny and Esmail, Adnan and Equi, Michael and Finn, Chelsea and Fusai, Niccolo and Groom, Lachy and Hausman, Karol and Ichter, Brian and others},
+  journal = {arXiv preprint arXiv:2410.24164},
+  year    = {2024}
+}
+
+@article{intelligence2025pi05,
+  title   = {$\pi_{0.5}$: A Vision-Language-Action Model with Open-World Generalization},
+  author  = {{Physical Intelligence}},
+  journal = {arXiv preprint arXiv:2504.16054},
+  year    = {2025}
+}
+
+@article{bjorck2025gr00t,
+  title   = {{GR00T} {N1}: An Open Foundation Model for Generalist Humanoid Robots},
+  author  = {Bjorck, Johan and Casta{\~n}eda, Fernando and Cherniadev, Nikita and Da, Xingye and Ding, Runyu and Fan, Linxi and Fang, Yu and Fox, Dieter and Hu, Fengyuan and Huang, Spencer and others},
+  journal = {arXiv preprint arXiv:2503.14734},
+  year    = {2025}
+}
+
+@article{kim2024openvla,
+  title   = {{OpenVLA}: An Open-Source Vision-Language-Action Model},
+  author  = {Kim, Moo Jin and Pertsch, Karl and Karamcheti, Siddharth and Xiao, Ted and Balakrishna, Ashwin and Nair, Suraj and Rafailov, Rafael and Foster, Ethan and Lam, Grace and Sanketi, Pannag and others},
+  journal = {arXiv preprint arXiv:2406.09246},
+  year    = {2024}
+}
+
+@inproceedings{rt22023arxiv,
+  title     = {{RT-2}: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control},
+  author    = {Brohan, Anthony and Brown, Noah and Carbajal, Justice and Chebotar, Yevgen and Chen, Xi and Choromanski, Krzysztof and others},
+  booktitle = {arXiv preprint arXiv:2307.15818},
+  year      = {2023}
+}
+
+@article{team2025gemini,
+  title   = {Gemini Robotics: Bringing {AI} into the Physical World},
+  author  = {{Gemini Robotics Team}},
+  journal = {arXiv preprint arXiv:2503.20020},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------------------
+% VIDEO DIFFUSION FOUNDATIONS
+% ---------------------------------------------------------------------------
+
+@article{wan2025wan,
+  title   = {Wan: Open and Advanced Large-Scale Video Generative Models},
+  author  = {{Team Wan}},
+  journal = {arXiv preprint arXiv:2503.20314},
+  year    = {2025}
+}
+
+@article{teng2025magi,
+  title   = {{MAGI-1}: Autoregressive Video Generation at Scale},
+  author  = {Teng, Hansi and Jia, Hongyu and Sun, Lei and Li, Lingzhi and Li, Maolin and Tang, Mingqiu and Han, Shuai and Zhang, Tianning and Zhang, WQ and Luo, Weifeng and others},
+  journal = {arXiv preprint arXiv:2505.13211},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------------------
+% FLOW MATCHING (Training Objective)
+% ---------------------------------------------------------------------------
+
+@article{liu2022flow,
+  title   = {Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow},
+  author  = {Liu, Xingchao and Gong, Chengyue and Liu, Qiang},
+  journal = {arXiv preprint arXiv:2209.03003},
+  year    = {2022}
+}
+
+@article{lipman2022flow,
+  title   = {Flow Matching for Generative Modeling},
+  author  = {Lipman, Yaron and Chen, Ricky TQ and Ben-Hamu, Heli and Nickel, Maximilian and Le, Matt},
+  journal = {arXiv preprint arXiv:2210.02747},
+  year    = {2022}
+}
+
+@article{albergo2023stochastic,
+  title   = {Stochastic Interpolants: A Unifying Framework for Flows and Diffusions},
+  author  = {Albergo, Michael S and Boffi, Nicholas M and Vanden-Eijnden, Eric},
+  journal = {arXiv preprint arXiv:2303.08797},
+  year    = {2023}
+}
+
+% ---------------------------------------------------------------------------
+% WORLD ACTION MODELS / WAMs (Closest Related Work)
+% ---------------------------------------------------------------------------
+
+@article{kim2026cosmos,
+  title   = {Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning},
+  author  = {Kim, Moo Jin and Gao, Yihuai and Lin, Tsung-Yi and Lin, Yen-Chen and Ge, Yunhao and Lam, Grace and Liang, Percy and Song, Shuran and Liu, Ming-Yu and Finn, Chelsea and others},
+  journal = {arXiv preprint arXiv:2601.16163},
+  year    = {2026}
+}
+
+@article{liao2025genie,
+  title   = {Genie Envisioner: A Unified World Foundation Platform for Robotic Manipulation},
+  author  = {Liao, Yue and Zhou, Pengfei and Huang, Siyuan and Yang, Donglin and Chen, Shengcong and Jiang, Yuxin and Hu, Yue and Cai, Jingbin and Liu, Si and Luo, Jianlan and others},
+  journal = {arXiv preprint arXiv:2508.05635},
+  year    = {2025}
+}
+
+@article{zhu2025unified,
+  title   = {Unified World Models: Coupling Video and Action Diffusion for Pretraining on Large Robotic Datasets},
+  author  = {Zhu, Chuning and Yu, Raymond and Feng, Siyuan and Burchfiel, Benjamin and Shah, Paarth and Gupta, Abhishek},
+  journal = {arXiv preprint arXiv:2504.02792},
+  year    = {2025}
+}
+
+@article{li2025unified,
+  title   = {Unified Video Action Model},
+  author  = {Li, Shuang and Gao, Yihuai and Sadigh, Dorsa and Song, Shuran},
+  journal = {arXiv preprint arXiv:2503.00200},
+  year    = {2025}
+}
+
+@article{pai2025mimic,
+  title   = {mimic-video: Video-Action Models for Generalizable Robot Control Beyond {VLAs}},
+  author  = {Pai, Jonas and Achenbach, Liam and Montesinos, Victoriano and Forrai, Benedek and Mees, Oier and Nava, Elvis},
+  journal = {arXiv preprint arXiv:2512.15692},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------------------
+% WORLD MODEL FOUNDATIONS (Cosmos Platform + Dreamer Lineage)
+% ---------------------------------------------------------------------------
+
+@article{agarwal2025cosmos,
+  title   = {Cosmos World Foundation Model Platform for Physical {AI}},
+  author  = {Agarwal, Niket and Ali, Arslan and Bala, Maciej and Balaji, Yogesh and Barker, Erik and Cai, Tiffany and others},
+  journal = {arXiv preprint arXiv:2501.03575},
+  year    = {2025}
+}
+
+@article{hafner2019dream,
+  title   = {Dream to Control: Learning Behaviors by Latent Imagination},
+  author  = {Hafner, Danijar and Lillicrap, Timothy and Ba, Jimmy and Norouzi, Mohammad},
+  journal = {arXiv preprint arXiv:1912.01603},
+  year    = {2019}
+}
+
+@article{hafner2020mastering,
+  title   = {Mastering {Atari} with Discrete World Models},
+  author  = {Hafner, Danijar and Lillicrap, Timothy and Norouzi, Mohammad and Ba, Jimmy},
+  journal = {arXiv preprint arXiv:2010.02193},
+  year    = {2020}
+}
+
+@article{hafner2023mastering,
+  title   = {Mastering Diverse Domains through World Models},
+  author  = {Hafner, Danijar and Pasukonis, Jurgis and Ba, Jimmy and Lillicrap, Timothy},
+  journal = {arXiv preprint arXiv:2301.04104},
+  year    = {2023}
+}
+
+% ---------------------------------------------------------------------------
+% VIDEO-BASED ROBOT LEARNING
+% ---------------------------------------------------------------------------
+
+@article{cheang2024gr2,
+  title   = {{GR-2}: A Generative Video-Language-Action Model with Web-Scale Knowledge for Robot Manipulation},
+  author  = {Cheang, Chi-Lam and Chen, Guangzeng and Jing, Ya and Kong, Tao and Li, Hang and Li, Yifeng and Liu, Yuxiao and Wu, Hongtao and Xu, Jiafeng and Yang, Yichu and others},
+  journal = {arXiv preprint arXiv:2410.06158},
+  year    = {2024}
+}
+
+@inproceedings{jang2025dreamgen,
+  title     = {{DreamGen}: Unlocking Generalization in Robot Learning through Video World Models},
+  author    = {Jang, Joel and Ye, Seonghyeon and Lin, Zongyu and Xiang, Jiannan and Bjorck, Johan and Fang, Yu and Hu, Fengyuan and Huang, Spencer and Kundalia, Kaushil and Lin, Yen-Chen and others},
+  booktitle = {9th Annual Conference on Robot Learning},
+  year      = {2025}
+}
+
+@inproceedings{du2024video,
+  title     = {Video Language Planning},
+  author    = {Du, Yilun and Yang, Sherry and Florence, Pete and Xia, Fei and Wahid, Ayzaan and Ichter, Brian and Sermanet, Pierre and Yu, Tianhe and Abbeel, Pieter and Tenenbaum, Joshua B. and Kaelbling, Leslie Pack and Zeng, Andy and Tompson, Jonathan},
+  booktitle = {The Twelfth International Conference on Learning Representations},
+  year      = {2024}
+}
+
+@article{liang2025video,
+  title   = {Video Generators are Robot Policies},
+  author  = {Liang, Junbang and Tokmakov, Pavel and Liu, Ruoshi and Sudhakar, Sruthi and Shah, Paarth and Ambrus, Rares and Vondrick, Carl},
+  journal = {arXiv preprint arXiv:2508.00795},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------------------
+% DATASETS
+% ---------------------------------------------------------------------------
+
+@article{khazatsky2024droid,
+  title   = {{DROID}: A Large-Scale In-the-Wild Robot Manipulation Dataset},
+  author  = {Khazatsky, Alexander and Pertsch, Karl and Nair, Suraj and Balakrishna, Ashwin and Dasari, Sudeep and Karamcheti, Siddharth and Nasiriany, Soroush and Srirama, Mohan Kumar and Chen, Lawrence Yunliang and Ellis, Kirsty and others},
+  journal = {arXiv preprint arXiv:2403.12945},
+  year    = {2024}
+}
+
+@article{bu2025agibot,
+  title   = {{AgiBot World Colosseo}: A Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems},
+  author  = {Bu, Qingwen and Cai, Jisong and Chen, Li and Cui, Xiuqi and Ding, Yan and Feng, Siyuan and Gao, Shenyuan and He, Xindong and Huang, Xu and Jiang, Shu and others},
+  journal = {arXiv preprint arXiv:2503.06669},
+  year    = {2025}
+}
+
+@inproceedings{walke2023bridgedata,
+  title     = {{BridgeData V2}: A Dataset for Robot Learning at Scale},
+  author    = {Walke, Homer and Black, Kevin and Lee, Abraham and Kim, Moo Jin and Du, Max and Zheng, Chongyi and Zhao, Tony and Hansen-Estruch, Philippe and Vuong, Quan and He, Andre and others},
+  booktitle = {Conference on Robot Learning (CoRL)},
+  year      = {2023}
+}
+
+% ---------------------------------------------------------------------------
+% FOUNDATION MODEL CONCEPTS & V-JEPA
+% ---------------------------------------------------------------------------
+
+@article{assran2025vjepa2,
+  title   = {{V-JEPA} 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning},
+  author  = {Assran, Mido and Bardes, Adrien and Fan, David and Garrido, Quentin and Howes, Russell and Komeili, Mojtaba and Muckley, Matthew and Rizvi, Ammar and Roberts, Claire and Sinha, Koustuv and others},
+  journal = {arXiv preprint arXiv:2506.09985},
+  year    = {2025}
+}
+
+@article{lecun2022path,
+  title   = {A Path Towards Autonomous Machine Intelligence},
+  author  = {LeCun, Yann},
+  journal = {Open Review},
+  year    = {2022}
+}
+
+@article{kaplan2020scaling,
+  title   = {Scaling Laws for Neural Language Models},
+  author  = {Kaplan, Jared and McCandlish, Sam and Henighan, Tom and Brown, Tom B and Chess, Benjamin and Child, Rewon and Gray, Scott and Radford, Alec and Wu, Jeffrey and Amodei, Dario},
+  journal = {arXiv preprint arXiv:2001.08361},
+  year    = {2020}
+}
+
+% ---------------------------------------------------------------------------
+% DIFFUSION POLICY (Important Baseline Approach)
+% ---------------------------------------------------------------------------
+
+@article{chi2023diffusion,
+  title     = {Diffusion Policy: Visuomotor Policy Learning via Action Diffusion},
+  author    = {Chi, Cheng and Xu, Zhenjia and Feng, Siyuan and Cousineau, Eric and Du, Yilun and Burchfiel, Benjamin and Tedrake, Russ and Song, Shuran},
+  journal   = {The International Journal of Robotics Research},
+  pages     = {02783649241273668},
+  year      = {2023},
+  publisher = {SAGE Publications Sage UK: London, England}
+}
+
+% ---------------------------------------------------------------------------
+% INFERENCE OPTIMIZATION
+% ---------------------------------------------------------------------------
+
+@inproceedings{zhao2023unipc,
+  title     = {{UniPC}: A Unified Predictor-Corrector Framework for Fast Sampling of Diffusion Models},
+  author    = {Zhao, Wenliang and Bai, Lujia and Rao, Yongming and Zhou, Jie and Lu, Jiwen},
+  booktitle = {Thirty-seventh Conference on Neural Information Processing Systems},
+  year      = {2023}
+}
+
+@article{hu2022lora,
+  title   = {{LoRA}: Low-Rank Adaptation of Large Language Models},
+  author  = {Hu, Edward J and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu and others},
+  journal = {ICLR},
+  volume  = {1},
+  number  = {2},
+  pages   = {3},
+  year    = {2022}
 }

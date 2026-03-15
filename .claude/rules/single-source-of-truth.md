@@ -16,7 +16,7 @@ Beamer .tex (SOURCE OF TRUTH)
   ├── extract_tikz.tex → PDF → SVGs (derived)
   ├── Quarto .qmd → HTML (derived)
   ├── Bibliography_base.bib (shared)
-  └── Figures/LectureN/*.rds → plotly charts (data source)
+  └── Figures/PaperName/*.rds → plotly charts (data source)
 
 NEVER edit derived artifacts independently.
 ALWAYS propagate changes from source → derived.
@@ -31,7 +31,7 @@ ALWAYS propagate changes from source → derived.
 ### Diff-Check Procedure
 
 1. Read the TikZ block from the Beamer `.tex` file
-2. Read the corresponding block from `Figures/LectureN/extract_tikz.tex`
+2. Read the corresponding block from `Figures/PaperName/extract_tikz.tex`
 3. Compare EVERY coordinate, label, color, opacity, and anchor point
 4. If ANY difference exists: update `extract_tikz.tex` from Beamer, recompile, regenerate SVGs
 5. Only then reference the SVG in the QMD

@@ -23,18 +23,18 @@ Repeat
 ## I Ask You When
 
 - **Design forks:** "Option A (fast) vs. Option B (robust). Which?"
-- **Code ambiguity:** "Spec unclear on X. Assume Y?"
-- **Replication edge case:** "Just missed tolerance. Investigate?"
-- **Scope question:** "Also refactor Y while here, or focus on X?"
+- **Content scope:** "Include code-level insights for this paper, or paper-only?"
+- **Ambiguity:** "Paper claims X but code shows Y. How to present?"
+- **Scope question:** "Also review related work section, or focus on method?"
 
 ---
 
 ## I Just Execute When
 
-- Code fix is obvious (bug, pattern application)
-- Verification (tolerance checks, tests, compilation)
+- Slide fix is obvious (typo, formatting, citation)
+- Verification (compilation, rendering, quality scoring)
 - Documentation (logs, commits)
-- Plotting (per established standards)
+- Figure conversion (PDF → SVG)
 - Deployment (after you approve, I ship automatically)
 
 ---
@@ -48,26 +48,22 @@ Repeat
 
 ---
 
-## Non-Negotiables (Customize These)
+## Non-Negotiables
 
-<!-- Replace with YOUR project's locked-in preferences -->
-
-- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths for LaTeX)
-- [YOUR SEED CONVENTION] (e.g., `set.seed()` once at top for stochastic code)
-- [YOUR FIGURE STANDARDS] (e.g., white bg, 300 DPI, custom theme)
-- [YOUR COLOR PALETTE] (e.g., institutional colors)
-- [YOUR TOLERANCE THRESHOLDS] (e.g., 1e-6 for point estimates)
+- **Figures:** Per-paper subdirectories in `Figures/PaperName/`, PDF for Beamer + SVG for Quarto
+- **Color palette:** Primary blue `#012169`, Gold `#B9975B`, Yellow `#F2A900`
+- **Source of truth:** Beamer `.tex` is authoritative; Quarto `.qmd` derives from it
+- **Notation:** Follow the original paper's notation exactly
+- **Attribution:** All figures from papers must be attributed
 
 ---
 
 ## Preferences
 
-<!-- Fill in as you discover your working style -->
-
-**Visual:** [How you want figures/plots handled]
-**Reporting:** [Concise bullets? Detailed prose? Details on request?]
+**Visual:** Figures from original paper PDFs, converted to SVG. Custom TikZ diagrams for explanatory visuals.
+**Reporting:** Concise bullets. Details on request.
 **Session logs:** Always (post-plan, incremental, end-of-session)
-**Replication:** [How strict? Flag near-misses?]
+**Code insights:** When official code available, include interesting implementation details
 
 ---
 

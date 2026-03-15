@@ -30,7 +30,7 @@ Each agent:
    - Current text
    - Proposed fix
    - Category (grammar / typo / overflow / consistency)
-3. Saves report to `quality_reports/` (e.g., `quality_reports/LectureN_Topic_report.md`)
+3. Saves report to `quality_reports/` (e.g., `quality_reports/PaperName_report.md`)
 4. **Does NOT modify any source files**
 
 ### Phase 2: Review & Approve

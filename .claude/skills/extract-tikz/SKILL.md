@@ -1,7 +1,7 @@
 ---
 name: extract-tikz
 description: Extract TikZ diagrams from Beamer source, compile to PDF, convert to SVG with 0-based indexing. Use when updating TikZ diagrams for Quarto slides.
-argument-hint: "[LectureN, e.g., Lecture2]"
+argument-hint: "[PaperName, e.g., DreamZero]"
 allowed-tools: ["Read", "Bash", "Glob"]
 ---
 

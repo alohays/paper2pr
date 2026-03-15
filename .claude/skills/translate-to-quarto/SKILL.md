@@ -1,7 +1,7 @@
 ---
 name: translate-to-quarto
 description: Translate Beamer LaTeX to Quarto RevealJS. Multi-phase workflow with TikZ extraction and QA.
-argument-hint: "[LectureN_Topic.tex]"
+argument-hint: "[PaperName.tex]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 context: fork
 ---

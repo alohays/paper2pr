@@ -5,7 +5,7 @@
 # Usage: ./scripts/sync_to_docs.sh [lecture_name]
 # Examples:
 #   ./scripts/sync_to_docs.sh                    # Sync all lectures
-#   ./scripts/sync_to_docs.sh Lecture2           # Sync only Lecture2
+#   ./scripts/sync_to_docs.sh DreamZero          # Sync only DreamZero
 
 set -e
 

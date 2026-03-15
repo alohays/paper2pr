@@ -25,7 +25,7 @@ TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode FILENAME.tex 
 
 ### For `.qmd` files (Quarto slides):
 ```bash
-./scripts/sync_to_docs.sh LectureN 2>&1 | tail -20
+./scripts/sync_to_docs.sh PaperName 2>&1 | tail -20
 ```
 - Check exit code
 - Verify HTML output exists in `docs/slides/`
@@ -49,7 +49,7 @@ Rscript scripts/R/FILENAME.R 2>&1 | tail -20
 ### TikZ Freshness Check (MANDATORY):
 **Before verifying any QMD that references TikZ SVGs:**
 1. Read the Beamer `.tex` file — extract all `\begin{tikzpicture}` blocks
-2. Read `Figures/LectureN/extract_tikz.tex` — extract all tikzpicture blocks
+2. Read `Figures/PaperName/extract_tikz.tex` — extract all tikzpicture blocks
 3. Compare each block
 4. Report: `FRESH` or `STALE — N diagrams differ`
 

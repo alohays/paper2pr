@@ -1,12 +1,8 @@
-# CLAUDE.MD -- Academic Project Development with Claude Code
+# CLAUDE.MD -- Paper2PR: AI/ML Paper Review Presentations
 
-<!-- HOW TO USE: Replace [BRACKETED PLACEHOLDERS] with your project info.
-     Customize Beamer environments and CSS classes for your theme.
-     Keep this file under ~150 lines — Claude loads it every session.
-     See the guide at docs/workflow-guide.html for full documentation. -->
-
-**Project:** [YOUR PROJECT NAME]
-**Institution:** [YOUR INSTITUTION]
+**Project:** Paper2PR
+**Presenter:** Yunsung Lee
+**Institution:** WoRV, MaumAI
 **Branch:** main
 
 ---
@@ -21,23 +17,31 @@
 
 ---
 
+## Project Scope
+
+Ongoing multi-paper review project. Each paper in `target-papers/` gets its own slide deck (30-40 slides, ~30 min). Target audience: basic deep learning knowledge. Presentations cover main ideas, technical details, and personal insights. When official code is available, include implementation-level observations.
+
 ## Folder Structure
 
 ```
-[YOUR-PROJECT]/
+paper2pr/
 ├── CLAUDE.MD                    # This file
 ├── .claude/                     # Rules, skills, agents, hooks
-├── Bibliography_base.bib        # Centralized bibliography
-├── Figures/                     # Figures and images
-├── Preambles/header.tex         # LaTeX headers
-├── Slides/                      # Beamer .tex files
+├── target-papers/               # Source papers (paper/ + code/ per entry)
+│   └── YYMM-papername/
+│       ├── paper/               # LaTeX source, figures, bib
+│       └── code/                # Official implementation (if available)
+├── Bibliography_base.bib        # Centralized bibliography (grows per paper)
+├── Figures/                     # Per-paper subdirectories
+│   └── PaperName/               # PDF (Beamer) + SVG (Quarto)
+├── Preambles/header.tex         # Shared Beamer preamble
+├── Slides/                      # Beamer .tex files (one per paper)
 ├── Quarto/                      # RevealJS .qmd files + theme
 ├── docs/                        # GitHub Pages (auto-generated)
-├── scripts/                     # Utility scripts + R code
+├── scripts/                     # Utility scripts
 ├── quality_reports/             # Plans, session logs, merge reports
-├── explorations/                # Research sandbox (see rules)
-├── templates/                   # Session log, quality report templates
-└── master_supporting_docs/      # Papers and existing slides
+├── explorations/                # Research sandbox
+└── templates/                   # Session log, quality report templates
 ```
 
 ---
@@ -46,16 +50,19 @@
 
 ```bash
 # LaTeX (3-pass, XeLaTeX only)
-cd Slides && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
-BIBINPUTS=..:$BIBINPUTS bibtex file
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode file.tex
+cd Slides && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
+BIBINPUTS=..:$BIBINPUTS bibtex PaperName
+TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
+TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
 
-# Deploy Quarto to GitHub Pages
-./scripts/sync_to_docs.sh LectureN
+# Quarto render
+cd Quarto && quarto render PaperName.qmd
+
+# Deploy to GitHub Pages
+./scripts/sync_to_docs.sh PaperName
 
 # Quality score
-python scripts/quality_score.py Quarto/file.qmd
+python scripts/quality_score.py Quarto/PaperName.qmd
 ```
 
 ---
@@ -75,62 +82,70 @@ python scripts/quality_score.py Quarto/file.qmd
 | Command | What It Does |
 |---------|-------------|
 | `/compile-latex [file]` | 3-pass XeLaTeX + bibtex |
-| `/deploy [LectureN]` | Render Quarto + sync to docs/ |
-| `/extract-tikz [LectureN]` | TikZ → PDF → SVG |
+| `/deploy [PaperName]` | Render Quarto + sync to docs/ |
 | `/proofread [file]` | Grammar/typo/overflow review |
 | `/visual-audit [file]` | Slide layout audit |
 | `/pedagogy-review [file]` | Narrative, notation, pacing review |
-| `/review-r [file]` | R code quality review |
-| `/qa-quarto [LectureN]` | Adversarial Quarto vs Beamer QA |
+| `/qa-quarto [PaperName]` | Adversarial Quarto vs Beamer QA |
 | `/slide-excellence [file]` | Combined multi-agent review |
 | `/translate-to-quarto [file]` | Beamer → Quarto translation |
 | `/validate-bib` | Cross-reference citations |
 | `/devils-advocate` | Challenge slide design |
 | `/create-lecture` | Full lecture creation |
 | `/commit [msg]` | Stage, commit, PR, merge |
-| `/lit-review [topic]` | Literature search + synthesis |
-| `/research-ideation [topic]` | Research questions + strategies |
-| `/interview-me [topic]` | Interactive research interview |
 | `/review-paper [file]` | Manuscript review |
-| `/data-analysis [dataset]` | End-to-end R analysis |
+| `/data-analysis [dataset]` | End-to-end R data analysis workflow |
+| `/extract-tikz [PaperName]` | Extract TikZ diagrams → PDF → SVG |
+| `/interview-me [topic]` | Interactive interview to formalize research idea |
+| `/lit-review [topic]` | Structured literature search and synthesis |
+| `/research-ideation [topic]` | Generate research questions and strategies |
+| `/review-r [file]` | R code review for quality and reproducibility |
 | `/learn [skill-name]` | Extract discovery into persistent skill |
 | `/context-status` | Show session health + context usage |
 | `/deep-audit` | Repository-wide consistency audit |
 
 ---
 
-<!-- CUSTOMIZE: Replace the example entries below with your own
-     Beamer environments and Quarto CSS classes. These are examples
-     from the original project — delete them and add yours. -->
-
 ## Beamer Custom Environments
 
-| Environment       | Effect        | Use Case       |
-|-------------------|---------------|----------------|
-| `[your-env]`      | [Description] | [When to use]  |
-
-<!-- Example entries (delete and replace with yours):
-| `keybox` | Gold background box | Key points |
-| `highlightbox` | Gold left-accent box | Highlights |
-| `definitionbox[Title]` | Blue-bordered titled box | Formal definitions |
--->
+| Environment | Effect | Use Case |
+|-------------|--------|----------|
+| `methodbox` | Blue-bordered box | Technical details, architecture descriptions |
+| `keybox` | Gold-bordered box | Key insights, important takeaways |
+| `highlightbox` | Yellow-bordered box | Notable findings, emphasis points |
+| `assumptionbox` | Gold full-border box | Assumptions, hypotheses |
+| `quotebox` | Italic with quote mark | Direct quotes from papers |
+| `resultbox` | Gold-bordered with shadow | Main experimental results |
+| `eqbox` | Subtle blue background | Key equations |
+| `softbox` | Subtle gold italic | Side remarks, intuition |
 
 ## Quarto CSS Classes
 
-| Class              | Effect        | Use Case       |
-|--------------------|---------------|----------------|
-| `[.your-class]`    | [Description] | [When to use]  |
-
-<!-- Example entries (delete and replace with yours):
-| `.smaller` | 85% font | Dense content slides |
-| `.positive` | Green bold | Good annotations |
--->
+| Class | Effect | Use Case |
+|-------|--------|----------|
+| `.primaryblue` | Primary blue text | Headings, emphasis |
+| `.primarygold` | Gold text | Secondary emphasis |
+| `.primaryyellow` | Yellow text | Highlight markers |
+| `.hi` | Bold primary blue | Inline key terms |
+| `.hi-gold` | Bold gold | Inline secondary emphasis |
+| `.hi-green` | Bold green | Positive results |
+| `.hi-red` | Bold red | Negative results, limitations |
+| `.positive` | Green + bold | Good outcomes in comparisons |
+| `.negative` | Red + bold | Bad outcomes, limitations |
+| `.neutral` | Gray | Context, reference values |
+| `.smaller` | 85% font size | Dense content slides |
+| `.smallest` | 80% font size | Very dense content |
+| `.compact` | Tighter spacing | Lists needing more items |
+| `.footnote` | Bottom-positioned small text | Source attributions |
+| `.methodbox` | Blue-bordered div | Technical details |
+| `.keybox` | Gold-bordered div | Key insights |
+| `.highlightbox` | Yellow-bordered div | Notable findings |
+| `.resultbox` | Gold-bordered with shadow | Main results |
 
 ---
 
 ## Current Project State
 
-| Lecture | Beamer | Quarto | Key Content |
-|---------|--------|--------|-------------|
-| 1: [Topic] | `Lecture01_Topic.tex` | `Lecture1_Topic.qmd` | [Brief description] |
-| 2: [Topic] | `Lecture02_Topic.tex` | -- | [Brief description] |
+| Paper | Beamer | Quarto | Key Content |
+|-------|--------|--------|-------------|
+| DreamZero | `DreamZero.tex` | `DreamZero.qmd` | NVIDIA — World Action Models as Zero-shot Policies |

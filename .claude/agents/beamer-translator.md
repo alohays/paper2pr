@@ -69,7 +69,7 @@ In Beamer, `2$\times$2` works fine. In Quarto/Pandoc, this produces broken outpu
 Browsers cannot render PDF images inline.
 
 **Decision tree for every figure:**
-1. **Is it a TikZ diagram?** → Reference extracted SVG: `![](../Figures/LectureN/tikz_exact_XX.svg){fig-align="center"}`
+1. **Is it a TikZ diagram?** → Reference extracted SVG: `![](../Figures/PaperName/tikz_exact_XX.svg){fig-align="center"}`
 2. **Is it a complex faceted grid?** → Convert PDF to SVG, reference as static
 3. **Is it an R-generated plot with data in RDS?** → Write a `{r}` chunk with plotly code reading from the RDS file
 4. **Otherwise:** Convert to SVG and reference statically
@@ -82,7 +82,7 @@ Browsers cannot render PDF images inline.
 
 **Static SVG workflow (for TikZ and complex figures):**
 1. Convert PDF to SVG: `pdf2svg input.pdf output.svg`
-2. Reference: `![](../Figures/LectureN/file.svg){fig-align="center"}`
+2. Reference: `![](../Figures/PaperName/file.svg){fig-align="center"}`
 3. ALWAYS add `fig-align="center"`
 4. Verify every referenced SVG exists on disk
 

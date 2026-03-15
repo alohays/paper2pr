@@ -14,19 +14,17 @@ When you modify a Beamer `.tex` file, you MUST also apply the equivalent change 
 
 ## Lecture Mapping
 
-<!-- Customize this table for your lectures -->
-| Lecture | Beamer | Quarto |
-|---------|--------|--------|
-| 1 | `Slides/Lecture1_Topic.tex` | `Quarto/Lecture1_Topic.qmd` |
-| 2 | `Slides/Lecture2_Topic.tex` | `Quarto/Lecture2_Topic.qmd` |
-<!-- Add rows as you create lectures -->
+| Paper | Beamer | Quarto |
+|-------|--------|--------|
+| DreamZero | `Slides/DreamZero.tex` | `Quarto/DreamZero.qmd` |
+<!-- Add rows as you create new paper reviews -->
 
 ## Workflow (Every Time)
 
 1. Apply fix to Beamer `.tex`
 2. **Immediately** apply equivalent fix to Quarto `.qmd`
 3. Compile Beamer (3-pass xelatex)
-4. Render Quarto (`./scripts/sync_to_docs.sh LectureN`)
+4. Render Quarto (`./scripts/sync_to_docs.sh PaperName`)
 5. Only then report task complete
 
 ## LaTeX → Quarto Translation Reference
@@ -34,7 +32,7 @@ When you modify a Beamer `.tex` file, you MUST also apply the equivalent change 
 | Beamer | Quarto Equivalent |
 | ------ | ----------------- |
 | `\muted{text}` | `[text]{style="color: #525252;"}` |
-| `\key{text}` | `[**text**]{.emorygold}` |
+| `\key{text}` | `[**text**]{.primarygold}` |
 | `\textcolor{positive}{text}` | `[text]{.positive}` |
 | `\textcolor{negative}{text}` | `[text]{.negative}` |
 | `\item text` | `- text` |

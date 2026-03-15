@@ -1,7 +1,7 @@
 ---
 name: qa-quarto
 description: Adversarial Quarto vs Beamer QA. Critic finds issues, fixer applies fixes, loops until APPROVED (max 5 rounds).
-argument-hint: "[LectureN]"
+argument-hint: "[PaperName]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 context: fork
 ---

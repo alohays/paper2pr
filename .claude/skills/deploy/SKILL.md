@@ -1,7 +1,7 @@
 ---
 name: deploy
 description: Render Quarto slides and sync to docs/ for GitHub Pages deployment. Use when deploying lecture slides after making changes.
-argument-hint: "[LectureN or 'all']"
+argument-hint: "[PaperName or 'all']"
 allowed-tools: ["Read", "Bash"]
 ---
 
@@ -12,7 +12,7 @@ Render Quarto slides and sync all files to `docs/` for GitHub Pages deployment.
 ## Steps
 
 1. **Run the sync script:**
-   - If `$ARGUMENTS` is provided (e.g., "Lecture4"): `./scripts/sync_to_docs.sh $ARGUMENTS`
+   - If `$ARGUMENTS` is provided (e.g., "DreamZero"): `./scripts/sync_to_docs.sh $ARGUMENTS`
    - If no argument: `./scripts/sync_to_docs.sh` (syncs all lectures)
 
 2. **Verify deployment:**
@@ -25,11 +25,11 @@ Render Quarto slides and sync all files to `docs/` for GitHub Pages deployment.
    - Confirm count matches expected
 
 4. **Verify TikZ SVGs** (if applicable):
-   - Check that all referenced SVG files exist in `docs/Figures/LectureN/`
+   - Check that all referenced SVG files exist in `docs/Figures/PaperName/`
 
 5. **Open in browser** for visual verification:
-   - `open docs/slides/LectureX_Name.html`          # macOS
-   - `# xdg-open docs/slides/LectureX_Name.html`    # Linux
+   - `open docs/slides/PaperName.html`          # macOS
+   - `# xdg-open docs/slides/PaperName.html`    # Linux
    - Confirm slides render, images display, navigation works
 
 6. **Report results** to the user

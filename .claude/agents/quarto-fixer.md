@@ -74,18 +74,18 @@ The report will be at: `quality_reports/[Lecture]_qa_critic_round[N].md`
 ### Step 3: Re-Render
 
 ```bash
-./scripts/sync_to_docs.sh LectureX
+./scripts/sync_to_docs.sh PaperName
 ```
 
 ### Step 4: Verify and Report
 
-**Save report to:** `quality_reports/[Lecture]_qa_fixer_round[N].md`
+**Save report to:** `quality_reports/[PaperName]_qa_fixer_round[N].md`
 
 ```markdown
-# Fix Report: [Lecture Name] — Round [N]
+# Fix Report: [PaperName] — Round [N]
 
-**Source file:** `Quarto/LectureX_Topic.qmd`
-**Critic report:** `quality_reports/[Lecture]_qa_critic_round[N].md`
+**Source file:** `Quarto/PaperName.qmd`
+**Critic report:** `quality_reports/[PaperName]_qa_critic_round[N].md`
 **Date:** [YYYY-MM-DD]
 
 ## Issues Addressed
@@ -96,7 +96,7 @@ The report will be at: `quality_reports/[Lecture]_qa_critic_round[N].md`
 | M1 | Major | Fixed | [description] |
 
 ## Render Status
-- **Command:** `./scripts/sync_to_docs.sh LectureX`
+- **Command:** `./scripts/sync_to_docs.sh PaperName`
 - **Result:** Success / Failed
 
 ## Ready for Re-Review

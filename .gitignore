@@ -51,6 +51,13 @@ CLAUDE.local.md
 # Quarto rendering artifacts
 /.quarto/
 
+# Quarto rendered HTML (regenerable via quarto render)
+Quarto/*.html
+Quarto/*_files/
+
 # Output artifacts — uncomment lines below based on your preference
 # *.rds
 # output/**/*.rds
+
+# Target paper sources (copyrighted content, not for distribution)
+target-papers/
