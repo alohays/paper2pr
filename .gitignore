@@ -70,8 +70,8 @@ target-papers/
 
 # Quarto project-level build artifacts
 _site/
-index.html
+/index.html
 index_files/
 
-# Override global gitignore: RevealJS dist/ must be tracked for GitHub Pages
-!docs/**/dist/
+# GitHub Pages output (deployed via CI/CD, not tracked in git)
+docs/

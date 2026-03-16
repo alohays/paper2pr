@@ -35,7 +35,7 @@
 Speaker notes (`::: {.notes}` blocks in QMD) are **local-only** and never reach git:
 
 1. **Git clean filter** strips notes from QMD before staging (`.gitattributes` + `scripts/strip_qmd_notes.py`)
-2. **Deploy script** strips notes from HTML before syncing to `docs/` (`scripts/strip_speaker_notes.py`)
+2. **CI/CD pipeline** strips notes from HTML during GitHub Actions deployment (`scripts/strip_speaker_notes.py`)
 3. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [PaperName]`
 4. **Setup** (run once after clone): `bash scripts/setup-git-filters.sh`
 
@@ -61,7 +61,7 @@ paper2pr/
 ├── Preambles/header.tex         # Shared Beamer preamble
 ├── Slides/                      # Beamer .tex files (one per paper)
 ├── Quarto/                      # RevealJS .qmd files + theme
-├── docs/                        # GitHub Pages (auto-generated)
+├── pages/                       # Landing page source (deployed via CI/CD)
 ├── scripts/                     # Utility scripts
 ├── quality_reports/             # Plans, session logs, merge reports
 ├── explorations/                # Research sandbox
@@ -82,7 +82,10 @@ TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
 # Quarto render
 cd Quarto && quarto render PaperName.qmd
 
-# Deploy to GitHub Pages (strips speaker notes from public HTML)
+# Deploy to GitHub Pages (automatic via CI/CD on push to main)
+git push  # GitHub Actions renders Quarto, strips notes, deploys
+
+# Local deploy preview (optional, for testing before push)
 ./scripts/sync_to_docs.sh PaperName
 
 # Quality score
@@ -106,7 +109,7 @@ python scripts/quality_score.py Quarto/PaperName.qmd
 | Command | What It Does |
 |---------|-------------|
 | `/compile-latex [file]` | 3-pass XeLaTeX + bibtex |
-| `/deploy [PaperName]` | Render Quarto + sync to docs/ |
+| `/deploy [PaperName]` | Render Quarto + deploy (CI/CD on push) |
 | `/proofread [file]` | Grammar/typo/overflow review |
 | `/visual-audit [file]` | Slide layout audit |
 | `/pedagogy-review [file]` | Narrative, notation, pacing review |
@@ -176,7 +179,7 @@ Speaker notes (`::: {.notes}`) live in the working directory QMD only. Two layer
 | Layer | What | How |
 |-------|------|-----|
 | **Git** | QMD committed without notes | `git clean filter` via `.gitattributes` |
-| **Deploy** | HTML deployed without notes | `strip_speaker_notes.py` via `sync_to_docs.sh` |
+| **Deploy** | HTML deployed without notes | `strip_speaker_notes.py` via GitHub Actions CI/CD |
 
 ```bash
 # One-time setup (after clone)

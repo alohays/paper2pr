@@ -1,6 +1,8 @@
 #!/bin/bash
 # sync_to_docs.sh
-# Renders Quarto slides and syncs everything to docs/ for GitHub Pages
+# LOCAL PREVIEW TOOL — renders Quarto slides and assembles docs/ locally.
+# Production deployment is handled by GitHub Actions CI/CD (.github/workflows/deploy.yml).
+# The docs/ directory is gitignored; this script is for local testing only.
 #
 # Usage: ./scripts/sync_to_docs.sh [lecture_name]
 # Examples:

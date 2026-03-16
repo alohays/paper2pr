@@ -1,0 +1,76 @@
+name: Deploy slides to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render Quarto slides
+        run: |
+          cd Quarto
+          for qmd in *.qmd; do
+            if [ -f "$qmd" ] && [[ ! "$qmd" == *"_backup"* ]]; then
+              echo "Rendering $qmd..."
+              quarto render "$qmd"
+            fi
+          done
+
+      - name: Strip speaker notes from HTML (safety net)
+        run: |
+          for html in Quarto/*.html; do
+            [ -f "$html" ] && python3 scripts/strip_speaker_notes.py "$html"
+          done
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site/slides _site/Figures _site/files/code
+
+          # Landing page
+          cp pages/index.html _site/
+          touch _site/.nojekyll
+
+          # Rendered HTML + RevealJS assets
+          for html in Quarto/*.html; do
+            [ -f "$html" ] || continue
+            name=$(basename "$html" .html)
+            cp "$html" _site/slides/
+            [ -d "Quarto/${name}_files" ] && cp -r "Quarto/${name}_files" _site/slides/
+          done
+
+          # Beamer PDFs
+          cp Slides/*.pdf _site/slides/ 2>/dev/null || true
+
+          # Figures (both PDF and SVG)
+          cp -r Figures/* _site/Figures/ 2>/dev/null || true
+
+          # R scripts (if any)
+          cp scripts/R/*.R _site/files/code/ 2>/dev/null || true
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
