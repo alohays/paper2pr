@@ -1,0 +1,1220 @@
+% ==============================================================================
+% DreamDojo: A Foundation World Model for Open-World Dexterous Robot Tasks
+% Paper Review Presentation — WoRV / MaumAI
+% ==============================================================================
+
+\input{../Preambles/header}
+
+\addbibresource{../Bibliography_base.bib}
+
+\title{DreamDojo: Foundation World Model\\for Dexterous Robotics}
+\subtitle{Gao, Ye, Yang, Zheng, Jang et al.\ (NVIDIA, 2026)}
+\author{Yunsung Lee}
+\institute{WoRV / MaumAI}
+\date{}
+
+\begin{document}
+
+% ==============================================================================
+% PART 1: MOTIVATION & BACKGROUND
+% ==============================================================================
+
+% --- Slide 1: Title ---
+\begin{frame}[plain]
+\maketitle
+\vfill
+\begin{center}
+\includegraphics[width=0.65\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/teaser_compressed.pdf}
+\end{center}
+\end{frame}
+
+% --- Slide 1b: Roadmap ---
+\begin{frame}{Roadmap}
+\begin{enumerate}
+    \item \hi{Motivation} --- why robot data is not enough
+    \item \hi{Latent Action Model} --- self-supervised actions
+    \item \hi{Architecture \& Training} --- building the world model
+    \item \hi{Distillation} --- making it real-time
+    \item \hi{Results} --- benchmarks and applications
+    \item \hi{Code Insights} --- under the hood
+    \item \hi{Discussion} --- takeaways and landscape
+\end{enumerate}
+\end{frame}
+
+% --- Slide 2: DreamZero Recap ---
+\begin{frame}{DreamZero Recap: WAMs for Zero-shot Policies}
+\hi{World Action Models (WAMs):}
+\begin{itemize}
+    \item \hi{Joint} video + action generation
+          from a single DiT backbone
+    \item Autoregressive chunk-wise inference
+          with ground-truth injection
+    \item \positive{2$\times$} over VLAs,
+          \positive{38$\times$} speedup to real-time 7Hz
+\end{itemize}
+
+\vspace{0.5em}
+\begin{keybox}[Key Paradigm]
+WAMs generate ``\hi{how to move}'' by predicting
+``\hi{what happens next}'' ---
+inverse dynamics emerge from video understanding.
+\end{keybox}
+\end{frame}
+
+% --- Slide 2b: From DreamZero to DreamDojo ---
+\begin{frame}{From DreamZero to DreamDojo}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{DreamZero (WAM = Policy):}
+\begin{itemize}
+    \item Joint video + action prediction
+    \item \hi{Inverse} dynamics:
+          video $\rightarrow$ action
+    \item \positive{Zero-shot policies}
+    \item Trained on robot data
+\end{itemize}
+
+\column{0.48\textwidth}
+\hi{DreamDojo (World Model):}
+\begin{itemize}
+    \item Action-conditioned video prediction
+    \item \hi{Forward} dynamics:
+          action $\rightarrow$ video
+    \item \positive{Open-world simulation}
+    \item Pretrained on \higold{human video}
+\end{itemize}
+\end{columns}
+
+\vspace{0.5em}
+\begin{keybox}[The Shift]
+Same team, complementary paradigms:
+DreamZero is a \hi{policy}, DreamDojo is a \hi{simulator}.
+\end{keybox}
+\end{frame}
+
+% --- Slide 3: The Data Gap ---
+\begin{frame}{The Data Gap: Robot Data Is Not Enough}
+\hi{The fundamental bottleneck:}
+\begin{itemize}
+    \item Existing robot datasets: limited coverage,
+          narrow distributions
+    \item DROID: 350 hours, 86 skills, 564 scenes
+    \item AgiBot World: 2.9K hours, 87 skills, 106 scenes
+    \item World models trained on robot data
+          $\rightarrow$ \negative{in-distribution only}
+\end{itemize}
+
+\vspace{0.5em}
+\begin{highlightbox}[The Core Problem]
+Robot world models plateau at \negative{observed setups}
+and are \negative{unresponsive to counterfactual actions}
+--- actions the robot never performed in training
+(e.g., patting a toy, reaching and missing).
+Scaling teleoperation alone cannot cover the long tail.
+\end{highlightbox}
+\end{frame}
+
+% --- Slide 4: The Human Video Insight ---
+\begin{frame}{The Human Video Insight}
+\begin{quotebox}
+Despite the embodiment gap, the underlying physics
+during interactions is largely consistent between
+humans and robots, enabling effective knowledge transfer.
+\end{quotebox}
+\hfill --- \citet{gao2026dreamdojo}
+
+\vspace{0.5em}
+\begin{center}
+\includegraphics[width=0.82\textwidth,
+  height=0.40\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/dataset_compressed.pdf}
+\end{center}
+
+\vspace{0.3em}
+\hi{Key idea:} Human videos capture the same physics ---
+contact, gravity, deformation, tool use ---
+just with different end-effectors.
+\end{frame}
+
+% --- Slide 5: DreamDojo-HV at Scale ---
+\begin{frame}{DreamDojo-HV: The Largest WM Dataset}
+\begin{resultbox}[Dataset Scale]
+\begin{itemize}
+    \item \positive{44,711 hours} of egocentric video
+    \item \positive{1,179K} trajectories
+    \item \positive{$\sim$6,015} unique skills
+    \item \positive{$>$1,135K} unique scenes
+\end{itemize}
+\end{resultbox}
+
+\vspace{0.2em}
+\hi{vs.\ prior largest (AgiBot World):}
+\positive{15$\times$} duration,
+\positive{96$\times$} skills,
+\positive{2,000$\times$} scenes
+
+\vspace{0.2em}
+\begin{center}
+\includegraphics[width=0.70\textwidth,
+  height=0.22\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/mecka_compressed.pdf}
+\end{center}
+\end{frame}
+
+% --- Slide 6: Three Data Sources ---
+\begin{frame}{Three Data Sources}
+\begin{methodbox}[Data Mixture]
+\begin{columns}[T]
+\column{0.32\textwidth}
+\hi{In-lab (55h)}\\
+{\small Manus gloves,\\
+35 skills, 1 scene}
+
+\column{0.32\textwidth}
+\hi{EgoDex (829h)}\\
+{\small Apple Vision Pro,\\
+194 skills, 5 scenes}
+
+\column{0.32\textwidth}
+\hi{HV (43.8Kh)}\\
+{\small Crowdsourced,\\
+6,015 skills, 1.1M scenes}
+\end{columns}
+\end{methodbox}
+
+\vspace{0.3em}
+\hi{Sampling ratio:} In-lab : EgoDex : HV $=$ \higold{1 : 2 : 10}
+
+\vspace{0.3em}
+\begin{columns}[c]
+\column{0.48\textwidth}
+\begin{center}
+\includegraphics[width=0.82\textwidth,
+  height=0.20\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/egodex.png}\\
+{\small EgoDex sample}
+\end{center}
+\column{0.48\textwidth}
+\begin{center}
+\includegraphics[width=0.82\textwidth,
+  height=0.20\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/inlab.png}\\
+{\small In-lab PSNR curves}
+\end{center}
+\end{columns}
+\end{frame}
+
+% --- Slide 7: System Overview ---
+\begin{frame}{System Overview: Three-Phase Pipeline}
+\begin{center}
+\includegraphics[width=0.90\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/overview_compressed.pdf}
+\end{center}
+
+\vspace{0.2em}
+\hi{Phase 1:} Pretrain on human videos with \higold{latent actions}\\
+\hi{Phase 2:} Post-train on target robot data (reset action layer)\\
+\hi{Phase 3:} Distill to autoregressive real-time student
+
+\end{frame}
+
+% ==============================================================================
+% PART 2: LATENT ACTION MODEL
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{How Does DreamDojo Learn Actions?}}\\[1em]
+{\large\higold{Latent Action Model}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 8: The Action Label Problem ---
+\begin{frame}{The Action Label Problem}
+\hi{Human videos are vast but lack action labels.}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item Passive video prediction ignores \negative{causality}
+          between observations and actions
+    \item Off-the-shelf hand pose extractors (HaMeR)
+          miss arm movements, locomotion,
+          and fail under occlusion
+    \item Converting heterogeneous action formats into
+          a unified representation
+          $\rightarrow$ significant engineering burden
+\end{itemize}
+
+\vspace{0.5em}
+\begin{highlightbox}[The Dilemma]
+Actionless pretraining wastes interaction knowledge.
+Ground-truth actions require expensive capture devices.
+We need a \hi{self-supervised} middle ground.
+\end{highlightbox}
+\end{frame}
+
+% --- Slide 9: LAM Architecture ---
+\begin{frame}{Latent Action Model (LAM)}
+\begin{center}
+\includegraphics[width=0.88\textwidth,
+  height=0.38\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/lam_compressed.pdf}
+\end{center}
+
+\vspace{0.2em}
+\begin{eqbox}
+\hi{VAE with information bottleneck:}
+\begin{equation*}
+\mathcal{L}^{pred}_{\theta,\phi}(f^{t+1})
+  = \mathbb{E}_{q_{\phi}(\hat{a}|f^{t:t+1})}
+    \log p_{\theta}(f^{t+1}|\hat{a},f^{t})
+  - \beta\,D_{KL}(q_{\phi}(\hat{a}|f^{t:t+1})||p(\hat{a}))
+\end{equation*}
+{\small $\hat{a} \in \mathbb{R}^{32}$, \ \ $\beta=10^{-6}$
+(tight bottleneck $\rightarrow$ forces action disentanglement)}
+\end{eqbox}
+\end{frame}
+
+% --- Slide 10: Latent Actions Cross Embodiments ---
+\begin{frame}{Latent Actions Cross Embodiments}
+\begin{keybox}[Cross-Embodiment Transfer]
+The same latent action $\hat{a}$ captures the
+\hi{same physical interaction} regardless of whether
+it is performed by a human hand, a gripper,
+or a dexterous robot.
+\end{keybox}
+
+\vspace{0.5em}
+\hi{LAM Architecture (700M params):}
+\begin{itemize}
+    \item Spatiotemporal Transformer
+          \citep{bruce2024genie}
+    \item 24 encoder blocks $+$ 24 decoder blocks
+    \item Encoder: $(f^t, f^{t+1}) \rightarrow \hat{a}$
+          \ \ Decoder: $(\hat{a}, f^t) \rightarrow \hat{f}^{t+1}$
+    \item Trained on mixture of \hi{all} datasets
+          (human + robot)
+\end{itemize}
+
+\end{frame}
+
+% --- Slide 11: Latent Actions vs Alternatives ---
+\begin{frame}{Latent Actions vs.\ Alternatives}
+\begin{center}
+{\small
+\begin{tabular}{lccl}
+\toprule
+\textbf{Method} & \textbf{PSNR$\uparrow$}
+  & \textbf{LPIPS$\downarrow$} & \textbf{Note}\\
+\midrule
+w/o pretrain & 20.576 & 0.222 & No human data \\
+Action-free & 20.797 & 0.222 & Passive video \\
+\hi{Latent action} & \positive{20.913}
+  & \positive{0.219} & Self-supervised \\
+\midrule
+\neutral{Retargeted GT} & \neutral{20.960}
+  & \neutral{0.219} & \neutral{Requires gloves} \\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\vspace{0.3em}
+\begin{methodbox}[Key Finding]
+Latent actions achieve \positive{near-parity}
+with ground-truth action labels ---
+without any capture devices.
+The gap: $<$0.05 PSNR, 0.000 LPIPS.
+\end{methodbox}
+
+\vspace{0.3em}
+\begin{softbox}
+\higold{My Take:} This is the enabler for 44K-hour scale.
+You cannot put Manus gloves on a million crowdworkers,
+but you \hi{can} run a VAE on their videos.
+\end{softbox}
+\end{frame}
+
+% ==============================================================================
+% PART 3: ARCHITECTURE & TRAINING
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{Building the World Model}}\\[1em]
+{\large\higold{Architecture \& Training}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 12: Cosmos-Predict2.5 Backbone ---
+\begin{frame}{Cosmos-Predict2.5 Backbone}
+\begin{methodbox}[Foundation]
+\begin{itemize}
+    \item Latent video diffusion model
+          \citep{ali2025world}
+    \item \hi{WAN 2.2 tokenizer}:
+          $4\times$ temporal compression\\
+          {\small (video latent $x^i$ corresponds to
+          4 pixel frames $f^{i:i+4}$)}
+    \item \hi{DiT} blocks \citep{peebles2023scalable}
+          with cross-attention for text,
+          AdaLN for timestep
+    \item Trained with \hi{flow matching} loss
+    \item Two variants: \higold{2B} and \higold{14B} parameters
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.3em}
+\hi{Training setup:}
+\begin{itemize}
+    \item 140K steps pretrain (256 H100s),
+          50K steps post-train (128 H100s)
+    \item Resolution: $640 \times 480$,
+          sequences of 13 latent frames
+    \item EMA maintained throughout
+\end{itemize}
+\end{frame}
+
+% --- Slide 12b: Flow Matching in 60 Seconds ---
+\begin{frame}{Flow Matching in 60 Seconds}
+\begin{keybox}[Intuition]
+Learn a \hi{velocity field} that transports
+noise $\rightarrow$ data along straight paths.
+Simpler and faster than standard diffusion.
+\end{keybox}
+
+\vspace{0.5em}
+\begin{eqbox}
+\hi{Flow matching loss:}
+\begin{equation*}
+\mathcal{L}_{\text{flow}}(\theta)
+  = \mathbb{E}_{\mathbf{x},\epsilon,\mathbf{c},t}
+    \left\|\mathbf{u}(\mathbf{x}_{t},t,\mathbf{c};\theta)
+    - \mathbf{v}_{t}\right\|^2
+\end{equation*}
+{\small where $\mathbf{v}_t = \epsilon - \mathbf{x}$
+(velocity = noise $-$ clean data)}
+\end{eqbox}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item $t=0$: pure noise.
+          $t=1$: clean data.
+    \item Model predicts the \hi{velocity} pointing
+          from noise toward data
+    \item Conditions $\mathbf{c}$: text, frames,
+          and \higold{actions} (for world models)
+\end{itemize}
+\end{frame}
+
+% --- Slide 13: Two Key Innovations ---
+\begin{frame}{Two Key Innovations for Controllability}
+\begin{center}
+\includegraphics[width=0.80\textwidth,
+  height=0.35\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/design_compressed.pdf}
+\end{center}
+
+\begin{methodbox}[Design Choices]
+\begin{enumerate}
+    \item \hi{Relative actions:} Rebaseline every 4 timesteps\\
+          {\small Concentrates action space
+          $\rightarrow$ better generalization to compositions}
+    \item \hi{Chunked injection:} 4 consecutive actions
+          $a^{t:t+4}$ sent to matching latent frame\\
+          {\small Respects causality
+          $\rightarrow$ future actions do not leak}
+\end{enumerate}
+\end{methodbox}
+\end{frame}
+
+% --- Slide 14: Action Embedding Equation ---
+\begin{frame}{Action Embedding: AdaLN Injection}
+\begin{eqbox}
+\hi{Action injection pathway:}
+\begin{equation*}
+\text{actions} \xrightarrow{\text{MLP}}
+  \text{action embedding}
+  \xrightarrow{+}
+  \text{timestep embedding}
+  \xrightarrow{\text{AdaLN}}
+  \text{DiT blocks}
+\end{equation*}
+{\small Scale, shift, and gate modulations
+in every DiT block}
+\end{eqbox}
+
+\vspace{0.5em}
+\hi{Key implementation details:}
+\begin{itemize}
+    \item Last layer of action MLP
+          \hi{zero-initialized}
+          \citep{zhang2023adding}\\
+          {\small Avoids perturbing pretrained state
+          at start of training}
+    \item During post-training: \hi{reset first layer only},
+          finetune all weights
+    \item Classifier-free guidance \hi{disabled}
+          (empirically no benefit)
+\end{itemize}
+\end{frame}
+
+% --- Slide 14b: Action Embedding Code Pattern ---
+\begin{frame}{Action Embedding: Code Insights}
+\begin{methodbox}[Implementation Pattern]
+\begin{itemize}
+    \item Latent actions projected via lightweight MLP
+          to match timestep embedding dim
+    \item \hi{Zero-init} on last MLP layer
+          $\rightarrow$ identity-like at init
+    \item Added to timestep embeddings before AdaLN
+    \item Dual pathway: actions modulate through
+          \hi{both} timestep AND scale/shift/gate
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} The dual-path action injection is more
+sophisticated than the paper describes --- actions
+modulate DiT through \hi{both timestep AND AdaLN}
+scale/shift/gate pathways. The zero-init trick from
+ControlNet is crucial for preserving pretrained physics.
+\end{softbox}
+\end{frame}
+
+% --- Slide 15: Temporal Consistency Loss ---
+\begin{frame}{Temporal Consistency Loss}
+\hi{Problem:} Flow matching supervises frames individually,
+ignoring temporal correlations.
+
+\vspace{0.3em}
+\begin{eqbox}
+\hi{Temporal consistency loss:}
+\begin{equation*}
+\mathcal{L}_{\text{temporal}}(\theta)
+  = \mathbb{E}\Big[\sum^{K-1}_{i=1}
+    \left\|(z^{i+1}-z^{i})-(v^{i+1}-v^{i})\right\|^2\Big]
+\end{equation*}
+\end{eqbox}
+
+\vspace{0.2em}
+\begin{eqbox}
+\hi{Final objective:}
+$\mathcal{L}_{\text{final}}
+  = \mathcal{L}_{\text{flow}}
+  + \lambda\,\mathcal{L}_{\text{temporal}},
+  \ \ \lambda = 0.1$
+\end{eqbox}
+
+\end{frame}
+
+% --- Slide 16: Post-Training ---
+\begin{frame}{Post-Training: Adapting to Target Robots}
+\begin{center}
+\includegraphics[width=0.80\textwidth,
+  height=0.34\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/pretrain_compressed.pdf}
+\end{center}
+
+\vspace{0.2em}
+\begin{methodbox}[Post-Training Recipe]
+\begin{enumerate}
+    \item \hi{Reset first layer} of action MLP
+          (new action space)
+    \item \hi{Finetune all weights},
+          target data at $\sim$10 Hz
+    \item 128 H100s, 50K steps, batch 512
+\end{enumerate}
+\end{methodbox}
+
+\vspace{0.2em}
+{\small Embodiments: GR-1, G1, AgiBot, YAM
+--- each post-trained separately.
+CFG disabled (no benefit).}
+\end{frame}
+
+% ==============================================================================
+% PART 4: DISTILLATION
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{Making It Real-Time}}\\[1em]
+{\large\higold{Distillation Pipeline}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 18: The Distillation Challenge ---
+\begin{frame}{The Distillation Challenge}
+\hi{Why distill?}
+\begin{itemize}
+    \item Teacher: \negative{35 denoising steps},
+          bidirectional attention, 2.72 FPS
+    \item Too slow for live teleoperation
+          and online planning
+\end{itemize}
+
+\vspace{0.5em}
+\begin{highlightbox}[Two Conversions Required]
+\begin{enumerate}
+    \item \hi{Bidirectional $\rightarrow$ Autoregressive}
+          (causal attention, streaming)
+    \item \hi{35 steps $\rightarrow$ 4 steps}
+          (few-step generation)
+\end{enumerate}
+\end{highlightbox}
+
+\vspace{0.3em}
+Student initialized from teacher weights,
+with bidirectional attention replaced by
+\hi{causal attention} over a sliding window of 12 frames.
+\end{frame}
+
+% --- Slide 19a: Self Forcing Warmup ---
+\begin{frame}{Self Forcing: Warmup Stage}
+\hi{Stage 1: Warmup} --- student regresses to teacher ODE solutions
+
+\vspace{0.5em}
+\begin{eqbox}
+\begin{equation*}
+\mathcal{L}_{\text{warmup}}
+  = \mathbb{E}_{x,t}\|G_{\text{student}}(x_{t},t)-x_{0}\|^2
+\end{equation*}
+{\small Student generates via teacher forcing (clean context)}
+\end{eqbox}
+
+\vspace{0.5em}
+\hi{How it works:}
+\begin{itemize}
+    \item Student receives \hi{clean} context frames
+          (teacher forcing)
+    \item Learns to map noisy inputs to clean data
+          in fewer steps
+    \item Provides a stable initialization
+          before self-generated training
+\end{itemize}
+\end{frame}
+
+% --- Slide 19b: Self Forcing Distillation ---
+\begin{frame}{Self Forcing: Distillation Stage}
+\hi{Stage 2: Distillation} --- student trains on its own outputs
+\citep{huang2025self}
+
+\vspace{0.3em}
+\begin{eqbox}
+\begin{equation*}
+\nabla\mathcal{L}_{\text{distill}}
+  = -\mathbb{E}_{z,t}\Big[
+    (s_{\text{real}}(x_{t},t)
+    - s_{\text{fake}}(x_{t},t))
+    \frac{dG_{\text{student}}}{d\theta}\Big]
+\end{equation*}
+{\small KL divergence between teacher and student
+distributions \citep{yin2024one}}
+\end{eqbox}
+
+\vspace{0.2em}
+{\small $s_{\text{real}}$: score from real (teacher-generated) data
+\quad $s_{\text{fake}}$: score from fake (student-generated) data}
+
+\vspace{0.3em}
+\hi{Extended rollout:} Student generates $N'>N$ frames,
+loss on last $N$ --- reduces long-horizon drift.
+\end{frame}
+
+% --- Slide 20: Distillation Results ---
+\begin{frame}{Distillation Results}
+\begin{resultbox}[Speed vs.\ Quality]
+\begin{center}
+{\small
+\begin{tabular}{lcccccc}
+\toprule
+& \textbf{PSNR$\uparrow$} & \textbf{SSIM$\uparrow$}
+  & \textbf{LPIPS$\downarrow$}
+  & \textbf{FPS$\uparrow$} & \textbf{Pred}
+  & \textbf{Ctx}\\
+\midrule
+Teacher & 14.09 & 0.442 & 0.412
+  & 2.72 & 12 & 1\\
+Student & 13.15 & 0.379 & 0.485
+  & \positive{$\sim$10} & 4 & 12\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+\end{resultbox}
+
+\vspace{0.3em}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.28\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/long_compressed.pdf}\\
+{\small 1-minute rollouts}
+\end{center}
+\column{0.48\textwidth}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.28\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/context_compressed.pdf}\\
+{\small Context advantage}
+\end{center}
+\end{columns}
+\end{frame}
+
+% ==============================================================================
+% PART 5: RESULTS
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{Does It Actually Work?}}\\[1em]
+{\large\higold{Experimental Results}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 21: Benchmarks ---
+\begin{frame}{Benchmark Construction: 6 OOD Eval Sets}
+\begin{center}
+\includegraphics[width=0.85\textwidth,
+  height=0.35\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/benchmark_compressed.pdf}
+\end{center}
+
+\begin{methodbox}[6 Evaluation Sets on GR-1]
+{\small
+\hi{1.} In-lab Eval \
+\hi{2.} EgoDex Eval \
+\hi{3.} HV Eval \
+\hi{4.} Counterfactual Eval\\
+\hi{5.} EgoDex-novel (Gemini-edited BG) \
+\hi{6.} HV-novel (Gemini-edited BG)\\[0.3em]
+Metrics: PSNR, SSIM, LPIPS (auto);
+human preference for novel scenes.
+}
+\end{methodbox}
+\end{frame}
+
+% --- Slide 22: Data Scaling Works ---
+\begin{frame}{Data Scaling: More Diversity $=$ Better OOD}
+\begin{center}
+{\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Data Mixture} & \textbf{In-lab}
+  & \textbf{EgoDex} & \textbf{HV}\\
+& PSNR$\uparrow$ & PSNR$\uparrow$ & PSNR$\uparrow$\\
+\midrule
+No pretrain (Cosmos) & 20.58 & 19.95 & 18.27\\
+In-lab only & 20.91 & 20.27 & 18.62\\
++ EgoDex & 20.97 & 20.33 & 18.71\\
++ DreamDojo-HV & 21.02 & \positive{20.41} & 18.72\\
+\midrule
+DreamDojo-2B & 21.11 & 20.41 & 18.81\\
+DreamDojo-14B & \positive{21.41} & \positive{20.53}
+  & \positive{18.92}\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\vspace{0.3em}
+\begin{keybox}[Monotonic Improvement]
+Adding more human data \positive{consistently improves}
+all OOD benchmarks --- both physics modeling
+and counterfactual action following.
+\end{keybox}
+\end{frame}
+
+% --- Slide 23: Human Preference ---
+\begin{frame}{Human Preference: 73.5\% Win Rate}
+\begin{resultbox}[Human Evaluation (12 volunteers)]
+\begin{center}
+{\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Comparison} & \textbf{Physics}
+  & \textbf{Action}\\
+\midrule
+DreamDojo-2B $>$ Cosmos
+  & 62.5\% & 63.5\%\\
+DreamDojo-14B $>$ Cosmos
+  & \positive{73.5\%} & \positive{72.6\%}\\
+DreamDojo-14B $>$ DreamDojo-2B
+  & 72.5\% & 65.5\%\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+\end{resultbox}
+
+\vspace{0.5em}
+\hi{Two axes evaluated:}
+\begin{itemize}
+    \item \hi{Physics correctness:} object permanence,
+          shape consistency, contact causality
+    \item \hi{Action following:} robot pose accuracy
+          vs.\ ground-truth
+\end{itemize}
+\end{frame}
+
+% --- Slide 24: Ablation ---
+\begin{frame}{Ablation: What Matters Most?}
+\begin{center}
+{\small
+\begin{tabular}{ccc|ccc}
+\toprule
+\textbf{Rel.} & \textbf{Chunk} & \textbf{Temp.}
+  & \multicolumn{3}{c}{\textbf{Counterfactual Eval}}\\
+& & & PSNR$\uparrow$ & SSIM$\uparrow$ & LPIPS$\downarrow$\\
+\midrule
+ & & & 19.45 & 0.768 & 0.211\\
+\checkmark & & & 19.48 & 0.772 & 0.212\\
+\checkmark & \checkmark &
+  & \positive{20.78} & \positive{0.790}
+  & \positive{0.193}\\
+\checkmark & \checkmark & \checkmark
+  & \positive{20.98} & \positive{0.796}
+  & \positive{0.189}\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\vspace{0.3em}
+\begin{keybox}[Takeaway]
+\hi{Chunked injection} is the largest single gain
+($+$1.30 PSNR). Relative actions alone have minimal effect,
+but temporal loss adds a further $+$0.20 improvement.
+\end{keybox}
+\end{frame}
+
+% --- Slide 25: Multi-Embodiment ---
+\begin{frame}{Multi-Embodiment Support}
+\begin{keybox}[Four Robot Platforms]
+Post-trained on GR-1, G1, AgiBot, and YAM
+--- each with separate post-training runs
+using the same pretrained foundation.
+\end{keybox}
+
+\vspace{0.5em}
+\hi{Per-embodiment adaptation:}
+\begin{itemize}
+    \item Reset action MLP first layer for new action space
+    \item Finetune all weights (50K steps)
+    \item Same pretrained physics transfers across all platforms
+\end{itemize}
+
+\end{frame}
+
+% --- Slide 26: Policy Evaluation ---
+\begin{frame}{Policy Evaluation: A Reliable Simulator}
+\begin{columns}[T]
+\column{0.38\textwidth}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.45\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/correlation_compressed.pdf}
+\end{center}
+
+\column{0.58\textwidth}
+\begin{resultbox}[Correlation with Reality]
+\begin{itemize}
+    \item Pearson $r$ = \positive{0.995}
+    \item MMRV = \positive{0.003}
+\end{itemize}
+\end{resultbox}
+
+\vspace{0.3em}
+\hi{Protocol:}
+\begin{itemize}
+    \item AgiBot fruit packing (20 scenes)
+    \item GR00T N1.5 policy checkpoints
+    \item $\sim$80s rollouts in real world
+          \emph{and} DreamDojo
+    \item Success = fruits packed / 5
+\end{itemize}
+\end{columns}
+
+\vspace{0.3em}
+{\small DreamDojo can reliably rank policies without
+deploying on a real robot.}
+\end{frame}
+
+% --- Slide 27: MPC & Teleoperation ---
+\begin{frame}{MPC \& Live Teleoperation}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Model-Based Planning:}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.30\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/mpc_compressed.pdf}
+\end{center}
+\begin{itemize}
+    \item 5 policy checkpoints $\rightarrow$ action proposals
+    \item DreamDojo predicts futures, value model selects
+    \item \positive{+17\%} success rate over best checkpoint
+\end{itemize}
+
+\column{0.48\textwidth}
+\hi{Live Teleoperation:}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.30\textheight,keepaspectratio]{%
+  ../Figures/DreamDojo/teleop_compressed.pdf}
+\end{center}
+\begin{itemize}
+    \item PICO VR controller $\rightarrow$ G1 actions
+    \item Distilled model on RTX 5090
+    \item Real-time interactive simulation
+\end{itemize}
+\end{columns}
+
+\vspace{0.2em}
+\begin{keybox}
+World models as \hi{simulators} unlock planning,
+evaluation, and teleoperation ---
+all from a single foundation.
+\end{keybox}
+\end{frame}
+
+% ==============================================================================
+% PART 6: CODE INSIGHTS
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{Under the Hood}}\\[1em]
+{\large\higold{Code-Level Insights}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 27b: Why Look at Code? ---
+\begin{frame}{Why Look at the Code?}
+\begin{keybox}[Production-Grade NVIDIA Code]
+DreamDojo's codebase reveals engineering decisions
+the paper glosses over --- these details matter
+for reproducibility and understanding.
+\end{keybox}
+
+\vspace{0.5em}
+\hi{What we can learn:}
+\begin{itemize}
+    \item How the LAM bottleneck actually works
+    \item How actions modulate the DiT
+    \item How three different data loaders
+          handle heterogeneous sources
+    \item How relative actions use proper SE(3) math
+\end{itemize}
+\end{frame}
+
+% --- Slide 28: Code LAM ---
+\begin{frame}{Code: Latent Action Model}
+\begin{methodbox}[Implementation Details (Not in Paper)]
+\begin{itemize}
+    \item Class \texttt{LatentActionModel} wraps
+          \hi{asymmetric} encoder--decoder
+    \item Encoder: \texttt{SpatioTemporalTransformer}
+          (joint space-time attention across frames)
+    \item Decoder: \texttt{SpatioTransformer}
+          (spatial-only --- no temporal mixing)
+    \item Action prompt initialized as:\\
+          {\small \texttt{nn.Parameter(torch.empty(1, 1, 1, patch\_token\_dim))}}
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.3em}
+\hi{Key asymmetry:} The encoder sees \hi{both} frames
+jointly (spatiotemporal), while the decoder reconstructs
+from action + \hi{single} frame (spatial only).
+This forces all temporal information through the
+32-dim bottleneck.
+\end{frame}
+
+% --- Slide 29: Code DiT ---
+\begin{frame}{Code: DiT Action Injection}
+\begin{methodbox}[Concrete Code Patterns]
+\begin{itemize}
+    \item Temporal rearrange:\\
+          {\small \texttt{rearrange(action, "b 1 (t d) -> b t d", t=...)}}
+    \item \hi{Two separate MLPs} for action embedding:\\
+          {\small \texttt{action\_embedder\_B\_D}: global timestep path\\
+          \texttt{action\_embedder\_B\_3D}: per-frame spatial path}
+    \item Each MLP last layer \hi{zero-initialized}
+    \item Embeddings added to timestep \emph{before} AdaLN
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.3em}
+\begin{softbox}
+\higold{My Take:} Two separate action MLPs ---
+not one --- feed into different pathways.
+This dual-path design is more sophisticated
+than the paper describes and explains why
+chunked injection has such a large ablation effect.
+\end{softbox}
+\end{frame}
+
+% --- Slide 30: Code Pipeline ---
+\begin{frame}{Code: Data Pipeline}
+\begin{methodbox}[Three Distinct Loaders]
+\begin{itemize}
+    \item \hi{MANO loader:} For EgoDex/In-lab
+          with hand pose annotations
+    \item \hi{VideoOnly loader:} For DreamDojo-HV
+          (latent actions extracted online)
+    \item \hi{LeRobot loader:} For target robot data
+          with ground-truth joint actions
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.3em}
+\hi{Dual-resolution processing:}\\
+{\small LAM operates at $320\times240$ (efficiency),
+while the world model trains at $640\times480$ (quality).
+Separate tokenizer passes for each resolution.}
+\end{frame}
+
+% --- Slide 31: Code Relative Actions ---
+\begin{frame}{Code: Relative Action Computation}
+\begin{methodbox}[SE(3) Math for Relative Actions]
+\begin{itemize}
+    \item Translation: body-frame deltas,
+          not naive world-frame subtraction
+    \item Rotation: proper rotation matrix computation
+          for relative orientation
+    \item Scale factor: $\times$20 applied
+          to normalize action magnitudes
+    \item Rebaseline every 4 timesteps
+          (matching tokenizer compression)
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{My Take:} The relative action computation uses
+proper SE(3) math --- translation deltas in body frame,
+not naive subtraction. The \hi{20$\times$ scaling factor}
+is a practical detail the paper omits entirely.
+These ``boring'' engineering choices are
+what make the model actually work.
+\end{softbox}
+\end{frame}
+
+% ==============================================================================
+% PART 7: DISCUSSION
+% ==============================================================================
+
+% --- Section Divider ---
+\begin{frame}[plain]
+\begin{center}
+\vfill
+{\Huge\hi{What Does It All Mean?}}\\[1em]
+{\large\higold{Discussion \& Takeaways}}
+\vfill
+\end{center}
+\end{frame}
+
+% --- Slide 32: Limitations ---
+\begin{frame}{Limitations \& Honest Assessment}
+\begin{highlightbox}[Paper-Acknowledged Limitations]
+\begin{itemize}
+    \item \negative{Uncommon actions} (slapping, fast waving)
+          still fail
+    \item Policy eval \negative{overestimates}
+          success rates vs.\ real world
+    \item No multi-view simulation support
+    \item Post-training knowledge retention not studied
+\end{itemize}
+\end{highlightbox}
+
+\vspace{0.3em}
+\begin{softbox}
+\higold{My Take:} The proprietary 43.8K-hour dataset
+is both the biggest strength and weakness ---
+it makes the results hard to reproduce.
+The eval overestimation suggests the model
+struggles with nuanced failure modes.
+\end{softbox}
+\end{frame}
+
+% --- Slide 33: DreamDojo vs DreamZero Paradigms ---
+\begin{frame}{DreamDojo vs.\ DreamZero: Two Paradigms}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{DreamZero (WAM = Policy):}
+\begin{itemize}
+    \item \hi{Inverse} dynamics
+    \item Video + action \emph{jointly} generated
+    \item Zero-shot policy transfer
+    \item Trained on robot data only
+    \item 500 hours robot teleoperation
+\end{itemize}
+
+\column{0.48\textwidth}
+\hi{DreamDojo (World Model):}
+\begin{itemize}
+    \item \hi{Forward} dynamics
+    \item Action $\rightarrow$ video prediction
+    \item Simulation, planning, teleoperation
+    \item Pretrained on \higold{44K hours human video}
+    \item Adapted to robots via post-training
+\end{itemize}
+\end{columns}
+
+\vspace{0.3em}
+\begin{keybox}[Complementary, Not Competing]
+DreamZero asks ``what action produces this future?''\\
+DreamDojo asks ``what future does this action produce?''
+\end{keybox}
+\end{frame}
+
+% --- Slide 33b: DreamDojo vs DreamZero Technical ---
+\begin{frame}{DreamDojo vs.\ DreamZero: Technical Comparison}
+\begin{center}
+{\small
+\begin{tabular}{lcc}
+\toprule
+& \textbf{DreamZero} & \textbf{DreamDojo}\\
+\midrule
+Dynamics & Inverse (IDM) & Forward (WM)\\
+Backbone & WAN 2.1 & Cosmos-Predict2.5\\
+Tokenizer & WAN 2.1 ($4\times$) & WAN 2.2 ($4\times$)\\
+Conditioning & Joint video+action & Action $\rightarrow$ video\\
+Data & Robot only & Human + robot\\
+Scale & 500h robot & 44.7Kh total\\
+Latent actions & No & Yes (32-dim VAE)\\
+Distillation & Flash (1-step) & Self Forcing (4-step)\\
+Speed & 7Hz (2$\times$GB200) & $\sim$10 FPS (1$\times$H100)\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+\vspace{0.3em}
+\begin{softbox}
+\higold{My Take:} The Cosmos-Predict2.5 backbone gives
+DreamDojo stronger video priors, while the latent action
+framework enables human video pretraining at scale.
+Different tools for different jobs.
+\end{softbox}
+\end{frame}
+
+% --- Slide 34: Landscape ---
+\begin{frame}{The World Model Landscape}
+\begin{softbox}
+\hi{DreamDojo} is part of a rapid convergence in
+world models for robotics:
+\end{softbox}
+
+\vspace{0.3em}
+\begin{itemize}
+    \item \hi{AdaWorld} \citep{gao2025adaworld}:
+          latent actions for adaptable WMs (tabletop)
+    \item \hi{Genie} \citep{bruce2024genie}:
+          interactive environments from video
+          (discrete control)
+    \item \hi{DexWM} \citep{goswami2025dexwm}:
+          human videos for dexterous manipulation
+          (smaller scale)
+    \item \hi{DreamDojo}: first foundation WM at
+          \positive{44K hours} with
+          \positive{continuous} latent actions
+\end{itemize}
+
+\vspace{0.3em}
+\hi{The trend:} Scale up human video,
+bridge the embodiment gap with latent actions,
+distill for real-time interaction.
+\end{frame}
+
+% --- Slide 35: Key Takeaways ---
+\begin{frame}{Key Takeaways}
+\begin{enumerate}
+    \item \hi{Human video pretraining works}
+          --- 44K hours of ego video
+          $\rightarrow$ physics that generalizes
+    \item \hi{Latent actions bridge embodiments}
+          --- self-supervised, near GT quality,
+          infinitely scalable
+    \item \hi{Chunked + relative actions}
+          are the biggest controllability gains
+    \item \hi{Self Forcing distillation}
+          enables real-time interaction ($\sim$10 FPS)
+    \item \hi{Policy evaluation} correlates
+          with reality ($r=0.995$)
+    \item \higold{World models are becoming
+          general-purpose simulators}
+          for planning, eval, and teleoperation
+\end{enumerate}
+
+\vspace{0.3em}
+\begin{center}
+\hi{The future of robot world models is
+human-video-native.}
+\end{center}
+\end{frame}
+
+% --- Slide 36: Thank You ---
+\begin{frame}{Thank You \& References}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Paper \& Code:}
+\begin{itemize}
+    \item \citet{gao2026dreamdojo}
+    \item arXiv: 2602.06949
+    \item Code: \texttt{github.com/NVIDIA/DreamDojo}
+\end{itemize}
+
+\vspace{0.3em}
+\hi{DreamZero (predecessor):}
+\begin{itemize}
+    \item \citet{ye2026dreamzero}
+    \item \texttt{dreamzero0.github.io}
+\end{itemize}
+
+\column{0.48\textwidth}
+\hi{Key References:}
+\begin{itemize}
+    \item Cosmos-Predict2.5 \citep{ali2025world}
+    \item Self Forcing \citep{huang2025self}
+    \item AdaWorld \citep{gao2025adaworld}
+    \item Genie \citep{bruce2024genie}
+    \item DiT \citep{peebles2023scalable}
+    \item Flow matching \citep{lipman2022flow}
+\end{itemize}
+\end{columns}
+
+\vspace{0.5em}
+\begin{center}
+\Large\hi{Q\&A}
+\end{center}
+\end{frame}
+
+% --- Bibliography ---
+\begin{frame}[allowframebreaks]{References}
+\printbibliography[heading=none]
+\end{frame}
+
+\end{document}

@@ -97,7 +97,7 @@ class IssueDetector:
         """Check if Quarto file compiles successfully."""
         try:
             result = subprocess.run(
-                ['quarto', 'render', str(filepath), '--to', 'html'],
+                ['quarto', 'render', str(filepath.name), '--to', 'html'],
                 capture_output=True,
                 text=True,
                 timeout=120,
