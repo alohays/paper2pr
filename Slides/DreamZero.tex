@@ -44,7 +44,7 @@ $\rightarrow$ Embodied intelligence (World Models)
 2026 will go down as the first year that Large World Models
 lay real foundations for robotics.
 \end{quotebox}
-\hfill --- Jim Fan (NVIDIA)
+\hfill --- Jim Fan, \emph{``The Second Pre-training Paradigm''} \citep{fan2026secondparadigm}
 \end{frame}
 
 % --- Slide 2b: Why Not Just Use VLMs? ---
@@ -89,7 +89,7 @@ Robot data is ``on-demand'' --- requires expensive teleoperation.
 \begin{quotebox}
 You can't teleoperate your way to the long tail.
 \end{quotebox}
-\hfill --- Joel Jang
+\hfill --- Joel Jang \citep{jang2026worldmodels}
 
 \vspace{0.5em}
 \emph{``Intelligence is a function of experience.''}
@@ -154,7 +154,7 @@ $\cdot$ \hi{contact physics} $\cdot$ \hi{motion patterns}
           (vs.\ sparse task-level labels in VLAs)
     \item ``Generating pixels is the only way for humans
           to \emph{verify} that the model truly understands''
-          --- Joel Jang
+          --- Joel Jang \citep{jang2026worldmodels}
 \end{itemize}
 \end{frame}
 
@@ -164,7 +164,7 @@ $\cdot$ \hi{contact physics} $\cdot$ \hi{motion patterns}
 Apes may not have good language models, but they surely
 have a robust mental picture of counterfactuals.
 \end{quotebox}
-\hfill --- Jim Fan
+\hfill --- Jim Fan \citep{fan2026secondparadigm}
 
 \vspace{0.5em}
 \begin{softbox}
@@ -221,7 +221,7 @@ watching video and reverse-engineering motor commands.}
 \begin{quotebox}
 Humans are robots that have already been deployed at scale.
 \end{quotebox}
-\hfill --- Joel Jang
+\hfill --- Joel Jang \citep{jang2026worldmodels}
 
 \vspace{0.5em}
 \hi{The math:}
@@ -321,22 +321,13 @@ Joint video frames\\
     \item Variable-length training
 \end{itemize}
 \end{columns}
-\end{frame}
 
-% --- Slide 9b: AR — Commentary ---
-\begin{frame}{AR vs.\ Bidirectional: Commentary}
+\vspace{0.3em}
 \begin{softbox}
 \higold{Commentary:} AR wins on both quality AND speed ---
-a rare ``have your cake and eat it too'' situation.
+KV-cache enables 3--4$\times$ speedup while preserving
+the temporal signal the IDM needs.
 \end{softbox}
-
-\vspace{0.5em}
-\begin{itemize}
-    \item \hi{Speed:} KV-cache gives 3--4$\times$ speedup ---
-          bidirectional cannot cache
-    \item \hi{Quality:} native frame rate preserves the temporal
-          signal that the IDM needs
-\end{itemize}
 \end{frame}
 
 % --- Slide 10: Chunk-wise Generation ---
@@ -467,22 +458,8 @@ conditioned on \positive{clean} previous chunks
     \item Pure video generation: errors compound
     \item WAMs operate in \positive{closed-loop} ---
           reality corrects the model
-\end{itemize}
-\end{frame}
-
-% --- Slide 13b: GT Injection — Commentary ---
-\begin{frame}{Ground-Truth Injection: Commentary}
-\begin{softbox}
-\higold{Commentary:} WAMs \hi{self-correct via reality}.
-No other paradigm gets this for free.
-\end{softbox}
-
-\vspace{0.5em}
-\begin{itemize}
-    \item Closes the sim-to-real gap \emph{by design},
-          not by domain randomization
-    \item Compare to pure video generation
-          (e.g.\ Sora) where errors compound indefinitely
+    \item WAMs \hi{self-correct via reality} ---
+          no other paradigm gets this for free
 \end{itemize}
 \end{frame}
 
@@ -745,7 +722,7 @@ things it was \hi{NEVER trained to do}.
 \begin{frame}{Cross-Embodiment Transfer}
 \begin{center}
 \includegraphics[width=0.75\textwidth,
-  height=0.40\textheight,keepaspectratio]{%
+  height=0.35\textheight,keepaspectratio]{%
   ../Figures/DreamZero/embodiment_transfer.pdf}
 \end{center}
 
@@ -764,24 +741,12 @@ DreamZero (baseline) & 38.3\%\\
 \end{tabular}
 }
 \end{center}
-\end{frame}
 
-% --- Slide 23b: Cross-Embodiment Commentary ---
-\begin{frame}{Cross-Embodiment Transfer: Commentary}
 \begin{softbox}
 \higold{Commentary:} Video-only data (no action labels!)
-opens a \hi{massive scaling pathway}.
-Human video is orders of magnitude more abundant
-than robot data.
+opens a \hi{massive scaling pathway} ---
+YouTube hosts \positive{$>$800M hours} of activity video.
 \end{softbox}
-
-\vspace{0.5em}
-\begin{itemize}
-    \item YouTube alone hosts \positive{$>$800M hours} of
-          how-to and activity video
-    \item The bottleneck shifts from ``collect robot data''
-          to ``build a better IDM''
-\end{itemize}
 \end{frame}
 
 % --- Slide 24: Few-shot ---
@@ -811,6 +776,34 @@ than robot data.
 \hi{100+ novel tasks} via natural language instructions\\
 ``Pop the balloon'', ``Press elevator button'',
 ``Paint'', ``Iron clothes''
+\end{frame}
+
+% --- Slide 25b: Task Diversity ---
+\begin{frame}{Task Diversity: 103 Tasks Across 22 Environments}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Seen Tasks (10 evaluated):}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.35\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/agibot_seen_example.pdf}
+\end{center}
+{\small take, place, push, open, pour}
+
+\column{0.48\textwidth}
+\hi{Unseen Tasks (10 evaluated):}
+\begin{center}
+\includegraphics[width=\textwidth,
+  height=0.35\textheight,keepaspectratio]{%
+  ../Figures/DreamZero/agibot_unseen_example.pdf}
+\end{center}
+{\small iron, untie, shake hands, remove hat}
+\end{columns}
+
+\vspace{0.3em}
+\begin{softbox}
+Full video gallery: \texttt{dreamzero0.github.io}
+\end{softbox}
 \end{frame}
 
 % ==============================================================================
@@ -874,52 +867,37 @@ DZ = DreamZero.}
           = \positive{generalization}
 \end{itemize}
 \end{columns}
-\end{frame}
 
-% --- Slide 27b: VLA vs WAM — Commentary ---
-\begin{frame}{VLA vs.\ WAM: Commentary}
+\vspace{0.3em}
 \begin{softbox}
 \higold{Commentary:} A \hi{fundamental architectural
 difference}, not data/compute. VLMs encode semantics;
 video models encode physics. For robotics, physics wins.
 \end{softbox}
-
-\vspace{0.5em}
-\begin{itemize}
-    \item This echoes the ``bitter lesson'':
-          the right \emph{representation}
-          (video) matters more than scale
-    \item Expect hybrid approaches that combine
-          VLM semantics with WAM physics
-\end{itemize}
 \end{frame}
 
 % --- Slide 28: Failure Analysis ---
 \begin{frame}{Failure Analysis: When DreamZero Breaks}
+\begin{columns}[T]
+\column{0.48\textwidth}
 \begin{center}
-\includegraphics[width=0.75\textwidth,
-  height=0.40\textheight,keepaspectratio]{%
+\includegraphics[width=\textwidth,
+  height=0.35\textheight,keepaspectratio]{%
   ../Figures/DreamZero/generated.pdf}
 \end{center}
-{\small Generated vs.\ executed trajectory pairs}
+{\small Generated vs.\ executed trajectories}
 
-\vspace{0.3em}
-\hi{Primary failure mode:}
-\negative{video generation errors}
-(hallucinations, wrong physics)
-\end{frame}
-
-% --- Slide 28b: Failure Causal Chain ---
-\begin{frame}{Failure: Error Causal Chain}
+\column{0.48\textwidth}
 \hi{Error causal chain:}
 \begin{enumerate}
     \item Video backbone hallucinates
-    \item Predicted frames show wrong trajectory
-    \item IDM faithfully extracts actions from wrong video
+    \item Frames show wrong trajectory
+    \item IDM extracts actions from wrong video
     \item Robot executes incorrect motion
 \end{enumerate}
+\end{columns}
 
-\vspace{0.5em}
+\vspace{0.3em}
 \begin{softbox}
 \higold{Commentary:} The tight coupling is both strength
 and weakness --- \hi{video quality is the bottleneck}.
@@ -960,22 +938,21 @@ and weakness --- \hi{video quality is the bottleneck}.
 \end{softbox}
 \end{frame}
 
-% --- Slide 30a: Engineering ---
+% --- Slide 30: Engineering ---
 \begin{frame}{Code: Making 14B Real-Time}
-\begin{methodbox}[Production-Grade Engineering]
+\begin{columns}[T]
+\column{0.50\textwidth}
+\begin{methodbox}[System Engineering]
 \begin{itemize}
-    \item \hi{VRAM management:} dynamic GPU--CPU offloading
+    \item \hi{VRAM:} dynamic GPU--CPU offloading
     \item \hi{FP8 inference:} automatic scaling
-    \item \hi{WebSocket server:} distributed multi-GPU
-    \item \hi{DiT caching:} skip forward pass
-          when velocity vectors converge
+    \item \hi{WebSocket:} distributed multi-GPU
+    \item \hi{DiT caching:} skip converged passes
 \end{itemize}
 \end{methodbox}
-\end{frame}
 
-% --- Slide 30b: Quantization ---
-\begin{frame}{Code: Quantization Stack}
-\hi{Precision hierarchy:}
+\column{0.46\textwidth}
+\hi{Quantization stack:}
 \begin{itemize}
     \item Weights + activations: NVFP4
     \item QKV, Softmax: FP8
@@ -983,10 +960,11 @@ and weakness --- \hi{video quality is the bottleneck}.
 \end{itemize}
 
 \vspace{0.3em}
-\hi{Frame sequence:} 880 tokens
-(33 frames $\times$ $\sim$27 tokens/frame)
+{\small 880 tokens per frame sequence\\
+(33 frames $\times$ $\sim$27 tokens/frame)}
+\end{columns}
 
-\vspace{0.5em}
+\vspace{0.3em}
 \begin{softbox}
 \higold{Commentary (from code):} Far beyond typical
 research code --- production-grade systems engineering.
@@ -1011,6 +989,27 @@ as important as the model architecture.
 \end{softbox}
 \end{frame}
 
+% --- Slide 32: Code Architecture ---
+\begin{frame}{Code: WAM as Modified Video DiT}
+\begin{methodbox}[Core Architecture]
+\begin{itemize}
+    \item Core file: \texttt{wan\_video\_dit\_action\_causal\_chunk.py}
+    \item Action head integrated \hi{INTO} diffusion process
+          (not a separate MLP)
+    \item Flow matching scheduler + \hi{UniPC multi-step}
+          for Flash mode
+    \item Codebase: \texttt{groot/vla/model/dreamzero/}
+\end{itemize}
+\end{methodbox}
+
+\vspace{0.5em}
+\begin{softbox}
+\higold{Commentary (from code):} DreamZero is not
+``video model + action decoder'' --- it is a
+\hi{single DiT} that jointly denoises both modalities.
+\end{softbox}
+\end{frame}
+
 % ==============================================================================
 % PART 7: DISCUSSION & TAKEAWAYS
 % ==============================================================================
@@ -1027,32 +1026,32 @@ as important as the model architecture.
 
 % --- Slide 32: Limitations ---
 \begin{frame}{Limitations}
-\hi{From the paper:}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\hi{Paper Limitations:}
 \begin{enumerate}
-    \item No established \negative{scaling laws} for WAMs
-    \item Context window limited to \negative{6.6 seconds}
-    \item Still \negative{7Hz} vs.\ 20Hz+ for VLAs
-    \item Inherits behavior cloning limitations
-          on \negative{sub-centimeter precision}
+    \item No established \negative{scaling laws}
+    \item Context limited to \negative{6.6s}
+    \item Still \negative{7Hz} vs.\ 20Hz+ VLAs
+    \item \negative{Sub-cm precision} gap
     \item Separate training per embodiment
 \end{enumerate}
-\end{frame}
 
-% --- Slide 32b: Computational Requirements ---
-\begin{frame}{Limitations: Computational Requirements}
-\hi{Computational requirements:}
+\column{0.48\textwidth}
+\hi{Practical Constraints:}
 \begin{itemize}
-    \item 2$\times$GB200 GPUs for real-time control
-    \item Not yet feasible on consumer hardware
-    \item 14B parameters = significant VRAM
+    \item 2$\times$GB200 for real-time control
+    \item Not feasible on consumer hardware
+    \item 14B params = significant VRAM
 \end{itemize}
 
-\vspace{0.5em}
+\vspace{0.3em}
 \hi{Long-horizon:}
 \begin{itemize}
     \item 6.6s context $\rightarrow$ System 1 only
-    \item Needs System 2 planner for extended tasks
+    \item Needs System 2 planner
 \end{itemize}
+\end{columns}
 \end{frame}
 
 % --- Slide 33: Unsolved IDM ---
@@ -1094,7 +1093,7 @@ $\rightarrow$ intermediate morphologies remain viable
 We are back to the age of research ---
 fundamentals matter again.
 \end{quotebox}
-\hfill --- Jim Fan
+\hfill --- Jim Fan \citep{fan2026secondparadigm}
 
 \vspace{0.5em}
 Both paths converge on the same data:\\
@@ -1103,7 +1102,9 @@ Both paths converge on the same data:\\
 \end{frame}
 
 % --- Slide 35: Critical Assessment ---
-\begin{frame}{Critical Assessment: Strengths}
+\begin{frame}{Critical Assessment}
+\begin{columns}[T]
+\column{0.48\textwidth}
 \hi{Strengths:}
 \begin{itemize}
     \item[\positive{\checkmark}] Comprehensive evaluation protocol
@@ -1112,36 +1113,28 @@ Both paths converge on the same data:\\
     \item[\positive{\checkmark}] Multiple embodiments tested
 \end{itemize}
 
-\vspace{0.5em}
-\hi{Questions:}
-\begin{itemize}
-    \item How dependent on GB200 hardware?
-    \item Will this work on consumer GPUs?
-    \item Long-horizon tasks ($>$6.6s)?
-\end{itemize}
-\end{frame}
-
-% --- Slide 35b: Critical Assessment — Missing ---
-\begin{frame}{Critical Assessment: What's Missing}
+\column{0.48\textwidth}
 \hi{Missing:}
 \begin{itemize}
-    \item Comparison with other recent WAMs
-          (Cosmos Policy, UVAM) on same benchmarks
+    \item Comparison with other WAMs
+          (Cosmos Policy, UVAM)
     \item ``From-pretrained'' baseline used
           \emph{different data}
     \item Multi-embodiment \emph{unified} training
+    \item GB200 dependency unclear
 \end{itemize}
+\end{columns}
 
-\vspace{0.5em}
+\vspace{0.3em}
 \begin{softbox}
 \higold{Commentary:} Current zero-shot is ``AI Slop'' phase
-(Joel Jang) --- correct direction, but
+\citep{jang2026worldmodels} --- correct direction, but
 \hi{not deployment-ready} yet.
 \end{softbox}
 \end{frame}
 
-% --- Slide 36a: Field Impact (1/2) ---
-\begin{frame}{What DreamZero Means for the Field (1/2)}
+% --- Slide 36: Field Impact ---
+\begin{frame}{What DreamZero Means for the Field}
 \begin{keybox}[Personal Assessment]
 \begin{enumerate}
     \item WAMs represent a \hi{paradigm shift}:
@@ -1150,21 +1143,11 @@ Both paths converge on the same data:\\
           is happening \higold{NOW}
     \item ``Diversity $>$ repetition'' could
           \positive{reshape robot data collection}
-\end{enumerate}
-\end{keybox}
-\end{frame}
-
-% --- Slide 36b: Field Impact (2/2) ---
-\begin{frame}{What DreamZero Means for the Field (2/2)}
-\begin{keybox}[Personal Assessment (cont.)]
-\begin{enumerate}
-    \setcounter{enumi}{3}
     \item Cross-embodiment transfer via video-only data
           is the \hi{sleeper result}
-    \item Video backbone quality = policy quality\\
-          $\rightarrow$ Watch for video model improvements
-    \item ``Chain of thought in \hi{visual space}
-          rather than language space''
+    \item Video backbone quality = policy quality
+          $\rightarrow$ ``chain of thought in
+          \hi{visual space} rather than language space''
 \end{enumerate}
 \end{keybox}
 \end{frame}
@@ -1205,8 +1188,8 @@ not language-native.}
 \vspace{0.3em}
 \hi{Blog Posts:}
 \begin{itemize}
-    \item Joel Jang: ``World Models for Robotics''
-    \item Jim Fan: ``The Second Pre-training Paradigm''
+    \item \citet{jang2026worldmodels}
+    \item \citet{fan2026secondparadigm}
 \end{itemize}
 
 \column{0.48\textwidth}

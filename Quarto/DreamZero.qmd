@@ -46,7 +46,7 @@ $\rightarrow$ Embodied intelligence (World Models)
 2026 will go down as the first year that Large World Models lay real foundations for robotics.
 :::
 
-[--- Jim Fan (NVIDIA)]{style="display: block; text-align: right;"}
+[--- Jim Fan, *The Second Pre-training Paradigm* [@fan2026secondparadigm]]{style="display: block; text-align: right;"}
 
 
 <!-- Slide 2b: Why Not Just Use VLMs? -->
@@ -93,7 +93,7 @@ Robot data is "on-demand" --- requires expensive teleoperation.
 You can't teleoperate your way to the long tail.
 :::
 
-[--- Joel Jang]{style="display: block; text-align: right;"}
+[--- Joel Jang, *World Models for Robotics* [@jang2026worldmodels]]{style="display: block; text-align: right;"}
 
 *"Intelligence is a function of experience."*
 
@@ -145,7 +145,7 @@ Video diffusion models trained on web-scale data encode:
 :::
 
 - Every consecutive frame pair $\rightarrow$ [**dense supervision**]{.positive} (vs. sparse task-level labels in VLAs)
-- "Generating pixels is the only way for humans to *verify* that the model truly understands" --- Joel Jang
+- "Generating pixels is the only way for humans to *verify* that the model truly understands" --- Joel Jang [@jang2026worldmodels]
 
 
 <!-- Slide 5b: The Paradigm Shift -->
@@ -157,7 +157,7 @@ Video diffusion models trained on web-scale data encode:
 Apes may not have good language models, but they surely have a robust mental picture of counterfactuals.
 :::
 
-[--- Jim Fan]{style="display: block; text-align: right;"}
+[--- Jim Fan, *The Second Pre-training Paradigm* [@fan2026secondparadigm]]{style="display: block; text-align: right;"}
 
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} This is the core paradigm shift --- from discrete task policies to [**continuous world modeling**]{.hi}.
@@ -209,7 +209,7 @@ $$
 Humans are robots that have already been deployed at scale.
 :::
 
-[--- Joel Jang]{style="display: block; text-align: right;"}
+[--- Joel Jang, *World Models for Robotics* [@jang2026worldmodels]]{style="display: block; text-align: right;"}
 
 [**The math:**]{.hi}
 
@@ -306,22 +306,12 @@ Joint video frames
 :::
 ::::
 
-
-<!-- Slide 9b: AR — Commentary -->
-
-
-## AR vs. Bidirectional: Commentary
-
 ::: {.softbox}
-[**Commentary:**]{.hi-gold} AR wins on both quality AND speed --- a rare "have your cake and eat it too" situation.
+[**Commentary:**]{.hi-gold} AR wins on both quality AND speed --- KV-cache gives $3$--$4\times$ speedup (bidirectional cannot cache), and native frame rate preserves the temporal signal the IDM needs.
 :::
-
-- [**Speed:**]{.hi} KV-cache gives $3$--$4\times$ speedup --- bidirectional cannot cache
-- [**Quality:**]{.hi} native frame rate preserves the temporal signal that the IDM needs
 
 
 <!-- Slide 10: Chunk-wise Generation -->
-
 
 ## Chunk-wise Generation
 
@@ -438,23 +428,14 @@ $$
 
 - Pure video generation: errors compound
 - WAMs operate in [**closed-loop**]{.positive} --- reality corrects the model
-
-
-<!-- Slide 13b: GT Injection — Commentary -->
-
-
-## Ground-Truth Injection: Commentary
+- Closes the sim-to-real gap *by design*, not by domain randomization
 
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} WAMs [**self-correct via reality**]{.hi}. No other paradigm gets this for free.
 :::
 
-- Closes the sim-to-real gap *by design*, not by domain randomization
-- Compare to pure video generation (e.g. Sora) where errors compound indefinitely
-
 
 <!-- Slide 14: DreamZero-Flash -->
-
 
 ## DreamZero-Flash: Faster Inference
 
@@ -692,22 +673,12 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 | + Robot2Robot (YAM, 20 min) | [**55.4%**]{.positive} (+44.6% rel.) |
 | + Human2Robot (12 min) | [**54.3%**]{.positive} (+41.8% rel.) |
 
-
-<!-- Slide 23b: Cross-Embodiment Commentary -->
-
-
-## Cross-Embodiment Transfer: Commentary
-
 ::: {.softbox}
-[**Commentary:**]{.hi-gold} Video-only data (no action labels!) opens a [**massive scaling pathway**]{.hi}. Human video is orders of magnitude more abundant than robot data.
+[**Commentary:**]{.hi-gold} Video-only data (no action labels!) opens a [**massive scaling pathway**]{.hi}. YouTube hosts [**>800M hours**]{.positive} of how-to video --- the bottleneck shifts from "collect robot data" to "build a better IDM".
 :::
-
-- YouTube alone hosts [**>800M hours**]{.positive} of how-to and activity video
-- The bottleneck shifts from "collect robot data" to "build a better IDM"
 
 
 <!-- Slide 24: Few-shot -->
-
 
 ## Few-shot Adaptation to New Robot
 
@@ -726,6 +697,34 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 [**100+ novel tasks**]{.hi} via natural language instructions
 "Pop the balloon", "Press elevator button", "Paint", "Iron clothes"
+
+
+<!-- Slide 25b: Task Diversity -->
+
+
+## Task Diversity: 103 Tasks Across 22 Environments
+
+:::: {.columns}
+::: {.column width="48%"}
+[**Seen Tasks (10 evaluated):**]{.hi}
+
+![](../Figures/DreamZero/agibot_seen_example.svg){fig-align="center" width="100%"}
+
+[take, place, push, open, pour]{style="font-size: 0.85em;"}
+:::
+
+::: {.column width="48%"}
+[**Unseen Tasks (10 evaluated):**]{.hi}
+
+![](../Figures/DreamZero/agibot_unseen_example.svg){fig-align="center" width="100%"}
+
+[iron, untie, shake hands, remove hat]{style="font-size: 0.85em;"}
+:::
+::::
+
+::: {.softbox}
+Full video gallery: `dreamzero0.github.io`
+:::
 
 
 <!---------------------------------------------------------------------------->
@@ -777,18 +776,9 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 :::
 ::::
 
-
-<!-- Slide 27b: VLA vs WAM — Commentary -->
-
-
-## VLA vs. WAM: Commentary
-
 ::: {.softbox}
-[**Commentary:**]{.hi-gold} A [**fundamental architectural difference**]{.hi}, not data/compute. VLMs encode semantics; video models encode physics. For robotics, physics wins.
+[**Commentary:**]{.hi-gold} A [**fundamental architectural difference**]{.hi}, not data/compute. VLMs encode semantics; video models encode physics. For robotics, physics wins. Expect hybrid approaches combining VLM semantics with WAM physics.
 :::
-
-- This echoes the "bitter lesson": the right *representation* (video) matters more than scale
-- Expect hybrid approaches that combine VLM semantics with WAM physics
 
 
 <!-- Slide 28: Failure Analysis -->
@@ -798,23 +788,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ![](../Figures/DreamZero/generated.svg){fig-align="center" width="75%"}
 
-[Generated vs. executed trajectory pairs]{style="font-size: 0.75em;"}
-
-[**Primary failure mode:**]{.hi}
-[**video generation errors**]{.negative} (hallucinations, wrong physics)
-
-
-<!-- Slide 28b: Failure Causal Chain -->
-
-
-## Failure: Error Causal Chain
-
-[**Error causal chain:**]{.hi}
-
-1. Video backbone hallucinates
-2. Predicted frames show wrong trajectory
-3. IDM faithfully extracts actions from wrong video
-4. Robot executes incorrect motion
+[**Error causal chain:**]{.hi} Video backbone hallucinates $\rightarrow$ wrong predicted frames $\rightarrow$ IDM extracts actions from wrong video $\rightarrow$ robot executes incorrect motion
 
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} The tight coupling is both strength and weakness --- [**video quality is the bottleneck**]{.hi}.
@@ -826,7 +800,6 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 <!---------------------------------------------------------------------------->
 
 <!-- Slide: Section Divider — Code -->
-
 
 # Under the Hood {background-color="#E8EDF5"}
 
@@ -864,21 +837,9 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - [**FP8 inference:**]{.hi} automatic scaling
 - [**WebSocket server:**]{.hi} distributed multi-GPU
 - [**DiT caching:**]{.hi} skip forward pass when velocity vectors converge
+- [**Quantization:**]{.hi} NVFP4 (weights), FP8 (QKV/Softmax), FP16 (non-linear)
+- [**Frame sequence:**]{.hi} 880 tokens (33 frames $\times$ $\sim$27 tokens/frame)
 :::
-
-
-<!-- Slide 30b: Quantization -->
-
-
-## Code: Quantization Stack
-
-[**Precision hierarchy:**]{.hi}
-
-- Weights + activations: NVFP4
-- QKV, Softmax: FP8
-- Non-linear ops: FP16
-
-[**Frame sequence:**]{.hi} 880 tokens (33 frames $\times$ $\sim$27 tokens/frame)
 
 ::: {.softbox}
 [**Commentary (from code):**]{.hi-gold} Far beyond typical research code --- production-grade systems engineering.
@@ -886,7 +847,6 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 
 <!-- Slide 31: Data Pipeline -->
-
 
 ## Code: Data Pipeline
 
@@ -901,6 +861,25 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ::: {.softbox}
 [**Commentary (from code):**]{.hi-gold} Data infrastructure is as important as the model architecture.
+:::
+
+
+<!-- Slide 31b: WAM as Modified Video DiT -->
+
+
+## Code: WAM as Modified Video DiT
+
+::: {.methodbox}
+**Core Architecture**
+
+- Core file: `wan_video_dit_action_causal_chunk.py`
+- Action head integrated [**INTO**]{.hi} diffusion process (not a separate MLP)
+- Flow matching scheduler + [**UniPC multi-step**]{.hi} for Flash mode
+- Codebase: `groot/vla/model/dreamzero/`
+:::
+
+::: {.softbox}
+[**Commentary (from code):**]{.hi-gold} DreamZero is not "video model + action decoder" --- it is a [**single DiT**]{.hi} that jointly denoises both modalities.
 :::
 
 
@@ -921,23 +900,21 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ## Limitations
 
+:::: {.columns}
+::: {.column width="48%"}
 [**From the paper:**]{.hi}
 
 1. No established [**scaling laws**]{.negative} for WAMs
-2. Context window limited to [**6.6 seconds**]{.negative}
+2. Context window: [**6.6 seconds**]{.negative}
 3. Still [**7Hz**]{.negative} vs. 20Hz+ for VLAs
-4. Inherits behavior cloning limitations on [**sub-centimeter precision**]{.negative}
+4. [**Sub-centimeter precision**]{.negative} limits
 5. Separate training per embodiment
+:::
 
+::: {.column width="48%"}
+[**Computational:**]{.hi}
 
-<!-- Slide 32b: Computational Requirements -->
-
-
-## Limitations: Computational Requirements
-
-[**Computational requirements:**]{.hi}
-
-- $2 \times \text{GB200}$ GPUs for real-time control
+- $2 \times \text{GB200}$ GPUs for real-time
 - Not yet feasible on consumer hardware
 - 14B parameters = significant VRAM
 
@@ -945,10 +922,11 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 - 6.6s context $\rightarrow$ System 1 only
 - Needs System 2 planner for extended tasks
+:::
+::::
 
 
 <!-- Slide 33: Unsolved IDM -->
-
 
 ## The Unsolved Inverse Dynamics Problem
 
@@ -994,7 +972,7 @@ $\rightarrow$ intermediate morphologies remain viable
 We are back to the age of research --- fundamentals matter again.
 :::
 
-[--- Jim Fan]{style="display: block; text-align: right;"}
+[--- Jim Fan, *The Second Pre-training Paradigm* [@fan2026secondparadigm]]{style="display: block; text-align: right;"}
 
 Both paths converge on the same data:
 [**human video**]{.hi-gold}
@@ -1005,42 +983,36 @@ Both paths converge on the same data:
 <!-- Slide 35: Critical Assessment Strengths -->
 
 
-## Critical Assessment: Strengths
+## Critical Assessment
 
+:::: {.columns}
+::: {.column width="48%"}
 [**Strengths:**]{.hi}
 
 - Comprehensive evaluation protocol
 - Honest failure analysis
 - Code and weights released
 - Multiple embodiments tested
+:::
 
-[**Questions:**]{.hi}
-
-- How dependent on GB200 hardware?
-- Will this work on consumer GPUs?
-- Long-horizon tasks (>6.6s)?
-
-
-<!-- Slide 35b: Critical Assessment — Missing -->
-
-
-## Critical Assessment: What's Missing
-
+::: {.column width="48%"}
 [**Missing:**]{.hi}
 
-- Comparison with other recent WAMs (Cosmos Policy, UVAM) on same benchmarks
+- Comparison with other WAMs (Cosmos Policy, UVAM) on same benchmarks
 - "From-pretrained" baseline used *different data*
 - Multi-embodiment *unified* training
+:::
+::::
 
 ::: {.softbox}
-[**Commentary:**]{.hi-gold} Current zero-shot is "AI Slop" phase (Joel Jang) --- correct direction, but [**not deployment-ready**]{.hi} yet.
+[**Commentary:**]{.hi-gold} Current zero-shot is "AI Slop" phase [@jang2026worldmodels] --- correct direction, but [**not deployment-ready**]{.hi} yet.
 :::
 
 
-<!-- Slide 36a: Field Impact (1/2) -->
+<!-- Slide 36: Field Impact -->
 
 
-## What DreamZero Means for the Field (1/2)
+## What DreamZero Means for the Field
 
 ::: {.keybox}
 **Personal Assessment**
@@ -1048,25 +1020,12 @@ Both paths converge on the same data:
 1. WAMs represent a [**paradigm shift**]{.hi}: from "policy learning" to "world understanding"
 2. Jim Fan's "second pre-training paradigm" is happening [**NOW**]{.hi-gold}
 3. "Diversity > repetition" could [**reshape robot data collection**]{.positive}
-:::
-
-
-<!-- Slide 36b: Field Impact (2/2) -->
-
-
-## What DreamZero Means for the Field (2/2)
-
-::: {.keybox}
-**Personal Assessment (cont.)**
-
 4. Cross-embodiment transfer via video-only data is the [**sleeper result**]{.hi}
-5. Video backbone quality = policy quality $\rightarrow$ Watch for video model improvements
-6. "Chain of thought in [**visual space**]{.hi} rather than language space"
+5. Video backbone quality = policy quality $\rightarrow$ "chain of thought in [**visual space**]{.hi}"
 :::
 
 
 <!-- Slide 37: Key Takeaways -->
-
 
 ## Key Takeaways
 
@@ -1096,8 +1055,8 @@ Both paths converge on the same data:
 
 [**Blog Posts:**]{.hi}
 
-- Joel Jang: "World Models for Robotics"
-- Jim Fan: "The Second Pre-training Paradigm"
+- Joel Jang [@jang2026worldmodels]
+- Jim Fan [@fan2026secondparadigm]
 :::
 
 ::: {.column width="48%"}
