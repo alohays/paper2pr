@@ -690,3 +690,23 @@ $selection-bg: $primary-gold !default;
   outline: 2px solid $primary-gold;
   outline-offset: 2px;
 }
+
+// ==============================================================================
+// VIDEO EMBEDDING
+// ==============================================================================
+
+.reveal video {
+  max-width: 100%;
+  max-height: 65vh;
+  margin: 0.4em auto;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-label {
+  font-size: 0.7em;
+  text-align: center;
+  color: #666;
+  margin-top: 0.2em;
+}
