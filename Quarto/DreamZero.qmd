@@ -16,6 +16,23 @@ format:
     transition-speed: fast
     fig-align: center
     html-math-method: katex
+    include-in-header:
+      - text: |
+          <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+          <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('video[data-hls]').forEach(function(video) {
+              var src = video.getAttribute('data-hls');
+              if (Hls.isSupported()) {
+                var hls = new Hls({ startLevel: -1 });
+                hls.loadSource(src);
+                hls.attachMedia(video);
+              } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = src;
+              }
+            });
+          });
+          </script>
 bibliography: ../Bibliography_base.bib
 ---
 
@@ -29,6 +46,9 @@ bibliography: ../Bibliography_base.bib
 ::: {style="text-align: center;"}
 ![](../Figures/DreamZero/dreamzero-header-v2.svg){fig-align="center" width="85%"}
 :::
+
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_post_train/hsl/DreamZero_AgiBotPostTrain_FruitPacking_2x.m3u8" data-autoplay loop muted playsinline width="60%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
 
 
 <!-- Slide 2: The Second Pre-training Paradigm -->
@@ -633,6 +653,19 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 [**VLAs overfit**]{.hi} to pick-and-place regardless of instruction.
 
+:::: {.columns}
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_unseen/hsl/NEWUNSEEN_006_02.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Untie Shoelace (Unseen)]{.video-label}
+:::
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_unseen/hsl/NEWUNSEEN_057.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Shake Hands (Unseen)]{.video-label}
+:::
+::::
+
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} The key result --- DreamZero does things it was [**NEVER trained to do**]{.hi}.
 :::
@@ -647,6 +680,19 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 - Tight alignment between predicted and actual trajectories
 - Most failures: video generation errors, not action extraction
+
+:::: {.columns}
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_seen/hsl/SEENASYNC_001_AI.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[AI Prediction]{.video-label}
+:::
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_seen/hsl/SEENASYNC_001.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Real Execution]{.video-label}
+:::
+::::
 
 
 <!-- Slide 22: Post-training -->
@@ -673,6 +719,19 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 | + Robot2Robot (YAM, 20 min) | [**55.4%**]{.positive} (+44.6% rel.) |
 | + Human2Robot (12 min) | [**54.3%**]{.positive} (+41.8% rel.) |
 
+:::: {.columns}
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/droid/hsl/toast_bread%20(AI).m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[DROID: AI Prediction]{.video-label}
+:::
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/droid/hsl/toast_bread%20(real).m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[DROID: Real Execution]{.video-label}
+:::
+::::
+
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} Video-only data (no action labels!) opens a [**massive scaling pathway**]{.hi}. YouTube hosts [**>800M hours**]{.positive} of how-to video --- the bottleneck shifts from "collect robot data" to "build a better IDM".
 :::
@@ -687,6 +746,19 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 - 55 trajectories ($\sim$30 min play data) on YAM robot
 - Retains [**language following**]{.positive} + generalizes to novel objects
 
+:::: {.columns}
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/yam/hsl/1_teddy.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Pick Teddy Bear]{.video-label}
+:::
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/yam/hsl/2_orange.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Orange to Pumpkin]{.video-label}
+:::
+::::
+
 
 <!-- Slide 25: Free-form -->
 
@@ -697,6 +769,19 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 [**100+ novel tasks**]{.hi} via natural language instructions
 "Pop the balloon", "Press elevator button", "Paint", "Iron clothes"
+
+:::: {.columns}
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_interactive_prompting/hsl/Water_the_plant.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Water Plant]{.video-label}
+:::
+::: {.column width="48%"}
+<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_interactive_prompting/hsl/Open_the_door.m3u8" data-autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+[Open Door]{.video-label}
+:::
+::::
 
 
 <!-- Slide 25b: Task Diversity -->

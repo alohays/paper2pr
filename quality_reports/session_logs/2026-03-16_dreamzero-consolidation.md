@@ -40,7 +40,21 @@
 - Blog post bib entries use @online type for proper URL rendering
 - Bibliography_base.bib is hook-protected; used Bash for insertion
 
+## Phase 4: Video Integration (COMPLETE)
+- Added HLS.js library via Quarto `include-in-header` for cross-browser HLS streaming
+- Added video CSS to `clean-academic.scss` (border-radius, shadow, max-height)
+- Embedded 12 HLS videos across 6 existing slides:
+  1. Title slide: hero fruit packing demo
+  2. Joint Video-Action Prediction: AI vs Real side-by-side
+  3. Unseen Tasks: untie shoelace + shake hands demos
+  4. Free-form Evaluation: water plant + open door demos
+  5. Cross-Embodiment: DROID toast bread AI vs Real
+  6. Few-shot Adaptation: YAM teddy bear + orange demos
+- Videos stream from `dreamzero0.github.io` (no local files needed)
+- Quarto render: SUCCESS, 53 slides unchanged, all videos + KaTeX math intact
+
 ## Open Items
 - [x] Final compilation verification — PASS (57 frames, 0 errors)
 - [x] Speaker notes backup — 49 notes backed up
+- [x] Video integration — 12 HLS videos across 6 slides
 - [ ] Commit when user requests
