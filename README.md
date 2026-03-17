@@ -11,6 +11,7 @@ A Claude Code multi-agent workflow that converts AI/ML papers into presentation-
 | Paper | Topic | Beamer | Quarto |
 |-------|-------|--------|--------|
 | DreamZero | World Action Models as Zero-shot Policies (NVIDIA) | [`Slides/DreamZero.tex`](Slides/DreamZero.tex) | [`Quarto/DreamZero.qmd`](Quarto/DreamZero.qmd) |
+| DreamDojo | A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA) | [`Slides/DreamDojo.tex`](Slides/DreamDojo.tex) | [`Quarto/DreamDojo.qmd`](Quarto/DreamDojo.qmd) |
 
 Each paper gets a ~30-slide deck (~30 min) covering main ideas, technical details, and implementation observations. Target audience: basic deep learning knowledge.
 

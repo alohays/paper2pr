@@ -202,3 +202,4 @@ python3 scripts/backup_notes.py restore DreamZero
 | Paper | Beamer | Quarto | Key Content |
 |-------|--------|--------|-------------|
 | DreamZero | `DreamZero.tex` | `DreamZero.qmd` | NVIDIA — World Action Models as Zero-shot Policies |
+| DreamDojo | `DreamDojo.tex` | `DreamDojo.qmd` | NVIDIA — A Generalist Robot World Model from Large-Scale Human Videos |

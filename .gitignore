@@ -18,8 +18,8 @@
 *.run.xml
 *-blx.bib
 
-# Compiled PDFs (uncomment to track specific PDFs)
-# *.pdf
+# Compiled PDFs (not tracked — Quarto HTML is the deployed format)
+*.pdf
 
 # Python
 __pycache__/

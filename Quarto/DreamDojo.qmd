@@ -28,6 +28,8 @@ bibliography: ../Bibliography_base.bib
 <video src="https://dreamdojo-world.github.io/dreamdojo_demo.mp4" muted autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 
+
+
 <!-- Slide 1b: Roadmap -->
 
 
@@ -40,6 +42,8 @@ bibliography: ../Bibliography_base.bib
 5. [**Results**]{.hi} --- benchmarks and applications
 6. [**Code Insights**]{.hi} --- under the hood
 7. [**Discussion**]{.hi} --- takeaways and landscape
+
+
 
 
 <!-- Slide 2: DreamZero Recap -->
@@ -58,6 +62,8 @@ bibliography: ../Bibliography_base.bib
 
 WAMs generate "[**how to move**]{.hi}" by predicting "[**what happens next**]{.hi}" --- inverse dynamics emerge from video understanding.
 :::
+
+
 
 
 <!-- Slide 2b: From DreamZero to DreamDojo -->
@@ -92,6 +98,8 @@ Same team, complementary paradigms: DreamZero is a [**policy**]{.hi}, DreamDojo 
 :::
 
 
+
+
 <!-- Slide 3: The Data Gap -->
 
 
@@ -111,6 +119,8 @@ Robot world models plateau at [**observed setups**]{.negative} and are [**unresp
 :::
 
 
+
+
 <!-- Slide 4: The Human Video Insight -->
 
 
@@ -125,6 +135,8 @@ Despite the embodiment gap, the underlying physics during interactions is largel
 ![](../Figures/DreamDojo/dataset_compressed.svg){fig-align="center" width="82%"}
 
 [**Key idea:**]{.hi} Human videos capture the same physics --- contact, gravity, deformation, tool use --- just with different end-effectors.
+
+
 
 
 <!-- Slide 5: DreamDojo-HV at Scale -->
@@ -144,6 +156,8 @@ Despite the embodiment gap, the underlying physics during interactions is largel
 [**vs. prior largest (AgiBot World):**]{.hi} [**15x**]{.positive} duration, [**96x**]{.positive} skills, [**2,000x**]{.positive} scenes
 
 ![](../Figures/DreamDojo/mecka_compressed.svg){fig-align="center" width="70%"}
+
+
 
 
 <!-- Slide 6: Three Data Sources -->
@@ -191,6 +205,8 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 ::::
 
 
+
+
 <!-- Slide 7: System Overview -->
 
 
@@ -205,6 +221,8 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 [**Phase 3:**]{.hi} Distill to autoregressive real-time student
 
 
+
+
 <!---------------------------------------------------------------------------->
 <!-- PART 2: LATENT ACTION MODEL                                            -->
 <!---------------------------------------------------------------------------->
@@ -215,6 +233,8 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 # How Does DreamDojo Learn Actions? {background-color="#E8EDF5"}
 
 [**Latent Action Model**]{.hi-gold}
+
+
 
 
 <!-- Slide 8: The Action Label Problem -->
@@ -233,6 +253,8 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 
 Actionless pretraining wastes interaction knowledge. Ground-truth actions require expensive capture devices. We need a [**self-supervised**]{.hi} middle ground.
 :::
+
+
 
 
 <!-- Slide 9: LAM Architecture -->
@@ -256,6 +278,8 @@ $\hat{a} \in \mathbb{R}^{32}$, $\beta=10^{-6}$ (tight bottleneck $\rightarrow$ f
 :::
 
 
+
+
 <!-- Slide 10: Latent Actions Cross Embodiments -->
 
 
@@ -273,6 +297,8 @@ The same latent action $\hat{a}$ captures the [**same physical interaction**]{.h
 - 24 encoder blocks $+$ 24 decoder blocks
 - Encoder: $(f^t, f^{t+1}) \rightarrow \hat{a}$ --- Decoder: $(\hat{a}, f^t) \rightarrow \hat{f}^{t+1}$
 - Trained on mixture of [**all**]{.hi} datasets (human + robot)
+
+
 
 
 <!-- Slide 11: Latent Actions vs Alternatives -->
@@ -298,6 +324,8 @@ Latent actions achieve [**near-parity**]{.positive} with ground-truth action lab
 :::
 
 
+
+
 <!---------------------------------------------------------------------------->
 <!-- PART 3: ARCHITECTURE & TRAINING                                        -->
 <!---------------------------------------------------------------------------->
@@ -308,6 +336,8 @@ Latent actions achieve [**near-parity**]{.positive} with ground-truth action lab
 # Building the World Model {background-color="#E8EDF5"}
 
 [**Architecture & Training**]{.hi-gold}
+
+
 
 
 <!-- Slide 12: Cosmos-Predict2.5 Backbone -->
@@ -330,6 +360,8 @@ Latent actions achieve [**near-parity**]{.positive} with ground-truth action lab
 - 140K steps pretrain (256 H100s), 50K steps post-train (128 H100s)
 - Resolution: $640 \times 480$, sequences of 13 latent frames
 - EMA maintained throughout
+
+
 
 
 <!-- Slide 12b: Flow Matching in 60 Seconds -->
@@ -361,6 +393,8 @@ where $\mathbf{v}_t = \epsilon - \mathbf{x}$ (velocity = noise $-$ clean data)
 - Conditions $\mathbf{c}$: text, frames, and [**actions**]{.hi-gold} (for world models)
 
 
+
+
 <!-- Slide 13: Two Key Innovations -->
 
 
@@ -374,6 +408,8 @@ where $\mathbf{v}_t = \epsilon - \mathbf{x}$ (velocity = noise $-$ clean data)
 1. [**Relative actions:**]{.hi} Rebaseline every 4 timesteps --- concentrates action space $\rightarrow$ better generalization to compositions
 2. [**Chunked injection:**]{.hi} 4 consecutive actions $a^{t:t+4}$ sent to matching latent frame --- respects causality $\rightarrow$ future actions do not leak
 :::
+
+
 
 
 <!-- Slide 14: Action Embedding Equation -->
@@ -403,6 +439,8 @@ Scale, shift, and gate modulations in every DiT block
 - Classifier-free guidance [**disabled**]{.hi} (empirically no benefit)
 
 
+
+
 <!-- Slide 14b: Action Embedding Code Pattern -->
 
 
@@ -420,6 +458,8 @@ Scale, shift, and gate modulations in every DiT block
 ::: {.softbox}
 [**My Take:**]{.hi-gold} The dual-path action injection is more sophisticated than the paper describes --- actions modulate DiT through [**both timestep AND AdaLN**]{.hi} scale/shift/gate pathways. The zero-init trick from ControlNet is crucial for preserving pretrained physics.
 :::
+
+
 
 
 <!-- Slide 15: Temporal Consistency Loss -->
@@ -446,6 +486,8 @@ $\mathcal{L}_{\text{final}} = \mathcal{L}_{\text{flow}} + \lambda\,\mathcal{L}_{
 :::
 
 
+
+
 <!-- Slide 16: Post-Training -->
 
 
@@ -464,6 +506,8 @@ $\mathcal{L}_{\text{final}} = \mathcal{L}_{\text{flow}} + \lambda\,\mathcal{L}_{
 Embodiments: GR-1, G1, AgiBot, YAM --- each post-trained separately. CFG disabled (no benefit).
 
 
+
+
 <!---------------------------------------------------------------------------->
 <!-- PART 4: DISTILLATION                                                   -->
 <!---------------------------------------------------------------------------->
@@ -474,6 +518,8 @@ Embodiments: GR-1, G1, AgiBot, YAM --- each post-trained separately. CFG disable
 # Making It Real-Time {background-color="#E8EDF5"}
 
 [**Distillation Pipeline**]{.hi-gold}
+
+
 
 
 <!-- Slide 18: The Distillation Challenge -->
@@ -494,6 +540,8 @@ Embodiments: GR-1, G1, AgiBot, YAM --- each post-trained separately. CFG disable
 :::
 
 Student initialized from teacher weights, with bidirectional attention replaced by [**causal attention**]{.hi} over a sliding window of 12 frames.
+
+
 
 
 <!-- Slide 19a: Self Forcing Warmup -->
@@ -519,6 +567,8 @@ Student generates via teacher forcing (clean context)
 - Provides a stable initialization before self-generated training
 
 
+
+
 <!-- Slide 19b: Self Forcing Distillation -->
 
 
@@ -541,6 +591,8 @@ KL divergence between teacher and student distributions [@yin2024one]
 $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$: score from fake (student-generated) data
 
 [**Extended rollout:**]{.hi} Student generates $N'>N$ frames, loss on last $N$ --- reduces long-horizon drift.
+
+
 
 
 <!-- Slide 20: Distillation Results -->
@@ -573,6 +625,8 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 ::::
 
 
+
+
 <!---------------------------------------------------------------------------->
 <!-- PART 5: RESULTS                                                        -->
 <!---------------------------------------------------------------------------->
@@ -583,6 +637,8 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 # Does It Actually Work? {background-color="#E8EDF5"}
 
 [**Experimental Results**]{.hi-gold}
+
+
 
 
 <!-- Slide 21: Benchmarks -->
@@ -601,6 +657,8 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 
 Metrics: PSNR, SSIM, LPIPS (auto); human preference for novel scenes.
 :::
+
+
 
 
 <!-- Slide 22: Data Scaling Works -->
@@ -624,6 +682,8 @@ Adding more human data [**consistently improves**]{.positive} all OOD benchmarks
 :::
 
 
+
+
 <!-- Slide 23: Human Preference -->
 
 
@@ -643,6 +703,8 @@ Adding more human data [**consistently improves**]{.positive} all OOD benchmarks
 
 - [**Physics correctness:**]{.hi} object permanence, shape consistency, contact causality
 - [**Action following:**]{.hi} robot pose accuracy vs. ground-truth
+
+
 
 
 <!-- Slide 24: Ablation -->
@@ -666,6 +728,8 @@ Adding more human data [**consistently improves**]{.positive} all OOD benchmarks
 :::
 
 
+
+
 <!-- Slide 25: Multi-Embodiment -->
 
 
@@ -684,6 +748,8 @@ Post-trained on GR-1, G1, AgiBot, and YAM --- each with separate post-training r
 - Reset action MLP first layer for new action space
 - Finetune all weights (50K steps)
 - Same pretrained physics transfers across all platforms
+
+
 
 
 <!-- Slide 26: Policy Evaluation -->
@@ -714,6 +780,8 @@ Post-trained on GR-1, G1, AgiBot, and YAM --- each with separate post-training r
 ::::
 
 DreamDojo can reliably rank policies without deploying on a real robot.
+
+
 
 
 <!-- Slide 27: MPC & Teleoperation -->
@@ -748,6 +816,8 @@ World models as [**simulators**]{.hi} unlock planning, evaluation, and teleopera
 :::
 
 
+
+
 <!---------------------------------------------------------------------------->
 <!-- PART 6: CODE INSIGHTS                                                  -->
 <!---------------------------------------------------------------------------->
@@ -758,6 +828,8 @@ World models as [**simulators**]{.hi} unlock planning, evaluation, and teleopera
 # Under the Hood {background-color="#E8EDF5"}
 
 [**Code-Level Insights**]{.hi-gold}
+
+
 
 
 <!-- Slide 27b: Why Look at Code? -->
@@ -779,6 +851,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 - How relative actions use proper SE(3) math
 
 
+
+
 <!-- Slide 28: Code LAM -->
 
 
@@ -794,6 +868,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 :::
 
 [**Key asymmetry:**]{.hi} The encoder sees [**both**]{.hi} frames jointly (spatiotemporal), while the decoder reconstructs from action + [**single**]{.hi} frame (spatial only). This forces all temporal information through the 32-dim bottleneck.
+
+
 
 
 <!-- Slide 29: Code DiT -->
@@ -815,6 +891,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 :::
 
 
+
+
 <!-- Slide 30: Code Pipeline -->
 
 
@@ -829,6 +907,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 :::
 
 [**Dual-resolution processing:**]{.hi} LAM operates at 320x240 (efficiency), while the world model trains at 640x480 (quality). Separate tokenizer passes for each resolution.
+
+
 
 
 <!-- Slide 31: Code Relative Actions -->
@@ -850,6 +930,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 :::
 
 
+
+
 <!---------------------------------------------------------------------------->
 <!-- PART 7: DISCUSSION                                                     -->
 <!---------------------------------------------------------------------------->
@@ -860,6 +942,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 # What Does It All Mean? {background-color="#E8EDF5"}
 
 [**Discussion & Takeaways**]{.hi-gold}
+
+
 
 
 <!-- Slide 32: Limitations -->
@@ -879,6 +963,8 @@ DreamDojo's codebase reveals engineering decisions the paper glosses over --- th
 ::: {.softbox}
 [**My Take:**]{.hi-gold} The proprietary 43.8K-hour dataset is both the biggest strength and weakness --- it makes the results hard to reproduce. The eval overestimation suggests the model struggles with nuanced failure modes.
 :::
+
+
 
 
 <!-- Slide 33: DreamDojo vs DreamZero Paradigms -->
@@ -917,6 +1003,8 @@ DreamDojo asks "what future does this action produce?"
 :::
 
 
+
+
 <!-- Slide 33b: DreamDojo vs DreamZero Technical -->
 
 
@@ -939,6 +1027,8 @@ DreamDojo asks "what future does this action produce?"
 :::
 
 
+
+
 <!-- Slide 34: Landscape -->
 
 
@@ -956,6 +1046,8 @@ DreamDojo asks "what future does this action produce?"
 [**The trend:**]{.hi} Scale up human video, bridge the embodiment gap with latent actions, distill for real-time interaction.
 
 
+
+
 <!-- Slide 35: Key Takeaways -->
 
 
@@ -971,6 +1063,8 @@ DreamDojo asks "what future does this action produce?"
 ::: {style="text-align: center; margin-top: 0.8em;"}
 [**The future of robot world models is human-video-native.**]{.hi}
 :::
+
+
 
 
 <!-- Slide 36: Thank You -->

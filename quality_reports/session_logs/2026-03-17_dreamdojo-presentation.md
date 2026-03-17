@@ -129,7 +129,18 @@ Ran 6 built-in skills in parallel:
 **final-verifier (Task #3 — BLOCKED by #2):**
 - Re-run /slide-excellence and /qa-quarto after all fixes
 
+---
+
+## Speaker Notes Generation
+- **Skill:** `/write-speaker-notes DreamDojo --lang ko`
+- **Result:** 7,879 Korean characters, 47/49 slides covered (96%)
+- **Estimated time:** 28.1 min (target ~30 min)
+- **Backup:** `.speaker-notes/DreamDojo.json`
+- Notes are local-only (stripped by git clean filter)
+
 ## Open Items
-- [ ] Content polisher completion (Task #2)
-- [ ] Final verification (Task #3)
-- [ ] Git commit all deliverables
+- [x] Content polisher — 6 fixes applied
+- [x] Final verification — APPROVED 97/100
+- [x] Git commit — PR #3 merged to main
+- [x] Speaker notes — 7,879자 한국어 스크립트 완성
+- All tasks complete
