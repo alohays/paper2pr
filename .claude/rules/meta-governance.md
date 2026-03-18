@@ -143,7 +143,7 @@ Always use XeLaTeX with TEXINPATHS=../Preambles for Emory slides.
 ```markdown
 # LaTeX Compilation Rule
 Use project-specific TEXINPATHS if preambles are in separate directory.
-Configure in CLAUDE.md for your setup.
+Configure in AGENTS.md for your setup.
 ```
 
 ### Provide Examples from Multiple Domains
@@ -170,7 +170,7 @@ Your bibliography MUST be named Bibliography_base.bib and live in root.
 
 **Good (template with placeholders):**
 ```markdown
-Configure bibliography location in CLAUDE.md:
+Configure bibliography location in AGENTS.md:
 [YOUR_BIB_FILE] (e.g., Bibliography_base.bib, refs.bib, ../library.bib)
 ```
 
@@ -185,9 +185,9 @@ It's okay for README and guide to say:
 
 As long as it's clear this is ONE example, not THE requirement.
 
-### CLAUDE.md Can Have Placeholders
+### AGENTS.md Can Have Placeholders
 
-The template CLAUDE.md has `[YOUR PROJECT NAME]`, `[YOUR INSTITUTION]` — this is correct. Users fill them in.
+The template AGENTS.md can have `[YOUR PROJECT NAME]`, `[YOUR INSTITUTION]` placeholders — this is correct. Users fill them in.
 
 ### Documentation Can Reference Original Use Case
 

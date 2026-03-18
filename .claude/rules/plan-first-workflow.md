@@ -78,6 +78,6 @@ First message should be: "Resuming after compression. Last task: [read most rece
 ## Session Recovery
 
 After compression or new session:
-1. Read `CLAUDE.md` + most recent plan in `quality_reports/plans/`
+1. Read `AGENTS.md` + most recent plan in `quality_reports/plans/`
 2. Check `git log --oneline -10` and `git diff`
 3. State what you understand the current task to be

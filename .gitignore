@@ -61,7 +61,9 @@ Quarto/Figures
 # output/**/*.rds
 
 # Target paper sources (copyrighted content, not for distribution)
-target-papers/
+# Track only the top-level folder placeholder; keep all paper contents local-only.
+target-papers/*
+!target-papers/.gitkeep
 
 **/*.quarto_ipynb
 
