@@ -1,0 +1,44 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{fontspec}
+\setsansfont{SourceSansPro}[
+  Path = /usr/local/texlive/2024/texmf-dist/fonts/opentype/adobe/sourcesanspro/,
+  UprightFont = SourceSansPro-Regular.otf,
+  BoldFont = SourceSansPro-Bold.otf,
+  ItalicFont = SourceSansPro-RegularIt.otf,
+  BoldItalicFont = SourceSansPro-BoldIt.otf,
+  Scale = 1.0
+]
+\usetikzlibrary{positioning}
+\usepackage{xcolor}
+\definecolor{primaryblue}{HTML}{012169}
+\definecolor{primarygold}{HTML}{B9975B}
+\definecolor{highlightyellow}{HTML}{F2A900}
+\definecolor{lightbg}{HTML}{E8EDF5}
+\definecolor{jet}{HTML}{1A1A1A}
+\definecolor{positivegreen}{HTML}{15803D}
+\definecolor{negativered}{HTML}{B91C1C}
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}[
+    ybar, bar width=22pt,
+    width=5.5cm, height=4.2cm,
+    symbolic x coords={Non-AI, AI},
+    xtick=data,
+    ymin=0, ymax=290,
+    ytick={0,100,200},
+    yticklabels={\$0K,\$100K,\$200K},
+    tick label style={font=\tiny},
+    axis lines=left,
+    enlarge x limits=0.4,
+    nodes near coords,
+    nodes near coords style={font=\tiny\bfseries},
+    every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0},
+    title={\small\bfseries United States},
+  ]
+    \addplot[fill=gray!40, draw=gray] coordinates {(Non-AI,180)};
+    \addplot[fill=primaryblue, draw=primaryblue] coordinates {(AI,245)};
+  \end{axis}
+\end{tikzpicture}
+\end{document}

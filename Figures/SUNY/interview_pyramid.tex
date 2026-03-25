@@ -1,0 +1,43 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{fontspec}
+\setsansfont{SourceSansPro}[
+  Path = /usr/local/texlive/2024/texmf-dist/fonts/opentype/adobe/sourcesanspro/,
+  UprightFont = SourceSansPro-Regular.otf,
+  BoldFont = SourceSansPro-Bold.otf,
+  ItalicFont = SourceSansPro-RegularIt.otf,
+  BoldItalicFont = SourceSansPro-BoldIt.otf,
+  Scale = 1.0
+]
+\usetikzlibrary{positioning}
+\usepackage{xcolor}
+\definecolor{primaryblue}{HTML}{012169}
+\definecolor{primarygold}{HTML}{B9975B}
+\definecolor{highlightyellow}{HTML}{F2A900}
+\definecolor{lightbg}{HTML}{E8EDF5}
+\definecolor{jet}{HTML}{1A1A1A}
+\definecolor{positivegreen}{HTML}{15803D}
+\definecolor{negativered}{HTML}{B91C1C}
+\begin{document}
+\begin{tikzpicture}[scale=0.9]
+  % Layer 1 — bottom: Coding
+  \fill[primaryblue!50]  (-3.0,0)    -- (3.0,0)    -- (2.1,0.8)  -- (-2.1,0.8)  -- cycle;
+  % Layer 2: System Design
+  \fill[primarygold!60]  (-2.1,0.85) -- (2.1,0.85) -- (1.3,1.65) -- (-1.3,1.65) -- cycle;
+  % Layer 3: ML Fundamentals
+  \fill[orange!60]       (-1.3,1.7)  -- (1.3,1.7)  -- (0.55,2.5) -- (-0.55,2.5) -- cycle;
+  % Layer 4 — top: Behavioral
+  \fill[positivegreen!70](-0.55,2.55)-- (0.55,2.55)-- (0,3.1)    -- cycle;
+  % Labels
+  \node[font=\scriptsize\bfseries, text=white]          at (0,    0.4)  {Coding --- LeetCode (table stakes)};
+  \node[font=\scriptsize\bfseries, text=white]          at (0,    1.25) {System Design (the differentiator)};
+  \node[font=\scriptsize\bfseries, text=white]          at (0,    2.1)  {ML Fundamentals};
+  \node[font=\tiny\bfseries,       text=white]          at (0,    2.78) {Behavioral};
+  % Callouts
+  \node[font=\tiny, text=primaryblue, align=right, text width=2.6cm]
+        at (-4.2, 0.4)  {Most students\\stop here $\rightarrow$};
+  \node[font=\tiny, text=positivegreen!60!black, align=right, text width=2.6cm]
+        at (-4.2, 2.78) {Offers happen\\at the top $\rightarrow$};
+\end{tikzpicture}
+\end{document}
