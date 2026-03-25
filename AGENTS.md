@@ -203,3 +203,4 @@ python3 scripts/backup_notes.py restore DreamZero
 |-------|--------|--------|-------------|
 | DreamZero | `DreamZero.tex` | `DreamZero.qmd` | NVIDIA — World Action Models as Zero-shot Policies |
 | DreamDojo | `DreamDojo.tex` | `DreamDojo.qmd` | NVIDIA — A Generalist Robot World Model from Large-Scale Human Videos |
+| SUNY | `SUNY.tex` | `SUNY.qmd` | Career keynote for SUNY Korea STEM students (April 2026) |

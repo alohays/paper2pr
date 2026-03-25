@@ -1,0 +1,36 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{fontspec}
+\setsansfont{SourceSansPro}[
+  Path = /usr/local/texlive/2024/texmf-dist/fonts/opentype/adobe/sourcesanspro/,
+  UprightFont = SourceSansPro-Regular.otf,
+  BoldFont = SourceSansPro-Bold.otf,
+  ItalicFont = SourceSansPro-RegularIt.otf,
+  BoldItalicFont = SourceSansPro-BoldIt.otf,
+  Scale = 1.0
+]
+\usetikzlibrary{positioning}
+\usepackage{xcolor}
+\definecolor{primaryblue}{HTML}{012169}
+\definecolor{primarygold}{HTML}{B9975B}
+\definecolor{highlightyellow}{HTML}{F2A900}
+\definecolor{lightbg}{HTML}{E8EDF5}
+\definecolor{jet}{HTML}{1A1A1A}
+\definecolor{positivegreen}{HTML}{15803D}
+\definecolor{negativered}{HTML}{B91C1C}
+\begin{document}
+\begin{tikzpicture}[scale=0.9]
+  \draw[->, thick, color=primaryblue] (0,0) -- (9.2,0);
+
+  \foreach \x/\label/\sub in {
+    0/{Day 0}/{API announced},
+    4.3/{Day 3}/{Internal prototype},
+    8.5/{Day 14}/{Live in production}
+  }{
+    \fill[primarygold] (\x,0) circle (4pt);
+    \node[font=\small\bfseries\color{primaryblue}, above=4pt] at (\x,0) {\label};
+    \node[font=\scriptsize\color{gray}, below=6pt]            at (\x,0) {\sub};
+  }
+\end{tikzpicture}
+\end{document}
