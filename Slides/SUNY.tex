@@ -803,34 +803,35 @@
 
 % --- Slide 24: Maum.ai WoRV — Three Pillars ---
 \begin{frame}{WoRV — World of Robotic Vision}
-\vspace{0.5em}
+\vspace{0.3em}
 \begin{columns}[T]
   \begin{column}{0.32\textwidth}
     \begin{methodbox}[Navigation]
       \centering
-      \vspace{0.3em}
-      {\large\hi{Navigation}}\\[0.4em]
+      \includegraphics[width=0.90\linewidth]{../Figures/SUNY/canvas_teaser.png}\\[0.3em]
+      {\small\hi{Navigation}}\\[0.2em]
       \footnotesize Robots that find their way
     \end{methodbox}
   \end{column}
   \begin{column}{0.32\textwidth}
     \begin{methodbox}[Manipulation]
       \centering
-      \vspace{0.3em}
-      {\large\hi{Manipulation}}\\[0.4em]
+      \includegraphics[width=0.90\linewidth]{../Figures/SUNY/d2e_teaser.png}\\[0.3em]
+      {\small\hi{Manipulation}}\\[0.2em]
       \footnotesize Robots that use their hands
     \end{methodbox}
   \end{column}
   \begin{column}{0.32\textwidth}
     \begin{methodbox}[Sim / Eval]
       \centering
-      \vspace{0.3em}
-      {\large\hi{Sim / Eval}}\\[0.4em]
+      \vspace{1.0em}
+      {\small\hi{Sim / Eval}}\\[0.2em]
       \footnotesize Infrastructure to prove it works
+      \vspace{1.0em}
     \end{methodbox}
   \end{column}
 \end{columns}
-\vspace{1.2em}
+\vspace{0.8em}
 \begin{center}
   {\small\itshape ``I joined as Head of Research in May 2025.''}
 \end{center}
@@ -838,15 +839,16 @@
 
 % --- Slide 25: SketchDrive ---
 \begin{frame}{SketchDrive: Draw a Map. The Robot Drives It.}
+\vspace{0.2em}
+\begin{center}
+  \includegraphics[width=0.85\textwidth, height=0.52\textheight, keepaspectratio]{../Figures/SUNY/canvas_teaser.png}
+\end{center}
 \vspace{0.3em}
-\begin{itemize}
-  \item Hand-drawn sketch $\rightarrow$ robot navigation route
-  \item VLA-based: vision + language + action in one model
-  \item \hi{InternVL} backbone: \hi{2$\times$ faster} inference vs.\ alternatives
-  \item Data pipeline: \negative{4--5 days} $\rightarrow$ \positive{2--3 hours}
+\begin{itemize}\setlength\itemsep{0.15em}
+  \item \hi{InternVL} backbone: \hi{2$\times$ faster} inference $\cdot$ data pipeline \negative{4--5 days} $\rightarrow$ \positive{2--3 hours}
   \item \hi{9 production releases}: v0.1.0 (Jan 2025) $\rightarrow$ v0.2.5 (Jun 2025)
 \end{itemize}
-\vspace{0.8em}
+\vspace{0.3em}
 \begin{keybox}[]
   \footnotesize Source: CANVAS, ICRA 2025 (arXiv:2410.01273) $\cdot$ SketchDrive mono-repo
 \end{keybox}
@@ -912,17 +914,16 @@
 
 % --- Slide 27: D2E: Games → Robots ---
 \begin{frame}{D2E: Desktop-to-Embodied AI}
-\vspace{0.3em}
-{\small\itshape Can game recordings teach robots?}
-\vspace{0.5em}
-\begin{itemize}
-  \item \hi{1,300 hours} of game data (1,000h from YouTube)
-  \item Collected in \hi{under 1 week} by 1 person
-  \item Robot manipulation: \positive{96.6\% success} on LIBERO benchmark
-  \item Beats models up to \hi{7$\times$ larger} ($\pi_0$ 3.3B, OpenVLA 7B)
+\vspace{0.1em}
+\begin{center}
+  \includegraphics[width=0.80\textwidth, height=0.52\textheight, keepaspectratio]{../Figures/SUNY/d2e_teaser.png}
+\end{center}
+\vspace{0.2em}
+\begin{itemize}\setlength\itemsep{0.1em}
+  \item \hi{1,300h} game data in \hi{under 1 week} $\cdot$ manipulation \positive{96.6\%} on LIBERO, beats \hi{7$\times$ larger} models
   \item Navigation: \positive{83.3\% success} on CANVAS
 \end{itemize}
-\vspace{0.8em}
+\vspace{0.2em}
 \begin{keybox}[]
   \footnotesize \hi{ICLR 2026 — top 10\%} $\cdot$ Yunsung Lee, corresponding author
 \end{keybox}
@@ -1040,18 +1041,26 @@ DGX H100 cluster — built by the research team.
 
 % --- Slide 33: Research → Product ---
 \begin{frame}{GINT: Lab $\rightarrow$ Field $\rightarrow$ 100+ Farms}
-\vspace{0.3em}
-\begin{enumerate}
-  \item \hi{Simulation research} — Sim2Real method, 29\% $\rightarrow$ 50\%
-  \item \hi{Lab prototype} — 87.5\% with 2.5h real data
-  \item \hi{Field evaluation} — 4 evals in 8 days, November 2025
-  \item \positive{Final result} — \hi{97.3\% success, 0\% failure rate}
-  \item \positive{Commercial deployment} — \hi{100+ contracts}, Korea + Japan
-\end{enumerate}
-\vspace{1em}
-\begin{keybox}[]
-  \itshape ``Research that doesn't ship is just a hobby.''
-\end{keybox}
+\vspace{0.2em}
+\begin{columns}[T]
+  \begin{column}{0.46\textwidth}
+    \begin{enumerate}\setlength\itemsep{0.3em}
+      \item \hi{Sim research} — 29\% $\rightarrow$ 50\%
+      \item \hi{Lab prototype} — 87.5\% (2.5h data)
+      \item \hi{Field evals} — 4 evals in 8 days
+      \item \positive{97.3\% success}, 0\% failure
+      \item \positive{100+ contracts}, Korea + Japan
+    \end{enumerate}
+    \vspace{0.6em}
+    \begin{keybox}[]
+      \footnotesize\itshape ``Research that doesn't ship\\is just a hobby.''
+    \end{keybox}
+  \end{column}
+  \begin{column}{0.52\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../Figures/SUNY/canvas_deployment.png}
+  \end{column}
+\end{columns}
 \end{frame}
 
 % --- Slide 34: Research Engineer Mindset — TikZ Venn Diagram ---
