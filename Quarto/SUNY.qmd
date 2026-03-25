@@ -639,27 +639,27 @@ Technical skills are the [entry ticket]{.neutral}.
 :::: {.columns}
 ::: {.column width="32%"}
 ::: {.methodbox style="text-align: center;"}
-**Navigation**
-
 [**Navigation**]{.hi}
+
+![](../Figures/SUNY/canvas_teaser.png){width="100%"}
 
 Robots that find their way
 :::
 :::
 ::: {.column width="32%"}
 ::: {.methodbox style="text-align: center;"}
-**Manipulation**
-
 [**Manipulation**]{.hi}
+
+![](../Figures/SUNY/d2e_teaser.png){width="100%"}
 
 Robots that use their hands
 :::
 :::
 ::: {.column width="32%"}
 ::: {.methodbox style="text-align: center;"}
-**Sim / Eval**
-
 [**Sim / Eval**]{.hi}
+
+![](../Figures/SUNY/d2e_libero.png){width="100%"}
 
 Infrastructure to prove it works
 :::
@@ -676,14 +676,17 @@ Infrastructure to prove it works
 
 ## SketchDrive: Draw a Map. The Robot Drives It.
 
-- Hand-drawn sketch → robot navigation route
-- VLA-based: vision + language + action in one model
-- [**InternVL**]{.hi} backbone: [**2× faster**]{.hi} inference vs. alternatives
-- Data pipeline: [**4--5 days**]{.negative} → [**2--3 hours**]{.positive}
-- [**9 production releases**]{.hi}: v0.1.0 (Jan 2025) → v0.2.5 (Jun 2025)
+![](../Figures/SUNY/canvas_teaser.png){fig-align="center" width="70%"}
 
-::: {.keybox}
-Source: CANVAS, ICRA 2025 (arXiv:2410.01273) · SketchDrive mono-repo
+<video src="https://raw.githubusercontent.com/worv-ai/worv-ai.github.io/main/canvas/static/videos/orchard_canvas.mp4"
+       autoplay loop muted playsinline width="75%"
+       style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+<div class="video-label">Autonomous orchard navigation via hand-drawn sketch</div>
+
+::: {.smaller}
+- [**InternVL**]{.hi} backbone: [**2× faster**]{.hi} inference · pipeline [**40--60×**]{.hi} faster · [**9 releases**]{.hi} (v0.1.0 → v0.2.5)
+- Source: CANVAS, ICRA 2025 (arXiv:2410.01273)
 :::
 
 
@@ -706,16 +709,16 @@ Source: CANVAS, ICRA 2025 (arXiv:2410.01273) · SketchDrive mono-repo
 
 ## D2E: Desktop-to-Embodied AI
 
-*Can game recordings teach robots?*
+![](../Figures/SUNY/d2e_teaser.png){fig-align="center" width="70%"}
 
-- [**1,300 hours**]{.hi} of game data (1,000h from YouTube)
-- Collected in [**under 1 week**]{.hi} by 1 person
-- Robot manipulation: [**96.6% success**]{.positive} on LIBERO benchmark
-- Beats models up to [**7× larger**]{.hi} ($\pi_0$ 3.3B, OpenVLA 7B)
-- Navigation: [**83.3% success**]{.positive} on CANVAS
+<video src="https://raw.githubusercontent.com/worv-ai/worv-ai.github.io/main/d2e/static/videos/libero-1-ptft.mp4"
+       autoplay loop muted playsinline width="65%"
+       style="display: block; margin: 0 auto; border-radius: 6px;">
+</video>
+<div class="video-label">Robot manipulation learned from 1,300h of game recordings (LIBERO)</div>
 
-::: {.keybox}
-[**ICLR 2026 — top 10%**]{.hi} · Yunsung Lee, corresponding author
+::: {.smaller}
+- [**96.6%**]{.positive} on LIBERO · beats models up to [**7× larger**]{.hi} ($\pi_0$ 3.3B, OpenVLA 7B) · [**ICLR 2026 top 10%**]{.hi}
 :::
 
 
@@ -825,15 +828,22 @@ DGX H100 cluster --- built by the research team.
 
 ## GINT: Lab → Field → 100+ Farms
 
-1. [**Simulation research**]{.hi} --- Sim2Real method, 29% → 50%
+:::: {.columns}
+::: {.column width="52%"}
+![](../Figures/SUNY/canvas_deployment.png){fig-align="center" width="100%"}
+:::
+::: {.column width="45%"}
+1. [**Simulation research**]{.hi} --- 29% → 50%
 2. [**Lab prototype**]{.hi} --- 87.5% with 2.5h real data
-3. [**Field evaluation**]{.hi} --- 4 evals in 8 days, November 2025
-4. [**Final result**]{.positive} --- [**97.3% success, 0% failure rate**]{.hi}
-5. [**Commercial deployment**]{.positive} --- [**100+ contracts**]{.hi}, Korea + Japan
+3. [**Field evaluation**]{.hi} --- 4 evals in 8 days
+4. [**Final result**]{.positive} --- [**97.3% success**]{.hi}, [**0% failure**]{.positive}
+5. [**Commercial**]{.positive} --- [**100+ contracts**]{.hi}, Korea + Japan
 
 ::: {.keybox}
 *"Research that doesn't ship is just a hobby."*
 :::
+:::
+::::
 
 
 <!-- Slide 34: The Research Engineer Mindset -->
