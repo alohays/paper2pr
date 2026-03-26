@@ -26,12 +26,17 @@
               font=\small, align=center},
   arr/.style={->, thick, color=primarygold}
 ]
+  % Top row
   \node[box, fill=primaryblue!10]  (w1) {\textbf{Week 1}\\Idea + Setup\\GitHub repo};
-  \node[box, fill=primaryblue!20, right=0.5cm of w1] (w2) {\textbf{Week 2}\\Build core\\feature};
-  \node[box, fill=primaryblue!35, right=0.5cm of w2] (w3) {\textbf{Week 3}\\Deploy +\\Polish};
-  \node[box, fill=primarygold!30, right=0.5cm of w3] (w4) {\textbf{Week 4}\\Blog post +\\Share};
+  \node[box, fill=primaryblue!20, right=0.6cm of w1] (w2) {\textbf{Week 2}\\Build core\\feature};
+
+  % Bottom row
+  \node[box, fill=primaryblue!35, below=0.7cm of w1] (w3) {\textbf{Week 3}\\Deploy +\\Polish};
+  \node[box, fill=primarygold!30, right=0.6cm of w3] (w4) {\textbf{Week 4}\\Blog post +\\Share};
+
+  % Arrows: right, then bent down-left, then right
   \draw[arr] (w1) -- (w2);
-  \draw[arr] (w2) -- (w3);
+  \draw[arr] (w2.south) -- ++(0,-0.35) -| (w3.north);
   \draw[arr] (w3) -- (w4);
 \end{tikzpicture}
 \end{document}
