@@ -249,7 +249,7 @@
           nodes near coords style={font=\tiny\bfseries},
           every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0},
         ]
-          \addplot[fill=gray!40, draw=gray] coordinates {(Non-AI,180)};
+          \addplot[fill=primarygold!50, draw=primarygold] coordinates {(Non-AI,180)};
           \addplot[fill=primaryblue, draw=primaryblue] coordinates {(AI,245)};
         \end{axis}
       \end{tikzpicture}\\[0.2em]
@@ -275,7 +275,7 @@
           nodes near coords style={font=\tiny\bfseries},
           every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0},
         ]
-          \addplot[fill=gray!40, draw=gray] coordinates {(Non-AI,85)};
+          \addplot[fill=primarygold!50, draw=primarygold] coordinates {(Non-AI,85)};
           \addplot[fill=primarygold, draw=primarygold] coordinates {(AI,90)};
         \end{axis}
       \end{tikzpicture}\\[0.2em]
@@ -369,7 +369,7 @@
           nodes near coords align=horizontal,
           nodes near coords style={font=\tiny\bfseries},
         ]
-          \addplot[fill=gray!40, draw=gray] coordinates {(6.1,2024)};
+          \addplot[fill=primarygold!50, draw=primarygold] coordinates {(6.1,2024)};
           \addplot[fill=primaryblue, draw=primaryblue] coordinates {(6.0,{H1 2025})};
         \end{axis}
       \end{tikzpicture}
@@ -882,14 +882,15 @@
 \begin{tikzpicture}
 \begin{axis}[
   ybar,
+  clip=false,
   width=0.88\textwidth,
   height=5.2cm,
   bar width=0.52cm,
-  ymin=0, ymax=110,
+  ymin=0, ymax=115,
   ylabel={Success Rate (\%)},
   symbolic x coords={Sim only, +Sim2Real, +Real 2.5h, 1st eval, 2nd eval, 3rd eval, Final},
   xtick=data,
-  x tick label style={font=\scriptsize, rotate=20, anchor=east},
+  x tick label style={font=\scriptsize, rotate=30, anchor=north east},
   ytick={0,25,50,75,100},
   nodes near coords,
   nodes near coords style={font=\tiny, above},
@@ -898,7 +899,7 @@
   tick style={draw=gray!60},
   ymajorgrids=true,
   grid style={gray!20},
-  enlarge x limits=0.08,
+  enlarge x limits=0.10,
 ]
   \addplot[fill=negativered!80, draw=negativered] coordinates {
     (Sim only, 29.16)
@@ -921,8 +922,8 @@
   \addplot[fill=positivegreen!80, draw=positivegreen] coordinates {
     (Final, 97.30)
   };
-  % Annotation for the dip
-  \node[font=\tiny, text=negativered, align=center] at (axis cs:2nd eval, 85) {eval set\\changed};
+  % Annotation for the dip — raised to avoid collision with value label
+  \node[font=\tiny, text=negativered, align=center] at (axis cs:2nd eval, 95) {eval set\\changed};
 \end{axis}
 \end{tikzpicture}
 \end{center}
@@ -1415,24 +1416,29 @@ Source: Fortune Tech Hiring Secrets, Dec 2025}}
 \begin{frame}{The Interview Pyramid}
 \begin{center}
 \begin{tikzpicture}[scale=1.0]
-  % Layer 1 — bottom: Coding
-  \fill[primaryblue!50]  (-3.0,0)    -- (3.0,0)    -- (2.1,0.8)  -- (-2.1,0.8)  -- cycle;
+  % Layer 1 — bottom: Coding (widest)
+  \fill[primaryblue!50]  (-4.2,0)    -- (4.2,0)    -- (3.0,0.9)  -- (-3.0,0.9)  -- cycle;
   % Layer 2: System Design
-  \fill[primarygold!60]  (-2.1,0.85) -- (2.1,0.85) -- (1.3,1.65) -- (-1.3,1.65) -- cycle;
+  \fill[primarygold!60]  (-3.0,0.95) -- (3.0,0.95) -- (1.9,1.85) -- (-1.9,1.85) -- cycle;
   % Layer 3: ML Fundamentals
-  \fill[orange!60]       (-1.3,1.7)  -- (1.3,1.7)  -- (0.55,2.5) -- (-0.55,2.5) -- cycle;
+  \fill[orange!60]       (-1.9,1.9)  -- (1.9,1.9)  -- (0.8,2.8)  -- (-0.8,2.8)  -- cycle;
   % Layer 4 — top: Behavioral
-  \fill[positivegreen!70](-0.55,2.55)-- (0.55,2.55)-- (0,3.1)    -- cycle;
-  % Labels
-  \node[font=\scriptsize\bfseries, text=white]          at (0,    0.4)  {Coding — LeetCode (table stakes)};
-  \node[font=\scriptsize\bfseries, text=white]          at (0,    1.25) {System Design (the differentiator)};
-  \node[font=\scriptsize\bfseries, text=white]          at (0,    2.1)  {ML Fundamentals};
-  \node[font=\tiny\bfseries,       text=white]          at (0,    2.78) {Behavioral};
-  % Callouts
+  \fill[positivegreen!70](-0.8,2.85) -- (0.8,2.85) -- (0,3.5)    -- cycle;
+  % Inside labels (short)
+  \node[font=\small\bfseries, text=white]          at (0,    0.45) {Coding};
+  \node[font=\small\bfseries, text=white]          at (0,    1.40) {System Design};
+  \node[font=\scriptsize\bfseries, text=white]     at (0,    2.35) {ML Fundamentals};
+  \node[font=\tiny\bfseries,       text=white]     at (0,    3.12) {Behavioral};
+  % Right-side descriptions
+  \node[font=\tiny, text=jet, align=left, text width=2.4cm]
+        at (5.5, 0.45)  {table stakes\\(LeetCode)};
+  \node[font=\tiny, text=primarygold!80!black, align=left, text width=2.4cm]
+        at (5.5, 1.40)  {the differentiator};
+  % Left-side callouts
   \node[font=\tiny, text=primaryblue, align=right, text width=2.6cm]
-        at (-4.2, 0.4)  {Most students\\stop here $\rightarrow$};
+        at (-5.5, 0.45)  {Most students\\stop here $\rightarrow$};
   \node[font=\tiny, text=positivegreen!60!black, align=right, text width=2.6cm]
-        at (-4.2, 2.78) {Offers happen\\at the top $\rightarrow$};
+        at (-5.5, 3.12) {Offers happen\\at the top $\rightarrow$};
 \end{tikzpicture}
 \end{center}
 \vspace{0.3em}

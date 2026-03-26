@@ -23,14 +23,15 @@
 \begin{tikzpicture}
 \begin{axis}[
   ybar,
+  clip=false,
   width=0.92\textwidth,
   height=5.8cm,
   bar width=0.55cm,
-  ymin=0, ymax=110,
+  ymin=0, ymax=115,
   ylabel={Success Rate (\%)},
   symbolic x coords={Sim only, +Sim2Real, +Real 2.5h, 1st eval, 2nd eval, 3rd eval, Final},
   xtick=data,
-  x tick label style={font=\scriptsize, rotate=20, anchor=east},
+  x tick label style={font=\scriptsize, rotate=30, anchor=north east},
   ytick={0,25,50,75,100},
   nodes near coords,
   nodes near coords style={font=\tiny, above},
@@ -39,7 +40,7 @@
   tick style={draw=gray!60},
   ymajorgrids=true,
   grid style={gray!20},
-  enlarge x limits=0.08,
+  enlarge x limits=0.10,
 ]
   \addplot[fill=negativered!80, draw=negativered] coordinates {
     (Sim only, 29.16)
@@ -62,8 +63,8 @@
   \addplot[fill=positivegreen!80, draw=positivegreen] coordinates {
     (Final, 97.30)
   };
-  % Annotation for the dip
-  \node[font=\tiny, text=negativered, align=center] at (axis cs:2nd eval, 85) {eval set\\changed};
+  % Annotation for the dip — raised to avoid collision with value label
+  \node[font=\tiny, text=negativered, align=center] at (axis cs:2nd eval, 95) {eval set\\changed};
 \end{axis}
 \end{tikzpicture}
 \end{document}
