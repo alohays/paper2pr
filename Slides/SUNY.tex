@@ -356,7 +356,7 @@
       \begin{tikzpicture}
         \begin{axis}[
           xbar, bar width=18pt,
-          width=6cm, height=3.2cm,
+          width=8cm, height=4.5cm,
           symbolic y coords={H1 2025, 2024},
           ytick=data,
           xmin=0, xmax=8,
@@ -564,21 +564,29 @@
 \vspace{0.8em}
 \begin{center}
 \begin{tikzpicture}[
-  node distance=0.9cm,
+  node distance=0.7cm,
   box/.style={draw=primaryblue, fill=lightbg, rounded corners=3pt,
-              minimum width=1.9cm, minimum height=0.65cm,
+              minimum width=2.2cm, minimum height=0.75cm,
               font=\scriptsize, align=center},
   arr/.style={->, thick, color=primarygold}
 ]
-  \node[box] (q)   {User\\Query};
-  \node[box, right=of q]  (c)   {LLM +\\Intent};
-  \node[box, right=of c]  (ws)  {Web\\Search};
-  \node[box, right=of ws] (syn) {Answer\\Synthesis};
-  \node[box, right=of syn](r)   {Response};
+  % Row 1
+  \node[box] (q)  {User\\Query};
+  \node[box, right=of q]  (c)  {LLM +\\Intent};
+  \node[box, right=of c]  (ws) {Web\\Search};
 
-  \draw[arr] (q)   -- (c);
-  \draw[arr] (c)   -- (ws);
-  \draw[arr] (ws)  -- (syn);
+  % Row 2 — centered under row 1
+  \node[box, below=0.9cm of c] (syn) {Answer\\Synthesis};
+  \node[box, right=of syn]     (r)   {Response};
+
+  % Row 1 arrows
+  \draw[arr] (q)  -- (c);
+  \draw[arr] (c)  -- (ws);
+
+  % Bent arrow: ws down then left to syn
+  \draw[arr] (ws.south) -- ++(0,-0.45) -| (syn.north);
+
+  % Row 2 arrow
   \draw[arr] (syn) -- (r);
 \end{tikzpicture}
 \end{center}
@@ -597,18 +605,31 @@
 \end{center}
 \vspace{0.9em}
 \begin{center}
-\begin{tikzpicture}[scale=0.9]
+\begin{tikzpicture}[
+  desc/.style={draw=primaryblue!30, fill=lightbg, rounded corners=2pt,
+               minimum width=2.4cm, minimum height=0.7cm,
+               font=\tiny, align=center, text=jet}
+]
+  % Timeline axis
   \draw[->, thick, color=primaryblue] (0,0) -- (9.2,0);
 
-  \foreach \x/\label/\sub in {
-    0/{Day 0}/{API announced},
-    4.3/{Day 3}/{Internal prototype},
-    8.5/{Day 14}/{Live in production}
-  }{
-    \fill[primarygold] (\x,0) circle (4pt);
-    \node[font=\small\bfseries\color{primaryblue}, above=4pt] at (\x,0) {\label};
-    \node[font=\scriptsize\color{gray}, below=6pt]            at (\x,0) {\sub};
-  }
+  % Day 0
+  \fill[primarygold] (0,0) circle (4pt);
+  \node[font=\small\bfseries\color{primaryblue}, above=4pt] at (0,0) {Day 0};
+  \draw[primaryblue!40, thin] (0,-0.12) -- (0,-0.7);
+  \node[desc] at (0,-1.1) {OpenAI Realtime API\\announced};
+
+  % Day 3
+  \fill[primarygold] (4.3,0) circle (4pt);
+  \node[font=\small\bfseries\color{primaryblue}, above=4pt] at (4.3,0) {Day 3};
+  \draw[primaryblue!40, thin] (4.3,-0.12) -- (4.3,-0.7);
+  \node[desc] at (4.3,-1.1) {Internal prototype\\demo};
+
+  % Day 14
+  \fill[primarygold] (8.5,0) circle (4pt);
+  \node[font=\small\bfseries\color{primaryblue}, above=4pt] at (8.5,0) {Day 14};
+  \draw[primaryblue!40, thin] (8.5,-0.12) -- (8.5,-0.7);
+  \node[desc] at (8.5,-1.1) {Live in\\production};
 \end{tikzpicture}
 \end{center}
 \vspace{1em}
@@ -1393,7 +1414,7 @@ Source: Fortune Tech Hiring Secrets, Dec 2025}}
 % --- Slide 47: Technical Interview Prep — Pyramid ---
 \begin{frame}{The Interview Pyramid}
 \begin{center}
-\begin{tikzpicture}[scale=0.9]
+\begin{tikzpicture}[scale=1.0]
   % Layer 1 — bottom: Coding
   \fill[primaryblue!50]  (-3.0,0)    -- (3.0,0)    -- (2.1,0.8)  -- (-2.1,0.8)  -- cycle;
   % Layer 2: System Design
@@ -1582,12 +1603,17 @@ Source: Fortune Tech Hiring Secrets, Dec 2025}}
               font=\small, align=center},
   arr/.style={->, thick, color=primarygold}
 ]
+  % Top row
   \node[box, fill=primaryblue!10]  (w1) {\textbf{Week 1}\\Idea + Setup\\GitHub repo};
-  \node[box, fill=primaryblue!20, right=0.5cm of w1] (w2) {\textbf{Week 2}\\Build core\\feature};
-  \node[box, fill=primaryblue!35, right=0.5cm of w2] (w3) {\textbf{Week 3}\\Deploy +\\Polish};
-  \node[box, fill=primarygold!30, right=0.5cm of w3] (w4) {\textbf{Week 4}\\Blog post +\\Share};
+  \node[box, fill=primaryblue!20, right=0.6cm of w1] (w2) {\textbf{Week 2}\\Build core\\feature};
+
+  % Bottom row
+  \node[box, fill=primaryblue!35, below=0.7cm of w1] (w3) {\textbf{Week 3}\\Deploy +\\Polish};
+  \node[box, fill=primarygold!30, right=0.6cm of w3] (w4) {\textbf{Week 4}\\Blog post +\\Share};
+
+  % Arrows: right, then bent down-left, then right
   \draw[arr] (w1) -- (w2);
-  \draw[arr] (w2) -- (w3);
+  \draw[arr] (w2.south) -- ++(0,-0.35) -| (w3.north);
   \draw[arr] (w3) -- (w4);
 \end{tikzpicture}
 \end{center}

@@ -21,21 +21,29 @@
 \definecolor{negativered}{HTML}{B91C1C}
 \begin{document}
 \begin{tikzpicture}[
-  node distance=0.9cm,
+  node distance=0.7cm,
   box/.style={draw=primaryblue, fill=lightbg, rounded corners=3pt,
-              minimum width=1.9cm, minimum height=0.65cm,
+              minimum width=2.2cm, minimum height=0.75cm,
               font=\scriptsize, align=center},
   arr/.style={->, thick, color=primarygold}
 ]
-  \node[box] (q)   {User\\Query};
-  \node[box, right=of q]  (c)   {LLM +\\Intent};
-  \node[box, right=of c]  (ws)  {Web\\Search};
-  \node[box, right=of ws] (syn) {Answer\\Synthesis};
-  \node[box, right=of syn](r)   {Response};
+  % Row 1
+  \node[box] (q)  {User\\Query};
+  \node[box, right=of q]  (c)  {LLM +\\Intent};
+  \node[box, right=of c]  (ws) {Web\\Search};
 
-  \draw[arr] (q)   -- (c);
-  \draw[arr] (c)   -- (ws);
-  \draw[arr] (ws)  -- (syn);
+  % Row 2 — centered under row 1
+  \node[box, below=0.9cm of c] (syn) {Answer\\Synthesis};
+  \node[box, right=of syn]     (r)   {Response};
+
+  % Row 1 arrows
+  \draw[arr] (q)  -- (c);
+  \draw[arr] (c)  -- (ws);
+
+  % Bent arrow: ws down then left to syn
+  \draw[arr] (ws.south) -- ++(0,-0.45) -| (syn.north);
+
+  % Row 2 arrow
   \draw[arr] (syn) -- (r);
 \end{tikzpicture}
 \end{document}
