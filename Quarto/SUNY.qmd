@@ -641,8 +641,6 @@ Technical skills are the [entry ticket]{.neutral}.
 ::: {.methodbox style="text-align: center;"}
 [**Navigation**]{.hi}
 
-![](../Figures/SUNY/canvas_teaser.png){width="100%"}
-
 Robots that find their way
 :::
 :::
@@ -650,16 +648,12 @@ Robots that find their way
 ::: {.methodbox style="text-align: center;"}
 [**Manipulation**]{.hi}
 
-![](../Figures/SUNY/d2e_teaser.png){width="100%"}
-
 Robots that use their hands
 :::
 :::
 ::: {.column width="32%"}
 ::: {.methodbox style="text-align: center;"}
 [**Sim / Eval**]{.hi}
-
-![](../Figures/SUNY/d2e_libero.png){width="100%"}
 
 Infrastructure to prove it works
 :::
@@ -675,8 +669,6 @@ Infrastructure to prove it works
 
 
 ## SketchDrive: Draw a Map. The Robot Drives It.
-
-![](../Figures/SUNY/canvas_teaser.png){fig-align="center" width="70%"}
 
 <video src="https://raw.githubusercontent.com/worv-ai/worv-ai.github.io/main/canvas/static/videos/orchard_canvas.mp4"
        autoplay loop muted playsinline width="75%"
@@ -708,8 +700,6 @@ Infrastructure to prove it works
 
 
 ## D2E: Desktop-to-Embodied AI
-
-![](../Figures/SUNY/d2e_teaser.png){fig-align="center" width="70%"}
 
 <video src="https://raw.githubusercontent.com/worv-ai/worv-ai.github.io/main/d2e/static/videos/libero-1-ptft.mp4"
        autoplay loop muted playsinline width="65%"
@@ -830,7 +820,11 @@ DGX H100 cluster --- built by the research team.
 
 :::: {.columns}
 ::: {.column width="52%"}
-![](../Figures/SUNY/canvas_deployment.png){fig-align="center" width="100%"}
+![](../Figures/SUNY/canvas_deployment.png){fig-align="center" width="55%"}
+
+::: {.footnote}
+CANVAS deployment: comparing navigation methods across real-world scenarios (Street, Orchard)
+:::
 :::
 ::: {.column width="45%"}
 1. [**Simulation research**]{.hi} --- 29% → 50%
