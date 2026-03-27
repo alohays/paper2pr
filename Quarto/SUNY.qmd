@@ -77,7 +77,7 @@ Non-linear path. Intentional.
 AI
 Landscape
 :::
-[$245K median]{.neutral}
+[$245K avg]{.neutral}
 :::
 :::
 ::: {.column width="24%"}
@@ -172,7 +172,7 @@ Source: OpenAI Feb 2025; LinkedIn Jobs on the Rise 2026; WEF Future of Jobs 2025
 ## Salary Reality Check
 
 ::: {style="text-align: center;"}
-[**$245,000**]{.hi}   US median total comp for AI engineers.
+[**$245,000**]{.hi}   US avg total comp for AI engineers.
 
 Korea? [**6% premium**]{.hi-gold} over non-AI. That gap is not a rumor.
 :::
@@ -254,7 +254,7 @@ Only [**4%**]{.hi-gold} of hiring leaders cited credentials.   Only [**17%**]{.h
 ::: {style="text-align: center;"}
 [**$6B+**]{.hi}   VC into robotics, H1 2025 alone.
 
-[$More than all of 2024 ($6.1B full year).]{.neutral}
+[$On pace to surpass all of 2024 ($6.1B full year).]{.neutral}
 :::
 
 ![](../Figures/SUNY/funding_chart.svg){fig-align="center" width="90%"}
@@ -1405,7 +1405,7 @@ No one else will show up to your interviews.
 ## Recap: The AI Landscape
 
 ::: {style="text-align: center; margin-top: 0.5em;"}
-| [**$245K**]{.hi} median AI engineer salary (US) | [**50% of positions unfilled**]{.hi-gold} |
+| [**$245K**]{.hi} avg AI engineer salary (US) | [**50% of positions unfilled**]{.hi-gold} |
 |---|---|
 | [**6.1%**]{.hi} of CS grads unemployed | [**Skills mismatch --- not supply**]{.hi-gold} |
 | [**$6B+**]{.hi} VC into robotics in H1 2025 | [**₩10.1T Korea AI budget (+206%)**]{.hi-gold} |
