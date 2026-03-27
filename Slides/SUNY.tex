@@ -8,6 +8,7 @@
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{positioning}
 \usepackage[normalem]{ulem}
+\usepackage{qrcode}
 \addbibresource{../Bibliography_base.bib}
 
 \title{Career Roadmap for AI Researchers\\From Papers to Products}
@@ -87,7 +88,7 @@
               align=center, font=\small\bfseries\color{primaryblue}]
               {AI\\Landscape};
       \end{tikzpicture}\\[0.3em]
-      {\footnotesize\neutral{\$245K median}}
+      {\footnotesize\neutral{\$245K avg}}
     \end{center}
   \end{column}
   \begin{column}{0.24\textwidth}
@@ -165,12 +166,12 @@
   {\small\hi{4 Paths.}\quad Researcher / Engineer / PM / Data.\quad Know the difference before you apply.}
 \end{center}
 \vspace{0.5em}
-\begin{tikzpicture}[scale=0.92]
+\begin{tikzpicture}[scale=0.85]
   % Axes labels
   \node[font=\small\bfseries\color{primaryblue}] at (3.5, 5.1)  {Research};
   \node[font=\small\bfseries\color{primaryblue}] at (3.5, -0.2) {Product};
-  \node[font=\small\bfseries\color{primaryblue}] at (-0.1, 2.45) [rotate=90] {Build};
-  \node[font=\small\bfseries\color{primaryblue}] at (7.1,  2.45) [rotate=270] {Analyze};
+  \node[font=\small\bfseries\color{primaryblue}] at (-0.6, 2.45) [rotate=90] {Build};
+  \node[font=\small\bfseries\color{primaryblue}] at (7.6,  2.45) [rotate=270] {Analyze};
 
   % Grid lines
   \draw[gray!30, thick] (0,2.45) -- (7, 2.45);
@@ -225,7 +226,7 @@
 % --- Slide 6: Salary Reality Check ---
 \begin{frame}{Salary Reality Check}
 \begin{center}
-  {\large\hi{\$245,000}}\quad US median total comp for AI engineers.\\[0.2em]
+  {\large\hi{\$245,000}}\quad US avg total comp for AI engineers.\\[0.2em]
   {\normalsize Korea? \higold{6\% premium} over non-AI. That gap is not a rumor.}
 \end{center}
 \vspace{0.6em}
@@ -235,25 +236,28 @@
       {\small\bfseries United States}\\[0.3em]
       \begin{tikzpicture}
         \begin{axis}[
-          ybar, bar width=22pt,
+          ybar, bar width=22pt, bar shift=0pt,
+          clip=false,
           width=5.5cm, height=4.2cm,
           symbolic x coords={Non-AI, AI},
           xtick=data,
           ymin=0, ymax=290,
           ytick={0,100,200},
           yticklabels={\$0K,\$100K,\$200K},
-          tick label style={font=\tiny},
+          y tick label style={font=\tiny},
+          x tick label style={font=\scriptsize},
           axis lines=left,
-          enlarge x limits=0.4,
+          enlarge x limits=0.5,
           nodes near coords,
           nodes near coords style={font=\tiny\bfseries},
           every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0},
         ]
           \addplot[fill=primarygold!50, draw=primarygold] coordinates {(Non-AI,180)};
           \addplot[fill=primaryblue, draw=primaryblue] coordinates {(AI,245)};
+          \node[below, font=\scriptsize, anchor=north] at (axis cs:AI, 0) {AI};
         \end{axis}
       \end{tikzpicture}\\[0.2em]
-      {\footnotesize\positive{+36\% premium at median}}
+      {\footnotesize\positive{+36\% premium}}
     \end{center}
   \end{column}
   \begin{column}{0.48\textwidth}
@@ -261,22 +265,25 @@
       {\small\bfseries Korea}\\[0.3em]
       \begin{tikzpicture}
         \begin{axis}[
-          ybar, bar width=22pt,
+          ybar, bar width=22pt, bar shift=0pt,
+          clip=false,
           width=5.5cm, height=4.2cm,
           symbolic x coords={Non-AI, AI},
           xtick=data,
           ymin=0, ymax=110,
           ytick={0,50,100},
           yticklabels={0,\textbf{₩}50M,\textbf{₩}100M},
-          tick label style={font=\tiny},
+          y tick label style={font=\tiny},
+          x tick label style={font=\scriptsize},
           axis lines=left,
-          enlarge x limits=0.4,
+          enlarge x limits=0.5,
           nodes near coords,
           nodes near coords style={font=\tiny\bfseries},
           every node near coord/.append style={/pgf/number format/.cd, fixed, precision=0},
         ]
           \addplot[fill=primarygold!50, draw=primarygold] coordinates {(Non-AI,85)};
           \addplot[fill=primarygold, draw=primarygold] coordinates {(AI,90)};
+          \node[below, font=\scriptsize, anchor=north] at (axis cs:AI, 0) {AI};
         \end{axis}
       \end{tikzpicture}\\[0.2em]
       {\footnotesize\neutral{+6\% premium}}
@@ -352,25 +359,29 @@
   \begin{column}{0.52\textwidth}
     \begin{center}
       {\large\hi{\$6B+}}\quad VC into robotics, H1 2025 alone.\\[0.1em]
-      {\footnotesize\neutral{More than all of 2024 (\$6.1B full year).}}\\[0.5em]
+      {\footnotesize\neutral{On pace to surpass all of 2024 (\$6.1B full year).}}\\[0.5em]
       \begin{tikzpicture}
         \begin{axis}[
           xbar, bar width=18pt,
+          clip=false,
           width=8cm, height=4.5cm,
           symbolic y coords={H1 2025, 2024},
           ytick=data,
           xmin=0, xmax=8,
           xtick={0,2,4,6},
           xticklabels={\$0B,\$2B,\$4B,\$6B},
-          tick label style={font=\tiny},
+          x tick label style={font=\tiny},
+          y tick label style={font=\scriptsize, anchor=east},
           axis lines=left,
-          enlarge y limits=0.4,
+          enlarge y limits=0.5,
           nodes near coords,
           nodes near coords align=horizontal,
           nodes near coords style={font=\tiny\bfseries},
+          every node near coord/.append style={/pgf/number format/.cd, fixed, precision=1},
         ]
           \addplot[fill=primarygold!50, draw=primarygold] coordinates {(6.1,2024)};
           \addplot[fill=primaryblue, draw=primaryblue] coordinates {(6.0,{H1 2025})};
+          \node[left, font=\scriptsize, anchor=east] at (axis cs:0,{H1 2025}) {H1 2025};
         \end{axis}
       \end{tikzpicture}
     \end{center}
@@ -884,13 +895,14 @@
   ybar,
   clip=false,
   width=0.88\textwidth,
-  height=5.2cm,
-  bar width=0.52cm,
+  height=4.2cm,
+  bar width=0.45cm,
   ymin=0, ymax=115,
   ylabel={Success Rate (\%)},
+  ylabel style={at={(axis description cs:-0.08,.5)}},
   symbolic x coords={Sim only, +Sim2Real, +Real 2.5h, 1st eval, 2nd eval, 3rd eval, Final},
   xtick=data,
-  x tick label style={font=\scriptsize, rotate=30, anchor=north east},
+  xticklabels={},
   ytick={0,25,50,75,100},
   nodes near coords,
   nodes near coords style={font=\tiny, above},
@@ -899,7 +911,7 @@
   tick style={draw=gray!60},
   ymajorgrids=true,
   grid style={gray!20},
-  enlarge x limits=0.10,
+  enlarge x limits=0.15,
 ]
   \addplot[fill=negativered!80, draw=negativered] coordinates {
     (Sim only, 29.16)
@@ -923,7 +935,15 @@
     (Final, 97.30)
   };
   % Annotation for the dip — raised to avoid collision with value label
-  \node[font=\tiny, text=negativered, align=center] at (axis cs:2nd eval, 95) {eval set\\changed};
+  \node[font=\scriptsize, text=negativered, align=center] at (axis cs:2nd eval, 95) {eval set\\changed};
+  % Explicit x-axis labels (pgfplots grouped bar layout clips auto-labels)
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:Sim only, -3) {Sim only};
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:+Sim2Real, -3) {+Sim2Real};
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:+Real 2.5h, -3) {+Real 2.5h};
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:1st eval, -3) {1st eval};
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:2nd eval, -3) {2nd eval};
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:3rd eval, -3) {3rd eval};
+  \node[font=\scriptsize, anchor=north east, rotate=30] at (axis cs:Final, -3) {Final};
 \end{axis}
 \end{tikzpicture}
 \end{center}
@@ -937,17 +957,28 @@
 % --- Slide 27: D2E: Games → Robots ---
 \begin{frame}{D2E: Desktop-to-Embodied AI}
 \vspace{0.1em}
-\begin{center}
-  \includegraphics[width=0.80\textwidth, height=0.52\textheight, keepaspectratio]{../Figures/SUNY/d2e_teaser.png}
-\end{center}
-\vspace{0.2em}
-\begin{itemize}\setlength\itemsep{0.1em}
+\begin{columns}[T]
+  \begin{column}{0.55\textwidth}
+    \begin{center}
+      \includegraphics[width=\linewidth, height=0.48\textheight, keepaspectratio]{../Figures/SUNY/d2e_teaser.png}
+    \end{center}
+  \end{column}
+  \begin{column}{0.42\textwidth}
+    \begin{center}
+      \includegraphics[width=\linewidth, height=0.48\textheight, keepaspectratio]{../Figures/SUNY/d2e_libero.png}
+    \end{center}
+    \vspace{0.1em}
+    {\footnotesize\neutral{LIBERO benchmark results}}
+  \end{column}
+\end{columns}
+\vspace{0.1em}
+\begin{itemize}\setlength\itemsep{0.05em}
   \item \hi{1,300h} game data in \hi{under 1 week} $\cdot$ manipulation \positive{96.6\%} on LIBERO, beats \hi{7$\times$ larger} models
   \item Navigation: \positive{83.3\% success} on CANVAS
 \end{itemize}
-\vspace{0.2em}
+\vspace{0.1em}
 \begin{keybox}[]
-  \footnotesize \hi{ICLR 2026 — top 10\%} $\cdot$ Yunsung Lee, corresponding author
+  \footnotesize \hi{ICLR 2026—top 10\%} $\cdot$ Yunsung Lee, corresponding author
 \end{keybox}
 \end{frame}
 
@@ -1428,7 +1459,7 @@ Source: Fortune Tech Hiring Secrets, Dec 2025}}
   \node[font=\small\bfseries, text=white]          at (0,    0.45) {Coding};
   \node[font=\small\bfseries, text=white]          at (0,    1.40) {System Design};
   \node[font=\scriptsize\bfseries, text=white]     at (0,    2.35) {ML Fundamentals};
-  \node[font=\tiny\bfseries,       text=white]     at (0,    3.12) {Behavioral};
+  \node[font=\scriptsize\bfseries,  text=positivegreen!70!black, above] at (0, 3.5) {Behavioral};
   % Right-side descriptions
   \node[font=\tiny, text=jet, align=left, text width=2.4cm]
         at (5.5, 0.45)  {table stakes\\(LeetCode)};
@@ -1663,7 +1694,7 @@ Source: Fortune Tech Hiring Secrets, Dec 2025}}
 \vspace{0.5em}
 \begin{center}
 \begin{tabular}{@{}ll@{}}
-  \hi{\$245K} median AI engineer salary (US) & \higold{50\% of positions unfilled} \\[1.2em]
+  \hi{\$245K} avg AI engineer salary (US) & \higold{50\% of positions unfilled} \\[1.2em]
   \hi{6.1\%} of CS grads unemployed & \higold{Skills mismatch — not supply} \\[1.2em]
   \hi{\$6B+} VC into robotics in H1 2025 & \higold{₩10.1T Korea AI budget (+206\%)} \\
 \end{tabular}
@@ -1710,7 +1741,7 @@ Source: Fortune Tech Hiring Secrets, Dec 2025}}
   \begin{column}{0.42\textwidth}
     \vspace{0.5em}
     \begin{center}
-      \fbox{\parbox[c][4.5cm][c]{3.8cm}{\centering\large QR Code\\[0.5em]\small (resource page)}}\\[0.6em]
+      \qrcode[height=4cm]{https://github.com/alohays}\\[0.6em]
       {\small Scan for tools, guides, communities}
     \end{center}
   \end{column}
