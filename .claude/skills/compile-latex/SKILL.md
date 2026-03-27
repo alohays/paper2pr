@@ -27,18 +27,25 @@ cd Slides
 TEXINPUTS=../Preambles:$TEXINPUTS BIBINPUTS=..:$BIBINPUTS latexmk -xelatex -interaction=nonstopmode $ARGUMENTS.tex
 ```
 
-2. **Check for warnings:**
+2. **Run ChkTeX advisory lint** (non-blocking):
+   ```bash
+   chktex -q Slides/$ARGUMENTS.tex 2>&1 | grep "^Warning" || echo "No chktex warnings."
+   ```
+   - Report any genuine warnings (expect ≤5 with project `.chktexrc` suppressions)
+   - Do NOT fail compilation on chktex warnings — advisory only
+
+3. **Check for compilation warnings:**
    - Grep output for `Overfull \\hbox` warnings
    - Grep for `undefined citations` or `Label(s) may have changed`
    - Report any issues found
 
-3. **Open the PDF** for visual verification:
+4. **Open the PDF** for visual verification:
    ```bash
    open Slides/$ARGUMENTS.pdf          # macOS
    # xdg-open Slides/$ARGUMENTS.pdf    # Linux
    ```
 
-4. **Report results:**
+5. **Report results:**
    - Compilation success/failure
    - Number of overfull hbox warnings
    - Any undefined citations

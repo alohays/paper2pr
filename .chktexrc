@@ -1,0 +1,24 @@
+# .chktexrc — ChkTeX configuration for Beamer/tcolorbox projects
+#
+# Suppresses false positives common in Beamer presentations
+# with custom tcolorbox environments and TikZ diagrams.
+
+# Suppress noisy warnings:
+# 6:  No italic correction (\/') — not needed in modern LaTeX/Beamer
+# 13: Intersentence spacing after periods (too aggressive for slides)
+# 18: Straight quote marks (intentional in code/URLs)
+# 31: \\[...] after tikzpicture (misinterpreted as text)
+# 38: Punctuation in front of quotes — false positive with LaTeX ``...'' style
+CmdLine { -n6 -n13 -n18 -n31 -n38 }
+
+# Register custom tcolorbox environments as verbatim-like
+# (prevents "unknown environment" warnings)
+VerbEnvir { tikzpicture }
+VerbEnvir { methodbox }
+VerbEnvir { keybox }
+VerbEnvir { highlightbox }
+VerbEnvir { assumptionbox }
+VerbEnvir { quotebox }
+VerbEnvir { resultbox }
+VerbEnvir { eqbox }
+VerbEnvir { softbox }

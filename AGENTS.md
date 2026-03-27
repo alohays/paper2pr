@@ -90,6 +90,13 @@ git push  # GitHub Actions renders Quarto, strips notes, deploys
 
 # Quality score
 python scripts/quality_score.py Quarto/PaperName.qmd
+
+# Optional tools (install via: bash scripts/setup-optional-tools.sh --all)
+diff-pdf old.pdf new.pdf                    # Visual PDF regression test
+diff-pdf --output-diff=diff.pdf old.pdf new.pdf  # Save diff as PDF
+tex-fmt --check Slides/PaperName.tex        # Check LaTeX formatting
+tex-fmt Slides/PaperName.tex                # Format LaTeX in-place
+chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
 ```
 
 ---
@@ -131,6 +138,7 @@ python scripts/quality_score.py Quarto/PaperName.qmd
 | `/context-status` | Show session health + context usage |
 | `/write-speaker-notes [PaperName] [--lang en\|ko]` | Generate presentation script (speaker notes) for Quarto slides |
 | `/deep-audit` | Repository-wide consistency audit |
+| `/pdf-diff [PaperName] [branch]` | Visual PDF regression test vs baseline |
 
 ---
 
@@ -194,6 +202,29 @@ python3 scripts/backup_notes.py restore DreamZero
 
 - **Never maintain separate branches** for notes vs no-notes
 - Notes backup: `.speaker-notes/` (gitignored)
+
+---
+
+## ClawTeam Multi-Agent Coordination (Optional, Experimental)
+
+[ClawTeam](https://github.com/HKUDS/ClawTeam) (v0.2.0) is a multi-agent coordination CLI that spawns AI agents in tmux panes with inter-agent messaging and task management. It is available for ad-hoc experimentation but **not integrated into standard workflows** -- existing skills (`/slide-excellence`, `/qa-quarto`, etc.) remain the primary multi-agent approach.
+
+**What it offers:** True OS-level process parallelism (each agent gets its own context window), visual tmux monitoring, git worktree workspace isolation per agent.
+
+**Why not deeply integrated yet:** ClawTeam v0.2.0 templates require inline prompts (no `prompt_file` support), which would duplicate agent definitions from `.claude/agents/` and violate Single Source of Truth. Revisit when ClawTeam supports external prompt file references.
+
+```bash
+# Ad-hoc usage examples
+clawteam spawn claude -t review -n auditor --task "Review Slides/SUNY.tex for visual overflow"
+clawteam spawn claude -t review -n pedagogy --task "Check narrative arc in Slides/SUNY.tex"
+clawteam board show review              # Kanban view of team tasks
+clawteam inbox send review auditor "Check slide 15 font size"
+clawteam team status review             # Team member status
+
+# Built-in templates (generic, not paper2pr-specific)
+clawteam template list                  # hedge-fund, software-dev, research-paper, code-review, strategy-room
+clawteam launch research-paper          # Launch a pre-configured research team
+```
 
 ---
 
