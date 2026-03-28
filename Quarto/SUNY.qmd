@@ -1029,6 +1029,10 @@ of all code is AI-generated or AI-assisted
 **These are not optional anymore.**
 :::
 
+::: {.keybox style="text-align: center;"}
+But knowing the tools is table stakes. The real career edge in 2026? **Orchestrating** them.
+:::
+
 
 <!-- Slide 42: Build 10x Faster -->
 
@@ -1099,9 +1103,67 @@ Rezi free tier · ChatGPT free tier · Claude free tier
 | 80% time on boilerplate | [**80% time on architecture**]{.positive} |
 | Limited to studied tech | [**Comfortable with any stack**]{.positive} |
 | Portfolio = coursework | [**Portfolio = initiative**]{.positive} |
+| Uses AI tools individually | [**Orchestrates multi-agent workflows**]{.positive} |
 
 ::: {.keybox style="text-align: center; margin-top: 1em;"}
-[**AI writes the code.   You own the understanding.**]{.hi}
+[**AI writes the code.   You orchestrate the system.   You own the understanding.**]{.hi}
+:::
+
+
+<!-- New Slides 45-47: Agent Orchestration -->
+
+
+## From AI User to AI Architect
+
+**[Level 1]{.hi} --- AI User:** Use ChatGPT/Claude for individual tasks [(where most students start)]{.neutral}
+
+**[Level 2]{.hi} --- AI Builder:** Build with Cursor/Copilot, deploy AI-powered features [(Slide 40 projects)]{.neutral}
+
+**[Level 3]{.hi} --- AI Architect:** Design multi-agent systems, orchestrate AI workflows [(the new frontier)]{.neutral}
+
+::: {.highlightbox}
+Workers in AI-exposed roles earn a **56% wage premium**
+
+Skills in AI-exposed roles evolve **66% faster**
+
+[PwC Global AI Jobs Barometer, 2025]{.neutral}
+:::
+
+::: {.keybox style="text-align: center;"}
+Level 3 is where the hiring premium lives --- and where the fewest candidates are.
+:::
+
+
+## What AI Agent Orchestration Actually Looks Like {.smaller}
+
+Multi-agent = multiple AI models collaborating on one task
+
+| [**2024: AI Tool User**]{.neutral} | [**2026: AI System Architect**]{.hi} |
+|---|---|
+| One prompt → one answer | [**Pipeline: plan → code → review → deploy**]{.positive} |
+| Copy-paste between tools | [**Agents hand off work automatically**]{.positive} |
+| You manage the workflow | [**The system manages itself**]{.positive} |
+
+::: {.methodbox}
+**Who's Hiring for This**
+
+- OpenAI --- Agent Infrastructure Engineers
+- Google --- 40% of enterprise apps will use AI agents by 2026 [Gartner, 2025]{.neutral}
+- Anthropic --- Claude Code multi-agent teams
+- GenAI job postings grew **170%** in one year [Indeed Hiring Lab, 2025]{.neutral}
+:::
+
+
+## Build an Agent Portfolio Project
+
+These are Level 3 projects --- beyond Slide 40. They show you can **orchestrate**, not just use.
+
+1. **Multi-Agent Code Reviewer** --- 3 AI agents (style, bugs, security) review code together. Tools: Claude Code + scripting. *Weekend project.*
+2. **Research Assistant Pipeline** --- Chain: search papers → summarize → compare → synthesize. Tools: Claude API + LangGraph. *2-week project.*
+3. **AI Debate Team** --- Agents with different expertise argue a topic, then reach consensus. Tools: CrewAI or Claude teams. *2-week project.*
+
+::: {.keybox style="text-align: center;"}
+The students who can orchestrate AI agents will be the ones companies fight over in 2027.
 :::
 
 
@@ -1443,7 +1505,7 @@ No one else will show up to your interviews.
 
 | [**Portfolio**]{.hi style="font-size: 1.2em;"} | Build it. Deploy it. Quantify it. |
 |---|---|
-| [**AI Tools**]{.hi-gold style="font-size: 1.2em;"} | Claude, Cursor, v0. Use them now. Ship 10× faster. |
+| [**AI Tools & Orchestration**]{.hi-gold style="font-size: 1.2em;"} | Claude, Cursor, agent workflows --- the new career edge. |
 | [**Networking**]{.hi style="font-size: 1.2em;"} | PR12, open source, LinkedIn. Your next job is a person, not a job board. |
 
 ::: {style="text-align: center; margin-top: 1.5em;"}
