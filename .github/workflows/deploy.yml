@@ -57,6 +57,9 @@ jobs:
             [ -d "Quarto/${name}_files" ] && cp -r "Quarto/${name}_files" _site/slides/
           done
 
+          # Quarto fonts (for SUNY and other self-hosted font presentations)
+          [ -d "Quarto/fonts" ] && cp -r Quarto/fonts _site/slides/fonts
+
           # Beamer PDFs
           cp Slides/*.pdf _site/slides/ 2>/dev/null || true
 

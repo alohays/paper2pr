@@ -234,4 +234,4 @@ clawteam launch research-paper          # Launch a pre-configured research team
 |-------|--------|--------|-------------|
 | DreamZero | `DreamZero.tex` | `DreamZero.qmd` | NVIDIA — World Action Models as Zero-shot Policies |
 | DreamDojo | `DreamDojo.tex` | `DreamDojo.qmd` | NVIDIA — A Generalist Robot World Model from Large-Scale Human Videos |
-| SUNY | `SUNY.tex` | `SUNY.qmd` | Career keynote for SUNY Korea STEM students (April 2026) |
+| SUNY Career Sprint | N/A (career talk) | `SUNY.qmd` | Career Roadmap for AI Researchers: From Papers to Products (April 4, 2026) |

@@ -1,0 +1,101 @@
+/* SUNY Career Sprint 2026 — theme compatibility for Quarto RevealJS
+ *
+ * Rewritten from theme.css for use inside RevealJS.
+ * - body.deck-slide  →  .suny-slide  (RevealJS owns the body element)
+ * - CSS custom properties replaced with concrete values
+ * - @font-face and :root declarations omitted (handled by suny-career.scss)
+ * - html/body resets omitted (RevealJS handles this)
+ */
+
+.suny-slide {
+  font-family: 'Pretendard', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'tnum' 1;
+}
+
+.suny-slide::selection {
+  background: rgba(201, 168, 76, 0.28);
+}
+
+.suny-slide p,
+.suny-slide h1,
+.suny-slide h2,
+.suny-slide h3,
+.suny-slide h4,
+.suny-slide h5,
+.suny-slide h6,
+.suny-slide ul,
+.suny-slide ol,
+.suny-slide li {
+  margin: 0;
+}
+
+.suny-slide.deck-dark {
+  color: #FCFBF7;
+}
+
+.suny-slide.deck-light {
+  color: #0B1D3A;
+}
+
+.suny-slide :where(.eyebrow, .section-label, .section-eyebrow, .panel-eyebrow, .part-badge, .blunt-badge) {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+}
+
+.suny-slide :where(.quote) {
+  font-style: italic;
+}
+
+.suny-slide :where(.headline, .panel-title, .col-title, .stage-title, .node-title, .bar-title, h1, h2) {
+  letter-spacing: -0.03em;
+}
+
+.suny-slide :where(.subtitle, .sub, .detail, .context-note, .stat-context, .source, .footer, .footer-left, .footer-right) {
+  letter-spacing: 0.01em;
+}
+
+.suny-slide :where(.gold-rule, .accent) {
+  height: 3px;
+  box-shadow: 0 0 24px rgba(201, 168, 76, 0.18);
+}
+
+.suny-slide :where(.footer) {
+  font-variant-numeric: tabular-nums;
+}
+
+.suny-slide :where(.footer strong) {
+  font-weight: 700;
+}
+
+.suny-slide :where(.stat-value, .hero-number, .hero-num, .stat-number, .stat-val) {
+  font-variant-numeric: tabular-nums;
+}
+
+.suny-slide.deck-dark :where(.stat-card, .wave-panel, .card, .panel, .video-wrapper, .tool-card) {
+  box-shadow: 0 18px 48px rgba(3, 11, 26, 0.38);
+}
+
+.suny-slide.deck-light :where(.stat-card, .wave-panel, .card, .panel, .flow-box, .col-body, .tool-card, .compare-col) {
+  box-shadow: 0 18px 40px rgba(11, 29, 58, 0.08);
+}
+
+.suny-slide.deck-poster :where(h1, .display, .quote, .statement, .instruction, .thankyou) {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.suny-slide.deck-poster :where(.eyebrow, .section-label, .section-eyebrow) {
+  color: #C9A84C;
+}
+
+.suny-slide.deck-manifesto :where(.statement, .quote) {
+  max-width: 580px;
+}
+
+.suny-slide :where(img, video) {
+  image-rendering: auto;
+}

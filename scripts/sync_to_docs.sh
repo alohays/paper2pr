@@ -65,6 +65,14 @@ done
 echo "Stripping speaker notes from public HTML..."
 python3 "$REPO_ROOT/scripts/strip_speaker_notes.py" "$DOCS_DIR/slides/"*.html
 
+# 2c. Sync Quarto fonts to docs/slides/fonts/
+echo "Syncing Quarto fonts..."
+if [ -d "$QUARTO_DIR/fonts" ]; then
+    mkdir -p "$DOCS_DIR/slides/fonts"
+    cp "$QUARTO_DIR/fonts/"* "$DOCS_DIR/slides/fonts/"
+    echo "  Copied $(ls "$QUARTO_DIR/fonts/" | wc -l | tr -d ' ') font files"
+fi
+
 # 3. Sync Beamer PDFs to docs/slides/
 echo "Syncing Beamer PDFs..."
 for pdf in "$REPO_ROOT/Slides/"*.pdf; do

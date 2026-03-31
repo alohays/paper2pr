@@ -1,0 +1,652 @@
+/*-- scss:defaults --*/
+
+// ==============================================================================
+// SUNY CAREER SPRINT 2026 — NAVY/GOLD DARK EXECUTIVE THEME
+// ==============================================================================
+// Dark-first design for career talk slides.
+// Embedded HTML slides handle their own layout; this file provides
+// RevealJS framework overrides and the .suny-slide base class.
+
+// Core palette
+$bg-primary:      #0B1D3A;   // Navy — default slide background
+$bg-deep:         #07111F;   // Deeper navy for title slide
+$bg-secondary:    #112A4A;   // Mid-navy for section headers
+$bg-light:        #F8F7F4;   // Cream — light slide option
+$bg-light-warm:   #FFF9EF;   // Warm cream — light slide option (warm)
+$accent-gold:     #C9A84C;   // Primary accent
+$accent-bright:   #E7C86A;   // Brighter gold for hover / highlight
+$text-primary:    #FCFBF7;   // Off-white body text
+$text-muted:      #8B9BB4;   // Muted steel-blue for secondary text
+$text-dark:       #0B1D3A;   // Dark text for light slides
+
+// RevealJS core variables
+$backgroundColor:    $bg-primary;
+$mainColor:          $text-primary;
+$headingColor:       $text-primary;
+$linkColor:          $accent-gold;
+$selectionBackgroundColor: rgba($accent-gold, 0.35);
+
+// Typography
+$font-family-sans-serif:       'Pretendard', 'Helvetica Neue', sans-serif;
+$presentation-heading-font:    'Instrument Serif', Georgia, serif;
+$presentation-heading-color:   $text-primary !default;
+$presentation-heading-font-weight: 700;
+
+// Smaller root size — 960x540 viewport
+$presentation-font-size-root: 22px;
+
+// Spacing
+$presentation-block-margin: 10px;
+$presentation-h2-font-size: 1.4em;
+
+// Semantic aliases
+$body-color:  $text-primary !default;
+$link-color:  $accent-gold  !default;
+$right-arrow: "\2192";
+
+
+/*-- scss:rules --*/
+
+// ==============================================================================
+// FONT FACE — INSTRUMENT SERIF (self-hosted TTF)
+// ==============================================================================
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('fonts/instrument-serif-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('fonts/instrument-serif-italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+// ==============================================================================
+// SUNY-SLIDE BASE CLASS
+// ==============================================================================
+// Used by embedded HTML slides. Provides a neutral container that does NOT
+// fight with inline CSS inside the embedded slide HTML.
+//
+// AUTO-SCALING LOGIC:
+// To fill the screen with zero letterboxing AND keep content within boundaries,
+// we use a Container Query trick. The background elements fill the container,
+// while content elements (.layout, .content, .footer) are centered and scaled 
+// from a 960x540 "design box" if the container height is < 540px.
+
+.suny-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+// Embedded HTML slides set color on their container (deck-dark=#FCFBF7, deck-light=#0B1D3A).
+// Without this rule, .reveal section h1/h2 (lines 219, 268) force near-white on ALL headings,
+// making light-slide headlines invisible. Specificity: (0,3,1) beats theme's (0,1,2).
+.reveal .slides section .suny-slide h1,
+.reveal .slides section .suny-slide h2,
+.reveal .slides section .suny-slide h3,
+.reveal .slides section .suny-slide p,
+.reveal .slides section .suny-slide li {
+  color: inherit;
+}
+
+// ==============================================================================
+// SLIDE LAYOUT
+// ==============================================================================
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides * {
+  box-sizing: border-box;
+}
+
+.reveal .slides section {
+  padding: 0;
+  top: 0 !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.reveal a {
+  color: $accent-gold;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba($accent-gold, 0.5);
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: $accent-bright;
+    border-bottom-color: $accent-bright;
+  }
+}
+
+.reveal p {
+  font-weight: 400;
+  margin-top: 0.4em;
+  margin-bottom: 0.35em;
+  line-height: 1.45;
+  color: $text-primary;
+}
+
+.reveal p + ul,
+.reveal p + ol {
+  margin-top: 0.3em;
+}
+
+// ==============================================================================
+// TITLE SLIDE
+// ==============================================================================
+
+#title-slide {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  background: linear-gradient(160deg, $bg-deep 0%, $bg-primary 60%, $bg-secondary 100%) !important;
+
+  .title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    color: $text-primary;
+    font-size: 2.0em;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 0.25em;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    color: $accent-gold;
+    font-style: normal;
+    font-family: $font-family-sans-serif;
+    font-weight: 300;
+    margin-top: 0.3em;
+    margin-bottom: 1.2em;
+    font-size: 1.1em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .author,
+  .quarto-title-author-name {
+    color: $text-primary;
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-top: 0.5em;
+  }
+
+  .institute,
+  .quarto-title-affiliation,
+  .quarto-title-author-email {
+    font-style: italic;
+    color: $text-muted;
+    margin-top: 0.35em;
+    font-size: 0.95em;
+  }
+
+  .date,
+  .quarto-title-meta-contents {
+    color: $accent-gold;
+    font-weight: 400;
+    margin-top: 1.2em;
+    font-size: 0.95em;
+    letter-spacing: 0.03em;
+  }
+
+  .quarto-title-authors {
+    display: block;
+    text-align: center;
+
+    .quarto-title-author {
+      padding: 0;
+      width: 100%;
+    }
+  }
+}
+
+// ==============================================================================
+// HEADINGS
+// ==============================================================================
+
+// Empty h2 headings (used for slide separators with background-color only)
+// must not take any vertical space — the embedded HTML handles its own titles.
+.reveal .slides section > h2:first-child:empty {
+  display: none !important;
+}
+
+.reveal h2 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: $text-primary;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.45em;
+  margin-bottom: 0.45em;
+  padding-bottom: 0.2em;
+  border-bottom: none;
+  position: relative;
+  letter-spacing: 0.01em;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba($accent-gold, 0.3);
+  }
+}
+
+.reveal h3 {
+  font-family: $font-family-sans-serif;
+  color: $accent-gold;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.0em;
+  margin-top: 0.6em;
+  margin-bottom: 0.35em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.reveal h4 {
+  font-family: $font-family-sans-serif;
+  color: $accent-bright;
+  font-weight: 600;
+  font-size: 0.95em;
+  margin-top: 0.8em;
+  margin-bottom: 0.3em;
+}
+
+// ==============================================================================
+// SECTION SLIDES (level-1 headings)
+// ==============================================================================
+
+.reveal section h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  color: $text-primary;
+  text-align: center;
+  font-size: 2.0em;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  border-bottom: none;
+}
+
+.reveal .slides section.level1 {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  text-align: center !important;
+  top: 0 !important;
+  padding: 0 !important;
+  background: linear-gradient(135deg, $bg-secondary 0%, $bg-primary 100%);
+}
+
+.reveal .slides section:has(> h1:only-child),
+.reveal .slides section:has(> h1:first-child:last-of-type) {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, $bg-secondary 0%, $bg-primary 100%);
+}
+
+// ==============================================================================
+// LISTS
+// ==============================================================================
+
+.reveal ul {
+  font-weight: 400;
+  padding-left: 1.4em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+
+  li {
+    margin-bottom: 0.35em;
+    line-height: 1.4;
+    padding-left: 0.25em;
+    color: $text-primary;
+  }
+
+  li::marker {
+    color: $accent-gold;
+    font-size: 0.85em;
+  }
+}
+
+.reveal ul ul {
+  list-style: none;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  padding-left: 1.2em;
+
+  li {
+    margin-bottom: 0.25em;
+    position: relative;
+    padding-left: 0.2em;
+    color: $text-muted;
+  }
+
+  li:before {
+    content: $right-arrow;
+    color: rgba($accent-gold, 0.6);
+    position: absolute;
+    left: -1.1em;
+    font-size: 0.9em;
+  }
+}
+
+.reveal ol {
+  font-weight: 400;
+  padding-left: 1.4em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+
+  li {
+    margin-bottom: 0.35em;
+    line-height: 1.4;
+    padding-left: 0.25em;
+    color: $text-primary;
+  }
+
+  li::marker {
+    color: $accent-gold;
+    font-weight: 700;
+  }
+}
+
+// ==============================================================================
+// REVEALJS CHROME — MINIMAL
+// ==============================================================================
+
+.reveal .progress {
+  display: none;
+}
+
+.slide-number,
+.reveal.has-logo .slide-number {
+  bottom: 8px !important;
+  right: 12px !important;
+  top: unset !important;
+  color: $text-muted !important;
+  font-size: 0.6em !important;
+  background: transparent !important;
+}
+
+.reveal .controls {
+  color: rgba($accent-gold, 0.4);
+}
+
+.reveal .controls button:hover {
+  color: $accent-gold;
+}
+
+// ==============================================================================
+// VIDEO STYLING
+// ==============================================================================
+
+.reveal video {
+  max-width: 100%;
+  max-height: 65vh;
+  margin: 0.4em auto;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.video-label {
+  font-size: 0.65em;
+  text-align: center;
+  color: $text-muted;
+  margin-top: 0.25em;
+}
+
+// ==============================================================================
+// IMAGES AND FIGURES
+// ==============================================================================
+
+.reveal figure { margin: 0.6em 0; }
+
+.reveal img {
+  max-height: 65vh;
+  border-radius: 4px;
+}
+
+.reveal p:has(> img) { text-align: center; }
+
+.reveal figcaption {
+  font-size: 0.7em;
+  color: $text-muted;
+  font-style: italic;
+  margin-top: 0.4em;
+  text-align: center;
+}
+
+// ==============================================================================
+// COLOR UTILITY CLASSES
+// ==============================================================================
+
+.alert { color: $accent-gold; }
+
+.gold   { color: $accent-gold; }
+.bright { color: $accent-bright; }
+.muted  { color: $text-muted; }
+
+.positive { color: #5DBE8A !important; font-weight: 600; }
+.negative { color: #E07070 !important; font-weight: 600; }
+.neutral  { color: $text-muted !important; }
+
+.hi       { font-weight: 700; color: $text-primary !important; }
+.hi-gold  { font-weight: 700; color: $accent-gold !important; }
+.hi-bright { font-weight: 700; color: $accent-bright !important; }
+
+// ==============================================================================
+// LAYOUT UTILITIES
+// ==============================================================================
+
+.bigger { font-size: 115%; }
+
+.smaller {
+  font-size: 85%;
+
+  p {
+    margin-top: 0.3em;
+    margin-bottom: 0.25em;
+    line-height: 1.3;
+  }
+
+  ul, ol {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+
+    li {
+      margin-bottom: 0.2em;
+      line-height: 1.3;
+    }
+  }
+}
+
+.smallest {
+  font-size: 80%;
+
+  p {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    line-height: 1.25;
+  }
+
+  ul, ol {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+
+    li {
+      margin-bottom: 0.2em;
+      line-height: 1.25;
+    }
+  }
+}
+
+.compact {
+  p { margin-top: 0.3em; margin-bottom: 0.3em; }
+  ul, ol {
+    margin-top: 0.25em; margin-bottom: 0.4em;
+    li { margin-bottom: 0.2em; line-height: 1.3; }
+  }
+}
+
+.reveal .spaced-list ul li,
+.reveal .spaced-list ol li {
+  margin-bottom: 1.5em !important;
+}
+
+.mono { font-family: monospace; }
+.ul   { text-decoration: underline; }
+.clear { clear: both; }
+
+.col-left         { float: left;  width: 47%; margin-top: 0; }
+.col-right        { float: right; width: 47%; margin-top: 0; }
+.col-left-wide    { float: left;  width: 63%; }
+.col-right-narrow { float: right; width: 33%; }
+
+.footnote {
+  position: absolute;
+  bottom: 1em;
+  font-size: 65%;
+  color: $text-muted;
+}
+
+.note { font-style: italic; color: $text-muted; }
+
+// ==============================================================================
+// COLUMNS
+// ==============================================================================
+
+.reveal .columns {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 1.2em;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.reveal .column {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+
+  img { max-width: 100%; height: auto; }
+}
+
+// ==============================================================================
+// BLOCKQUOTES AND CODE
+// ==============================================================================
+
+.reveal blockquote {
+  background-color: rgba($accent-gold, 0.06);
+  border-left: 3px solid rgba($accent-gold, 0.5);
+  padding: 0.8em 1.2em;
+  margin: 0.8em 0;
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+  color: rgba($text-primary, 0.85);
+
+  p { margin: 0.3em 0; }
+}
+
+.reveal code {
+  background-color: rgba($text-primary, 0.08);
+  color: $accent-bright;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+.reveal pre {
+  background-color: $bg-deep;
+  border: 1px solid rgba($accent-gold, 0.15);
+  border-radius: 6px;
+  padding: 0.8em;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+// ==============================================================================
+// TABLES
+// ==============================================================================
+
+.reveal table {
+  margin: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.8em;
+  max-width: 100%;
+  width: auto;
+  color: $text-primary;
+}
+
+.reveal table th,
+.reveal table td {
+  border: none;
+  padding: 0.25em 0.5em;
+  text-align: left;
+  font-weight: 400;
+}
+
+.reveal table thead th,
+.reveal .slides table tr:last-child td,
+.reveal .slides table {
+  border-bottom: 1px solid rgba($accent-gold, 0.4);
+}
+
+.reveal table thead th {
+  font-weight: 600;
+  color: $accent-gold;
+  letter-spacing: 0.03em;
+}
+
+.reveal table caption {
+  color: $text-muted;
+  font-variant: small-caps;
+  font-size: 0.85em;
+}
+
+// ==============================================================================
+// ACCESSIBILITY
+// ==============================================================================
+
+.reveal a:focus,
+.reveal button:focus {
+  outline: 2px solid $accent-gold;
+  outline-offset: 2px;
+}
+
+// ==============================================================================
+// LIGHT SLIDE OVERRIDES
+// ==============================================================================
+// When a slide uses {background-color="#F8F7F4"} or similar, text must flip.
+// These classes can be added manually to slides needing light treatment.
+
+.light-slide {
+  color: $text-dark !important;
+
+  h2, h3, h4 { color: $text-dark !important; }
+  p, li { color: $text-dark !important; }
+  .muted { color: #666 !important; }
+  .gold  { color: darken($accent-gold, 10%) !important; }
+}
