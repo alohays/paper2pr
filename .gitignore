@@ -67,6 +67,9 @@ target-papers/*
 
 **/*.quarto_ipynb
 
+# SUNY video assets (hosted via GitHub Release, not tracked in git)
+Figures/SUNY/videos/
+
 # Speaker notes backup (local only, not shared)
 .speaker-notes/
 

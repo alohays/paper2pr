@@ -30,6 +30,22 @@ format:
         }
         Reveal.on('ready', matchBackground);
         Reveal.on('slidechanged', matchBackground);
+
+        // Auto-play videos when entering a slide, pause when leaving
+        function handleSlideVideos(event) {
+          // Pause all videos first
+          document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
+          // Play videos on current slide
+          const current = event.currentSlide || document.querySelector('.reveal .slides > section.present');
+          if (current) {
+            current.querySelectorAll('video').forEach(v => {
+              v.muted = true;
+              v.play().catch(() => {});
+            });
+          }
+        }
+        Reveal.on('ready', handleSlideVideos);
+        Reveal.on('slidechanged', handleSlideVideos);
         </script>
 ---
 
@@ -284,9 +300,9 @@ format:
     <div class="header-row">
       <h2>Who Am I?</h2>
       <div class="stats-row">
-        <span class="stat-chip">10+ top-tier papers</span>
-        <span class="stat-chip">1,850+ citations</span>
-        <span class="stat-chip">double-digit h-index</span>
+        <span class="stat-chip fragment fade-in" data-fragment-index="1">10+ top-tier papers</span>
+        <span class="stat-chip fragment fade-in" data-fragment-index="2">1,850+ citations</span>
+        <span class="stat-chip fragment fade-in" data-fragment-index="3">double-digit h-index</span>
       </div>
     </div>
 
@@ -547,22 +563,22 @@ format:
   <div class="accent"></div>
   <h1 class="headline">Know Your Wave</h1>
   <div class="grid">
-    <div class="cell">
+    <div class="cell fragment fade-in" data-fragment-index="1">
       <p class="cell-title">AI Researcher</p>
       <p class="cell-stats">$160K - $400K TC</p>
       <p class="cell-desc">Publish papers, advance SOTA.<br>Deep math & experimentation.</p>
     </div>
-    <div class="cell">
+    <div class="cell fragment fade-in" data-fragment-index="2">
       <p class="cell-title">AI Engineer</p>
       <p class="cell-stats">$180K - $320K TC</p>
       <p class="cell-desc">Build production ML systems.<br>High demand, model serving, infra.</p>
     </div>
-    <div class="cell">
+    <div class="cell fragment fade-in" data-fragment-index="3">
       <p class="cell-title">Data Scientist</p>
       <p class="cell-stats">$130K - $250K TC</p>
       <p class="cell-desc">Analyze, model, interpret data.<br>Bridges research and product.</p>
     </div>
-    <div class="cell">
+    <div class="cell fragment fade-in" data-fragment-index="4">
       <p class="cell-title">AI Product Manager</p>
       <p class="cell-stats">$150K - $280K TC</p>
       <p class="cell-desc">Define what to build and why.<br>Rarest combo of user & tech.</p>
@@ -616,7 +632,7 @@ format:
 
 <div class="gold-rule"></div>
 <div class="layout">
-  <div class="left">
+  <div class="left fragment fade-in" data-fragment-index="1">
     <p class="eyebrow">Salary reality check</p>
     <h1 class="headline">The U.S. pays for AI already. Korea mostly hasn't — yet.</h1>
     <p class="sub">That mismatch is exactly why the window matters: the Korean premium is still small, but the capability demand is moving much faster than the salary signal.</p>
@@ -626,7 +642,7 @@ format:
     </div>
   </div>
   <div class="right">
-    <div class="panel">
+    <div class="panel fragment fade-in" data-fragment-index="2">
       <p class="panel-title">United States — total compensation</p>
       <div class="bars">
         <div class="bar-col"><p class="bar-value">$245K</p><div class="bar ai"></div><p class="bar-label">AI<br>Engineer</p></div>
@@ -634,7 +650,7 @@ format:
       </div>
       <span class="badge good">+36% AI premium</span>
     </div>
-    <div class="panel">
+    <div class="panel fragment fade-in" data-fragment-index="3">
       <p class="panel-title">Korea — salary gap</p>
       <div class="bars">
         <div class="bar-col"><p class="bar-value">₩95M</p><div class="bar kr-ai"></div><p class="bar-label">AI<br>Engineer</p></div>
@@ -759,21 +775,21 @@ format:
 
   <div class="content">
     <!-- Left: unfilled positions -->
-    <div class="panel">
+    <div class="panel fragment fade-in" data-fragment-index="1">
       <p class="panel-number green" style="padding-bottom:10px">50%</p>
       <p class="panel-label">of AI positions remain unfilled</p>
       <p class="panel-detail">Companies can't find qualified candidates despite waves of applicants.</p>
     </div>
 
     <!-- Center: WHY -->
-    <div class="center-col">
+    <div class="center-col fragment fade-in" data-fragment-index="2">
       <div class="v-line"></div>
       <div class="why-badge">WHY?</div>
       <div class="v-line"></div>
     </div>
 
     <!-- Right: CS unemployment -->
-    <div class="panel">
+    <div class="panel fragment fade-in" data-fragment-index="3">
       <p class="panel-number red" style="padding-bottom:10px">6.1%</p>
       <p class="panel-label">CS grad unemployment rate</p>
       <p class="panel-detail">Degree holders can't land jobs. Skills mismatch — market wants AI-augmented builders.</p>
@@ -966,13 +982,13 @@ format:
 <div id="s10" class="suny-slide deck-dark">
 
   <div class="accent"></div>
-  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+  <div class="fragment grow" data-fragment-index="1" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
     <p class="eyebrow">National AI Budget 2026</p>
     <h1 class="display" style="padding-bottom: 12px;">₩10.1T</h1>
     <h2 class="headline">206% increase YoY.<br>Your home advantage.</h2>
     <div class="badge">▲ Korea AI Pivot</div>
   </div>
-  <div class="pledges">
+  <div class="pledges fragment fade-in" data-fragment-index="2">
     <div class="pledge-item">
       <p class="pledge-name">Samsung Electronics</p>
       <p class="pledge-val">₩300T+</p>
@@ -2811,7 +2827,7 @@ format:
 
     <div class="right">
       <div class="video-wrapper">
-        <video src="../Figures/SUNY/videos/canvas-orchard.mp4" style="width: 100%; height: auto; border-radius: 8px;" poster="../Figures/SUNY/worv/canvas-1_teaser.png" controls muted loop preload="metadata"></video>
+        <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/canvas-orchard.mp4" style="width: 100%; height: auto; border-radius: 8px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/canvas-orchard-poster.jpg" controls muted loop preload="metadata"></video>
         <span class="video-label">SketchDrive · Orchard Demo</span>
       </div>
     </div>
@@ -3162,7 +3178,7 @@ format:
     <div class="video-row">
       <div class="video-panel fail">
         <div class="video-wrapper">
-          <video src="../Figures/SUNY/videos/d2e-so101_baseline_fail_top.mp4" poster="../Figures/SUNY/videos/d2e-so101_baseline_fail_top-poster.jpg" muted loop preload="metadata" controls></video>
+          <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_baseline_fail_top.mp4" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_baseline_fail_top-poster.jpg" muted loop preload="metadata" controls></video>
         </div>
         <span class="video-label label-fail">Baseline (FAIL)</span>
       </div>
@@ -3173,7 +3189,7 @@ format:
 
       <div class="video-panel success">
         <div class="video-wrapper">
-          <video src="../Figures/SUNY/videos/d2e-so101_ours_success_top.mp4" poster="../Figures/SUNY/videos/d2e-so101_ours_success_top-poster.jpg" muted loop preload="metadata" controls></video>
+          <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_ours_success_top.mp4" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_ours_success_top-poster.jpg" muted loop preload="metadata" controls></video>
         </div>
         <span class="video-label label-success">Ours (SUCCESS)</span>
       </div>
@@ -3671,7 +3687,7 @@ format:
         <img src="../Figures/SUNY/worv/results_cost.png" alt="CostNav cost results" style="max-width: 340px;">
       </div>
       <div class="video-wrap">
-        <video src="../Figures/SUNY/videos/costnav-teaser.mp4" style="width: 300px;" poster="../Figures/SUNY/worv/motivation2.png" muted loop preload="metadata" controls></video>
+        <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser.mp4" style="width: 300px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser-poster.jpg" muted loop preload="metadata" controls></video>
       </div>
     </div>
   </div>
@@ -3894,7 +3910,7 @@ format:
 </style>
 
 <div id="s34" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="content"><div class="venn"><div class="circle research"><p class="circle-title">Researcher</p><div class="traits"><p class="trait">rigor</p><p class="trait">novelty</p><p class="trait">first principles</p><p class="trait">patience</p></div></div><div class="circle engineer"><p class="circle-title">Engineer</p><div class="traits"><p class="trait">speed</p><p class="trait">reliability</p><p class="trait">pragmatism</p><p class="trait">shipping</p></div></div><div class="venn-arrow">↓</div><div class="intersection"><strong>Overlap</strong><span>Research Engineer</span></div></div><div class="right"><p class="eyebrow">Part 3 · Mindset</p><h1 class="headline">How to think like a research engineer.</h1><div class="list"><p class="list-item"><span class="icon">🔬</span><span>Define the research question and the success metric before you touch implementation.</span></p><p class="list-item"><span class="icon">⚡</span><span>Build the simplest version that could work, then iterate with evidence.</span></p><p class="list-item"><span class="icon">📦</span><span>A paper without code, or a model without deployment, is only half-finished.</span></p></div><div class="closing">The best researchers <span>ship.</span></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>34 / 62</p></footer>
+<div class="gold-rule"></div><div class="content"><div class="venn"><div class="circle research fragment fade-in" data-fragment-index="1"><p class="circle-title">Researcher</p><div class="traits"><p class="trait">rigor</p><p class="trait">novelty</p><p class="trait">first principles</p><p class="trait">patience</p></div></div><div class="circle engineer fragment fade-in" data-fragment-index="2"><p class="circle-title">Engineer</p><div class="traits"><p class="trait">speed</p><p class="trait">reliability</p><p class="trait">pragmatism</p><p class="trait">shipping</p></div></div><div class="venn-arrow fragment fade-in" data-fragment-index="3">↓</div><div class="intersection fragment fade-in" data-fragment-index="3"><strong>Overlap</strong><span>Research Engineer</span></div></div><div class="right"><p class="eyebrow">Part 3 · Mindset</p><h1 class="headline">How to think like a research engineer.</h1><div class="list"><p class="list-item"><span class="icon">🔬</span><span>Define the research question and the success metric before you touch implementation.</span></p><p class="list-item"><span class="icon">⚡</span><span>Build the simplest version that could work, then iterate with evidence.</span></p><p class="list-item"><span class="icon">📦</span><span>A paper without code, or a model without deployment, is only half-finished.</span></p></div><div class="closing">The best researchers <span>ship.</span></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>34 / 62</p></footer>
 </div>
 ```
 
@@ -5272,21 +5288,21 @@ format:
 
   <div class="gold-rule"></div>
   <div class="content">
-    <div class="panel before">
-      <p class="tag">Weak signal</p>
-      <h1 class="title">Before</h1>
-      <p class="bullet">“Worked on ML project for recommendation engine.”</p>
-      <p class="note">Generic. No scope, no ownership, no metrics, no reason to remember it.</p>
+    <div class=”panel before fragment fade-in” data-fragment-index=”1”>
+      <p class=”tag”>Weak signal</p>
+      <h1 class=”title”>Before</h1>
+      <p class=”bullet”>”Worked on ML project for recommendation engine.”</p>
+      <p class=”note”>Generic. No scope, no ownership, no metrics, no reason to remember it.</p>
     </div>
-    <div class="vs-wrap">
-      <div class="vs">→</div>
-      <p class="vs-note">Translate work into impact</p>
+    <div class=”vs-wrap fragment fade-in” data-fragment-index=”2”>
+      <div class=”vs”>→</div>
+      <p class=”vs-note”>Translate work into impact</p>
     </div>
-    <div class="panel after">
-      <p class="tag">Strong signal</p>
-      <h1 class="title">After</h1>
-      <p class="bullet">“Built a recommendation pipeline that improved CTR by 23% for 50K daily users.”</p>
-      <p class="note">Same underlying work. Better framing. Now it sounds like ownership, scale, and business value.</p>
+    <div class=”panel after fragment fade-in” data-fragment-index=”3”>
+      <p class=”tag”>Strong signal</p>
+      <h1 class=”title”>After</h1>
+      <p class=”bullet”>”Built a recommendation pipeline that improved CTR by 23% for 50K daily users.”</p>
+      <p class=”note”>Same underlying work. Better framing. Now it sounds like ownership, scale, and business value.</p>
     </div>
   </div>
   <footer class="footer">
@@ -5420,7 +5436,7 @@ format:
     <div class="right">
       <div class="pyramid-wrapper">
         <!-- Top: Behavioral (smallest, gold — the finisher) -->
-        <div class="pyramid-level" style="justify-content:center;">
+        <div class="pyramid-level fragment fade-up" data-fragment-index="4" style="justify-content:center;">
           <div class="level-bar l1">
             <div class="level-content">
               <p class="level-title">Behavioral</p>
@@ -5431,7 +5447,7 @@ format:
         </div>
 
         <!-- ML Theory -->
-        <div class="pyramid-level" style="justify-content:center;">
+        <div class="pyramid-level fragment fade-up" data-fragment-index="3" style="justify-content:center;">
           <div class="level-bar l2">
             <div class="level-content">
               <p class="level-title">ML Theory</p>
@@ -5442,7 +5458,7 @@ format:
         </div>
 
         <!-- System Design -->
-        <div class="pyramid-level" style="justify-content:center;">
+        <div class="pyramid-level fragment fade-up" data-fragment-index="2" style="justify-content:center;">
           <div class="level-bar l3">
             <div class="level-content">
               <p class="level-title">System Design</p>
@@ -5453,7 +5469,7 @@ format:
         </div>
 
         <!-- Base: Coding (widest) -->
-        <div class="pyramid-level" style="justify-content:center;">
+        <div class="pyramid-level fragment fade-up" data-fragment-index="1" style="justify-content:center;">
           <div class="level-bar l4">
             <div class="level-content">
               <p class="level-title">Coding (LeetCode / Algorithms)</p>
