@@ -31,7 +31,26 @@
 - `quarto render SUNY.qmd` — exit 0, no errors
 - Opened in browser — awaiting user visual confirmation
 
+## Round 2 Fixes
+
+- **Fix 0**: Extended SCSS `color: inherit` to include `p` and `li` elements
+- **Fix 1**: s16 flow diagram grid→flex (7 items in single row)
+- **Fix 2**: s06 bar chart panel-title/bar-value overlap (reduced padding, bar heights)
+- **Fix 3**: s26 video max-width 360→520px
+- **Fix 4**: s27 Chart.js canvas → static Sim2Real emoji + text
+- **Fix 5**: s32 $1.5 clipped (overflow:visible, min-width 48px) + right footer removed
+- **Fix 6**: s34 Venn diagram (intersection box repositioned, Engineer traits padding)
+- **Fix 7**: s44 interview panel white text (fixed by SCSS extension)
+
+## Additional Changes
+
+- s02: Replaced timeline SVG with speaker-profile-cards.png image
+- s02: Updated stat chips (1,850+ citations, double-digit h-index)
+- s34: Venn diagram arrow + intersection box repositioned below circles
+- Video autoplay: Added RevealJS slidechanged handler for auto-play/pause
+
 ## Status
 
-- Render complete, awaiting user verification of visual fixes
-- No commits made yet
+- Committed and pushed to GitHub (`458f8f7`)
+- Video autoplay added, pending verification
+- GitHub Actions deploying to Pages
