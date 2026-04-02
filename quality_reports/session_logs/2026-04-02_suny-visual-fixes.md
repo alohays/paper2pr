@@ -50,5 +50,6 @@ User reported specific visual problems on slides 2, 4, 6, 8, 9, 10, 13, 14 of `Q
 
 ## Status
 
-- Round 1 (8 items): Complete
-- Round 2 (14 items): Applied, rendered, awaiting user review
+- Round 1 (8 items): Complete, merged (PR #12)
+- Round 2 (14 items): Complete, merged (PR #12)
+- Round 3: Slide 18 — removed inline footer, enlarged image, reduced headline size
