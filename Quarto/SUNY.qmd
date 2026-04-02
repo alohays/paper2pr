@@ -103,11 +103,11 @@ format:
     color: #8B9BB4;
     margin-bottom: 18px; }
 #s01 .title { font-family: "Instrument Serif", Georgia, serif;
-    font-size: 54px;
-    line-height: 0.9;
+    font-size: 52px;
+    line-height: 0.92;
     letter-spacing: -0.055em;
     color: #FCFBF7;
-    max-width: 390px;
+    max-width: 440px;
     padding-bottom: 12px; }
 #s01 .subtitle { margin-top: 22px;
     max-width: 420px;
@@ -137,18 +137,18 @@ format:
     justify-content: center;
     min-width: 0; }
 #s01 .glow { position: absolute;
-    right: 16px;
-    top: 26px;
-    width: 210px;
-    height: 210px;
+    right: 24px;
+    top: 18px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(201,168,76,0.2) 0%, rgba(201,168,76,0.02) 58%, transparent 72%);
-    filter: blur(8px); }
+    background: radial-gradient(circle, rgba(201,168,76,0.25) 0%, rgba(201,168,76,0.06) 45%, transparent 68%);
+    filter: blur(12px); }
 #s01 .silhouette { position: relative;
     width: 100%;
-    max-width: 300px;
-    opacity: 0.94;
-    transform: translateX(16px); }
+    max-width: 280px;
+    opacity: 0.96;
+    transform: translateX(12px) translateY(-8px); }
 #s01 .footer { position: absolute;
     bottom: 18px;
     left: 52px;
@@ -172,7 +172,8 @@ format:
         <p class="eyebrow">STEM Career Sprint 2026</p>
         <p class="kicker">From papers to products</p>
         <h1 class="title">Career Roadmap<br>for AI Researchers</h1>
-        <p class="subtitle">Don't get swept away by the AI wave — <strong>become the surfer.</strong></p>
+
+        <p class="subtitle">Don't get swept away by the AI wave —<br><strong>become the surfer.</strong></p>
       </div>
 
       <div class="meta">
@@ -195,7 +196,6 @@ format:
 
   <footer class="footer">
     <p>Blunt reality-check + practical optimism</p>
-    <p><strong>1 / 62</strong></p>
   </footer>
 
 </div>
@@ -300,9 +300,9 @@ format:
     <div class="header-row">
       <h2>Who Am I?</h2>
       <div class="stats-row">
-        <span class="stat-chip fragment fade-in" data-fragment-index="1">10+ top-tier papers</span>
-        <span class="stat-chip fragment fade-in" data-fragment-index="2">1,850+ citations</span>
-        <span class="stat-chip fragment fade-in" data-fragment-index="3">double-digit h-index</span>
+        <span class="stat-chip">10+ top-tier papers</span>
+        <span class="stat-chip">1,850+ citations</span>
+        <span class="stat-chip">double-digit h-index</span>
       </div>
     </div>
 
@@ -454,7 +454,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>3 / 62</p>
   </footer>
 
 </div>
@@ -481,7 +480,7 @@ format:
     color: #C9A84C; margin-bottom: 10px; }
 #s04 .hero { font-family: "Pretendard", sans-serif; font-size: 64px; line-height: 0.84;
     font-weight: 900; letter-spacing: -0.04em; color: #FCFBF7; margin-bottom: 10px; padding-bottom: 18px; }
-#s04 .headline { font-size: 22px; line-height: 1.25; font-weight: 700; max-width: 330px; color: #FCFBF7; }
+#s04 .headline { font-size: 22px; line-height: 1.25; font-weight: 700; max-width: 380px; color: #FCFBF7; }
 #s04 .headline strong { color: #E7C86A; }
 #s04 .subnote { margin-top: 16px; font-size: 13px; line-height: 1.5; color: #BFC9D8; max-width: 300px; }
 #s04 .right { display: flex; flex-direction: column; justify-content: center; gap: 14px; }
@@ -506,7 +505,7 @@ format:
     <div class="left">
       <p class="eyebrow">The fastest growth in history</p>
       <h1 class="hero">200M</h1>
-      <p class="headline">ChatGPT reached <strong>200 million users</strong> in two years. Now software developers sit at <strong>8–9/10</strong> on AI job exposure.</p>
+      <p class="headline">ChatGPT reached <strong>200 million users</strong> in two years.<br>Now software developers sit at <strong>8–9/10</strong> on AI job exposure.</p>
       <p class="subnote">The surprising part is not that AI is coming. It is that the most screen-native, high-paying work is now directly in the blast radius.</p>
     </div>
     <div class="right">
@@ -527,7 +526,6 @@ format:
   </div>
   <footer class="footer">
     <p>Source: OpenAI, Fortune/Karpathy Mar 2026</p>
-    <p>4 / 62</p>
   </footer>
 
 </div>
@@ -601,13 +599,13 @@ format:
   color: #0B1D3A;
 }
 #s06 .gold-rule { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent 0%, #C9A84C 20%, #C9A84C 80%, transparent 100%); }
-#s06 .layout { height:100%; padding:26px 42px 20px; display:grid; grid-template-columns: 0.82fr 1.18fr; gap:18px; position:relative; z-index:2; }
+#s06 .layout { height:100%; padding:26px 42px 32px; display:grid; grid-template-columns: 0.82fr 1.18fr; gap:18px; position:relative; z-index:2; }
 #s06 .left { display:flex; flex-direction:column; justify-content:center; }
 #s06 .eyebrow { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#C9A84C; margin-bottom:8px; }
-#s06 .headline { font-family:"Instrument Serif", Georgia, serif; font-size:36px; line-height:1.0; letter-spacing:-0.05em; padding-bottom:8px; max-width:280px; }
-#s06 .sub { margin-top:8px; font-size:13px; line-height:1.5; color:#5E6C84; max-width:250px; }
+#s06 .headline { font-family:"Instrument Serif", Georgia, serif; font-size:32px; line-height:1.0; letter-spacing:-0.05em; padding-bottom:8px; max-width:280px; }
+#s06 .sub { margin-top:8px; font-size:12px; line-height:1.5; color:#5E6C84; max-width:250px; }
 #s06 .callouts { margin-top:16px; display:flex; flex-direction:column; gap:10px; }
-#s06 .callout { background:#FFFFFF; border:1px solid rgba(201,168,76,0.18); border-radius:14px; padding:8px 12px; box-shadow:0 14px 28px rgba(11,29,58,0.06); }
+#s06 .callout { background:#FFFFFF; border:1px solid rgba(201,168,76,0.18); border-radius:14px; padding:6px 12px; box-shadow:0 14px 28px rgba(11,29,58,0.06); }
 #s06 .callout-label { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#C9A84C; margin-bottom:4px; }
 #s06 .callout-copy { font-size:12px; line-height:1.45; color:#0B1D3A; }
 #s06 .right { display:grid; grid-template-columns: 1fr 1fr; gap:14px; align-items:end; }
@@ -617,22 +615,22 @@ format:
 #s06 .bar-col { width:76px; text-align:center; }
 #s06 .bar-value { font-size:13px; font-weight:800; color:#0B1D3A; margin-bottom:4px; }
 #s06 .bar { width:54px; margin:0 auto 8px; border-radius:10px 10px 0 0; }
-#s06 .bar.ai { background:linear-gradient(180deg,#D7B45A,#C39D3B); height:88px; }
-#s06 .bar.us-non { background:linear-gradient(180deg,#2A4B77,#152B48); height:64px; }
-#s06 .bar.kr-ai { background:linear-gradient(180deg,#D7B45A,#C39D3B); height:74px; }
-#s06 .bar.kr-non { background:linear-gradient(180deg,#FD7A7A,#E34B4B); height:70px; }
+#s06 .bar.ai { background:linear-gradient(180deg,#D7B45A,#C39D3B); height:72px; }
+#s06 .bar.us-non { background:linear-gradient(180deg,#2A4B77,#152B48); height:52px; }
+#s06 .bar.kr-ai { background:linear-gradient(180deg,#D7B45A,#C39D3B); height:60px; }
+#s06 .bar.kr-non { background:linear-gradient(180deg,#FD7A7A,#E34B4B); height:56px; }
 #s06 .bar-label { font-size:11px; line-height:1.35; color:#5E6C84; }
 #s06 .badge { display:inline-block; margin-top:10px; padding:7px 11px; border-radius:999px; font-size:11px; font-weight:800; }
 #s06 .badge.good { background:rgba(201,168,76,0.14); color:#B68E29; }
 #s06 .badge.warn { background:#FFF1F1; color:#D64F4F; border:1px solid rgba(214,79,79,0.22); }
-#s06 .footer { position:absolute; bottom:18px; left:42px; right:42px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
+#s06 .footer { position:absolute; bottom:8px; left:42px; right:42px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
 </style>
 
 <div id="s06" class="suny-slide deck-light">
 
 <div class="gold-rule"></div>
 <div class="layout">
-  <div class="left fragment fade-in" data-fragment-index="1">
+  <div class="left">
     <p class="eyebrow">Salary reality check</p>
     <h1 class="headline">The U.S. pays for AI already. Korea mostly hasn't — yet.</h1>
     <p class="sub">That mismatch is exactly why the window matters: the Korean premium is still small, but the capability demand is moving much faster than the salary signal.</p>
@@ -642,7 +640,7 @@ format:
     </div>
   </div>
   <div class="right">
-    <div class="panel fragment fade-in" data-fragment-index="2">
+    <div class="panel">
       <p class="panel-title">United States — total compensation</p>
       <div class="bars">
         <div class="bar-col"><p class="bar-value">$245K</p><div class="bar ai"></div><p class="bar-label">AI<br>Engineer</p></div>
@@ -650,7 +648,7 @@ format:
       </div>
       <span class="badge good">+36% AI premium</span>
     </div>
-    <div class="panel fragment fade-in" data-fragment-index="3">
+    <div class="panel">
       <p class="panel-title">Korea — salary gap</p>
       <div class="bars">
         <div class="bar-col"><p class="bar-value">₩95M</p><div class="bar kr-ai"></div><p class="bar-label">AI<br>Engineer</p></div>
@@ -660,7 +658,7 @@ format:
     </div>
   </div>
 </div>
-<footer class="footer"><p>Source: Levels.fyi Q3 2025 · Korea wage data 2025</p><p>6 / 62</p></footer>
+<footer class="footer"><p>Source: Levels.fyi Q3 2025 · Korea wage data 2025</p></footer>
 
 </div>
 ```
@@ -800,7 +798,6 @@ format:
     <span class="callout-label">Anthropic &nbsp;Mar 2026</span>
     <div class="separator"></div>
     <p class="callout-text"><strong>75% of programming tasks are coverable by AI</strong> &nbsp;·&nbsp; 14% hiring slowdown for traditional coders. The old playbook is broken.</p>
-    <span class="callout-page">07 / 62</span>
   </div>
 
 </div>
@@ -854,7 +851,7 @@ format:
     <li class="item"><span class="text">Certs & Bootcamps</span></li>
     <li class="item"><span class="text">Traditional Resume</span></li>
   </ul>
-  <p class="foot">These signals are not meaningless. They just no longer win by themselves.</p>
+  <p class="foot">These signals are not meaningless.<br>They just no longer win by themselves.</p>
 </div>
 <div class="vs">VS</div>
 <div class="right">
@@ -866,7 +863,7 @@ format:
     <li class="item">Public Code <span class="badge">34%</span></li>
     <li class="item" style="opacity:0.45; font-size:18px;">Credentials <span class="badge" style="background:#D7DCE5; color:#8B9BB4;">4%</span></li>
   </ul>
-  <p class="foot">The strongest signal is still simple: can you point to real things you built?</p>
+  <p class="foot">The strongest signal is still simple:<br>can you point to real things you built?</p>
 </div>
 
 </div>
@@ -886,11 +883,11 @@ format:
 }
 #s09 .gold-rule { position:absolute; top:0; left:0; right:0; height:3px;
     background: linear-gradient(90deg, transparent 0%, #C9A84C 20%, #C9A84C 80%, transparent 100%); }
-#s09 .layout { height:100%; padding: 34px 44px 24px; position:relative; z-index:2;
+#s09 .layout { height:100%; padding: 34px 44px 36px; position:relative; z-index:2;
     display:grid; grid-template-columns: 1.18fr 0.82fr; gap: 18px; }
 #s09 .quote-wrap { display:flex; flex-direction:column; justify-content:center; }
 #s09 .eyebrow { font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:#C9A84C; margin-bottom:10px; }
-#s09 .quote { font-family:"Instrument Serif", Georgia, serif; font-size:62px; line-height:0.9; letter-spacing:-0.06em;
+#s09 .quote { font-family:"Instrument Serif", Georgia, serif; font-size:52px; line-height:0.92; letter-spacing:-0.06em;
     color:#FCFBF7; max-width: 470px; padding-bottom: 14px; }
 #s09 .quote strong { color:#E7C86A; font-weight:400; }
 #s09 .attribution { margin-top:12px; font-size:18px; font-weight:700; color:#D8DEEA; }
@@ -905,7 +902,7 @@ format:
 #s09 .players { display:flex; flex-wrap:wrap; gap:8px; align-content:flex-start; }
 #s09 .player { padding:7px 10px; border-radius:999px; background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.22);
     font-size: 10px; font-weight:700; color:#E7C86A; }
-#s09 .footer { position:absolute; bottom:18px; left:44px; right:44px; display:flex; justify-content:space-between;
+#s09 .footer { position:absolute; bottom:10px; left:44px; right:44px; display:flex; justify-content:space-between;
     font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
 </style>
 
@@ -946,7 +943,6 @@ format:
   </div>
   <footer class="footer">
     <p>Source: CES 2026, Deloitte, robotics market synthesis</p>
-    <p>9 / 62</p>
   </footer>
 
 </div>
@@ -982,13 +978,13 @@ format:
 <div id="s10" class="suny-slide deck-dark">
 
   <div class="accent"></div>
-  <div class="fragment grow" data-fragment-index="1" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
     <p class="eyebrow">National AI Budget 2026</p>
     <h1 class="display" style="padding-bottom: 12px;">₩10.1T</h1>
     <h2 class="headline">206% increase YoY.<br>Your home advantage.</h2>
     <div class="badge">▲ Korea AI Pivot</div>
   </div>
-  <div class="pledges fragment fade-in" data-fragment-index="2">
+  <div class="pledges">
     <div class="pledge-item">
       <p class="pledge-name">Samsung Electronics</p>
       <p class="pledge-val">₩300T+</p>
@@ -1063,7 +1059,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>11 / 62</p>
   </footer>
 
 </div>
@@ -1226,7 +1221,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>12 / 62</strong></p>
   </footer>
 
 </div>
@@ -1374,7 +1368,7 @@ format:
       <p class="part-badge">Part 2 · Product wave</p>
       <p class="eyebrow">Section divider</p>
       <h1>My first<br><span>wave</span></h1>
-      <p class="subtitle">Riding the product wave at <strong>Wrtn</strong> — how I helped build a <strong>5M-user AI agent</strong>.</p>
+      <p class="subtitle">Riding the product wave at <strong>Wrtn</strong> —<br>how I helped build a <strong>5M-user AI agent</strong>.</p>
     </div>
 
     <div class="right">
@@ -1388,7 +1382,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>13 / 62</strong></p>
   </footer>
 
 </div>
@@ -1407,11 +1400,11 @@ format:
   color: #0B1D3A;
 }
 #s14 .gold-rule { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent 0%, #C9A84C 20%, #C9A84C 80%, transparent 100%); }
-#s14 .layout { height:100%; display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 18px; padding:36px 44px 24px; position:relative; z-index:2; }
+#s14 .layout { height:100%; display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 18px; padding:36px 44px 36px; position:relative; z-index:2; }
 #s14 .left { display:flex; flex-direction:column; justify-content:center; }
 #s14 .eyebrow { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#C9A84C; margin-bottom:12px; }
 #s14 .logo { width:128px; margin-bottom:18px; }
-#s14 .headline { font-family:"Instrument Serif", Georgia, serif; font-size:46px; line-height:0.95; letter-spacing:-0.05em; max-width:270px; margin-bottom:14px; padding-bottom:8px; }
+#s14 .headline { font-family:"Instrument Serif", Georgia, serif; font-size:46px; line-height:0.95; letter-spacing:-0.05em; max-width:320px; margin-bottom:14px; padding-bottom:8px; }
 #s14 .sub { font-size:14px; line-height:1.55; color:#5E6C84; max-width:280px; margin-bottom:18px; }
 #s14 .role-card { background:#FFFFFF; border:1px solid rgba(201,168,76,0.18); border-left:4px solid #C9A84C; border-radius:14px; padding:14px 16px; box-shadow:0 16px 36px rgba(11,29,58,0.08); }
 #s14 .role-label { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#C9A84C; margin-bottom:6px; }
@@ -1423,7 +1416,7 @@ format:
 #s14 .mobile img { width:100%; height:100%; object-fit:cover; object-position:top; }
 #s14 .mobile-a { right:18px; top:18px; }
 #s14 .mobile-b { left:8px; bottom:8px; }
-#s14 .footer { position:absolute; bottom:18px; left:44px; right:44px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
+#s14 .footer { position:absolute; bottom:8px; left:44px; right:44px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
 </style>
 
 <div id="s14" class="suny-slide deck-light">
@@ -1448,7 +1441,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p>14 / 62</p>
   </footer>
 
 </div>
@@ -1555,7 +1547,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>15 / 62</span>
   </footer>
 
 </div>
@@ -1594,7 +1585,7 @@ format:
 </style>
 
 <div id="s16" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Feature engineering</p><h1 class="headline">Memory made the assistant feel like it actually knew the user.</h1><div class="metric"><p class="metric-num">+12.7%</p><p class="metric-label">Week-1 retention</p></div><div class="flow"><div class="node"><strong>User</strong><span>query + history</span></div><div class="arrow">→</div><div class="node"><strong>Memory Store</strong><span>retrieve long-term context</span></div><div class="arrow">→</div><div class="node"><strong>LLM</strong><span>reason with memory</span></div><div class="arrow">→</div><div class="node"><strong>Response</strong><span>personalized output</span></div></div></div><div class="right"><div class="card"><p class="card-label">Before</p><p class="card-copy">Generic assistant: every conversation starts from zero.</p></div><div class="card"><p class="card-label">After</p><p class="card-copy">Remembering prior intent, preferences, and context makes the system feel like a product—not a demo.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>16 / 62</p></footer>
+<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Feature engineering</p><h1 class="headline">Memory made the assistant feel like it actually knew the user.</h1><div class="metric"><p class="metric-num">+12.7%</p><p class="metric-label">Week-1 retention</p></div><div class="flow"><div class="node"><strong>User</strong><span>query + history</span></div><div class="arrow">→</div><div class="node"><strong>Memory Store</strong><span>retrieve long-term context</span></div><div class="arrow">→</div><div class="node"><strong>LLM</strong><span>reason with memory</span></div><div class="arrow">→</div><div class="node"><strong>Response</strong><span>personalized output</span></div></div></div><div class="right"><div class="card"><p class="card-label">Before</p><p class="card-copy">Generic assistant: every conversation starts from zero.</p></div><div class="card"><p class="card-label">After</p><p class="card-copy">Remembering prior intent, preferences, and context makes the system feel like a product—not a demo.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p></footer>
 </div>
 ```
 
@@ -1754,7 +1745,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>17 / 62</span>
   </footer>
 
 </div>
@@ -1799,13 +1789,8 @@ format:
       <h1 class="headline">This is what 5M users interact with every day.</h1>
       <p class="sub">Personalized conversations, proactive prompts, multimodal entry points — all inside one AI-native consumer product.</p>
     </div>
-    <div class="stage">
-      <div class="phone"><div class="phone-inner"><img src="../Figures/SUNY/wrtn/wrtn-ui-mobile-1.png" alt="Wrtn mobile UI"></div></div>
-      <div class="web-card">
-        <img src="../Figures/SUNY/wrtn/wrtn-ui-web-1.png" alt="Wrtn product web interface">
-        <div class="play">▶</div>
-      </div>
-      <div class="phone"><div class="phone-inner"><img src="../Figures/SUNY/wrtn/wrtn-ui-mobile-1.png" alt="Wrtn mobile UI second screen"></div></div>
+    <div class="stage" style="grid-template-columns:1fr; justify-items:center;">
+      <img src="../Figures/SUNY/wrtn/wrtn-seri-demo.png" alt="Wrtn Seri AI companion — chat, voice call, diary" style="width:100%; max-height:280px; object-fit:contain; border-radius:18px;">
     </div>
     <div class="chips">
       <span class="chip">personalized chat</span>
@@ -1816,7 +1801,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p>18 / 62</p>
   </footer>
 
 </div>
@@ -1845,11 +1829,11 @@ format:
 #s19 .label { font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#C9A84C;margin-bottom:6px; }
 #s19 .title { font-size:18px;font-weight:800;color:#0B1D3A;margin-bottom:8px; }
 #s19 .note { font-size:12px;line-height:1.45;color:#5E6C84; }
-#s19 .footer { position:absolute;bottom:18px;left:42px;right:42px;display:flex;justify-content:space-between;font-size:10px;color:#8B9BB4;letter-spacing:.08em; }
+#s19 .footer { position:absolute;bottom:8px;left:42px;right:42px;display:flex;justify-content:space-between;font-size:10px;color:#8B9BB4;letter-spacing:.08em; }
 </style>
 
 <div id="s19" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="content"><div><p class="eyebrow">Life at a startup</p><h1 class="headline">The startup grind.</h1><p class="sub">At a consumer AI startup, the work loop is brutally simple: ship, get surprised, recover fast, and ship again.</p></div><div class="timeline"><div class="day"><p class="emoji">🚢</p><p class="label">Mon</p><p class="title">Ship</p><p class="note">New feature goes live.</p></div><div class="day"><p class="emoji">💥</p><p class="label">Tue</p><p class="title">It breaks</p><p class="note">Users find the edge cases you missed.</p></div><div class="day"><p class="emoji">🔧</p><p class="label">Wed</p><p class="title">Fix</p><p class="note">Hotfix, triage, postmortem.</p></div><div class="day"><p class="emoji">📋</p><p class="label">Thu</p><p class="title">Plan next</p><p class="note">V2 is already being designed.</p></div><div class="day"><p class="emoji">🚢</p><p class="label">Fri</p><p class="title">Ship again</p><p class="note">And the loop starts over.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>19 / 62</p></footer>
+<div class="gold-rule"></div><div class="content"><div><p class="eyebrow">Life at a startup</p><h1 class="headline">The startup grind.</h1><p class="sub">At a consumer AI startup, the work loop is brutally simple: ship, get surprised, recover fast, and ship again.</p></div><div class="timeline"><div class="day"><p class="emoji">🚢</p><p class="label">Mon</p><p class="title">Ship</p><p class="note">New feature goes live.</p></div><div class="day"><p class="emoji">💥</p><p class="label">Tue</p><p class="title">It breaks</p><p class="note">Users find the edge cases you missed.</p></div><div class="day"><p class="emoji">🔧</p><p class="label">Wed</p><p class="title">Fix</p><p class="note">Hotfix, triage, postmortem.</p></div><div class="day"><p class="emoji">📋</p><p class="label">Thu</p><p class="title">Plan next</p><p class="note">V2 is already being designed.</p></div><div class="day"><p class="emoji">🚢</p><p class="label">Fri</p><p class="title">Ship again</p><p class="note">And the loop starts over.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p></footer>
 </div>
 ```
 
@@ -1979,7 +1963,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span style="color:#C9A84C; font-weight:700;">20 / 62</span>
   </footer>
 
 </div>
@@ -2165,7 +2148,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>21 / 62</span>
   </footer>
 
 </div>
@@ -2294,7 +2276,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>22 / 62</span>
   </footer>
 
 </div>
@@ -2397,7 +2378,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>23 / 62</strong></p>
   </footer>
 
 </div>
@@ -2559,7 +2539,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>24 / 62</strong></p>
   </footer>
 
 </div>
@@ -2835,7 +2814,6 @@ format:
 
   <footer class="footer">
     <span class="footer-left">Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span style="color:#C9A84C; font-weight:700;">26 / 62</span>
   </footer>
 
 </div>
@@ -2898,7 +2876,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>27 / 62</p>
   </footer>
 
 </div>
@@ -3050,7 +3027,6 @@ format:
 
   <footer class="footer">
     <span class="footer-left">Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span style="color:#C9A84C; font-weight:700;">28 / 62</span>
   </footer>
 
 </div>
@@ -3336,7 +3312,6 @@ format:
 
   <footer class="footer">
     <span style="color:#8B9BB4; font-weight:500;">Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span style="color:#C9A84C; font-weight:700;">30 / 62</span>
   </footer>
 
 </div>
@@ -3467,7 +3442,7 @@ format:
     font-style: normal;
     font-weight: 700; }
 #s31 .footer { position: absolute;
-    bottom: 16px;
+    bottom: 8px;
     left: 56px;
     right: 56px;
     display: flex;
@@ -3734,7 +3709,7 @@ format:
     margin-bottom: 28px; }
 #s33 .pipeline { display: flex;
     align-items: stretch;
-    gap: 0;
+    gap: 28px;
     flex: 1;
     margin-bottom: 20px; }
 #s33 .stage { flex: 1;
@@ -3744,9 +3719,10 @@ format:
     position: relative; }
 #s33 .stage:not(:last-child)::after { content: "→";
     position: absolute;
-    right: -14px;
-    top: 28px;
-    font-size: 20px;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
     color: #C9A84C;
     font-weight: 900;
     z-index: 2; }
@@ -3802,7 +3778,7 @@ format:
     color: #0B1D3A;
     letter-spacing: 0.01em; }
 #s33 .footer { position: absolute;
-    bottom: 16px;
+    bottom: 8px;
     left: 56px;
     right: 56px;
     display: flex;
@@ -3910,7 +3886,7 @@ format:
 </style>
 
 <div id="s34" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="content"><div class="venn"><div class="circle research fragment fade-in" data-fragment-index="1"><p class="circle-title">Researcher</p><div class="traits"><p class="trait">rigor</p><p class="trait">novelty</p><p class="trait">first principles</p><p class="trait">patience</p></div></div><div class="circle engineer fragment fade-in" data-fragment-index="2"><p class="circle-title">Engineer</p><div class="traits"><p class="trait">speed</p><p class="trait">reliability</p><p class="trait">pragmatism</p><p class="trait">shipping</p></div></div><div class="venn-arrow fragment fade-in" data-fragment-index="3">↓</div><div class="intersection fragment fade-in" data-fragment-index="3"><strong>Overlap</strong><span>Research Engineer</span></div></div><div class="right"><p class="eyebrow">Part 3 · Mindset</p><h1 class="headline">How to think like a research engineer.</h1><div class="list"><p class="list-item"><span class="icon">🔬</span><span>Define the research question and the success metric before you touch implementation.</span></p><p class="list-item"><span class="icon">⚡</span><span>Build the simplest version that could work, then iterate with evidence.</span></p><p class="list-item"><span class="icon">📦</span><span>A paper without code, or a model without deployment, is only half-finished.</span></p></div><div class="closing">The best researchers <span>ship.</span></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>34 / 62</p></footer>
+<div class="gold-rule"></div><div class="content"><div class="venn"><div class="circle research fragment fade-in" data-fragment-index="1"><p class="circle-title">Researcher</p><div class="traits"><p class="trait">rigor</p><p class="trait">novelty</p><p class="trait">first principles</p><p class="trait">patience</p></div></div><div class="circle engineer fragment fade-in" data-fragment-index="2"><p class="circle-title">Engineer</p><div class="traits"><p class="trait">speed</p><p class="trait">reliability</p><p class="trait">pragmatism</p><p class="trait">shipping</p></div></div><div class="venn-arrow fragment fade-in" data-fragment-index="3">↓</div><div class="intersection fragment fade-in" data-fragment-index="3"><strong>Overlap</strong><span>Research Engineer</span></div></div><div class="right fragment fade-in" data-fragment-index="4"><p class="eyebrow">Part 3 · Mindset</p><h1 class="headline">How to think like a research engineer.</h1><div class="list"><p class="list-item"><span class="icon">🔬</span><span>Define the research question and the success metric before you touch implementation.</span></p><p class="list-item"><span class="icon">⚡</span><span>Build the simplest version that could work, then iterate with evidence.</span></p><p class="list-item"><span class="icon">📦</span><span>A paper without code, or a model without deployment, is only half-finished.</span></p></div><div class="closing">The best researchers <span>ship.</span></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p></footer>
 </div>
 ```
 
@@ -4011,7 +3987,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>35 / 62</strong></p>
   </footer>
 
 </div>
@@ -4159,7 +4134,7 @@ format:
       <p class="part-badge">Part 4 · Career guide</p>
       <p class="eyebrow">Section divider</p>
       <h1>Your<br><span>surfboard</span></h1>
-      <p class="subtitle">The blunt truth about what you need to ride this wave — and what matters far less than students think.</p>
+      <p class="subtitle">The blunt truth about what you need<br>to ride this wave — and what matters<br>far less than students think.</p>
     </div>
 
     <div class="right">
@@ -4173,7 +4148,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>36 / 62</strong></p>
   </footer>
 
 </div>
@@ -4225,7 +4199,7 @@ format:
 </style>
 
 <div id="s37" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="layout"><div class="left"><span class="badge">Blunt</span><h1 class="headline">Your portfolio is your surfboard.</h1><div class="stat"><p class="stat-num">38%</p><p class="stat-copy">Recruiters cite portfolio vs only 4% for credentials.</p></div><p class="source">Source: Fortune recruiter survey, Dec 2025</p></div><div class="right"><div class="col bad"><p class="col-title">GPA Transcript</p><div class="transcript"><div class="line l"></div><div class="line m"></div><div class="line l"></div><div class="line s"></div><p class="gpa">3.87 / 4.0</p></div><p class="foot">Looks tidy. Says almost nothing about whether you can build.</p></div><div class="vs">VS</div><div class="col good"><p class="col-title">GitHub Profile</p><div class="gh"><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div></div><div class="live">Active</div><p class="foot">Shows proof of motion, curiosity, and shipped work at a glance.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>37 / 62</p></footer>
+<div class="gold-rule"></div><div class="layout"><div class="left"><span class="badge">Blunt</span><h1 class="headline">Your portfolio is your surfboard.</h1><div class="stat"><p class="stat-num">38%</p><p class="stat-copy">Recruiters cite portfolio vs only 4% for credentials.</p></div><p class="source">Source: Fortune recruiter survey, Dec 2025</p></div><div class="right"><div class="col bad"><p class="col-title">GPA Transcript</p><div class="transcript"><div class="line l"></div><div class="line m"></div><div class="line l"></div><div class="line s"></div><p class="gpa">3.87 / 4.0</p></div><p class="foot">Looks tidy. Says almost nothing about whether you can build.</p></div><div class="vs">VS</div><div class="col good"><p class="col-title">GitHub Profile</p><div class="gh"><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div></div><div class="live">Active</div><p class="foot">Shows proof of motion, curiosity, and shipped work at a glance.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p></footer>
 </div>
 ```
 
@@ -4350,8 +4324,8 @@ format:
       <div class="check-item">
         <div class="check-icon">✓</div>
         <div class="check-text">
-          <p class="check-title">Tech Blog — 5+ Posts</p>
-          <p class="check-sub">Write about what you built. Recruiters read it. <strong>Medium / dev.to / GitHub Pages</strong></p>
+          <p class="check-title">Tech Posts — 5+ Articles</p>
+          <p class="check-sub">Share what you build. Recruiters read it. <strong>Medium / dev.to / X / LinkedIn</strong></p>
         </div>
       </div>
 
@@ -4367,7 +4341,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>38 / 62</span>
   </footer>
 
 </div>
@@ -4527,16 +4500,16 @@ format:
         <div class="label-dot label-dot-good"></div>
         <span class="label-good">Good</span>
       </div>
-      <p class="project-title">Built RAG chatbot — <strong>1K queries/day</strong></p>
+      <p class="project-title">Built agent harness — <strong>500+ tasks/week</strong></p>
       <div class="tag-row">
         <span class="tag tag-good">Quantified</span>
         <span class="tag tag-good">Live demo</span>
         <span class="tag tag-good">Documented</span>
       </div>
       <div class="detail-row">
-        <div class="detail"><span class="detail-icon">✓</span> <span><strong>1,000+ queries/day</strong> in production</span></div>
-        <div class="detail"><span class="detail-icon">✓</span> <span>Deployed on Vercel, always-on</span></div>
-        <div class="detail"><span class="detail-icon">✓</span> <span>Full README with setup guide</span></div>
+        <div class="detail"><span class="detail-icon">✓</span> <span><strong>500+ tasks/week</strong> orchestrated across agents</span></div>
+        <div class="detail"><span class="detail-icon">✓</span> <span>Deployed with observability dashboard</span></div>
+        <div class="detail"><span class="detail-icon">✓</span> <span>Full README with architecture diagram</span></div>
       </div>
       <div class="demo-link">→ Live Demo</div>
     </div>
@@ -4544,7 +4517,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>39 / 62</span>
   </footer>
 
 </div>
@@ -4712,7 +4684,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>40 / 62</span>
   </footer>
 
 </div>
@@ -4746,11 +4717,11 @@ format:
 #s41 .goal { font-size:12px;line-height:1.45;color:#5E6C84;margin-bottom:6px; }
 #s41 .items { display:flex;gap:10px;flex-wrap:wrap; }
 #s41 .item { font-size:10px;color:#0B1D3A;background:#F8F7F4;border-radius:999px;padding:4px 8px; }
-#s41 .footer { position:absolute;bottom:18px;left:42px;right:42px;display:flex;justify-content:space-between;font-size:10px;color:#8B9BB4;letter-spacing:.08em; }
+#s41 .footer { position:absolute;bottom:8px;left:42px;right:42px;display:flex;justify-content:space-between;font-size:10px;color:#8B9BB4;letter-spacing:.08em; }
 </style>
 
 <div id="s41" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">What to build this month</p><h1 class="headline">Pick one project. Ship it. Deploy it.</h1><p class="sub">You do not need ten ideas. You need one concrete thing that looks real, runs publicly, and teaches you something hard.</p><div class="rule"><p class="rule-label">Rule of thumb</p><p class="rule-copy">A project should be understandable in 30 seconds and defensible in a 10-minute conversation.</p></div></div><div class="stack"><div class="card"><div><p class="tier">Beginner</p></div><div><p class="title">Personal dashboard</p><p class="goal">A polished utility with live data and a deployed URL.</p><div class="items"><span class="item">API integration</span><span class="item">deploy</span><span class="item">Vercel / Netlify</span></div></div></div><div class="card"><div><p class="tier">Intermediate</p></div><div><p class="title">RAG chatbot</p><p class="goal">A useful assistant tied to a real information source.</p><div class="items"><span class="item">local PDF index</span><span class="item">Claude / OpenAI</span><span class="item">Chroma / Pinecone</span></div></div></div><div class="card"><div><p class="tier">Advanced</p></div><div><p class="title">Open source CLI</p><p class="goal">Solve a real pain point and publish something others can install.</p><div class="items"><span class="item">real problem</span><span class="item">npm / PyPI</span><span class="item">GitHub Actions CI</span></div></div></div></div></div><footer class="footer"><p>Yunsung Lee | Career Sprint</p><p>41 / 62</p></footer>
+<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">What to build this month</p><h1 class="headline">Pick one project. Ship it. Deploy it.</h1><p class="sub">You do not need ten ideas. You need one concrete thing that looks real, runs publicly, and teaches you something hard.</p><div class="rule"><p class="rule-label">Rule of thumb</p><p class="rule-copy">A project should be understandable in 30 seconds and defensible in a 10-minute conversation.</p></div></div><div class="stack"><div class="card"><div><p class="tier">Beginner</p></div><div><p class="title">Personal dashboard</p><p class="goal">A polished utility with live data and a deployed URL.</p><div class="items"><span class="item">API integration</span><span class="item">deploy</span><span class="item">Vercel / Netlify</span></div></div></div><div class="card"><div><p class="tier">Intermediate</p></div><div><p class="title">Agent harness</p><p class="goal">A multi-agent orchestrator that plans, acts, and reports.</p><div class="items"><span class="item">Claude / OpenAI Agents SDK</span><span class="item">LangGraph</span><span class="item">MCP tools</span></div></div></div><div class="card"><div><p class="tier">Advanced</p></div><div><p class="title">Open source CLI</p><p class="goal">Solve a real pain point and publish something others can install.</p><div class="items"><span class="item">real problem</span><span class="item">npm / PyPI</span><span class="item">GitHub Actions CI</span></div></div></div></div></div><footer class="footer"><p>Yunsung Lee | Career Sprint</p></footer>
 </div>
 ```
 
@@ -4857,7 +4828,7 @@ format:
     border: 1px solid rgba(201,168,76,0.3);
     margin-top: auto; }
 #s42 .footer { position: absolute;
-    bottom: 20px;
+    bottom: 8px;
     left: 64px;
     right: 64px;
     display: flex;
@@ -4925,7 +4896,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>42 / 62</span>
   </footer>
 
 </div>
@@ -5134,7 +5104,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>43 / 62</span>
   </footer>
 
 </div>
@@ -5217,7 +5186,7 @@ format:
 #s45 .example-label { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#C9A84C; margin-bottom:4px; }
 #s45 .example-copy { font-size:13px; line-height:1.45; color:#FCFBF7; }
 #s45 .example-metric { font-family:"Instrument Serif", Georgia, serif; font-size:34px; line-height:0.9; color:#E7C86A; align-self:center; white-space:nowrap; padding-bottom:8px; }
-#s45 .footer { position:absolute; bottom:18px; left:42px; right:42px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
+#s45 .footer { position:absolute; bottom:8px; left:42px; right:42px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
 </style>
 
 <div id="s45" class="suny-slide deck-dark">
@@ -5245,7 +5214,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>45 / 62</p>
   </footer>
 
 </div>
@@ -5259,55 +5227,47 @@ format:
 <style>
 #s46 {
   position: relative; width: 100%; height: 100%;
-  font-family: "Pretendard",sans-serif;
+  font-family: “Pretendard”,sans-serif;
   background: #0B1D3A;
   color: #FCFBF7;
 }
 #s46 .gold-rule { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent 0%, #C9A84C 20%, #C9A84C 80%, transparent 100%); }
-#s46 .content { height:100%; padding:34px 40px 24px; display:grid; grid-template-columns: 1fr 88px 1.12fr; gap:14px; align-items:center; position:relative; z-index:2; }
-#s46 .panel { border-radius:20px; padding:22px 20px; min-height:240px; display:flex; flex-direction:column; justify-content:center; }
-#s46 .before { background:rgba(255,255,255,0.05); border:1px solid rgba(139,155,180,0.18); }
-#s46 .after { background:#FFF9EF; border:1px solid rgba(201,168,76,0.22); color:#0B1D3A; box-shadow:0 20px 44px rgba(11,29,58,0.12); }
-#s46 .tag { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; margin-bottom:10px; }
+#s46 .content { height:100%; padding:36px 48px 36px; display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:center; position:relative; z-index:2; }
+#s46 .panel { padding:28px 28px; display:flex; flex-direction:column; justify-content:center; height:100%; }
+#s46 .before { border-right:1px solid rgba(201,168,76,0.22); }
+#s46 .tag { font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; margin-bottom:12px; }
 #s46 .before .tag { color:#8B9BB4; }
 #s46 .after .tag { color:#C9A84C; }
-#s46 .title { font-family:"Instrument Serif", Georgia, serif; font-size:38px; line-height:0.94; letter-spacing:-0.05em; margin-bottom:14px; padding-bottom:8px; }
-#s46 .bullet { font-size:20px; line-height:1.35; font-weight:700; }
-#s46 .before .bullet { color:#A4B0C3; text-decoration:line-through; }
-#s46 .after .bullet { color:#0B1D3A; }
-#s46 .note { margin-top:14px; font-size:12px; line-height:1.45; }
-#s46 .before .note { color:#8B9BB4; }
-#s46 .after .note { color:#5E6C84; }
-#s46 .vs-wrap { text-align:center; }
-#s46 .vs { width:64px; height:64px; border-radius:50%; border:2px solid #C9A84C; display:flex; align-items:center; justify-content:center; color:#E7C86A; font-size:22px; font-weight:900; margin:0 auto 12px; }
-#s46 .vs-note { font-size:10px; color:#8B9BB4; letter-spacing:0.12em; text-transform:uppercase; }
-#s46 .footer { position:absolute; bottom:18px; left:40px; right:40px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
+#s46 .title { font-family:”Instrument Serif”, Georgia, serif; font-size:36px; line-height:0.94; letter-spacing:-0.05em; margin-bottom:18px; padding-bottom:8px; }
+#s46 .quote-text { font-size:16px; line-height:1.45; font-weight:600; margin-bottom:14px; }
+#s46 .before .quote-text { color:#8B9BB4; }
+#s46 .after .quote-text { color:#FCFBF7; }
+#s46 .note { font-size:12px; line-height:1.5; color:#8B9BB4; max-width:320px; }
+#s46 .after .note { color:#D6DDE8; }
+#s46 .arrow-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.3); border-radius:8px; padding:6px 12px; font-size:10px; font-weight:700; color:#E7C86A; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px; }
+#s46 .footer { position:absolute; bottom:8px; left:48px; right:48px; display:flex; justify-content:space-between; font-size:10px; color:#8B9BB4; letter-spacing:0.08em; }
 </style>
 
-<div id="s46" class="suny-slide deck-dark">
+<div id=”s46” class=”suny-slide deck-dark”>
 
-  <div class="gold-rule"></div>
-  <div class="content">
-    <div class=”panel before fragment fade-in” data-fragment-index=”1”>
+  <div class=”gold-rule”></div>
+  <div class=”content”>
+    <div class=”panel before”>
       <p class=”tag”>Weak signal</p>
       <h1 class=”title”>Before</h1>
-      <p class=”bullet”>”Worked on ML project for recommendation engine.”</p>
-      <p class=”note”>Generic. No scope, no ownership, no metrics, no reason to remember it.</p>
+      <p class=”quote-text”>”Worked on ML project<br>for recommendation engine.”</p>
+      <p class=”note”>Generic. No scope, no ownership,<br>no metrics, no reason to remember it.</p>
     </div>
-    <div class=”vs-wrap fragment fade-in” data-fragment-index=”2”>
-      <div class=”vs”>→</div>
-      <p class=”vs-note”>Translate work into impact</p>
-    </div>
-    <div class=”panel after fragment fade-in” data-fragment-index=”3”>
+    <div class=”panel after”>
       <p class=”tag”>Strong signal</p>
       <h1 class=”title”>After</h1>
-      <p class=”bullet”>”Built a recommendation pipeline that improved CTR by 23% for 50K daily users.”</p>
-      <p class=”note”>Same underlying work. Better framing. Now it sounds like ownership, scale, and business value.</p>
+      <p class=”arrow-badge”>→ Translate work into impact</p>
+      <p class=”quote-text”>”Built a recommendation pipeline<br>that improved CTR by 23%<br>for 50K daily users.”</p>
+      <p class=”note”>Same underlying work. Better framing.<br>Now it sounds like ownership, scale,<br>and business value.</p>
     </div>
   </div>
-  <footer class="footer">
+  <footer class=”footer”>
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>46 / 62</p>
   </footer>
 
 </div>
@@ -5484,7 +5444,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>47 / 62</span>
   </footer>
 
 </div>
@@ -5723,7 +5682,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>49 / 62</span>
   </footer>
 
 </div>
@@ -5773,7 +5731,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>50 / 62</p>
   </footer>
 
 </div>
@@ -5817,7 +5774,7 @@ format:
 </style>
 
 <div id="s51" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 4 · Practical</p><h1 class="headline">Networking that actually works.</h1><div class="insight"><p>Your next job usually comes from someone you've <strong>helped</strong>, not someone you've merely introduced yourself to.</p></div></div><div class="right"><div class="bar-row"><p class="rank top">1</p><div><p class="meta-title">Open Source Contributions</p><p class="meta-sub">PRs merged = proof of skill + visibility</p></div><div class="track"><div class="fill gold">Highest ROI</div></div></div><div class="bar-row"><p class="rank">2</p><div><p class="meta-title">Conferences & Communities</p><p class="meta-sub">PR12, TF Korea, NeurIPS, ICLR socials</p></div><div class="track"><div class="fill navy">High</div></div></div><div class="bar-row"><p class="rank">3</p><div><p class="meta-title">LinkedIn — Writing & Engaging</p><p class="meta-sub">Share your projects and learnings publicly</p></div><div class="track"><div class="fill mid">Medium</div></div></div><div class="bar-row"><p class="rank">4</p><div><p class="meta-title">Career Fairs</p><p class="meta-sub">Useful, but everyone is doing the same thing</p></div><div class="track"><div class="fill low">Low</div></div></div><div class="closing"><strong>Best networking loop:</strong> ship something useful → help someone with it → stay in touch.</div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>51 / 62</p></footer>
+<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 4 · Practical</p><h1 class="headline">Networking that actually works.</h1><div class="insight"><p>Your next job usually comes from someone you've <strong>helped</strong>, not someone you've merely introduced yourself to.</p></div></div><div class="right"><div class="bar-row"><p class="rank top">1</p><div><p class="meta-title">Open Source Contributions</p><p class="meta-sub">PRs merged = proof of skill + visibility</p></div><div class="track"><div class="fill gold">Highest ROI</div></div></div><div class="bar-row"><p class="rank">2</p><div><p class="meta-title">Conferences & Communities</p><p class="meta-sub">PR12, TF Korea, NeurIPS, ICLR socials</p></div><div class="track"><div class="fill navy">High</div></div></div><div class="bar-row"><p class="rank">3</p><div><p class="meta-title">LinkedIn — Writing & Engaging</p><p class="meta-sub">Share your projects and learnings publicly</p></div><div class="track"><div class="fill mid">Medium</div></div></div><div class="bar-row"><p class="rank">4</p><div><p class="meta-title">Career Fairs</p><p class="meta-sub">Useful, but everyone is doing the same thing</p></div><div class="track"><div class="fill low">Low</div></div></div><div class="closing"><strong>Best networking loop:</strong> ship something useful → help someone with it → stay in touch.</div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p></footer>
 </div>
 ```
 
@@ -5981,7 +5938,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>52 / 62</span>
   </footer>
 
 </div>
@@ -6112,7 +6068,6 @@ format:
 
   <footer class="footer">
     <span class="footer-left">Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span><strong>53 / 62</strong></span>
   </footer>
 
 </div>
@@ -6266,7 +6221,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>54 / 62</span>
   </footer>
 
 </div>
@@ -6429,7 +6383,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>55 / 62</span>
   </footer>
 
 </div>
@@ -6496,7 +6449,6 @@ format:
   </div>
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p>56 / 62</p>
   </footer>
 
 </div>
@@ -6530,7 +6482,7 @@ format:
 </style>
 
 <div id="s57" class="suny-slide deck-dark">
-<div class="bg"></div><div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 5 · Recap</p><h1 class="headline">The wave is real — and already hiring differently.</h1><p class="summary">Before we recap my two waves, remember the setup: the market is moving fast, expectations are shifting, and the upside is unusually large for students who adapt early.</p></div><div class="right"><div class="stat"><p class="label">Compensation</p><p class="value">$245K</p><p class="copy">Average AI engineer total compensation in the U.S.</p></div><div class="stat"><p class="label">Talent gap</p><p class="value">50%</p><p class="copy">AI roles remain unfilled even while routine coding gets automated.</p></div><div class="stat"><p class="label">National bet</p><p class="value">₩10.1T</p><p class="copy">Korea's 2026 AI budget — your home court advantage.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p><p>57 / 62</p></footer>
+<div class="bg"></div><div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 5 · Recap</p><h1 class="headline">The wave is real —<br>and already hiring differently.</h1><p class="summary">Before we recap my two waves, remember the setup: the market is moving fast, expectations are shifting, and the upside is unusually large for students who adapt early.</p></div><div class="right"><div class="stat"><p class="label">Compensation</p><p class="value">$245K</p><p class="copy">Average AI engineer total compensation in the U.S.</p></div><div class="stat"><p class="label">Talent gap</p><p class="value">50%</p><p class="copy">AI roles remain unfilled even while routine coding gets automated.</p></div><div class="stat"><p class="label">National bet</p><p class="value">₩10.1T</p><p class="copy">Korea's 2026 AI budget — your home court advantage.</p></div></div></div><footer class="footer"><p>Yunsung Lee | WoRV @ Maum.ai</p></footer>
 </div>
 ```
 
@@ -6690,7 +6642,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</p>
-    <p><strong>58 / 62</strong></p>
   </footer>
 
 </div>
@@ -6824,7 +6775,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span style="color:#C9A84C; font-weight:700;">59 / 62</span>
   </footer>
 
 </div>
@@ -7028,7 +6978,6 @@ format:
 
   <footer class="footer">
     <span>Yunsung Lee &nbsp;|&nbsp; WoRV @ Maum.ai</span>
-    <span>60 / 62</span>
   </footer>
 
 </div>
@@ -7132,7 +7081,7 @@ format:
     <div class="copy">
       <p class="eyebrow">The surfer's choice</p>
       <p class="altman"><strong>Sam Altman, August 2025:</strong> “If I were graduating college right now, I'd feel like the luckiest kid in all of history.” Luck only matters if you act on it.</p>
-      <p class="quote">The wave doesn't care if you're ready. It's coming either way.</p>
+      <p class="quote">The wave doesn't care<br>if you're ready.<br>It's coming either way.</p>
       <h1 class="display">The only question is:<br>will you paddle out?</h1>
     </div>
 
@@ -7144,7 +7093,6 @@ format:
 
   <footer class="footer">
     <p>Yunsung Lee &nbsp;|&nbsp; Career Sprint</p>
-    <p><strong>61 / 62</strong></p>
   </footer>
 
 </div>
