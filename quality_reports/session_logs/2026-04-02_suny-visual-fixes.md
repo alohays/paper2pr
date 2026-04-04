@@ -53,4 +53,5 @@ User reported specific visual problems on slides 2, 4, 6, 8, 9, 10, 13, 14 of `Q
 - Round 1 (8 items): Complete, merged (PR #12)
 - Round 2 (14 items): Complete, merged (PR #12)
 - Round 3: Footer dedup (52 inline footers removed, global YAML footer added), slide 46 redesign (fixed quote-escaping bug), slide 33 timeline corrected, slide 18 polished
-- Round 4: Slide 60 — replaced fake QR grid with actual LinkedIn QR code image
+- Round 4: Slide 60 — replaced fake QR grid with actual LinkedIn QR code, corrected URL, added personal website
+- PDF export: installed decktape, exported SUNY.qmd → SUNY.pdf (12MB, 62 pages, 1920x1080)

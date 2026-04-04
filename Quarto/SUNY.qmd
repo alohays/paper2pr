@@ -200,8 +200,6 @@ format:
 
 
 
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -312,8 +310,6 @@ format:
 
 </div>
 ```
-
-
 
 
 
@@ -458,8 +454,6 @@ format:
 
 
 
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -529,8 +523,6 @@ format:
 
 
 
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -583,8 +575,6 @@ format:
 
 </div>
 ```
-
-
 
 
 
@@ -661,8 +651,6 @@ format:
 
 </div>
 ```
-
-
 
 
 
@@ -803,8 +791,6 @@ format:
 
 </div>
 ```
-
-
 
 
 
@@ -951,9 +937,6 @@ format:
 ```
 
 
-
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -1005,8 +988,6 @@ format:
 
 </div>
 ```
-
-
 
 
 
@@ -1066,7 +1047,6 @@ format:
 
 </div>
 ```
-
 
 
 
@@ -1231,6 +1211,7 @@ format:
 
 
 
+
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -1390,6 +1371,7 @@ format:
 
 
 
+
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -1443,6 +1425,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -1552,6 +1535,7 @@ format:
 
 
 
+
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -1586,7 +1570,6 @@ format:
 <div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Feature engineering</p><h1 class="headline">Memory made the assistant feel like it actually knew the user.</h1><div class="metric"><p class="metric-num">+12.7%</p><p class="metric-label">Week-1 retention</p></div><div class="flow"><div class="node"><strong>User</strong><span>query + history</span></div><div class="arrow">→</div><div class="node"><strong>Memory Store</strong><span>retrieve long-term context</span></div><div class="arrow">→</div><div class="node"><strong>LLM</strong><span>reason with memory</span></div><div class="arrow">→</div><div class="node"><strong>Response</strong><span>personalized output</span></div></div></div><div class="right"><div class="card"><p class="card-label">Before</p><p class="card-copy">Generic assistant: every conversation starts from zero.</p></div><div class="card"><p class="card-label">After</p><p class="card-copy">Remembering prior intent, preferences, and context makes the system feel like a product—not a demo.</p></div></div></div>
 </div>
 ```
-
 
 
 
@@ -1750,6 +1733,7 @@ format:
 
 
 
+
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -1805,6 +1789,7 @@ format:
 
 
 
+
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -1833,6 +1818,7 @@ format:
 <div class="gold-rule"></div><div class="content"><div><p class="eyebrow">Life at a startup</p><h1 class="headline">The startup grind.</h1><p class="sub">At a consumer AI startup, the work loop is brutally simple: ship, get surprised, recover fast, and ship again.</p></div><div class="timeline"><div class="day"><p class="emoji">🚢</p><p class="label">Mon</p><p class="title">Ship</p><p class="note">New feature goes live.</p></div><div class="day"><p class="emoji">💥</p><p class="label">Tue</p><p class="title">It breaks</p><p class="note">Users find the edge cases you missed.</p></div><div class="day"><p class="emoji">🔧</p><p class="label">Wed</p><p class="title">Fix</p><p class="note">Hotfix, triage, postmortem.</p></div><div class="day"><p class="emoji">📋</p><p class="label">Thu</p><p class="title">Plan next</p><p class="note">V2 is already being designed.</p></div><div class="day"><p class="emoji">🚢</p><p class="label">Fri</p><p class="title">Ship again</p><p class="note">And the loop starts over.</p></div></div></div>
 </div>
 ```
+
 
 
 
@@ -1962,6 +1948,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -2147,8 +2134,6 @@ format:
 ```
 
 
-
-
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -2272,8 +2257,6 @@ format:
 ```
 
 
-
-
 ## {background-color="#091325"}
 
 ```{=html}
@@ -2369,8 +2352,6 @@ format:
 
 </div>
 ```
-
-
 
 
 ## {background-color="#0B1D3A"}
@@ -2529,8 +2510,6 @@ format:
 ```
 
 
-
-
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -2659,6 +2638,7 @@ format:
   <p class="role-badge">Head of Research</p>
 </div>
 ```
+
 
 
 
@@ -2799,8 +2779,6 @@ format:
 ```
 
 
-
-
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -2857,8 +2835,6 @@ format:
 
 </div>
 ```
-
-
 
 
 ## {background-color="#0B1D3A"}
@@ -3007,8 +2983,6 @@ format:
 ```
 
 
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -3151,8 +3125,6 @@ format:
 ```
 
 
-
-
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -3283,6 +3255,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -3480,7 +3453,6 @@ format:
 
 
 
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -3634,6 +3606,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -3810,6 +3783,7 @@ format:
 
 
 
+
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -3848,6 +3822,7 @@ format:
 <div class="gold-rule"></div><div class="content"><div class="venn"><div class="circle research fragment fade-in" data-fragment-index="1"><p class="circle-title">Researcher</p><div class="traits"><p class="trait">rigor</p><p class="trait">novelty</p><p class="trait">first principles</p><p class="trait">patience</p></div></div><div class="circle engineer fragment fade-in" data-fragment-index="2"><p class="circle-title">Engineer</p><div class="traits"><p class="trait">speed</p><p class="trait">reliability</p><p class="trait">pragmatism</p><p class="trait">shipping</p></div></div><div class="venn-arrow fragment fade-in" data-fragment-index="3">↓</div><div class="intersection fragment fade-in" data-fragment-index="3"><strong>Overlap</strong><span>Research Engineer</span></div></div><div class="right fragment fade-in" data-fragment-index="4"><p class="eyebrow">Part 3 · Mindset</p><h1 class="headline">How to think like a research engineer.</h1><div class="list"><p class="list-item"><span class="icon">🔬</span><span>Define the research question and the success metric before you touch implementation.</span></p><p class="list-item"><span class="icon">⚡</span><span>Build the simplest version that could work, then iterate with evidence.</span></p><p class="list-item"><span class="icon">📦</span><span>A paper without code, or a model without deployment, is only half-finished.</span></p></div><div class="closing">The best researchers <span>ship.</span></div></div></div>
 </div>
 ```
+
 
 
 
@@ -3948,6 +3923,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -4112,6 +4088,7 @@ format:
 
 
 
+
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -4159,6 +4136,7 @@ format:
 <div class="gold-rule"></div><div class="layout"><div class="left"><span class="badge">Blunt</span><h1 class="headline">Your portfolio is your surfboard.</h1><div class="stat"><p class="stat-num">38%</p><p class="stat-copy">Recruiters cite portfolio vs only 4% for credentials.</p></div><p class="source">Source: Fortune recruiter survey, Dec 2025</p></div><div class="right"><div class="col bad"><p class="col-title">GPA Transcript</p><div class="transcript"><div class="line l"></div><div class="line m"></div><div class="line l"></div><div class="line s"></div><p class="gpa">3.87 / 4.0</p></div><p class="foot">Looks tidy. Says almost nothing about whether you can build.</p></div><div class="vs">VS</div><div class="col good"><p class="col-title">GitHub Profile</p><div class="gh"><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g2"></div><div class="cell g3"></div><div class="cell g1"></div><div class="cell g4"></div><div class="cell g2"></div><div class="cell g1"></div><div class="cell g3"></div><div class="cell g2"></div><div class="cell g1"></div></div><div class="live">Active</div><p class="foot">Shows proof of motion, curiosity, and shipped work at a glance.</p></div></div></div>
 </div>
 ```
+
 
 
 
@@ -4300,6 +4278,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -4479,6 +4458,7 @@ format:
 
 
 
+
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -4644,6 +4624,7 @@ format:
 
 
 
+
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -4677,7 +4658,6 @@ format:
 <div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">What to build this month</p><h1 class="headline">Pick one project. Ship it. Deploy it.</h1><p class="sub">You do not need ten ideas. You need one concrete thing that looks real, runs publicly, and teaches you something hard.</p><div class="rule"><p class="rule-label">Rule of thumb</p><p class="rule-copy">A project should be understandable in 30 seconds and defensible in a 10-minute conversation.</p></div></div><div class="stack"><div class="card"><div><p class="tier">Beginner</p></div><div><p class="title">Personal dashboard</p><p class="goal">A polished utility with live data and a deployed URL.</p><div class="items"><span class="item">API integration</span><span class="item">deploy</span><span class="item">Vercel / Netlify</span></div></div></div><div class="card"><div><p class="tier">Intermediate</p></div><div><p class="title">Agent harness</p><p class="goal">A multi-agent orchestrator that plans, acts, and reports.</p><div class="items"><span class="item">Claude / OpenAI Agents SDK</span><span class="item">LangGraph</span><span class="item">MCP tools</span></div></div></div><div class="card"><div><p class="tier">Advanced</p></div><div><p class="title">Open source CLI</p><p class="goal">Solve a real pain point and publish something others can install.</p><div class="items"><span class="item">real problem</span><span class="item">npm / PyPI</span><span class="item">GitHub Actions CI</span></div></div></div></div></div>
 </div>
 ```
-
 
 
 
@@ -4851,9 +4831,6 @@ format:
 
 </div>
 ```
-
-
-
 
 
 ## {background-color="#F8F7F4"}
@@ -5059,9 +5036,6 @@ format:
 ```
 
 
-
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -5110,9 +5084,6 @@ format:
 
 </div>
 ```
-
-
-
 
 
 ## {background-color="#0B1D3A"}
@@ -5170,19 +5141,16 @@ format:
 ```
 
 
-
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
 <style>
-#s46 { position:relative; width:100%; height:100%; font-family:”Pretendard”,sans-serif; background:#0B1D3A; color:#FCFBF7; }
+#s46 { position:relative; width:100%; height:100%; font-family:"Pretendard",sans-serif; background:#0B1D3A; color:#FCFBF7; }
 #s46 .gold-rule { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent 0%, #C9A84C 20%, #C9A84C 80%, transparent 100%); }
 #s46 .wrap { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; padding:36px 56px 32px; }
 #s46 .top { text-align:center; margin-bottom:28px; }
 #s46 .top .ey { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#C9A84C; margin-bottom:8px; }
-#s46 .top h1 { font-family:”Instrument Serif”,Georgia,serif; font-size:36px; line-height:0.95; letter-spacing:-0.04em; }
+#s46 .top h1 { font-family:"Instrument Serif",Georgia,serif; font-size:36px; line-height:0.95; letter-spacing:-0.04em; }
 #s46 .compare { display:grid; grid-template-columns:1fr 64px 1fr; gap:0; align-items:center; }
 #s46 .box { border-radius:18px; padding:24px 24px 22px; min-height:200px; display:flex; flex-direction:column; justify-content:center; }
 #s46 .box-bad { background:rgba(139,155,180,0.06); border:1px solid rgba(139,155,180,0.16); }
@@ -5235,10 +5203,7 @@ format:
 ```
 
 
-
-
-
-## {background-color=”#F8F7F4”}
+## {background-color="#F8F7F4"}
 
 ```{=html}
 <style>
@@ -5409,9 +5374,6 @@ format:
 ```
 
 
-
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -5462,9 +5424,6 @@ format:
 
 </div>
 ```
-
-
-
 
 
 ## {background-color="#0B1D3A"}
@@ -5647,9 +5606,6 @@ format:
 ```
 
 
-
-
-
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -5695,9 +5651,6 @@ format:
 ```
 
 
-
-
-
 ## {background-color="#F8F7F4"}
 
 ```{=html}
@@ -5733,10 +5686,10 @@ format:
 #s51 .footer { position:absolute;bottom:18px;left:42px;right:42px;display:flex;justify-content:space-between;font-size:10px;color:#8B9BB4;letter-spacing:.08em; }
 </style>
 
-<div id="s51" class="suny-slide deck-light">
-<div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 4 · Practical</p><h1 class="headline">Networking that actually works.</h1><div class="insight"><p>Your next job usually comes from someone you've <strong>helped</strong>, not someone you've merely introduced yourself to.</p></div></div><div class="right"><div class="bar-row"><p class="rank top">1</p><div><p class="meta-title">Open Source Contributions</p><p class="meta-sub">PRs merged = proof of skill + visibility</p></div><div class="track"><div class="fill gold">Highest ROI</div></div></div><div class="bar-row"><p class="rank">2</p><div><p class="meta-title">Conferences & Communities</p><p class="meta-sub">PR12, TF Korea, NeurIPS, ICLR socials</p></div><div class="track"><div class="fill navy">High</div></div></div><div class="bar-row"><p class="rank">3</p><div><p class="meta-title">LinkedIn — Writing & Engaging</p><p class="meta-sub">Share your projects and learnings publicly</p></div><div class="track"><div class="fill mid">Medium</div></div></div><div class="bar-row"><p class="rank">4</p><div><p class="meta-title">Career Fairs</p><p class="meta-sub">Useful, but everyone is doing the same thing</p></div><div class="track"><div class="fill low">Low</div></div></div><div class="closing"><strong>Best networking loop:</strong> ship something useful → help someone with it → stay in touch.</div></div></div>
+<div id="s51" class="suny-slide deck-light"> <div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 4 · Practical</p><h1 class="headline">Networking that actually works.</h1><div class="insight"><p>Your next job usually comes from someone you've <strong>helped</strong>, not someone you've merely introduced yourself to.</p></div></div><div class="right"><div class="bar-row"><p class="rank top">1</p><div><p class="meta-title">Open Source Contributions</p><p class="meta-sub">PRs merged = proof of skill + visibility</p></div><div class="track"><div class="fill gold">Highest ROI</div></div></div><div class="bar-row"><p class="rank">2</p><div><p class="meta-title">Conferences & Communities</p><p class="meta-sub">PR12, TF Korea, NeurIPS, ICLR socials</p></div><div class="track"><div class="fill navy">High</div></div></div><div class="bar-row"><p class="rank">3</p><div><p class="meta-title">LinkedIn — Writing & Engaging</p><p class="meta-sub">Share your projects and learnings publicly</p></div><div class="track"><div class="fill mid">Medium</div></div></div><div class="bar-row"><p class="rank">4</p><div><p class="meta-title">Career Fairs</p><p class="meta-sub">Useful, but everyone is doing the same thing</p></div><div class="track"><div class="fill low">Low</div></div></div><div class="closing"><strong>Best networking loop:</strong> ship something useful → help someone with it → stay in touch.</div></div></div>
 </div>
 ```
+
 
 
 
@@ -5853,8 +5806,7 @@ format:
     z-index: 2; }
 </style>
 
-<div id="s52" class="suny-slide deck-dark">
-
+<div id="s52" class="suny-slide deck-dark"> 
   <div class="wave-bg"></div>
   <div class="gold-rule"></div>
 
@@ -5900,6 +5852,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -6028,6 +5981,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -6179,6 +6133,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -6344,6 +6299,7 @@ format:
 
 
 
+
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -6409,6 +6365,7 @@ format:
 
 
 
+
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -6438,6 +6395,7 @@ format:
 <div class="bg"></div><div class="gold-rule"></div><div class="layout"><div class="left"><p class="eyebrow">Part 5 · Recap</p><h1 class="headline">The wave is real —<br>and already hiring differently.</h1><p class="summary">Before we recap my two waves, remember the setup: the market is moving fast, expectations are shifting, and the upside is unusually large for students who adapt early.</p></div><div class="right"><div class="stat"><p class="label">Compensation</p><p class="value">$245K</p><p class="copy">Average AI engineer total compensation in the U.S.</p></div><div class="stat"><p class="label">Talent gap</p><p class="value">50%</p><p class="copy">AI roles remain unfilled even while routine coding gets automated.</p></div><div class="stat"><p class="label">National bet</p><p class="value">₩10.1T</p><p class="copy">Korea's 2026 AI budget — your home court advantage.</p></div></div></div>
 </div>
 ```
+
 
 
 
@@ -6602,6 +6560,7 @@ format:
 
 
 
+
 ## {background-color="#0B1D3A"}
 
 ```{=html}
@@ -6728,6 +6687,7 @@ format:
 
 </div>
 ```
+
 
 
 
@@ -6926,6 +6886,7 @@ format:
 
 
 
+
 ## {background-color="#07111F"}
 
 ```{=html}
@@ -7034,6 +6995,7 @@ format:
 
 </div>
 ```
+
 
 
 
