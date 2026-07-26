@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
-"""Push the presenter script into the deck's speaker notes.
+"""Push the presenter scripts into the deck's speaker notes.
 
-The script in
-  Quarto/_script/RoboTTT-script.md
-is the master. Each of its `### S<n> | <slide title>` sections replaces the
-`::: {.notes}` block of the matching `## <slide title>` in
+The masters are
+  Quarto/_script/RoboTTT-script.md     main deck, the words to say
+  Quarto/_script/RoboTTT-appendix.md   appendix slides, for jumping to on a question
+Each `### <id> | <slide title>` section becomes the `::: {.notes}` block of the
+matching `## <slide title>` in
   Quarto/RoboTTT.qmd
-so the RevealJS presenter view (press S) shows the words to say.
+so the RevealJS presenter view (press S) shows them beside the slide.
+
+This has to REBUILD, not just replace. `.gitattributes` runs a clean filter
+that strips notes on the way into git, so the notes live only in the working
+tree -- any checkout, stash pop, or branch switch rewrites the qmd and wipes
+every one of them. Running this script has to be enough to get them all back.
+That is also why the appendix notes need a master file even though they are
+never read aloud.
 
 Sections are matched on the heading text, not on position, so reordering
 slides in either file cannot silently misalign them. Anything unmatched is a
@@ -21,9 +29,18 @@ import sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 QMD = os.path.join(HERE, "Quarto", "RoboTTT.qmd")
-SCRIPT = os.path.join(HERE, "Quarto", "_script", "RoboTTT-script.md")
+SCRIPTS = [
+    os.path.join(HERE, "Quarto", "_script", "RoboTTT-script.md"),
+    os.path.join(HERE, "Quarto", "_script", "RoboTTT-appendix.md"),
+]
 
 TITLE_KEY = "(title slide)"
+
+NOTES_RE = re.compile(r"\n*^::: \{\.notes\}\n.*?\n^:::\n", re.S | re.M)
+SLIDE_RE = re.compile(r"^## [^\n]*$", re.M)
+# an HTML comment sitting at the end of a slide labels the NEXT one, so notes
+# belong before it rather than after
+TRAILING_COMMENT_RE = re.compile(r"\n(<!--[^\n]*-->)\s*$")
 
 
 def read(path):
@@ -31,17 +48,19 @@ def read(path):
         return f.read()
 
 
-def parse_script():
-    """-> {slide title: body}, in file order."""
-    text = read(SCRIPT)
-    _, _, rest = text.partition("\n---\n")
+def parse_scripts():
+    """-> {slide title: body}, across every master file."""
     out = {}
-    for m in re.finditer(r"^### (S\d+) \| (.+?)$\n(.*?)(?=^---$|\Z)",
-                         rest, re.S | re.M):
-        title = m.group(2).strip()
-        if title in out:
-            raise SystemExit(f"duplicate section title in script: {title}")
-        out[title] = m.group(3).strip()
+    for path in SCRIPTS:
+        if not os.path.exists(path):
+            raise SystemExit(f"missing script master: {path}")
+        _, _, rest = read(path).partition("\n---\n")
+        for m in re.finditer(r"^### \S+ \| (.+?)$\n(.*?)(?=^---$|\Z)",
+                             rest, re.S | re.M):
+            title = m.group(1).strip()
+            if title in out:
+                raise SystemExit(f"duplicate section title in scripts: {title}")
+            out[title] = m.group(2).strip()
     return out
 
 
@@ -52,24 +71,44 @@ def heading_title(line):
 
 
 def splice(qmd, bodies):
-    """Replace every slide's notes block. Returns (new_qmd, matched titles)."""
+    """Set every scripted slide's notes block. Returns (new_qmd, matched)."""
     matched = set()
+    starts = [m.start() for m in SLIDE_RE.finditer(qmd)]
+    if not starts:
+        raise SystemExit("no `## ` slide headings in the deck")
 
-    def repl(m):
-        title = heading_title(m.group(1))
-        body = bodies.get(title)
+    bounds = starts + [len(qmd)]
+    out = [qmd[:starts[0]]]
+    for i, start in enumerate(starts):
+        head, _, rest = qmd[start:bounds[i + 1]].partition("\n")
+        body = bodies.get(heading_title(head))
         if body is None:
-            return m.group(0)
-        matched.add(title)
-        return f"{m.group(1)}\n{m.group(2)}::: {{.notes}}\n{body}\n:::\n"
+            # not scripted (nothing should be, but leave it alone if so)
+            out.append(head + "\n" + rest)
+            continue
+        matched.add(heading_title(head))
 
-    # a slide runs from its `##` heading to its notes block; the notes block is
-    # always the last thing in a slide, and `.slidebody` uses five colons, so a
-    # three-colon `:::` on its own line closes the notes and nothing else.
-    # `.` is DOTALL here, so the heading line must be matched with [^\n]+
-    pattern = (r"^(## [^\n]+)$\n(.*?)^::: \{\.notes\}\n.*?\n^:::\n")
-    out = re.sub(pattern, repl, qmd, flags=re.S | re.M)
-    return out, matched
+        rest = NOTES_RE.sub("\n", rest)
+        out.append(head + "\n" + insert_notes(rest, body))
+    return "".join(out), matched
+
+
+def insert_notes(rest, body):
+    """Put a notes block at the end of a notes-free slide body.
+
+    The placement is pinned by the clean filter in scripts/strip_qmd_notes.py,
+    which collapses `\\n::: {.notes}\\n...\\n:::\\n` back to a single newline.
+    Giving up one newline from the blank run after the body makes that round
+    trip byte-exact, so a synced working tree still reads as clean to git
+    instead of showing permanent whitespace churn.
+    """
+    m = TRAILING_COMMENT_RE.search(rest)
+    # a comment at the end of a slide labels the NEXT one, so stay above it
+    head_part, tail = (rest[:m.start()], rest[m.start():]) if m else (rest, "")
+
+    stripped = head_part.rstrip("\n")
+    gap = head_part[len(stripped):] or "\n"
+    return f"{stripped}\n::: {{.notes}}\n{body}\n:::\n{gap[1:]}{tail}"
 
 
 def splice_title_slide(qmd, body):
@@ -105,22 +144,14 @@ def splice_title_slide(qmd, body):
     return "\n".join(lines[:head] + block + lines[end:])
 
 
-def drop_stale_title_div(qmd):
-    """Remove the notes div an earlier version of this script inserted."""
-    marker = "<!-- title-slide notes, managed by scripts/sync_notes.py -->"
-    pat = re.compile(r"\n*" + re.escape(marker) + r"\n::: \{\.notes\}\n.*?\n:::\n",
-                     re.S)
-    return pat.sub("\n", qmd)
-
-
 def main():
     check = "--check" in sys.argv
-    bodies = parse_script()
+    bodies = parse_scripts()
     title_body = bodies.pop(TITLE_KEY, None)
     if title_body is None:
-        raise SystemExit(f"script has no '{TITLE_KEY}' section")
+        raise SystemExit(f"scripts have no '{TITLE_KEY}' section")
 
-    qmd = drop_stale_title_div(read(QMD))
+    qmd = read(QMD)
     out, matched = splice(qmd, bodies)
     out = splice_title_slide(out, title_body)
 
@@ -135,21 +166,31 @@ def main():
                    if l.startswith("## ")}
     missing = sorted(deck_titles - set(bodies))
     if missing:
-        print(f"{len(missing)} slides keep their existing notes "
-              f"(no script section):")
+        print(f"{len(missing)} slides have no script section "
+              f"(their notes are left as-is):")
         for t in missing:
             print(f"   {t}")
 
+    # The notes must be invisible to git. Prove it rather than trust it: run
+    # the result back through the same clean filter and require the notes-free
+    # form to be unchanged, so a synced tree never shows as dirty.
+    sys.path.insert(0, os.path.join(HERE, "scripts"))
+    from strip_qmd_notes import strip_notes
+    if strip_notes(out) != strip_notes(qmd):
+        print("BUG: syncing changed the deck outside the notes blocks.",
+              file=sys.stderr)
+        return 2
+
     if check:
         if out != qmd:
-            print("\nDRIFT: deck notes differ from the script", file=sys.stderr)
+            print("DRIFT: deck notes differ from the scripts", file=sys.stderr)
             return 1
-        print("\nin sync")
+        print("in sync")
         return 0
 
     with open(QMD, "w", encoding="utf-8") as f:
         f.write(out)
-    print(f"\nsynced {len(matched) + 1} notes blocks into "
+    print(f"synced {len(matched) + 1} notes blocks into "
           f"{os.path.relpath(QMD, HERE)}")
     return 0
 
