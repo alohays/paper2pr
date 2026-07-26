@@ -73,6 +73,9 @@ Figures/SUNY/videos/
 # Speaker notes backup (local only, not shared)
 .speaker-notes/
 
+# Presenter scripts (local only — the deployed deck must not carry them)
+Quarto/_script/
+
 # Quarto project-level build artifacts
 _site/
 /index.html

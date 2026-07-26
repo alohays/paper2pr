@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Strip <aside class="notes"> blocks from RevealJS HTML for public deployment.
+"""Strip speaker notes from RevealJS HTML for public deployment.
+
+Removes both forms RevealJS understands:
+  - <aside class="notes"> ... </aside>, one per slide
+  - a data-notes="..." attribute on a <section>, which is how the
+    Quarto-generated title slide carries its notes (a notes div placed
+    before the first `##` becomes its own slide instead of attaching)
 
 Usage:
     python3 scripts/strip_speaker_notes.py path/to/slides.html
@@ -15,11 +21,16 @@ NOTES_PATTERN = re.compile(
     re.DOTALL
 )
 
+# Quarto HTML-escapes the value, so a quote never appears raw inside it.
+DATA_NOTES_PATTERN = re.compile(r'\sdata-notes=(?:"[^"]*"|\'[^\']*\')')
+
 
 def strip_notes(html_path: Path) -> int:
     """Remove speaker notes from HTML file in-place. Returns count removed."""
     content = html_path.read_text(encoding="utf-8")
     new_content, count = NOTES_PATTERN.subn("", content)
+    new_content, attr_count = DATA_NOTES_PATTERN.subn("", new_content)
+    count += attr_count
     if count > 0:
         html_path.write_text(new_content, encoding="utf-8")
     return count
