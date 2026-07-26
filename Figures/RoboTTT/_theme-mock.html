@@ -1,0 +1,69 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+  body{margin:0;padding:18px;background:#DCDCDC;font-family:"Source Sans Pro",-apple-system,sans-serif}
+  .row{display:flex;gap:18px}
+  .col{flex:1}
+  .tag{font:700 12px/1 "Source Sans Pro";letter-spacing:.14em;text-transform:uppercase;color:#444;margin:0 0 8px 4px}
+  .slide{background:#fff;border:1px solid #bbb;padding:22px 26px;height:290px;margin-bottom:14px;overflow:hidden;position:relative}
+  h2{font-size:28px;font-weight:600;margin:0 0 4px}
+  .rule{height:3px;width:64px;margin:8px 0 16px}
+  ul{margin:0;padding-left:20px;font-size:17px;line-height:1.6;color:#1a1a1a}
+  .box{border-left:5px solid;padding:9px 13px;margin-top:14px;font-size:15px;border-radius:3px}
+  .num{font-weight:700}
+  .credit{position:absolute;bottom:9px;right:14px;font-size:10.5px;color:#999}
+  .eyebrow{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin:0 0 5px}
+  .ttl{font-size:34px;font-weight:700;line-height:1.15;margin:0 0 6px}
+  .sub{font-size:15px;color:#555;margin:0}
+  img{width:100%;margin-top:6px}
+  .chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:4px;margin-right:6px}
+
+  /* A: house navy/gold */
+  .A h2,.A .ttl{color:#012169} .A .eyebrow{color:#012169}
+  .A .rule{background:#B9975B}
+  .A .num{color:#012169}
+  .A .box{border-color:#B9975B;background:#FBF8F2}
+  .A .chip{background:#E8EDF5;color:#012169}
+  .A .accent{color:#B9975B;font-weight:700}
+
+  /* B: paper green */
+  .B h2,.B .ttl{color:#264F44} .B .eyebrow{color:#326355}
+  .B .rule{background:#7FA79A}
+  .B .num{color:#326355}
+  .B .box{border-color:#7FA79A;background:#F1F7F4}
+  .B .chip{background:#E6F0EC;color:#326355}
+  .B .accent{color:#B9834B;font-weight:700}
+</style>
+<div class="row">
+  <div class="col A">
+    <p class="tag">Option A &mdash; house theme (navy / gold), as in DreamDojo &amp; SUNY</p>
+    <div class="slide">
+      <p class="eyebrow">PR-561 &middot; Paper review</p>
+      <p class="ttl">RoboTTT: Context Scaling<br>for Robot Policies</p>
+      <div class="rule"></div>
+      <p class="sub">NVIDIA GEAR &middot; Stanford &middot; UT Austin &nbsp;|&nbsp; arXiv:2607.15275<br>Yunsung Lee &middot; WoRV / MaumAI</p>
+    </div>
+    <div class="slide">
+      <h2>Memory, three shapes</h2>
+      <div class="rule"></div>
+      <img src="nv1-memory-shapes.svg">
+      <div class="box">The middle and right states are the same size. Only the <span class="accent">update rule</span> differs.</div>
+    </div>
+  </div>
+
+  <div class="col B">
+    <p class="tag">Option B &mdash; paper green (matches all 9 lifted / new visuals)</p>
+    <div class="slide">
+      <p class="eyebrow">PR-561 &middot; Paper review</p>
+      <p class="ttl">RoboTTT: Context Scaling<br>for Robot Policies</p>
+      <div class="rule"></div>
+      <p class="sub">NVIDIA GEAR &middot; Stanford &middot; UT Austin &nbsp;|&nbsp; arXiv:2607.15275<br>Yunsung Lee &middot; WoRV / MaumAI</p>
+    </div>
+    <div class="slide">
+      <h2>Memory, three shapes</h2>
+      <div class="rule"></div>
+      <img src="nv1-memory-shapes.svg">
+      <div class="box">The middle and right states are the same size. Only the <span class="accent">update rule</span> differs.</div>
+    </div>
+  </div>
+</div>

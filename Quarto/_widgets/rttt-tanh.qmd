@@ -1,0 +1,410 @@
+``````{=html}
+<div class="rttt-widget" data-widget="rttt-tanh" data-beats="6">
+<div role="region" id="rttt-tanh" aria-label="Simplified animated explainer of tanh gating in the DiT block">
+<style>
+  #rttt-tanh {
+    --tg-dark:  #326355;
+    --tg-mid:   #7FA79A;
+    --tg-fill:  #E6F0EC;
+    --ink:      #222;
+    --muted:    #555;
+    --faint:    #888;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    max-width: 940px;
+    margin: 0 auto;
+  }
+  #rttt-tanh .rttt-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; font-weight: 600;
+    color: var(--tg-dark); text-transform: uppercase; margin: 0 0 6px;
+  }
+  #rttt-tanh h3 { font-size: 24px; font-weight: 650; margin: 0 0 10px; color: var(--ink); }
+  #rttt-tanh .rttt-tagline {
+    font-size: 14.5px; line-height: 1.55; color: var(--muted);
+    margin: 0 0 18px; max-width: 800px;
+  }
+  #rttt-tanh .rttt-var { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  #rttt-tanh .rttt-fig { position: relative; max-width: 860px; margin: 0 auto; }
+  #rttt-tanh .rttt-fig > svg { width: 100%; height: auto; display: block; }
+  #rttt-tanh .rttt-caption { min-height: 3.2em; margin: 10px 2px 4px; }
+  #rttt-tanh .rttt-cap-row { display: flex; align-items: baseline; gap: 10px; }
+  #rttt-tanh .rttt-pill {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 4px; padding: 2px 8px;
+    flex: 0 0 auto; transform: translateY(-1px);
+    background: #EFEFEF; color: #666;
+  }
+  #rttt-tanh .rttt-pill.g  { background: var(--tg-fill); color: var(--tg-dark); }
+  #rttt-tanh .rttt-pill.gd { background: var(--tg-dark); color: #fff; }
+  #rttt-tanh .rttt-cap-line { font-size: 14px; color: var(--ink); line-height: 1.5; }
+  #rttt-tanh .rttt-controls { display: flex; align-items: center; gap: 8px; margin: 8px 0 10px; }
+  #rttt-tanh .rttt-controls button {
+    font: inherit; font-size: 12.5px; color: #444; background: #fff;
+    border: 1px solid #ddd; border-radius: 6px; padding: 4px 12px; cursor: pointer;
+  }
+  #rttt-tanh .rttt-controls button:hover { background: #f7f7f7; }
+  #rttt-tanh .rttt-controls button:focus-visible,
+  #rttt-tanh .rttt-controls select:focus-visible { outline: 2px solid var(--tg-mid); outline-offset: 1px; }
+  #rttt-tanh .rttt-controls select {
+    font: inherit; font-size: 12.5px; color: #444; background: #fff;
+    border: 1px solid #ddd; border-radius: 6px; padding: 4px 6px; margin-left: auto;
+  }
+  #rttt-tanh .rttt-foot { font-size: 12px; color: var(--faint); margin: 8px 2px 0; line-height: 1.5; }
+  @media (max-width: 560px) {
+    #rttt-tanh h3 { font-size: 20px; }
+    #rttt-tanh .rttt-tagline { font-size: 13.5px; }
+    #rttt-tanh .rttt-cap-line { font-size: 13px; }
+    #rttt-tanh .rttt-caption { min-height: 4.4em; }
+  }
+</style>
+
+<p class="rttt-eyebrow">RoboTTT &middot; Model</p>
+<h3>Tanh gating</h3>
+<p class="rttt-tagline">
+  A detail inside the DiT block: the update from the TTT layer passes through a learned
+  tanh gate before it rejoins the residual stream.
+</p>
+
+<div class="rttt-fig" role="img"
+     aria-label="Animated diagram: the sequence splits into a residual path and a TTT path whose gated update rejoins at a sum">
+  <svg id="rn-stage" viewBox="0 0 700 252" preserveAspectRatio="xMidYMid meet"
+       aria-hidden="true" focusable="false"></svg>
+</div>
+
+<div class="rttt-caption">
+  <div class="rttt-cap-row">
+    <span class="rttt-pill" id="rn-pill">sequence</span>
+    <span class="rttt-cap-line" id="rn-cap"></span>
+  </div>
+</div>
+
+<div class="rttt-controls">
+  <button id="rn-play" aria-label="Pause animation">Pause</button>
+  <button id="rn-step" aria-label="Step to next beat">Step</button>
+  <button id="rn-restart" aria-label="Restart animation">Restart</button>
+  <select id="rn-speed" aria-label="Playback speed">
+    <option value="0.5">0.5&times;</option>
+    <option value="1" selected>1&times;</option>
+    <option value="1.5">1.5&times;</option>
+    <option value="2">2&times;</option>
+  </select>
+</div>
+
+<p class="rttt-foot">
+  A simplified view; the full gating figure appears in the paper.
+</p>
+
+
+</div>
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var GREEN = "#326355", GRAY = "#666";
+  var FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var TOK = ["#D9D9D9", "#A6A6A6"];
+  var SHADES = [["#E6F0EC","#9CC4B4"],["#C8E0D6","#8FB7AA"],["#A4CFC0","#6BA08F"]];
+  var TS = 16;
+
+  function slotX(j) { return 247 + j * 27; }
+  var ROWY = 42, OUTY = 224, CX = 350;
+
+  var BEATS = [
+    { id:"seq", pill:"sequence", cls:"", dur:2.8, fx:[],
+      cap:'Inside the DiT block, the flattened sequence reaches the TTT layer.' },
+    { id:"split", pill:"two paths", cls:"", dur:3.0,
+      fx:[
+        {type:"pulse", pts:[[CX,62],[CX,78]], t:[0.15,0.38], color:GRAY, r:2.6},
+        {type:"pulse", pts:[[458,50],[560,50],[560,130]], t:[0.15,0.88], color:GRAY, r:2.4}
+      ],
+      cap:'The sequence takes two paths: one enters the TTT layer, the other bypasses it as the residual.' },
+    { id:"update", pill:"update", cls:"g", dur:3.0,
+      fx:[
+        {type:"ring", rect:[335,84,30,30], t:[0.18,0.48], color:GREEN},
+        {type:"ring", rect:[335,84,30,30], t:[0.52,0.82], color:GREEN}
+      ],
+      cap:'The TTT layer applies its fast weights, producing an update for the sequence.' },
+    { id:"gate", pill:"tanh gating", cls:"g", dur:3.2,
+      fx:[
+        {type:"pulse", pts:[[CX,118],[CX,138]], t:[0.05,0.26], color:GREEN, r:3.4},
+        {type:"ring", rect:[270,140,160,26], rx:9, t:[0.24,0.55], color:GREEN, hold:true},
+        {type:"pulse", pts:[[CX,168],[CX,177]], t:[0.74,0.92], color:GREEN, r:2.2}
+      ],
+      cap:'Tanh gating scales that update: a learned gate on how strongly it is applied.' },
+    { id:"sum", pill:"sum", cls:"g", dur:3.4,
+      fx:[
+        {type:"pulse", pts:[[CX,168],[CX,184]], t:[0.03,0.18], color:GREEN, r:2.2},
+        {type:"pulse", pts:[[560,60],[560,196],[361,196]], t:[0.02,0.40], color:GRAY, r:2.4},
+        {type:"ring", rect:[341,187,18,18], rx:9, t:[0.40,0.58], color:GREEN, hold:true},
+        {type:"pulse", pts:[[CX,207],[CX,219]], t:[0.60,0.76], color:GREEN, r:3}
+      ],
+      cap:'At the sum, the gated update joins the residual: the tokens continue with the update applied.' },
+    { id:"recap", pill:"recap", cls:"gd", dur:3.0,
+      fx:[
+        {type:"pulse", pts:[[CX,62],[CX,182]], t:[0.15,0.55], color:GREEN, r:2.4},
+        {type:"pulse", pts:[[458,50],[560,50],[560,196],[361,196]], t:[0.15,0.78], color:GRAY, r:2.2}
+      ],
+      cap:'One pass, two paths: the sequence carries forward, and the TTT layer adds its gated update on top.' }
+  ];
+  var TOTAL = 0, STARTS = [];
+  BEATS.forEach(function (b) { STARTS.push(TOTAL); TOTAL += b.dur; });
+  var T_MOVE = STARTS[4] + 2.1;   /* token dissolve-regroup after the merge */
+  var W_STEPS = [STARTS[2] + 0.9, STARTS[2] + 1.6];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $("rn-stage"), cap = $("rn-cap"), pill = $("rn-pill"),
+      btnPlay = $("rn-play"), btnStep = $("rn-step"),
+      btnRestart = $("rn-restart"), selSpeed = $("rn-speed");
+
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e);
+    return e;
+  }
+  function txt(s, attrs, parent) { var e = el("text", attrs, parent); e.textContent = s; return e; }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function easeIO(u) { return u * u * (3 - 2 * u); }
+  function arrow(x1, y1, x2, y2, color, w, parent) {
+    el("line", { x1:x1, y1:y1, x2:x2, y2:y2, stroke:color, "stroke-width":w }, parent);
+    el("path", { d:"M"+x2+" "+y2+"l-3.2 -5.5l6.4 0Z", fill:color }, parent);
+  }
+
+  /* ---------- static scene ---------- */
+  var topToks = [], botToks = [], gridRect, gridLines = [], nabla, tanhDot, fxg;
+  function build() {
+    /* sub-block container */
+    el("rect", { x:245, y:70, width:303, height:148, rx:10, fill:"#FBFBFB",
+      stroke:"#E2E2E2", "stroke-width":1.2 }, stage);
+    txt("DiT block", { x:253, y:84, "font-family":FONT,
+      "font-size":9.5, "font-weight":600, fill:"#888" }, stage);
+
+    /* residual route (in front of the container) */
+    el("path", { d:"M458 50H560V196H364", fill:"none", stroke:"#B5B5B5",
+      "stroke-width":1.3 }, stage);
+    el("path", { d:"M364 196l5.5 -3.2l0 6.4Z", fill:"#B5B5B5" }, stage);
+    txt("residual", { x:572, y:126, "font-family":SERIF, "font-style":"italic",
+      "font-size":9.5, fill:"#999" }, stage);
+
+    /* chain arrows */
+    arrow(CX, 62, CX, 79, "#555", 1.4, stage);
+    arrow(CX, 118, CX, 137, "#555", 1.4, stage);
+    arrow(CX, 168, CX, 184, "#555", 1.4, stage);
+    arrow(CX, 207, CX, 220, "#555", 1.4, stage);
+
+    /* TTT layer: grid + labels (DiT style) */
+    gridRect = el("rect", { x:335, y:84, width:30, height:30, fill:SHADES[0][0],
+      stroke:SHADES[0][1], "stroke-width":1.6 }, stage);
+    for (var i = 1; i < 3; i++) {
+      gridLines.push(el("line", { x1:335+30*i/3, y1:84, x2:335+30*i/3, y2:114,
+        stroke:SHADES[0][1], "stroke-width":1.1 }, stage));
+      gridLines.push(el("line", { x1:335, y1:84+30*i/3, x2:365, y2:84+30*i/3,
+        stroke:SHADES[0][1], "stroke-width":1.1 }, stage));
+    }
+    txt("TTT layer", { x:327, y:101, "text-anchor":"end", "font-family":FONT,
+      "font-size":9.5, "font-weight":650, fill:GREEN }, stage);
+    txt("W", { x:373, y:96, "font-family":SERIF, "font-style":"italic",
+      "font-size":12.5, fill:GREEN }, stage);
+    txt("fast weights", { x:373, y:107, "font-family":FONT, "font-size":8.5,
+      fill:GREEN }, stage);
+    nabla = txt("\u2207", { x:CX, y:80, "text-anchor":"middle", "font-family":SERIF,
+      "font-size":12, fill:GREEN, opacity:0 }, stage);
+
+    /* tanh gating box with a small tanh curve */
+    el("rect", { x:270, y:140, width:160, height:26, rx:9, fill:"#FFFFFF",
+      stroke:"#555", "stroke-width":1.4 }, stage);
+    txt("Tanh Gating", { x:330, y:157, "text-anchor":"middle", "font-family":FONT,
+      "font-size":11, "font-weight":600, fill:"#333" }, stage);
+    (function () {
+      var d = "";
+      for (var s = 0; s <= 24; s++) {
+        var xx = 394 + s * 1.25;
+        var yy = 153 - 6 * Math.tanh((xx - 409) / 5);
+        d += (s ? "L" : "M") + xx.toFixed(1) + " " + yy.toFixed(1);
+      }
+      el("path", { d:d, fill:"none", stroke:"#888", "stroke-width":1.2 }, stage);
+    })();
+    tanhDot = el("circle", { r:2.5, fill:GREEN, opacity:0 }, stage);
+
+    /* sum */
+    el("circle", { cx:CX, cy:196, r:8, fill:"#FFFFFF", stroke:"#333",
+      "stroke-width":1.5 }, stage);
+    el("line", { x1:CX-5, y1:196, x2:CX+5, y2:196, stroke:"#333",
+      "stroke-width":1.3 }, stage);
+    el("line", { x1:CX, y1:191, x2:CX, y2:201, stroke:"#333",
+      "stroke-width":1.3 }, stage);
+
+    /* token rows */
+    for (var j = 0; j < 8; j++) {
+      topToks.push(el("rect", { x:slotX(j), y:ROWY, width:TS, height:TS, rx:2,
+        fill:TOK[0], stroke:TOK[1], "stroke-width":1.2, opacity:0 }, stage));
+      botToks.push(el("rect", { x:slotX(j), y:OUTY, width:TS, height:TS, rx:2,
+        fill:TOK[0], stroke:TOK[1], "stroke-width":1.2, opacity:0 }, stage));
+    }
+
+    fxg = el("g", {}, stage);
+  }
+
+  /* ---------- fx engine ---------- */
+  var fxNodes = [], fxBeat = -1;
+  function polyAt(pts, u) {
+    var lens = [0], L = 0, i;
+    for (i = 1; i < pts.length; i++) {
+      L += Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]);
+      lens.push(L);
+    }
+    var d = u * L;
+    for (i = 1; i < pts.length; i++) {
+      if (d <= lens[i] || i === pts.length - 1) {
+        var seg = lens[i] - lens[i-1] || 1;
+        var k = clamp01((d - lens[i-1]) / seg);
+        return [pts[i-1][0] + (pts[i][0]-pts[i-1][0]) * k,
+                pts[i-1][1] + (pts[i][1]-pts[i-1][1]) * k];
+      }
+    }
+    return pts[pts.length - 1];
+  }
+  function buildFx(i) {
+    while (fxg.firstChild) fxg.removeChild(fxg.firstChild);
+    fxNodes = [];
+    BEATS[i].fx.forEach(function (f) {
+      if (f.type === "pulse") {
+        var ghost = el("circle", { r:f.r*0.8, fill:f.color, opacity:0 }, fxg);
+        var dot = el("circle", { r:f.r, fill:f.color, opacity:0 }, fxg);
+        fxNodes.push({ f:f, dot:dot, ghost:ghost });
+      } else {
+        fxNodes.push({ f:f, node: el("rect", {
+          x:f.rect[0]-1.2, y:f.rect[1]-1.2, width:f.rect[2]+2.4, height:f.rect[3]+2.4,
+          rx:(f.rx != null ? f.rx : 4), fill:"none", stroke:f.color,
+          "stroke-width":1.4, opacity:0 }, fxg) });
+      }
+    });
+    fxBeat = i;
+  }
+  function renderFx(q) {
+    fxNodes.forEach(function (n) {
+      var f = n.f, u = clamp01((q - f.t[0]) / (f.t[1] - f.t[0]));
+      if (f.type === "pulse") {
+        if (q < f.t[0] || q > f.t[1]) {
+          n.dot.setAttribute("opacity", 0); n.ghost.setAttribute("opacity", 0);
+          return;
+        }
+        var p = polyAt(f.pts, easeIO(u));
+        var pg = polyAt(f.pts, easeIO(Math.max(0, u - 0.07)));
+        var fade = clamp01(Math.min(1, u * 6, (1 - u) * 6));
+        n.dot.setAttribute("cx", p[0]); n.dot.setAttribute("cy", p[1]);
+        n.dot.setAttribute("opacity", 0.95 * fade);
+        n.ghost.setAttribute("cx", pg[0]); n.ghost.setAttribute("cy", pg[1]);
+        n.ghost.setAttribute("opacity", 0.35 * fade);
+      } else {
+        var active = q >= f.t[0] && (f.hold ? true : q <= f.t[1]);
+        var o = 0;
+        if (active) o = f.hold ? easeIO(u) : Math.sin(Math.PI * clamp01(u));
+        n.node.setAttribute("opacity", (0.9 * o).toFixed(3));
+      }
+    });
+  }
+
+  /* ---------- render ---------- */
+  function render(T) {
+    T = ((T % TOTAL) + TOTAL) % TOTAL;
+    var i = BEATS.length - 1;
+    while (i > 0 && T < STARTS[i]) i--;
+    var b = BEATS[i], q = (T - STARTS[i]) / b.dur;
+
+    /* tokens: top row in, dissolve-regroup to bottom after the merge */
+    topToks.forEach(function (tk, j) {
+      var o = clamp01((T - (0.3 + j * 0.07)) / 0.3);
+      o *= 1 - clamp01((T - (T_MOVE + j * 0.04)) / 0.35);
+      tk.setAttribute("opacity", o.toFixed(2));
+    });
+    botToks.forEach(function (tk, j) {
+      tk.setAttribute("opacity",
+        clamp01((T - (T_MOVE + 0.35 + j * 0.04)) / 0.35).toFixed(2));
+    });
+
+    /* fast weights shade + nabla */
+    var steps = 0;
+    W_STEPS.forEach(function (t0) { if (T > t0) steps++; });
+    var sh = SHADES[Math.min(steps, 2)];
+    gridRect.setAttribute("fill", sh[0]); gridRect.setAttribute("stroke", sh[1]);
+    gridLines.forEach(function (l) { l.setAttribute("stroke", sh[1]); });
+    var no = 0;
+    W_STEPS.forEach(function (t0) {
+      var un = (T - t0 + 0.25) / 0.45;
+      if (un > 0 && un < 1) no = Math.max(no, Math.sin(Math.PI * un));
+    });
+    nabla.setAttribute("opacity", no.toFixed(2));
+
+    /* tanh dot slides during the gating beat */
+    if (i === 3 && q > 0.30 && q < 0.72) {
+      var ut = easeIO((q - 0.30) / 0.42);
+      var xx = 394 + ut * 30;
+      tanhDot.setAttribute("cx", xx.toFixed(1));
+      tanhDot.setAttribute("cy", (153 - 6 * Math.tanh((xx - 409) / 5)).toFixed(1));
+      tanhDot.setAttribute("opacity", 1);
+    } else tanhDot.setAttribute("opacity", 0);
+
+    if (fxBeat !== i) buildFx(i);
+    renderFx(q);
+
+    pill.textContent = b.pill;
+    pill.className = "rttt-pill" + (b.cls ? " " + b.cls : "");
+    if (cap.dataset.beat !== String(i)) {
+      cap.innerHTML = b.cap;
+      cap.dataset.beat = String(i);
+    }
+  }
+
+  /* ---------- clock & controls ---------- */
+  var playing = true, speed = 1, T = 0, lastTs = null;
+  function frame(ts) {
+    if (lastTs == null) lastTs = ts;
+    var dt = (ts - lastTs) / 1000; lastTs = ts;
+    if (playing) { T += dt * speed; render(T); }
+    window.requestAnimationFrame(frame);
+  }
+  function setPlaying(p) {
+    playing = p;
+    btnPlay.textContent = p ? "Pause" : "Play";
+    btnPlay.setAttribute("aria-label", p ? "Pause animation" : "Play animation");
+  }
+  btnPlay.addEventListener("click", function () { setPlaying(!playing); });
+  btnStep.addEventListener("click", function () {
+    var Tm = ((T % TOTAL) + TOTAL) % TOTAL, i = BEATS.length - 1;
+    while (i > 0 && Tm < STARTS[i]) i--;
+    T = (i + 1 < BEATS.length) ? STARTS[i + 1] + 0.001 : 0.001;
+    setPlaying(false); render(T);
+  });
+  btnRestart.addEventListener("click", function () {
+    T = 0; lastTs = null; setPlaying(true); render(T);
+  });
+  selSpeed.addEventListener("change", function () {
+    speed = parseFloat(selSpeed.value) || 1;
+  });
+
+  var wasPlaying = null;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) {
+          if (wasPlaying == null) { wasPlaying = playing; setPlaying(false); }
+        } else if (wasPlaying != null) {
+          setPlaying(wasPlaying); wasPlaying = null;
+        }
+      });
+    }, { threshold: 0.05 }).observe(document.getElementById("rttt-tanh"));
+  }
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  build();
+  if (reduce) { T = STARTS[3] + 1.5; setPlaying(false); }
+  render(T);
+  window.requestAnimationFrame(frame);
+})();
+</script>
+<p class="widget-credit">Animation reproduced verbatim from the official RoboTTT project page (NVIDIA GEAR), <a href="https://research.nvidia.com/labs/gear/robottt/">https://research.nvidia.com/labs/gear/robottt/</a></p>
+</div>
+``````

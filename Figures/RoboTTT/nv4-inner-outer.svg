@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 276" width="100%" role="img" aria-label="Inner loop and outer loop in TTT sequence training">
+<title>Inner loop and outer loop in TTT sequence training</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .v { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  .hd { font-size: 13.5px; font-weight: 650; }
+  .lbl { font-size: 11px; fill: #555; }
+  .tiny { font-size: 10px; fill: #888; }
+  .badge { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; }
+  .foot { font-size: 12px; fill: #555; }
+</style>
+<rect width="700" height="276" fill="#fff"/>
+<defs>
+<marker id="aD" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#326355"/></marker>
+<marker id="aM" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#7FA79A"/></marker>
+<marker id="aG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#B4B4B4"/></marker>
+<marker id="aF" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#888"/></marker>
+</defs>
+<text x="8" y="20" class="badge" text-anchor="start" fill="#326355">INNER LOOP</text>
+<text x="92" y="20" class="tiny" text-anchor="start">every timestep, at training time and at deployment</text>
+<rect x="44.0" y="54.0" width="52" height="44" rx="7" fill="#326355" fill-opacity="0.12" stroke="#326355" stroke-width="1.7"/>
+<text x="61.6" y="82" font-size="17" fill="#12332B"><tspan class="v" dy="-0.00" font-size="17">W</tspan><tspan dy="4.42" font-size="11.6">0</tspan></text>
+<rect x="169.0" y="54.0" width="52" height="44" rx="7" fill="#326355" fill-opacity="0.32" stroke="#326355" stroke-width="1.7"/>
+<text x="186.6" y="82" font-size="17" fill="#12332B"><tspan class="v" dy="-0.00" font-size="17">W</tspan><tspan dy="4.42" font-size="11.6">1</tspan></text>
+<rect x="294.0" y="54.0" width="52" height="44" rx="7" fill="#326355" fill-opacity="0.52" stroke="#326355" stroke-width="1.7"/>
+<text x="311.6" y="82" font-size="17" fill="#12332B"><tspan class="v" dy="-0.00" font-size="17">W</tspan><tspan dy="4.42" font-size="11.6">2</tspan></text>
+<rect x="544.0" y="54.0" width="52" height="44" rx="7" fill="#326355" fill-opacity="0.72" stroke="#326355" stroke-width="1.7"/>
+<text x="561.0" y="82" font-size="17" fill="#12332B"><tspan class="v" dy="-0.00" font-size="17">W</tspan><tspan class="v" dy="4.42" font-size="11.6">T</tspan></text>
+<text x="70" y="44" class="tiny" text-anchor="middle" fill="#326355">learned init</text>
+<text x="445" y="82" class="hd" text-anchor="middle" fill="#7FA79A">· · ·</text>
+<path d="M100.0 76 H163.0" stroke="#326355" stroke-width="1.7" marker-end="url(#aD)" fill="none"/>
+<path d="M225.0 76 H288.0" stroke="#326355" stroke-width="1.7" marker-end="url(#aD)" fill="none"/>
+<path d="M350.0 76 H393.0" stroke="#326355" stroke-width="1.7" marker-end="url(#aD)" fill="none"/>
+<path d="M495.0 76 H538.0" stroke="#326355" stroke-width="1.7" marker-end="url(#aD)" fill="none"/>
+<text x="112.4" y="66" font-size="11" fill="#326355"><tspan dy="-0.00" font-size="11">− η ∇</tspan><tspan dy="-0.00" font-size="11">L</tspan><tspan dy="2.86" font-size="7.5">FW</tspan></text>
+<text x="237.4" y="66" font-size="11" fill="#326355"><tspan dy="-0.00" font-size="11">− η ∇</tspan><tspan dy="-0.00" font-size="11">L</tspan><tspan dy="2.86" font-size="7.5">FW</tspan></text>
+<text x="352.4" y="66" font-size="11" fill="#326355"><tspan dy="-0.00" font-size="11">− η ∇</tspan><tspan dy="-0.00" font-size="11">L</tspan><tspan dy="2.86" font-size="7.5">FW</tspan></text>
+<path d="M195 101.0 V135" stroke="#888" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#aF)" fill="none"/>
+<rect x="168" y="137" width="54" height="26" rx="5" fill="#E6F0EC" stroke="#7FA79A"/>
+<text x="189.2" y="155" font-size="13" fill="#326355"><tspan class="v" dy="-0.00" font-size="13">ℓ</tspan><tspan dy="3.38" font-size="8.8">1</tspan></text>
+<path d="M320 101.0 V135" stroke="#888" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#aF)" fill="none"/>
+<rect x="293" y="137" width="54" height="26" rx="5" fill="#E6F0EC" stroke="#7FA79A"/>
+<text x="314.2" y="155" font-size="13" fill="#326355"><tspan class="v" dy="-0.00" font-size="13">ℓ</tspan><tspan dy="3.38" font-size="8.8">2</tspan></text>
+<path d="M570 101.0 V135" stroke="#888" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#aF)" fill="none"/>
+<rect x="543" y="137" width="54" height="26" rx="5" fill="#E6F0EC" stroke="#7FA79A"/>
+<text x="563.7" y="155" font-size="13" fill="#326355"><tspan class="v" dy="-0.00" font-size="13">ℓ</tspan><tspan class="v" dy="3.38" font-size="8.8">T</tspan></text>
+<text x="70" y="155" class="tiny" text-anchor="middle">task loss</text>
+<text x="445" y="155" class="hd" text-anchor="middle" fill="#7FA79A">· · ·</text>
+<path d="M195 163 V178 H570 V163" stroke="#7FA79A" stroke-width="1.2" fill="none"/>
+<path d="M320 163 V178" stroke="#7FA79A" stroke-width="1.2"/>
+<path d="M350 178 V193" stroke="#7FA79A" stroke-width="1.5" marker-end="url(#aM)" fill="none"/>
+<rect x="232" y="196" width="236" height="38" rx="8" fill="#fff" stroke="#326355" stroke-width="1.8"/>
+<text x="293.8" y="221" font-size="15" fill="#222"><tspan class="v" dy="-0.00" font-size="15">L</tspan><tspan dy="3.90" font-size="10.2">fm</tspan><tspan dy="-3.90" font-size="15">  =  (1/</tspan><tspan class="v" dy="-0.00" font-size="15">T</tspan><tspan dy="-0.00" font-size="15">)  </tspan><tspan dy="-0.00" font-size="15">Σ</tspan><tspan dy="-0.00" font-size="15"> </tspan><tspan class="v" dy="-0.00" font-size="15">ℓ</tspan><tspan class="v" dy="3.90" font-size="10.2">t</tspan></text>
+<path d="M232 215 H26 V76 H38.0" stroke="#326355" stroke-width="2" fill="none" stroke-dasharray="6 4" marker-end="url(#aD)"/>
+<text x="32" y="118" class="lbl" text-anchor="start" fill="#326355" font-weight="600">gradient of gradients</text>
+<text x="32" y="134" class="tiny" text-anchor="start">meta-learns the init</text>
+<path d="M468 215 H492" stroke="#326355" stroke-width="2" fill="none" stroke-dasharray="6 4" marker-end="url(#aD)"/>
+<rect x="498" y="199" width="194" height="32" rx="7" fill="#E6F0EC" stroke="#7FA79A"/>
+<text x="519.6" y="220" font-size="11.5" fill="#326355"><tspan dy="-0.00" font-size="11.5">θ</tspan><tspan dy="2.99" font-size="7.8">Q</tspan><tspan dy="-2.99" font-size="11.5">, </tspan><tspan dy="-0.00" font-size="11.5">θ</tspan><tspan dy="2.99" font-size="7.8">K</tspan><tspan dy="-2.99" font-size="11.5">, </tspan><tspan dy="-0.00" font-size="11.5">θ</tspan><tspan dy="2.99" font-size="7.8">V</tspan><tspan dy="-2.99" font-size="11.5"> and all slow weights</tspan></text>
+<text x="232" y="262" class="badge" text-anchor="start" fill="#326355">OUTER LOOP</text>
+<text x="318" y="262" class="tiny" text-anchor="start">once per optimizer step, at training time only</text>
+</svg>

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 272" width="100%" role="img" aria-label="Three shapes of memory: KV cache, matrix state, fast weights">
+<title>Three shapes of memory: KV cache, matrix state, fast weights</title>
+<style>
+  text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .v { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  .hd { font-size: 13.5px; font-weight: 650; }
+  .lbl { font-size: 11px; fill: #555; }
+  .tiny { font-size: 10px; fill: #888; }
+  .badge { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; }
+  .foot { font-size: 12px; fill: #555; }
+</style>
+<rect width="700" height="272" fill="#fff"/>
+<defs>
+<marker id="aD" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#326355"/></marker>
+<marker id="aM" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#7FA79A"/></marker>
+<marker id="aG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#B4B4B4"/></marker>
+<marker id="aF" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.8 L9,5 L0,9.2 z" fill="#888"/></marker>
+</defs>
+<rect x="8" y="4" width="210" height="232" rx="9" fill="none" stroke="#E3E3E3"/>
+<text x="22" y="26" class="hd" text-anchor="start" fill="#6E6E6E">Full attention</text>
+<text x="22" y="42" class="lbl" text-anchor="start">keep every key and value</text>
+<rect x="245" y="4" width="210" height="232" rx="9" fill="none" stroke="#E3E3E3"/>
+<text x="259" y="26" class="hd" text-anchor="start" fill="#7FA79A">Linear attention / GDN</text>
+<text x="259" y="42" class="lbl" text-anchor="start">fold history into a matrix</text>
+<rect x="482" y="4" width="210" height="232" rx="9" fill="none" stroke="#E3E3E3"/>
+<text x="496" y="26" class="hd" text-anchor="start" fill="#326355">Test-Time Training</text>
+<text x="496" y="42" class="lbl" text-anchor="start">fold history into a small net</text>
+<text x="22" y="64" class="tiny" text-anchor="start">cache every K and V, attend over all</text>
+<rect x="42" y="146" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<text x="55.0" y="176" class="tiny" text-anchor="middle">t=1</text>
+<rect x="82" y="146" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<rect x="82" y="130" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<text x="95.0" y="176" class="tiny" text-anchor="middle">t=2</text>
+<rect x="122" y="146" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<rect x="122" y="130" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<rect x="122" y="114" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<text x="135.0" y="176" class="tiny" text-anchor="middle">t=3</text>
+<rect x="162" y="146" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<rect x="162" y="130" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<rect x="162" y="114" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<rect x="162" y="98" width="26" height="13" rx="2.5" fill="#EFEFEF" stroke="#B4B4B4"/>
+<text x="175.0" y="176" class="tiny" text-anchor="middle">t=4</text>
+<line x1="36" y1="165" x2="200" y2="165" stroke="#B4B4B4"/>
+<rect x="22" y="196" width="182" height="20" rx="4" fill="#EFEFEF"/>
+<text x="113.0" y="209.7" class="badge" text-anchor="middle" fill="#5A5A5A">STATE O(T)  ·  STEP O(T)</text>
+<text x="113.0" y="226" class="tiny" text-anchor="middle">latency climbs as the rollout runs</text>
+<text x="259.0" y="64" font-size="11.5" fill="#555"><tspan class="v" dy="-0.00" font-size="11.5">S</tspan><tspan class="v" dy="2.99" font-size="7.8">t</tspan><tspan dy="-2.99" font-size="11.5"> = </tspan><tspan dy="-0.00" font-size="11.5">α</tspan><tspan dy="-0.00" font-size="11.5"> </tspan><tspan class="v" dy="-0.00" font-size="11.5">S</tspan><tspan class="v" dy="2.99" font-size="7.8">t−1</tspan><tspan dy="-2.99" font-size="11.5"> + </tspan><tspan dy="-0.00" font-size="11.5">β</tspan><tspan dy="-0.00" font-size="11.5"> </tspan><tspan class="v" dy="-0.00" font-size="11.5">k v</tspan><tspan dy="-4.83" font-size="7.8">T</tspan></text>
+<rect x="306" y="78" width="22" height="22" fill="#7FA79A" fill-opacity="0.22" stroke="#fff" stroke-width="1.4"/>
+<rect x="328" y="78" width="22" height="22" fill="#7FA79A" fill-opacity="0.39" stroke="#fff" stroke-width="1.4"/>
+<rect x="350" y="78" width="22" height="22" fill="#7FA79A" fill-opacity="0.56" stroke="#fff" stroke-width="1.4"/>
+<rect x="372" y="78" width="22" height="22" fill="#7FA79A" fill-opacity="0.73" stroke="#fff" stroke-width="1.4"/>
+<rect x="306" y="100" width="22" height="22" fill="#7FA79A" fill-opacity="0.56" stroke="#fff" stroke-width="1.4"/>
+<rect x="328" y="100" width="22" height="22" fill="#7FA79A" fill-opacity="0.73" stroke="#fff" stroke-width="1.4"/>
+<rect x="350" y="100" width="22" height="22" fill="#7FA79A" fill-opacity="0.22" stroke="#fff" stroke-width="1.4"/>
+<rect x="372" y="100" width="22" height="22" fill="#7FA79A" fill-opacity="0.39" stroke="#fff" stroke-width="1.4"/>
+<rect x="306" y="122" width="22" height="22" fill="#7FA79A" fill-opacity="0.22" stroke="#fff" stroke-width="1.4"/>
+<rect x="328" y="122" width="22" height="22" fill="#7FA79A" fill-opacity="0.39" stroke="#fff" stroke-width="1.4"/>
+<rect x="350" y="122" width="22" height="22" fill="#7FA79A" fill-opacity="0.56" stroke="#fff" stroke-width="1.4"/>
+<rect x="372" y="122" width="22" height="22" fill="#7FA79A" fill-opacity="0.73" stroke="#fff" stroke-width="1.4"/>
+<rect x="306" y="144" width="22" height="22" fill="#7FA79A" fill-opacity="0.56" stroke="#fff" stroke-width="1.4"/>
+<rect x="328" y="144" width="22" height="22" fill="#7FA79A" fill-opacity="0.73" stroke="#fff" stroke-width="1.4"/>
+<rect x="350" y="144" width="22" height="22" fill="#7FA79A" fill-opacity="0.22" stroke="#fff" stroke-width="1.4"/>
+<rect x="372" y="144" width="22" height="22" fill="#7FA79A" fill-opacity="0.39" stroke="#fff" stroke-width="1.4"/>
+<rect x="306" y="78" width="88" height="88" fill="none" stroke="#7FA79A" stroke-width="1.6"/>
+<path d="M267 122 H297" stroke="#7FA79A" stroke-width="1.4" marker-end="url(#aM)" fill="none"/>
+<path d="M403 122 H441" stroke="#7FA79A" stroke-width="1.4" marker-end="url(#aM)" fill="none"/>
+<text x="350.0" y="182" class="tiny" text-anchor="middle">linear write, no gradient</text>
+<rect x="259" y="196" width="182" height="20" rx="4" fill="#E6F0EC"/>
+<text x="350.0" y="209.7" class="badge" text-anchor="middle" fill="#326355">STATE O(1)  ·  STEP O(1)</text>
+<text x="350.0" y="226" class="tiny" text-anchor="middle">fixed size, one matmul per step</text>
+<text x="496.0" y="64" font-size="11.5" fill="#555"><tspan class="v" dy="-0.00" font-size="11.5">W</tspan><tspan class="v" dy="2.99" font-size="7.8">t</tspan><tspan dy="-2.99" font-size="11.5"> = </tspan><tspan class="v" dy="-0.00" font-size="11.5">W</tspan><tspan class="v" dy="2.99" font-size="7.8">t−1</tspan><tspan dy="-2.99" font-size="11.5"> − </tspan><tspan dy="-0.00" font-size="11.5">η</tspan><tspan dy="-0.00" font-size="11.5"> ∇</tspan><tspan dy="-0.00" font-size="11.5">L</tspan><tspan dy="2.99" font-size="7.8">FW</tspan></text>
+<line x1="534" y1="99.0" x2="587" y2="86.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="99.0" x2="587" y2="111.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="99.0" x2="587" y2="136.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="99.0" x2="587" y2="161.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="124.0" x2="587" y2="86.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="124.0" x2="587" y2="111.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="124.0" x2="587" y2="136.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="124.0" x2="587" y2="161.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="149.0" x2="587" y2="86.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="149.0" x2="587" y2="111.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="149.0" x2="587" y2="136.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="534" y1="149.0" x2="587" y2="161.5" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="86.5" x2="640" y2="99.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="86.5" x2="640" y2="124.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="86.5" x2="640" y2="149.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="111.5" x2="640" y2="99.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="111.5" x2="640" y2="124.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="111.5" x2="640" y2="149.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="136.5" x2="640" y2="99.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="136.5" x2="640" y2="124.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="136.5" x2="640" y2="149.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="161.5" x2="640" y2="99.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="161.5" x2="640" y2="124.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<line x1="587" y1="161.5" x2="640" y2="149.0" stroke="#7FA79A" stroke-opacity="0.4"/>
+<circle cx="534" cy="99.0" r="7" fill="#E6F0EC" stroke="#7FA79A" stroke-width="1.6"/>
+<circle cx="534" cy="124.0" r="7" fill="#E6F0EC" stroke="#7FA79A" stroke-width="1.6"/>
+<circle cx="534" cy="149.0" r="7" fill="#E6F0EC" stroke="#7FA79A" stroke-width="1.6"/>
+<circle cx="587" cy="86.5" r="7" fill="#E6F0EC" stroke="#326355" stroke-width="1.6"/>
+<circle cx="587" cy="111.5" r="7" fill="#E6F0EC" stroke="#326355" stroke-width="1.6"/>
+<circle cx="587" cy="136.5" r="7" fill="#E6F0EC" stroke="#326355" stroke-width="1.6"/>
+<circle cx="587" cy="161.5" r="7" fill="#E6F0EC" stroke="#326355" stroke-width="1.6"/>
+<circle cx="640" cy="99.0" r="7" fill="#E6F0EC" stroke="#7FA79A" stroke-width="1.6"/>
+<circle cx="640" cy="124.0" r="7" fill="#E6F0EC" stroke="#7FA79A" stroke-width="1.6"/>
+<circle cx="640" cy="149.0" r="7" fill="#E6F0EC" stroke="#7FA79A" stroke-width="1.6"/>
+<text x="587.0" y="182" class="tiny" text-anchor="middle">two-layer MLP, GeLU</text>
+<rect x="496" y="196" width="182" height="20" rx="4" fill="#326355"/>
+<text x="587.0" y="209.7" class="badge" text-anchor="middle" fill="#fff">STATE O(1)  ·  STEP O(1)</text>
+<text x="587.0" y="226" class="tiny" text-anchor="middle">one gradient step per timestep</text>
+<line x1="8" y1="252" x2="692" y2="252" stroke="#E3E3E3"/>
+<text x="350" y="267" class="foot" text-anchor="middle">Middle and right carry the same footprint. Only the update rule differs, and that is what decides whether context scales.</text>
+</svg>

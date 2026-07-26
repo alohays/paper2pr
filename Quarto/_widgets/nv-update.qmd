@@ -1,0 +1,427 @@
+``````{=html}
+<div class="rttt-widget" data-widget="nv-update" data-beats="6">
+<div role="region" id="nv-update" aria-label="Animated walkthrough of one TTT update-then-apply step">
+<style>
+  #nv-update {
+    --tg-dark:  #326355;
+    --tg-mid:   #7FA79A;
+    --tg-fill:  #E6F0EC;
+    --ink:      #222;
+    --muted:    #555;
+    --faint:    #888;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    max-width: 940px;
+    margin: 0 auto;
+  }
+  #nv-update .rttt-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; font-weight: 600;
+    color: var(--tg-dark); text-transform: uppercase; margin: 0 0 6px;
+  }
+  #nv-update h3 { font-size: 24px; font-weight: 650; margin: 0 0 10px; color: var(--ink); }
+  #nv-update .rttt-tagline {
+    font-size: 14.5px; line-height: 1.55; color: var(--muted);
+    margin: 0 0 18px; max-width: 800px;
+  }
+  #nv-update .rttt-var { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  #nv-update .rttt-fig { position: relative; max-width: 860px; margin: 0 auto; }
+  #nv-update .rttt-fig > svg { width: 100%; height: auto; display: block; }
+  #nv-update .rttt-caption { min-height: 3.2em; margin: 10px 2px 4px; }
+  #nv-update .rttt-cap-row { display: flex; align-items: baseline; gap: 10px; }
+  #nv-update .rttt-pill {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 4px; padding: 2px 8px;
+    flex: 0 0 auto; transform: translateY(-1px);
+    background: #EFEFEF; color: #666;
+  }
+  #nv-update .rttt-pill.g  { background: var(--tg-fill); color: var(--tg-dark); }
+  #nv-update .rttt-pill.gd { background: var(--tg-dark); color: #fff; }
+  #nv-update .rttt-cap-line { font-size: 14px; color: var(--ink); line-height: 1.5; }
+  #nv-update .rttt-cap-line sub { font-size: 70%; }
+  #nv-update .rttt-controls { display: flex; align-items: center; gap: 8px; margin: 8px 0 10px; }
+  #nv-update .rttt-controls button {
+    font: inherit; font-size: 12.5px; color: #444; background: #fff;
+    border: 1px solid #ddd; border-radius: 6px; padding: 4px 12px; cursor: pointer;
+  }
+  #nv-update .rttt-controls button:hover { background: #f7f7f7; }
+  #nv-update .rttt-controls button:focus-visible,
+  #nv-update .rttt-controls select:focus-visible { outline: 2px solid var(--tg-mid); outline-offset: 1px; }
+  #nv-update .rttt-controls select {
+    font: inherit; font-size: 12.5px; color: #444; background: #fff;
+    border: 1px solid #ddd; border-radius: 6px; padding: 4px 6px; margin-left: auto;
+  }
+  #nv-update .rttt-foot { font-size: 12px; color: var(--faint); margin: 8px 2px 0; line-height: 1.5; }
+</style>
+
+<p class="rttt-eyebrow">RoboTTT &middot; Mechanism</p>
+<h3>One timestep, up close: update then apply</h3>
+<p class="rttt-tagline">
+  Inside a TTT layer the same small network is written to and then read from,
+  once per timestep. Equations 1 and 2 are these five moves.
+</p>
+
+<div class="rttt-fig" role="img"
+     aria-label="A single TTT timestep: keys and values arrive, the fast model predicts, the error is measured, one gradient step updates the fast weights, and the query reads the updated model">
+  <svg id="nv-stage" viewBox="0 0 700 228" preserveAspectRatio="xMidYMid meet"
+       aria-hidden="true" focusable="false"></svg>
+</div>
+
+<div class="rttt-caption">
+  <div class="rttt-cap-row">
+    <span class="rttt-pill" id="nv-pill">arrive</span>
+    <span class="rttt-cap-line" id="nv-cap"></span>
+  </div>
+</div>
+
+<div class="rttt-controls">
+  <button id="nv-play" aria-label="Pause animation">Pause</button>
+  <button id="nv-step" aria-label="Step to next beat">Step</button>
+  <button id="nv-restart" aria-label="Restart animation">Restart</button>
+  <select id="nv-speed" aria-label="Playback speed">
+    <option value="0.5">0.5&times;</option>
+    <option value="1" selected>1&times;</option>
+    <option value="1.5">1.5&times;</option>
+    <option value="2">2&times;</option>
+  </select>
+</div>
+
+<p class="rttt-foot">
+  Built for this talk in the project page's visual language; not part of the paper.
+</p>
+
+</div>
+
+<script>
+/* NV-3 "update then apply" - built for PR-561 in the RoboTTT project-page
+   visual language. Same stepper contract as the lifted widgets:
+   Play / Step / Restart / Speed, IntersectionObserver auto-pause,
+   prefers-reduced-motion honoured. */
+(function () {
+  "use strict";
+
+  var root = document.getElementById("nv-update");
+  if (!root) return;
+  var stage = root.querySelector("#nv-stage");
+  if (!stage || stage.dataset.built) return;
+  stage.dataset.built = "1";
+
+  var NS = "http://www.w3.org/2000/svg";
+  var DARK = "#326355", MID = "#7FA79A", FILL = "#E6F0EC";
+  var INK = "#222", MUTED = "#555", FAINT = "#888";
+
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  /* runs: [text, kind] with kind in "", "v", "sub", "vsub", "sup" */
+  function rich(parent, x, y, runs, size, fill, anchor) {
+    var t = el("text", {
+      x: x, y: y, "font-size": size, fill: fill || INK,
+      "text-anchor": anchor || "start"
+    }, parent);
+    var sub = Math.round(size * 0.68 * 10) / 10, pend = 0;
+    runs.forEach(function (r) {
+      var kind = r[1] || "", dy, sz;
+      if (kind === "sub" || kind === "vsub") {
+        dy = size * 0.26 - pend; sz = sub; pend = size * 0.26;
+      } else if (kind === "sup") {
+        dy = -size * 0.42 - pend; sz = sub; pend = -size * 0.42;
+      } else {
+        dy = -pend; sz = size; pend = 0;
+      }
+      var s = el("tspan", { dy: dy.toFixed(2), "font-size": sz }, t);
+      if (kind === "v" || kind === "vsub") s.setAttribute("class", "rttt-var");
+      s.textContent = r[0];
+    });
+    return t;
+  }
+
+  function chip(parent, x, y, w, h, stroke, fill) {
+    return el("rect", {
+      x: x, y: y, width: w, height: h, rx: 6,
+      fill: fill, stroke: stroke, "stroke-width": 1.6
+    }, parent);
+  }
+
+  /* ---------------------------------------------------------------- defs */
+  var defs = el("defs", {}, stage);
+  [["nvD", DARK], ["nvM", MID], ["nvF", FAINT]].forEach(function (p) {
+    var m = el("marker", {
+      id: p[0], viewBox: "0 0 10 10", refX: 8.5, refY: 5,
+      markerWidth: 6.5, markerHeight: 6.5, orient: "auto-start-reverse"
+    }, defs);
+    el("path", { d: "M0,0.8 L9,5 L0,9.2 z", fill: p[1] }, m);
+  });
+
+  /* --------------------------------------------------------------- build */
+  var g = el("g", {}, stage);
+  var A = {};   /* animated handles */
+
+  /* left column: the three projections of this timestep */
+  el("text", {
+    x: 20, y: 32, "font-size": 10.5, fill: FAINT,
+    "letter-spacing": ".1em", "font-weight": 600
+  }, g).textContent = "STEP t";
+
+  A.kv = el("g", {}, g);
+  chip(A.kv, 20, 48, 78, 26, DARK, FILL);
+  rich(A.kv, 59, 66, [["K", "v"], ["t", "vsub"]], 15, DARK, "middle");
+  chip(A.kv, 20, 84, 78, 26, DARK, FILL);
+  rich(A.kv, 59, 102, [["V", "v"], ["t", "vsub"]], 15, DARK, "middle");
+
+  A.q = el("g", {}, g);
+  chip(A.q, 20, 134, 78, 26, MID, "#fff");
+  rich(A.q, 59, 152, [["Q", "v"], ["t", "vsub"]], 15, DARK, "middle");
+
+  /* middle: the fast model */
+  A.boxFill = el("rect", {
+    x: 168, y: 44, width: 210, height: 124, rx: 10,
+    fill: DARK, "fill-opacity": 0.10
+  }, g);
+  el("rect", {
+    x: 168, y: 44, width: 210, height: 124, rx: 10,
+    fill: "none", stroke: DARK, "stroke-width": 1.9
+  }, g);
+  rich(g, 182, 66, [["f", "v"], ["W", "vsub"]], 15, INK);
+  A.wOld = rich(g, 366, 66, [["W", "v"], ["t−1", "sub"]], 14, DARK, "end");
+  A.wNew = rich(g, 366, 66, [["W", "v"], ["t", "sub"]], 14, "#12332B", "end");
+
+  A.mlp = el("g", {}, g);
+  (function () {
+    var cols = [[218, 3], [273, 4], [328, 3]], cy = 122, pts = [];
+    cols.forEach(function (c) {
+      var n = c[1], span = (n - 1) * 22, arr = [];
+      for (var i = 0; i < n; i++) arr.push([c[0], cy - span / 2 + i * 22]);
+      pts.push(arr);
+    });
+    for (var i = 0; i < pts.length - 1; i++)
+      pts[i].forEach(function (a) {
+        pts[i + 1].forEach(function (b) {
+          el("line", {
+            x1: a[0], y1: a[1], x2: b[0], y2: b[1],
+            stroke: MID, "stroke-opacity": 0.45, "stroke-width": 1
+          }, A.mlp);
+        });
+      });
+    pts.forEach(function (layer, i) {
+      layer.forEach(function (p) {
+        el("circle", {
+          cx: p[0], cy: p[1], r: 6.5, fill: "#fff",
+          stroke: i === 1 ? DARK : MID, "stroke-width": 1.6
+        }, A.mlp);
+      });
+    });
+  })();
+
+  /* K,V into the box */
+  A.arrKV = el("g", {}, g);
+  el("path", {
+    d: "M98 61 H134 V78 M98 97 H134 V78 M134 78 H162",
+    stroke: DARK, "stroke-width": 1.6, fill: "none", "marker-end": "url(#nvD)"
+  }, A.arrKV);
+
+  /* Q into the box */
+  A.arrQ = el("g", {}, g);
+  el("path", {
+    d: "M98 147 H134 V140 H162",
+    stroke: MID, "stroke-width": 1.6, fill: "none", "marker-end": "url(#nvM)"
+  }, A.arrQ);
+
+  /* the gradient step, looping back into the box */
+  A.grad = el("g", {}, g);
+  el("path", {
+    d: "M236 172 C 218 202, 330 202, 310 174",
+    stroke: DARK, "stroke-width": 1.8, fill: "none", "marker-end": "url(#nvD)"
+  }, A.grad);
+  rich(A.grad, 273, 216, [["− η ∇", ""], ["L", ""], ["FW", "sub"]], 12, DARK,
+       "middle");
+
+  /* right column: prediction, target, loss, output */
+  A.vhat = el("g", {}, g);
+  el("path", {
+    d: "M378 61 H418", stroke: DARK, "stroke-width": 1.6, fill: "none",
+    "marker-end": "url(#nvD)"
+  }, A.vhat);
+  chip(A.vhat, 424, 48, 116, 26, DARK, "#fff");
+  rich(A.vhat, 482, 66, [["v", "v"], ["̂", ""], [" = ", ""], ["f", "v"],
+                         ["W", "vsub"], ["(", ""], ["K", "v"], ["t", "vsub"],
+                         [")", ""]], 12.5, INK, "middle");
+
+  A.target = el("g", {}, g);
+  chip(A.target, 424, 88, 116, 26, MID, FILL);
+  rich(A.target, 482, 106, [["V", "v"], ["t", "vsub"], ["  (target)", ""]],
+       12.5, MUTED, "middle");
+  el("path", {
+    d: "M552 55 h8 v52 h-8 M560 81 h10", stroke: FAINT, "stroke-width": 1.2,
+    fill: "none"
+  }, A.target);
+  rich(A.target, 576, 78, [["L", ""], ["FW", "sub"]], 12.5, INK);
+  rich(A.target, 576, 94, [["squared gap", ""]], 10.5, FAINT);
+
+  A.out = el("g", {}, g);
+  el("path", {
+    d: "M378 147 H418", stroke: DARK, "stroke-width": 1.8, fill: "none",
+    "marker-end": "url(#nvD)"
+  }, A.out);
+  chip(A.out, 424, 134, 116, 26, DARK, FILL);
+  rich(A.out, 482, 152, [["O", "v"], ["t", "vsub"], [" = ", ""], ["f", "v"],
+                         ["W", "vsub"], ["t", "vsub"], ["(", ""], ["Q", "v"],
+                         ["t", "vsub"], [")", ""]], 12.5, "#12332B", "middle");
+
+  /* beat 6 badges */
+  function badge(x, y, w, label, bg, fg) {
+    var grp = el("g", {}, g);
+    el("rect", { x: x, y: y, width: w, height: 19, rx: 4, fill: bg }, grp);
+    var t = el("text", {
+      x: x + w / 2, y: y + 13.5, "font-size": 10, "font-weight": 700,
+      "letter-spacing": ".09em", fill: fg, "text-anchor": "middle"
+    }, grp);
+    t.textContent = label;
+    return grp;
+  }
+  A.write = badge(77, 20, 114, "UPDATE = WRITE", DARK, "#fff");
+  A.read = badge(77, 174, 114, "APPLY = READ", FILL, DARK);
+
+  /* --------------------------------------------------------------- beats */
+  var BEATS = [
+    { pill: "arrive", cls: "g", dur: 3.0,
+      cap: "A timestep begins. The key and value for this step arrive: <span class=\"rttt-var\">K</span><sub>t</sub> is what to look up by, <span class=\"rttt-var\">V</span><sub>t</sub> is what should come back." },
+    { pill: "predict", cls: "g", dur: 3.4,
+      cap: "Run <span class=\"rttt-var\">K</span><sub>t</sub> through the fast model as it currently stands. Its guess is <span class=\"rttt-var\">v&#770;</span>." },
+    { pill: "measure", cls: "g", dur: 3.2,
+      cap: "Compare that guess with the real <span class=\"rttt-var\">V</span><sub>t</sub>. The squared gap is the fast-weight loss <span class=\"rttt-var\">L</span><sub>FW</sub> - a self-supervised target, no labels involved." },
+    { pill: "update", cls: "gd", dur: 3.6,
+      cap: "One gradient step on that loss: <span class=\"rttt-var\">W</span><sub>t-1</sub> becomes <span class=\"rttt-var\">W</span><sub>t</sub>. <b>Equation 1.</b> This step runs at training time and at deployment alike." },
+    { pill: "apply", cls: "gd", dur: 3.4,
+      cap: "Now query the <i>updated</i> model with <span class=\"rttt-var\">Q</span><sub>t</sub>. What comes out is the layer's output. <b>Equation 2.</b>" },
+    { pill: "write / read", cls: "gd", dur: 3.2,
+      cap: "So one set of weights plays two roles per step: the update writes this timestep into the parameters, the apply reads the history back out. Nothing is cached." }
+  ];
+
+  var STATE = {
+    kv:     [1, 1, 1, 1, 1, 1],
+    q:      [0.22, 0.22, 0.22, 0.22, 1, 1],
+    mlp:    [0.5, 1, 1, 1, 1, 1],
+    boxOp:  [0.10, 0.10, 0.10, 0.34, 0.34, 0.34],
+    wOld:   [1, 1, 1, 0, 0, 0],
+    wNew:   [0, 0, 0, 1, 1, 1],
+    arrKV:  [0, 1, 1, 1, 0.55, 1],
+    vhat:   [0, 1, 1, 0.9, 0.3, 0.15],
+    target: [0, 0, 1, 0.9, 0.3, 0.15],
+    grad:   [0, 0, 0, 1, 0.55, 0.9],
+    arrQ:   [0, 0, 0, 0, 1, 1],
+    out:    [0, 0, 0, 0, 1, 1],
+    write:  [0, 0, 0, 0, 0, 1],
+    read:   [0, 0, 0, 0, 0, 1]
+  };
+
+  var TOTAL = BEATS.reduce(function (a, b) { return a + b.dur; }, 0);
+  var STARTS = [], acc = 0;
+  BEATS.forEach(function (b) { STARTS.push(acc); acc += b.dur; });
+
+  function easeIO(u) { return u * u * (3 - 2 * u); }
+
+  function at(key, i) {
+    if (i < 0) return key === "boxOp" ? STATE.boxOp[0] : 0;
+    return STATE[key][i];
+  }
+
+  var pillEl = root.querySelector("#nv-pill");
+  var capEl = root.querySelector("#nv-cap");
+  var shown = -1;
+
+  function render(T) {
+    T = ((T % TOTAL) + TOTAL) % TOTAL;
+    var i = 0;
+    while (i < BEATS.length - 1 && T >= STARTS[i + 1]) i++;
+    var u = easeIO(Math.min(1, (T - STARTS[i]) / (BEATS[i].dur * 0.42)));
+
+    function set(key, node, attr) {
+      var v = at(key, i - 1) + (at(key, i) - at(key, i - 1)) * u;
+      node.setAttribute(attr || "opacity", v.toFixed(3));
+    }
+    set("kv", A.kv); set("q", A.q); set("mlp", A.mlp);
+    set("wOld", A.wOld); set("wNew", A.wNew);
+    set("arrKV", A.arrKV); set("arrQ", A.arrQ);
+    set("vhat", A.vhat); set("target", A.target); set("grad", A.grad);
+    set("out", A.out); set("write", A.write); set("read", A.read);
+    set("boxOp", A.boxFill, "fill-opacity");
+
+    if (i !== shown) {
+      shown = i;
+      pillEl.textContent = BEATS[i].pill;
+      pillEl.className = "rttt-pill " + (BEATS[i].cls || "");
+      capEl.innerHTML = BEATS[i].cap;
+    }
+  }
+
+  /* ------------------------------------------------------------ controls */
+  var playing = true, speed = 1, clock = 0, last = null, raf = null, dead = false;
+  var bPlay = root.querySelector("#nv-play");
+  var bStep = root.querySelector("#nv-step");
+  var bRest = root.querySelector("#nv-restart");
+  var sSpd = root.querySelector("#nv-speed");
+
+  function setPlaying(on) {
+    playing = on;
+    bPlay.textContent = on ? "Pause" : "Play";
+    bPlay.setAttribute("aria-label", on ? "Pause animation" : "Play animation");
+  }
+  bPlay.addEventListener("click", function () { setPlaying(!playing); });
+  bStep.addEventListener("click", function () {
+    setPlaying(false);
+    var i = 0;
+    while (i < BEATS.length - 1 && clock >= STARTS[i + 1]) i++;
+    clock = STARTS[(i + 1) % BEATS.length] + 0.001;
+    render(clock);
+  });
+  bRest.addEventListener("click", function () {
+    clock = 0; setPlaying(true); render(0);
+  });
+  sSpd.addEventListener("change", function () { speed = parseFloat(sSpd.value); });
+
+  var reduce = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { clock = STARTS[BEATS.length - 1] + 0.001; setPlaying(false); }
+  render(clock);
+
+  if (window.IntersectionObserver) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting && playing) setPlaying(false);
+      });
+    }, { threshold: 0.05 });
+    io.observe(root);
+  }
+
+  raf = window.requestAnimationFrame(function tick(ts) {
+    if (dead) return;
+    if (last == null) last = ts;
+    var dt = (ts - last) / 1000; last = ts;
+    if (playing) { clock += dt * speed; render(clock); }
+    raf = window.requestAnimationFrame(tick);
+  });
+
+  /* exposed so the deck can drive it from slide events */
+  window.nvUpdateWidget = {
+    beats: BEATS.length,
+    restart: function () { clock = 0; setPlaying(true); render(0); },
+    step: function () { bStep.click(); },
+    pause: function () { setPlaying(false); },
+    goto: function (i) {
+      setPlaying(false);
+      i = Math.max(0, Math.min(BEATS.length - 1, i | 0));
+      clock = STARTS[i] + BEATS[i].dur * 0.5;
+      render(clock);
+    }
+  };
+})();
+
+</script>
+<p class="widget-credit own">Built for this talk; the paper states this in prose only.</p>
+</div>
+``````

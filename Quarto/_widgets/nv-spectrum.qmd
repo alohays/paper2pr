@@ -1,0 +1,124 @@
+``````{=html}
+<div class="rttt-widget" data-widget="nv-spectrum" data-beats="0">
+<div role="region" id="nv-spectrum" aria-label="Comparison of sequence-model memories">
+<style>
+  #nv-spectrum {
+    --tg-dark:  #326355;
+    --tg-mid:   #7FA79A;
+    --tg-fill:  #E6F0EC;
+    --ink:      #222;
+    --muted:    #555;
+    --faint:    #888;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  #nv-spectrum .rttt-var { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  #nv-spectrum table {
+    width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.35;
+    background: #fff;
+  }
+  #nv-spectrum th, #nv-spectrum td {
+    text-align: left; padding: 7px 10px; vertical-align: top;
+    border-bottom: 1px solid #E8E8E8;
+  }
+  #nv-spectrum thead th {
+    font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+    font-weight: 700; color: var(--tg-dark); border-bottom: 1.6px solid var(--tg-mid);
+    padding-bottom: 6px; white-space: nowrap;
+  }
+  #nv-spectrum td.m { color: var(--muted); }
+  #nv-spectrum td.name { font-weight: 620; white-space: nowrap; }
+  #nv-spectrum td.c { text-align: center; white-space: nowrap; }
+  #nv-spectrum tr.hi td {
+    background: var(--tg-fill); border-bottom: 1px solid var(--tg-mid);
+    color: var(--ink);
+  }
+  #nv-spectrum tr.hi td.name { color: var(--tg-dark); font-weight: 700; }
+  #nv-spectrum tr.hi td.m { color: #2F4F45; }
+  #nv-spectrum .no  { color: #A33; font-weight: 650; }
+  #nv-spectrum .yes { color: var(--tg-dark); font-weight: 700; }
+  #nv-spectrum .grow { color: #A33; font-weight: 650; }
+  #nv-spectrum .foot {
+    font-size: 12.5px; color: var(--faint); margin: 12px 2px 0; line-height: 1.55;
+  }
+  #nv-spectrum .foot b { color: var(--muted); font-weight: 650; }
+</style>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sequence model</th>
+      <th>Recurrent state</th>
+      <th>How the state is written</th>
+      <th>Cost / step</th>
+      <th>State is&hellip;</th>
+      <th>Init meta&#8209;learned?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="name">Full attention</td>
+      <td class="m">every key and value</td>
+      <td class="m">append <span class="rttt-var">k</span>, <span class="rttt-var">v</span> to the cache</td>
+      <td class="c"><span class="grow">O(T)</span></td>
+      <td class="m">exact, unbounded</td>
+      <td class="c m">&ndash;</td>
+    </tr>
+    <tr>
+      <td class="name">LSTM</td>
+      <td class="m">a vector</td>
+      <td class="m">gated elementwise write</td>
+      <td class="c">O(1)</td>
+      <td class="m">low capacity</td>
+      <td class="c"><span class="no">no</span></td>
+    </tr>
+    <tr>
+      <td class="name">Linear attention</td>
+      <td class="m">a matrix <span class="rttt-var">S</span></td>
+      <td class="m"><span class="rttt-var">S</span> += <span class="rttt-var">v k</span><sup>T</sup> &nbsp;(pure accumulation)</td>
+      <td class="c">O(1)</td>
+      <td class="m">a linear map</td>
+      <td class="c"><span class="no">no</span></td>
+    </tr>
+    <tr>
+      <td class="name">DeltaNet</td>
+      <td class="m">a matrix <span class="rttt-var">S</span></td>
+      <td class="m">delta rule: <i>overwrite</i> what was stored at <span class="rttt-var">k</span></td>
+      <td class="c">O(1)</td>
+      <td class="m">a linear map</td>
+      <td class="c"><span class="no">no</span></td>
+    </tr>
+    <tr>
+      <td class="name">Gated DeltaNet</td>
+      <td class="m">a matrix <span class="rttt-var">S</span></td>
+      <td class="m">delta rule + a learned forget gate</td>
+      <td class="c">O(1)</td>
+      <td class="m">a linear map</td>
+      <td class="c"><span class="no">no</span></td>
+    </tr>
+    <tr class="hi">
+      <td class="name">Test-Time Training</td>
+      <td class="m">the weights <span class="rttt-var">W</span> of a small MLP</td>
+      <td class="m">one gradient step on &#8214;<span class="rttt-var">f</span><sub><span class="rttt-var">W</span></sub>(<span class="rttt-var">k</span>) &minus; <span class="rttt-var">v</span>&#8214;<sup>2</sup></td>
+      <td class="c">O(1)</td>
+      <td class="m"><b>a nonlinear map</b></td>
+      <td class="c"><span class="yes">yes</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="foot">
+  <b>The two right-hand columns are the whole argument.</b>
+  Give TTT a <i>linear</i> fast model and one SGD step, and its update reduces
+  algebraically to the delta rule: the same family as the row above. What breaks
+  the equivalence is the nonlinearity, and the fact that the outer loss can
+  meta-learn where the state starts.
+</p>
+
+</div>
+<p class="widget-credit own">Built for this talk; the paper states this in prose only.</p>
+</div>
+``````
