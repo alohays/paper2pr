@@ -1,0 +1,208 @@
+/*-- scss:rules --*/
+// PR-561 RoboTTT: deck-local rules on top of clean-academic.scss.
+// Mostly about hosting the lifted project-page widgets without either side
+// stepping on the other.
+
+$tg-dark: #326355;
+$tg-mid:  #7FA79A;
+$tg-fill: #E6F0EC;
+
+// ==============================================================================
+// WIDGET HOSTING
+// ==============================================================================
+// The five lifted widgets and the two built for this talk all scope their own
+// CSS under an #id, so they win on specificity. Anything we want to override
+// here has to say so explicitly.
+
+.reveal .rttt-widget {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: #fff;          // the widgets assume a light ground
+  text-align: left;
+
+  .rttt-fig { max-width: none !important; }
+
+  // cap so the widget's chrome still fits under the slide title
+  .rttt-fig > svg { max-height: 430px !important; }
+
+  // scale the widget's own type up toward deck size (deck root is 30px)
+  .rttt-eyebrow  { font-size: 12px !important; margin-bottom: 2px !important; }
+  h3             { font-size: 25px !important; margin-bottom: 5px !important; }
+  .rttt-tagline  { font-size: 17px !important; margin-bottom: 8px !important;
+                   max-width: none !important; line-height: 1.4 !important; }
+  .rttt-cap-line { font-size: 20px !important; }
+  .rttt-caption  { min-height: 2.3em !important; margin-top: 6px !important;
+                   margin-bottom: 0 !important; }
+  .rttt-pill     { font-size: 12px !important; }
+  .rttt-controls { margin: 4px 0 2px !important;
+                   button, select { font-size: 15px !important; } }
+  .rttt-foot     { font-size: 12px !important; margin-top: 4px !important; }
+  table          { font-size: 17px !important; }
+  .foot          { font-size: 14px !important; }
+}
+
+// on a fragment-driven slide the widget's own buttons are a fallback, not the
+// primary control; keep them present but quiet
+.reveal .rttt-widget .rttt-controls { opacity: 0.55; transition: opacity .15s; }
+.reveal .rttt-widget:hover .rttt-controls { opacity: 1; }
+
+.reveal .widget-credit {
+  font-size: 12px !important;
+  color: #9a9a9a !important;
+  margin: 6px 2px 0 !important;
+  line-height: 1.4 !important;
+  a { color: #9a9a9a !important; text-decoration: none; }
+  &.own { font-style: italic; }
+}
+
+// the empty spans that drive the beats must not take up space
+.reveal .beat-driver { display: none; }
+.reveal .beat-driver.visible { display: none; }
+
+// ==============================================================================
+// FIGURE / SOURCE LABELS
+// ==============================================================================
+.reveal .srcnote {
+  font-size: 14px;
+  color: #8a8a8a;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.reveal .figframe {
+  text-align: center;
+  img { max-height: 430px; width: auto; max-width: 100%; }
+}
+.reveal .figframe.tall img { max-height: 500px; }
+
+// ==============================================================================
+// SMALL TYPOGRAPHIC HELPERS
+// ==============================================================================
+.reveal .lead {
+  font-size: 1.06em;
+  line-height: 1.45;
+}
+
+.reveal .tg      { color: $tg-dark; font-weight: 600; }
+.reveal .dim     { color: #777; }
+.reveal .tight li { margin-bottom: 2px; }
+
+// numeric callout row used on the results slides
+.reveal .statrow {
+  display: flex; gap: 18px; justify-content: center; margin: 10px 0 6px;
+  .stat {
+    flex: 1 1 0; text-align: center; padding: 10px 8px;
+    border: 1px solid #E0E0E0; border-radius: 6px; background: #FAFAFA;
+    .big { display: block; font-size: 34px; font-weight: 700; line-height: 1.1; }
+    .cap { display: block; font-size: 15px; color: #666; margin-top: 3px; }
+  }
+  .stat.win  { border-color: #B9975B; background: #FBF8F2;
+               .big { color: #8A6D3B; } }
+  .stat.base { .big { color: #777; } }
+}
+
+// two-column equation + words layout
+.reveal .eqline {
+  background: #F5F7FB; border-left: 4px solid #012169;
+  padding: 8px 14px; margin: 10px 0; border-radius: 3px;
+}
+.reveal .eqline .eqtag {
+  float: right; font-size: 14px; color: #8895b0; font-weight: 600;
+}
+
+.reveal video { border-radius: 6px; background: #000; }
+
+// dense tables on the results slides
+.reveal table.compactnum {
+  font-size: 20px;
+  th, td { padding: 4px 10px; }
+  td.n { text-align: center; font-variant-numeric: tabular-nums; }
+}
+
+// ==============================================================================
+// VERTICAL RHYTHM
+// ==============================================================================
+// Content slides are a flex column: the heading stays pinned under the top
+// rule, and everything else lives in a .slidebody that fills the remaining
+// height and centres itself in it. Without this a short slide leaves a large
+// dead band along the bottom.
+
+.reveal .slides section.slide.level2 {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.reveal .slides section.slide.level2 > h2 {
+  flex: 0 0 auto;
+}
+
+.reveal .slidebody {
+  flex: 1 1 auto;
+  min-height: 0;                 // let it shrink inside overflow:hidden
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-content: safe center;  // never push content off the top
+
+  > * { flex: 0 0 auto; }
+  > :first-child { margin-top: 0 !important; }
+  > :last-child  { margin-bottom: 0 !important; }
+
+  // an absolutely positioned footnote must not count toward the centring
+  > .footnote { position: absolute; }
+}
+
+// A lone figure gets the full width. Note: align-self must stay `stretch`
+// here. Centring on the cross axis shrink-wraps the flex item, and an SVG
+// sized with width="100%" then resolves against that and collapses.
+.reveal .slidebody > p:only-child {
+  align-self: stretch;
+  text-align: center;
+  img { max-width: 100%; height: auto; }
+}
+
+// A slide that is a few pixels over at full type size: tighten the callout
+// boxes rather than shrinking the text. Used on the TL;DR and motivation
+// slides, where type size carries weight.
+.reveal .tightboxes {
+  .methodbox, .keybox, .highlightbox, .resultbox, .assumptionbox {
+    margin-top: 0.3em !important;
+    margin-bottom: 0.3em !important;
+    padding-top: 0.4em !important;
+    padding-bottom: 0.4em !important;
+  }
+  p { margin-top: 0.25em; margin-bottom: 0.25em; }
+  ul, ol { margin-top: 0.3em; margin-bottom: 0.3em; }
+}
+
+// ==============================================================================
+// SECTION DIVIDERS
+// ==============================================================================
+// Kept as level-2 slides on purpose: level-1 headings make RevealJS build
+// vertical stacks, which breaks left/right clicker navigation.
+// clean-academic styles section dividers off `section.level1` / `h1`. We use
+// level-2 headings instead (level-1 makes RevealJS build vertical stacks), so
+// the same treatment is reproduced here.
+.reveal .slides section.divider {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100% !important;
+  text-align: center !important;
+  padding: 0 !important;
+  background: linear-gradient(135deg, #ffffff 0%, #E8EDF5 100%);
+
+  h2 {
+    color: #012169 !important;
+    font-size: 2.2em !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    text-align: center !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+  }
+  h2::after { content: none !important; }
+}

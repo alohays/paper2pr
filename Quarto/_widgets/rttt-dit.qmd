@@ -1,0 +1,398 @@
+``````{=html}
+<div class="rttt-widget" data-widget="rttt-dit" data-beats="6">
+<div role="region" id="rttt-dit" aria-label="Animated token flow through the diffusion transformer with TTT layer">
+<style>
+  #rttt-dit {
+    --tg-dark:  #326355;
+    --tg-mid:   #7FA79A;
+    --tg-fill:  #E6F0EC;
+    --ink:      #222;
+    --muted:    #555;
+    --faint:    #888;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    max-width: 940px;
+    margin: 0 auto;
+  }
+  #rttt-dit .rttt-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; font-weight: 600;
+    color: var(--tg-dark); text-transform: uppercase; margin: 0 0 6px;
+  }
+  #rttt-dit h3 { font-size: 24px; font-weight: 650; margin: 0 0 10px; color: var(--ink); }
+  #rttt-dit .rttt-tagline {
+    font-size: 14.5px; line-height: 1.55; color: var(--muted);
+    margin: 0 0 18px; max-width: 800px;
+  }
+  #rttt-dit .rttt-var { font-family: Georgia, "Times New Roman", serif; font-style: italic; }
+  #rttt-dit .rttt-fig { position: relative; max-width: 860px; margin: 0 auto; }
+  #rttt-dit .rttt-fig > svg { width: 100%; height: auto; display: block; }
+  #rttt-dit .rttt-caption { min-height: 3.2em; margin: 10px 2px 4px; }
+  #rttt-dit .rttt-cap-row { display: flex; align-items: baseline; gap: 10px; }
+  #rttt-dit .rttt-pill {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; border-radius: 4px; padding: 2px 8px;
+    flex: 0 0 auto; transform: translateY(-1px);
+    background: #EFEFEF; color: #666;
+  }
+  #rttt-dit .rttt-pill.g  { background: var(--tg-fill); color: var(--tg-dark); }
+  #rttt-dit .rttt-pill.gd { background: var(--tg-dark); color: #fff; }
+  #rttt-dit .rttt-cap-line { font-size: 14px; color: var(--ink); line-height: 1.5; }
+  #rttt-dit .rttt-cap-line sub { font-size: 70%; }
+  #rttt-dit .rttt-controls { display: flex; align-items: center; gap: 8px; margin: 8px 0 10px; }
+  #rttt-dit .rttt-controls button {
+    font: inherit; font-size: 12.5px; color: #444; background: #fff;
+    border: 1px solid #ddd; border-radius: 6px; padding: 4px 12px; cursor: pointer;
+  }
+  #rttt-dit .rttt-controls button:hover { background: #f7f7f7; }
+  #rttt-dit .rttt-controls button:focus-visible,
+  #rttt-dit .rttt-controls select:focus-visible { outline: 2px solid var(--tg-mid); outline-offset: 1px; }
+  #rttt-dit .rttt-controls select {
+    font: inherit; font-size: 12.5px; color: #444; background: #fff;
+    border: 1px solid #ddd; border-radius: 6px; padding: 4px 6px; margin-left: auto;
+  }
+  #rttt-dit .rttt-foot { font-size: 12px; color: var(--faint); margin: 8px 2px 0; line-height: 1.5; }
+  @media (max-width: 560px) {
+    #rttt-dit h3 { font-size: 20px; }
+    #rttt-dit .rttt-tagline { font-size: 13.5px; }
+    #rttt-dit .rttt-cap-line { font-size: 13px; }
+    #rttt-dit .rttt-caption { min-height: 4.4em; }
+  }
+</style>
+
+<p class="rttt-eyebrow">RoboTTT &middot; Model</p>
+<h3>Inside the diffusion transformer</h3>
+<p class="rttt-tagline">
+  Follow the tokens through one block: attention runs within each chunk, then the
+  TTT layer reads the flattened sequence in time order.
+</p>
+
+<div class="rttt-fig" role="img"
+     aria-label="Token flow through a diffusion transformer block with an integrated TTT layer">
+  <svg id="rd-stage" viewBox="0 0 700 262" preserveAspectRatio="xMidYMid meet"
+       aria-hidden="true" focusable="false"></svg>
+</div>
+
+<div class="rttt-caption">
+  <div class="rttt-cap-row">
+    <span class="rttt-pill" id="rd-pill">tokens</span>
+    <span class="rttt-cap-line" id="rd-cap"></span>
+  </div>
+</div>
+
+<div class="rttt-controls">
+  <button id="rd-play" aria-label="Pause animation">Pause</button>
+  <button id="rd-step" aria-label="Step to next beat">Step</button>
+  <button id="rd-restart" aria-label="Restart animation">Restart</button>
+  <select id="rd-speed" aria-label="Playback speed">
+    <option value="0.5">0.5&times;</option>
+    <option value="1" selected>1&times;</option>
+    <option value="1.5">1.5&times;</option>
+    <option value="2">2&times;</option>
+  </select>
+</div>
+
+<p class="rttt-foot">
+  A simplified block view; the full architecture appears in the paper.
+</p>
+
+
+</div>
+<script>
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var GREEN = "#326355";
+  var FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var TOK = ["#D9D9D9", "#A6A6A6"];
+  var SHADES = [["#E6F0EC","#9CC4B4"],["#C8E0D6","#8FB7AA"],
+                ["#A4CFC0","#6BA08F"],["#6BB09C","#326355"]];
+  var TS = 16; /* token size */
+
+  /* geometry */
+  var CHX = [120, 280, 440];                 /* top/bottom chunk x origins */
+  var ROWY = 40, ATTY = 94, FLATY = 140, OUTY = 214;
+  function flatX(j) { return 180 + j * 27; }
+  var SCAN_W = 122, XS = flatX(0) - 14, XE = flatX(11) + TS + 14;
+
+  /* schedule (absolute seconds) */
+  var T_DROP = 3.2, T_FLAT = 6.4, P1 = { t0: 9.4, dur: 3.2 }, T_OUT = 13.0;
+
+  var BEATS = [
+    { id:"tokens", pill:"tokens", cls:"", dur:3.0,
+      cap:'Each timestep contributes a chunk of tokens to the diffusion transformer.' },
+    { id:"attn", pill:"attention", cls:"", dur:3.2,
+      cap:'Self and cross attention runs within each chunk, and every chunk is processed in parallel.' },
+    { id:"flatten", pill:"flatten", cls:"", dur:3.0,
+      cap:'The chunk rows are then flattened over time into one long sequence.' },
+    { id:"ttt", pill:"ttt layer", cls:"g", dur:3.6,
+      cap:'The TTT layer reads that sequence in time order: as each chunk passes, the fast weights take one gradient step.' },
+    { id:"output", pill:"output", cls:"", dur:3.0,
+      cap:'Out come the action chunks, one per timestep, ready to execute.' },
+    { id:"recap", pill:"recap", cls:"gd", dur:3.0,
+      cap:'Attention within chunks, TTT across time: the fast weights thread the whole sequence through the transformer.' }
+  ];
+  var TOTAL = 0, STARTS = [];
+  BEATS.forEach(function (b) { STARTS.push(TOTAL); TOTAL += b.dur; });
+
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $("rd-stage"), cap = $("rd-cap"), pill = $("rd-pill"),
+      btnPlay = $("rd-play"), btnStep = $("rd-step"),
+      btnRestart = $("rd-restart"), selSpeed = $("rd-speed");
+
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e);
+    return e;
+  }
+  function txt(s, attrs, parent) { var e = el("text", attrs, parent); e.textContent = s; return e; }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function easeIO(u) { return u * u * (3 - 2 * u); }
+
+  /* ---------- tokens ---------- */
+  /* token i: chunk c = floor(i/4), slot k = i%4; kind: 0 reg, 1 prop, 2/3 action */
+  var tokens = [];
+  function tokenPlan(i) {
+    var c = Math.floor(i / 4), k = i % 4, st = i * 0.045;
+    var top  = [CHX[c] + k * 22, ROWY];
+    var att  = [CHX[c] + k * 22, ATTY];
+    var flat = [flatX(i), FLATY];
+    var out  = [CHX[c] + k * 22, OUTY];
+    return {
+      appear: 0.3 + i * 0.08,
+      moves: [
+        { t0: T_DROP + st, t1: T_DROP + 0.5 + st, from: top,  to: att },
+        { t0: T_FLAT + st, t1: T_FLAT + 0.6 + st, from: att,  to: flat },
+        { t0: T_OUT + st,  t1: T_OUT + 0.7 + st,  from: flat, to: out }
+      ],
+      home: top
+    };
+  }
+  function posAt(plan, T) {
+    var p = plan.home;
+    for (var m = 0; m < plan.moves.length; m++) {
+      var mv = plan.moves[m];
+      if (T >= mv.t1) { p = mv.to; continue; }
+      if (T > mv.t0) {
+        var u = easeIO((T - mv.t0) / (mv.t1 - mv.t0));
+        return [mv.from[0] + (mv.to[0]-mv.from[0])*u,
+                mv.from[1] + (mv.to[1]-mv.from[1])*u];
+      }
+      break;
+    }
+    return p;
+  }
+
+  /* ---------- static scene ---------- */
+  var arcs = [], scanRect, gridRect, gridLines = [], nabla, flatLbl, dotsTop, dotsBot;
+  function subLabel(x, y, main, sub, parent) {
+    txt(main, { x:x, y:y, "font-family":SERIF, "font-style":"italic",
+      "font-size":11.5, fill:"#7F7F7F", "text-anchor":"end" }, parent);
+    txt(sub, { x:x+1, y:y+2.5, "font-family":SERIF, "font-style":"italic",
+      "font-size":7.5, fill:"#7F7F7F" }, parent);
+  }
+  function build() {
+    /* t labels above rows */
+    ["t = 1","t = 1 + H","t = T"].forEach(function (s, c) {
+      txt(s, { x:CHX[c]+33, y:30, "text-anchor":"middle", "font-family":SERIF,
+        "font-style":"italic", "font-size":10.5, fill:"#7F7F7F" }, stage);
+    });
+
+    /* omitted-chunks ellipses */
+    dotsTop = txt("\u22ef", { x:401, y:51, "text-anchor":"middle",
+      "font-family":FONT, "font-size":13, fill:"#AAA" }, stage);
+    dotsBot = txt("\u22ef", { x:401, y:225, "text-anchor":"middle",
+      "font-family":FONT, "font-size":13, fill:"#AAA", opacity:0 }, stage);
+
+    /* block container */
+    el("rect", { x:92, y:78, width:506, height:132, rx:10, fill:"#FBFBFB",
+      stroke:"#E2E2E2", "stroke-width":1.2 }, stage);
+    txt("DiT block", { x:100, y:73, "font-family":FONT,
+      "font-size":9.5, "font-weight":600, fill:"#888" }, stage);
+
+    /* attention bar */
+    el("rect", { x:104, y:86, width:482, height:32, rx:7, fill:"#FFFFFF",
+      stroke:"#555", "stroke-width":1.4 }, stage);
+    txt("Self + Cross Attention", { x:345, y:81, "text-anchor":"middle",
+      "font-family":FONT, "font-size":9.5, "font-weight":600, fill:"#555" }, stage);
+    /* within-chunk attention arcs (below the tokens, inside the bar) */
+    CHX.forEach(function (cx) {
+      [[0,2],[1,3],[0,3]].forEach(function (pr, pi) {
+        var x1 = cx + pr[0]*22 + TS/2, x2 = cx + pr[1]*22 + TS/2;
+        var y0 = ATTY + TS - 1, peak = 113 + pi * 2.4;
+        arcs.push(el("path", { d:"M"+x1+" "+y0+" Q"+((x1+x2)/2)+" "+peak+
+          " "+x2+" "+y0, fill:"none", stroke:"#888",
+          "stroke-width":1, opacity:0 }, stage));
+      });
+    });
+
+    /* flatten label */
+    flatLbl = txt("flatten over time", { x:345, y:127, "text-anchor":"middle",
+      "font-family":SERIF, "font-style":"italic", "font-size":9.5,
+      fill:"#999", opacity:0 }, stage);
+
+    /* scan window */
+    scanRect = el("rect", { x:XS, y:131, width:SCAN_W, height:32, rx:6,
+      fill:GREEN, "fill-opacity":0.06, stroke:GREEN, "stroke-width":1.4,
+      opacity:0 }, stage);
+
+    /* fast weights */
+    gridRect = el("rect", { x:330, y:166, width:34, height:34, fill:SHADES[0][0],
+      stroke:SHADES[0][1], "stroke-width":1.6 }, stage);
+    for (var i = 1; i < 3; i++) {
+      gridLines.push(el("line", { x1:330+34*i/3, y1:166, x2:330+34*i/3, y2:200,
+        stroke:SHADES[0][1], "stroke-width":1.1 }, stage));
+      gridLines.push(el("line", { x1:330, y1:166+34*i/3, x2:364, y2:166+34*i/3,
+        stroke:SHADES[0][1], "stroke-width":1.1 }, stage));
+    }
+    txt("W", { x:372, y:182, "font-family":SERIF, "font-style":"italic",
+      "font-size":12.5, fill:GREEN }, stage);
+    txt("fast weights", { x:372, y:194, "font-family":FONT, "font-size":8.5,
+      fill:GREEN }, stage);
+    txt("TTT layer", { x:322, y:186, "text-anchor":"end", "font-family":FONT,
+      "font-size":9.5, "font-weight":650, fill:GREEN }, stage);
+    nabla = txt("\u2207", { x:347, y:161, "text-anchor":"middle",
+      "font-family":SERIF, "font-size":12, fill:GREEN, opacity:0 }, stage);
+
+    /* output chunk labels */
+    [["A","1"],["A","1+H"],["A","T"]].forEach(function (s, c) {
+      subLabel(CHX[c]+33, 248, s[0], s[1], stage);
+    });
+
+    /* tokens (built last so they ride above everything) */
+    for (var i2 = 0; i2 < 12; i2++) {
+      var r = el("rect", { x:0, y:0, width:TS, height:TS, rx:2, fill:TOK[0],
+        stroke:TOK[1], "stroke-width":1.2, opacity:0 }, stage);
+      tokens.push({ node:r, plan:tokenPlan(i2), j:i2 });
+    }
+  }
+
+  /* ---------- render ---------- */
+  function scanPass(p, T) {
+    if (T < p.t0 || T > p.t0 + p.dur) return null;
+    var u = (T - p.t0) / p.dur;
+    return XS - SCAN_W / 2 + u * (XE - XS);
+  }
+  function render(T) {
+    T = ((T % TOTAL) + TOTAL) % TOTAL;
+    var i = BEATS.length - 1;
+    while (i > 0 && T < STARTS[i]) i--;
+    var b = BEATS[i];
+
+    /* tokens (output move is a dissolve-regroup to avoid crossing the W grid) */
+    tokens.forEach(function (tk) {
+      var mv = tk.plan.moves[2], p, fade = 1;
+      if (T > mv.t0 && T < mv.t1) {
+        var u = (T - mv.t0) / (mv.t1 - mv.t0);
+        p = u < 0.5 ? mv.from : mv.to;
+        fade = u < 0.5 ? 1 - u * 2 : u * 2 - 1;
+      } else p = posAt(tk.plan, T);
+      tk.node.setAttribute("x", p[0].toFixed(1));
+      tk.node.setAttribute("y", p[1].toFixed(1));
+      tk.node.setAttribute("opacity",
+        (clamp01((T - tk.plan.appear) / 0.3) * fade).toFixed(2));
+    });
+
+    /* attention arcs: two pulse rounds during the attn beat */
+    var aw = clamp01((T - (T_DROP + 0.6)) / 0.01);
+    arcs.forEach(function (a, ai) {
+      var o = 0;
+      if (aw > 0 && T < STARTS[2]) {
+        var lt = (T - (T_DROP + 0.6)) / (STARTS[2] - T_DROP - 0.6);
+        o = Math.max(0, Math.sin(Math.PI * ((lt * 2 + ai * 0.11) % 1)));
+      }
+      a.setAttribute("opacity", (0.7 * o).toFixed(2));
+    });
+
+    /* omitted-chunks ellipses follow the rows */
+    dotsTop.setAttribute("opacity", (1 - clamp01((T - T_DROP) / 0.5)).toFixed(2));
+    dotsBot.setAttribute("opacity", clamp01((T - (T_OUT + 0.35)) / 0.3).toFixed(2));
+
+    /* flatten label */
+    flatLbl.setAttribute("opacity",
+      (clamp01((T - (T_FLAT - 0.1)) / 0.4) * (T < P1.t0 + P1.dur ? 1 : 0.45)).toFixed(2));
+
+    /* scan window + W steps */
+    var sx = scanPass(P1, T);
+    if (sx != null) {
+      scanRect.setAttribute("x", sx.toFixed(1));
+      scanRect.setAttribute("opacity", 1);
+    } else scanRect.setAttribute("opacity", 0);
+
+    var steps = 0;
+    [3, 7, 11].forEach(function (j) {
+      var xe = flatX(j) + TS, tc = P1.t0 + P1.dur * (xe - XS) / (XE - XS);
+      if (T > tc) steps++;
+    });
+    if (T < P1.t0) steps = 0;
+    var sh = SHADES[Math.min(steps, 3)];
+    gridRect.setAttribute("fill", sh[0]); gridRect.setAttribute("stroke", sh[1]);
+    gridLines.forEach(function (l) { l.setAttribute("stroke", sh[1]); });
+    var no = 0;
+    [3, 7, 11].forEach(function (j) {
+      var xe = flatX(j) + TS, tc = P1.t0 + P1.dur * (xe - XS) / (XE - XS);
+      var un = (T - tc + 0.3) / 0.5;
+      if (un > 0 && un < 1) no = Math.max(no, Math.sin(Math.PI * un));
+    });
+    nabla.setAttribute("opacity", no.toFixed(2));
+
+    pill.textContent = b.pill;
+    pill.className = "rttt-pill" + (b.cls ? " " + b.cls : "");
+    if (cap.dataset.beat !== String(i)) {
+      cap.innerHTML = b.cap;
+      cap.dataset.beat = String(i);
+    }
+  }
+
+  /* ---------- clock & controls ---------- */
+  var playing = true, speed = 1, T = 0, lastTs = null;
+  function frame(ts) {
+    if (lastTs == null) lastTs = ts;
+    var dt = (ts - lastTs) / 1000; lastTs = ts;
+    if (playing) { T += dt * speed; render(T); }
+    window.requestAnimationFrame(frame);
+  }
+  function setPlaying(p) {
+    playing = p;
+    btnPlay.textContent = p ? "Pause" : "Play";
+    btnPlay.setAttribute("aria-label", p ? "Pause animation" : "Play animation");
+  }
+  btnPlay.addEventListener("click", function () { setPlaying(!playing); });
+  btnStep.addEventListener("click", function () {
+    var Tm = ((T % TOTAL) + TOTAL) % TOTAL, i = BEATS.length - 1;
+    while (i > 0 && Tm < STARTS[i]) i--;
+    T = (i + 1 < BEATS.length) ? STARTS[i + 1] + 0.001 : 0.001;
+    setPlaying(false); render(T);
+  });
+  btnRestart.addEventListener("click", function () {
+    T = 0; lastTs = null; setPlaying(true); render(T);
+  });
+  selSpeed.addEventListener("change", function () {
+    speed = parseFloat(selSpeed.value) || 1;
+  });
+
+  var wasPlaying = null;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) {
+          if (wasPlaying == null) { wasPlaying = playing; setPlaying(false); }
+        } else if (wasPlaying != null) {
+          setPlaying(wasPlaying); wasPlaying = null;
+        }
+      });
+    }, { threshold: 0.05 }).observe(document.getElementById("rttt-dit"));
+  }
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  build();
+  if (reduce) { T = P1.t0 + 1.6; setPlaying(false); }
+  render(T);
+  window.requestAnimationFrame(frame);
+})();
+</script>
+<p class="widget-credit">Animation reproduced verbatim from the official RoboTTT project page (NVIDIA GEAR), <a href="https://research.nvidia.com/labs/gear/robottt/">https://research.nvidia.com/labs/gear/robottt/</a></p>
+</div>
+``````
