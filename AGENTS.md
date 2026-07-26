@@ -109,6 +109,13 @@ chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
 | 90 | PR | Ready for deployment |
 | 95 | Excellence | Aspirational |
 
+**The quality gate re-renders.** `scripts/quality_score.py` runs `quarto render` in
+place to verify a `.qmd` compiles. It renders to the format declared in the front
+matter (never a hardcoded `--to html`, which would turn a revealjs deck into a
+scrolling document) and restores whatever output existed before the check. It does
+*not* leave you with fresh output -- run `quarto render <Name>.qmd` again if you rely
+on `<Name>.html` matching the current source.
+
 ---
 
 ## Skills Quick Reference

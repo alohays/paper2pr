@@ -16,10 +16,42 @@ Usage:
 import sys
 import argparse
 import subprocess
+import hashlib
+import shutil
+import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Dict, List, Tuple
 import re
 import json
+
+try:
+    import yaml
+except ImportError:  # front matter is parsed with regex instead
+    yaml = None
+
+try:
+    import fcntl
+except ImportError:  # non-POSIX: renders are not serialized
+    fcntl = None
+
+# Dot-prefixed so an orphan left by a hard kill is easy to spot and ignore.
+STASH_PREFIX = '.quality-score-stash-'
+
+# Output extension per Quarto format, so the stash covers the file a render
+# actually writes. Unknown formats fall back to html.
+FORMAT_EXTENSIONS = {
+    'revealjs': 'html',
+    'html': 'html',
+    'beamer': 'pdf',
+    'pdf': 'pdf',
+    'pptx': 'pptx',
+    'docx': 'docx',
+    'odt': 'odt',
+    'epub': 'epub',
+    'gfm': 'md',
+    'markdown': 'md',
+}
 
 # ==============================================================================
 # SCORING RUBRIC (from .claude/rules/quality-gates.md)
@@ -93,19 +125,160 @@ class IssueDetector:
     """Detect common issues for quality scoring."""
 
     @staticmethod
+    def _read_front_matter(filepath: Path) -> str:
+        """Return the YAML front matter block of a .qmd, or '' if absent."""
+        text = filepath.read_text(encoding='utf-8-sig')
+        match = re.match(r'^---[ \t]*\n(.*?)\n---[ \t]*(?:\n|$)', text, re.S)
+        return match.group(1) if match else ''
+
+    @staticmethod
+    def _first_format(fmt) -> str:
+        """Pull the format name out of a parsed `format:` value."""
+        if isinstance(fmt, str):
+            return fmt
+        if isinstance(fmt, dict) and fmt:
+            return str(next(iter(fmt)))
+        if isinstance(fmt, list) and fmt:
+            return IssueDetector._first_format(fmt[0])
+        return ''
+
+    @staticmethod
+    def _parse_format_key(yaml_text: str) -> str:
+        """Return the first output format named by a YAML block, or ''."""
+        if yaml is not None:
+            try:
+                data = yaml.safe_load(yaml_text)
+            except yaml.YAMLError:
+                data = None
+            if isinstance(data, dict):
+                return IssueDetector._first_format(data.get('format'))
+
+        # PyYAML unavailable or the block did not parse: match the two
+        # spellings that matter, `format: revealjs` and a nested `format:` block.
+        inline = re.search(r'^format:[ \t]*([A-Za-z0-9_+-]+)[ \t]*$', yaml_text, re.M)
+        if inline:
+            return inline.group(1)
+        nested = re.search(r'^format:[ \t]*\n[ \t]+([A-Za-z0-9_+-]+):', yaml_text, re.M)
+        return nested.group(1) if nested else ''
+
+    @staticmethod
+    def _target_format(filepath: Path) -> str:
+        """Resolve the format a .qmd renders to.
+
+        Front matter wins, then the directory's _quarto.yml, then 'html'.
+        Only the first format is returned -- the check just needs one render.
+        """
+        blocks = [IssueDetector._read_front_matter(filepath)]
+        quarto_yml = filepath.parent / '_quarto.yml'
+        if quarto_yml.exists():
+            blocks.append(quarto_yml.read_text(encoding='utf-8'))
+
+        for block in blocks:
+            fmt = IssueDetector._parse_format_key(block) if block else ''
+            if fmt:
+                return fmt
+        return 'html'
+
+    @staticmethod
+    def _render_artifacts(filepath: Path, target: str) -> List[Path]:
+        """Paths `quarto render` writes next to a .qmd source file."""
+        extension = FORMAT_EXTENSIONS.get(target, 'html')
+        return [
+            filepath.with_suffix(f'.{extension}'),
+            filepath.parent / f'{filepath.stem}_files',
+        ]
+
+    @staticmethod
+    @contextmanager
+    def _render_lock(filepath: Path):
+        """Serialize gate renders of a single .qmd across processes.
+
+        The stash below moves real build artifacts, so two gates scoring the
+        same deck at once would delete each other's output. The lock file lives
+        in the system temp dir to keep the repo clean.
+        """
+        if fcntl is None:
+            yield
+            return
+        key = hashlib.md5(str(filepath.resolve()).encode('utf-8')).hexdigest()
+        lock_path = Path(tempfile.gettempdir()) / f'quality-score-{key}.lock'
+        with open(lock_path, 'w') as handle:
+            fcntl.flock(handle, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(handle, fcntl.LOCK_UN)
+
+    @staticmethod
+    @contextmanager
+    def _preserve_render_outputs(filepath: Path, target: str):
+        """Let a render run in place without disturbing existing output.
+
+        `--output-dir` is not a way out: it relocates the output rather than
+        duplicating it, so it deletes any existing <Name>.html just as surely.
+        (It also errors outright in some directories -- reproducible in
+        Quarto/, rc=0 on a copy of the same files elsewhere, cause unknown.)
+        So stash whatever output already exists, render, then put it back and
+        discard what the check produced. Scoring is a read-only gate; it must
+        not mutate the deck.
+        """
+        artifacts = IssueDetector._render_artifacts(filepath, target)
+        with IssueDetector._render_lock(filepath), \
+                tempfile.TemporaryDirectory(dir=filepath.parent,
+                                            prefix=STASH_PREFIX) as stash:
+            stash_dir = Path(stash)
+            saved = []
+            stashed = False
+            try:
+                for artifact in artifacts:
+                    if artifact.exists():
+                        shutil.move(str(artifact), str(stash_dir / artifact.name))
+                        saved.append(artifact)
+                stashed = True
+                yield
+            finally:
+                try:
+                    # Only safe once the stash completed -- otherwise an original
+                    # may still be sitting at its own path.
+                    if stashed:
+                        for artifact in artifacts:
+                            if artifact.is_dir():
+                                shutil.rmtree(artifact, ignore_errors=True)
+                            elif artifact.exists():
+                                try:
+                                    artifact.unlink()
+                                except OSError:
+                                    pass
+                finally:
+                    for artifact in saved:
+                        # Cleanup can leave a directory behind; move it aside
+                        # rather than nesting the original inside it.
+                        if artifact.exists():
+                            artifact.rename(artifact.with_name(
+                                artifact.name + '.quality-score-orphan'))
+                        shutil.move(str(stash_dir / artifact.name), str(artifact))
+
+    @staticmethod
     def check_quarto_compilation(filepath: Path) -> Tuple[bool, str]:
-        """Check if Quarto file compiles successfully."""
+        """Check if Quarto file compiles successfully.
+
+        Renders to the format the file declares, not a hardcoded 'html':
+        rendering a revealjs deck --to html silently replaces the slides with a
+        scrolling document. Pre-existing output is restored afterwards.
+        """
+        target = IssueDetector._target_format(filepath)
         try:
-            result = subprocess.run(
-                ['quarto', 'render', str(filepath.name), '--to', 'html'],
-                capture_output=True,
-                text=True,
-                timeout=120,
-                cwd=filepath.parent
-            )
-            if result.returncode != 0:
-                return False, result.stderr
-            return True, ""
+            with IssueDetector._preserve_render_outputs(filepath, target):
+                result = subprocess.run(
+                    ['quarto', 'render', str(filepath.name), '--to', target],
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                    cwd=filepath.parent
+                )
+                if result.returncode != 0:
+                    return False, result.stderr
+                return True, ""
         except subprocess.TimeoutExpired:
             return False, "Compilation timeout (>2min)"
         except FileNotFoundError:

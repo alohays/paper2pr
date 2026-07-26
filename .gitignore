@@ -56,6 +56,10 @@ Quarto/*.html
 Quarto/*_files/
 Quarto/Figures
 
+# quality_score.py output stash — orphaned only if the gate is hard-killed mid-render
+.quality-score-stash-*
+*.quality-score-orphan
+
 # Output artifacts — uncomment lines below based on your preference
 # *.rds
 # output/**/*.rds
