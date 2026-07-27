@@ -57,6 +57,14 @@ jobs:
             [ -d "Quarto/${name}_files" ] && cp -r "Quarto/${name}_files" _site/slides/
           done
 
+          # Loose runtime assets sitting next to the qmd. Quarto compiles scss
+          # into <name>_files, but a plain <script src="foo.js"> in the header
+          # is left for us to ship -- robottt-stepper.js drives the animated
+          # widgets and shipped missing once, which killed arrow-key stepping
+          # on the live deck while every slide still rendered fine.
+          find Quarto -maxdepth 1 -type f \( -name '*.js' -o -name '*.css' \) \
+            -exec cp {} _site/slides/ \;
+
           # Quarto fonts (for SUNY and other self-hosted font presentations)
           [ -d "Quarto/fonts" ] && cp -r Quarto/fonts _site/slides/fonts
 
@@ -68,6 +76,9 @@ jobs:
 
           # R scripts (if any)
           cp scripts/R/*.R _site/files/code/ 2>/dev/null || true
+
+      - name: Check every referenced local asset made it into the site
+        run: python3 scripts/check_site_assets.py _site
 
       - uses: actions/configure-pages@v5
 
