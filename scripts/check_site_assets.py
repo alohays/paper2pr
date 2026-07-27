@@ -23,12 +23,13 @@ ALLOW_MISSING = (
 )
 
 # src/href covers <script>, <link>, <img>, <source>. RevealJS also pulls media
-# in through data-background-* attributes, and stylesheets through url(), and a
-# 404 in either is just as invisible as the one this script was written for.
+# in through data-background-* attributes, <video> through poster, and
+# stylesheets through url() -- a 404 in any of them is just as invisible as the
+# one this script was written for.
 REF = re.compile(
-    r'(?:(?:src|href|data-background-image|data-background-video'
+    r'(?:(?:src|href|poster|data-background-image|data-background-video'
     r'|data-background-iframe)\s*=\s*"([^"]+)"'
-    r'|url\(\s*["\']?([^"\')]+)["\']?\s*\))'
+    r'|url\(\s*["\']?([^"\')]+?)["\']?\s*\))'
 )
 
 
@@ -37,29 +38,72 @@ def is_external(url):
             or bool(urlparse(url).scheme) or url.startswith("//"))
 
 
+def resolve(site_root, page_dir, rel):
+    """Where the browser would look, or None if it escapes the site.
+
+    A root-relative `/x` means the site root to a browser, not the filesystem
+    root, and a `../../x` that climbs out of _site would resolve against the CI
+    workspace here and pass while 404ing once deployed. Both have to be handled
+    explicitly or the gate lies in one direction or the other.
+    """
+    base = site_root if rel.startswith("/") else page_dir
+    target = os.path.normpath(os.path.join(base, rel.lstrip("/")))
+    root = os.path.normpath(site_root)
+    if os.path.commonpath([root, target]) != root:
+        return None
+    return target
+
+
+def refs_in(path):
+    """-> the local paths a page or stylesheet asks the browser to fetch."""
+    with open(path, encoding="utf-8", errors="replace") as f:
+        text = f.read()
+    out = []
+    for m in REF.findall(text):
+        for raw in m:
+            raw = raw.strip()
+            if not raw or is_external(raw):
+                continue
+            rel = unquote(raw.split("#")[0].split("?")[0]).strip()
+            if rel:
+                out.append(rel)
+    return sorted(set(out))
+
+
 def check(site_root):
+    """Walk pages, then only the stylesheets those pages actually link.
+
+    Scanning every .css on disk sounds more thorough but is wrong here:
+    <name>_files accumulates hashed bundles from earlier renders, and those
+    orphans carry stale paths nobody ever requests. Following links from the
+    HTML checks what actually ships to a reader.
+    """
+    pages = [os.path.join(d, n)
+             for d, _sub, names in os.walk(site_root)
+             for n in names if n.endswith(".html")]
+
     missing = []
     checked = 0
-    for dirpath, _dirnames, filenames in os.walk(site_root):
-        for name in filenames:
-            if not name.endswith(".html"):
+    queue = [(p, False) for p in pages]
+    scanned = set()
+    while queue:
+        page, _ = queue.pop()
+        if page in scanned:
+            continue
+        scanned.add(page)
+        here = os.path.dirname(page)
+        for rel in refs_in(page):
+            if any(p.match(rel) for p in ALLOW_MISSING):
                 continue
-            page = os.path.join(dirpath, name)
-            with open(page, encoding="utf-8", errors="replace") as f:
-                html = f.read()
-            found = {g for m in REF.findall(html) for g in m if g}
-            for raw in sorted(found):
-                if is_external(raw):
-                    continue
-                rel = unquote(raw.split("#")[0].split("?")[0])
-                if not rel:
-                    continue
-                if any(p.match(rel) for p in ALLOW_MISSING):
-                    continue
-                checked += 1
-                target = os.path.normpath(os.path.join(dirpath, rel))
-                if not os.path.exists(target):
-                    missing.append((os.path.relpath(page, site_root), rel))
+            checked += 1
+            target = resolve(site_root, here, rel)
+            if target is None:
+                missing.append((os.path.relpath(page, site_root),
+                                rel + "   (escapes the site root)"))
+            elif not os.path.exists(target):
+                missing.append((os.path.relpath(page, site_root), rel))
+            elif target.endswith(".css"):
+                queue.append((target, True))
     return checked, missing
 
 
