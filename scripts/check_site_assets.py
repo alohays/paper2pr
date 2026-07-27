@@ -22,7 +22,14 @@ ALLOW_MISSING = (
     re.compile(r"^videos/.*\.mp4$"),
 )
 
-REF = re.compile(r'(?:src|href)\s*=\s*"([^"]+)"')
+# src/href covers <script>, <link>, <img>, <source>. RevealJS also pulls media
+# in through data-background-* attributes, and stylesheets through url(), and a
+# 404 in either is just as invisible as the one this script was written for.
+REF = re.compile(
+    r'(?:(?:src|href|data-background-image|data-background-video'
+    r'|data-background-iframe)\s*=\s*"([^"]+)"'
+    r'|url\(\s*["\']?([^"\')]+)["\']?\s*\))'
+)
 
 
 def is_external(url):
@@ -40,7 +47,8 @@ def check(site_root):
             page = os.path.join(dirpath, name)
             with open(page, encoding="utf-8", errors="replace") as f:
                 html = f.read()
-            for raw in sorted(set(REF.findall(html))):
+            found = {g for m in REF.findall(html) for g in m if g}
+            for raw in sorted(found):
                 if is_external(raw):
                     continue
                 rel = unquote(raw.split("#")[0].split("?")[0])

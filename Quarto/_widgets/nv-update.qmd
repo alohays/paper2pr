@@ -86,9 +86,6 @@
   </select>
 </div>
 
-<p class="rttt-foot">
-  Built for this talk in the project page's visual language; not part of the paper.
-</p>
 
 </div>
 

@@ -15,7 +15,11 @@ format:
     transition: fade
     transition-speed: fast
     fig-align: center
-    html-math-method: katex
+    html-math-method:
+      method: katex
+      # Pinned. The default resolves katex@latest on jsdelivr, so an
+      # upstream release can change a published deck without us touching it.
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
     include-in-header:
       - text: |
           <script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>

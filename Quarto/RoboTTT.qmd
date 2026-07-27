@@ -15,7 +15,11 @@ format:
     transition: fade
     transition-speed: fast
     fig-align: center
-    html-math-method: katex
+    html-math-method:
+      method: katex
+      # Pinned. The default resolves katex@latest on jsdelivr, so an
+      # upstream release can change a published deck without us touching it.
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
     auto-stretch: false
     include-after-body:
       # a standalone .html file here would be swallowed by the repo's
@@ -779,7 +783,7 @@ remote. [10 stages.]{.dim}
 :::: {.columns}
 ::: {.column width="33%"}
 ```{=html}
-<video muted autoplay loop playsinline style="width:100%;border-radius:6px">
+<video muted loop playsinline style="width:100%;border-radius:6px" preload="none" poster="../Figures/RoboTTT/pup-go-car-1x-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/pup-go-car-1x.mp4" type="video/mp4">
 <source src="videos/pup-go-car-1x.mp4" type="video/mp4">
 </video>
@@ -790,7 +794,7 @@ remote. [10 stages.]{.dim}
 
 ::: {.column width="33%"}
 ```{=html}
-<video muted autoplay loop playsinline style="width:100%;border-radius:6px">
+<video muted loop playsinline style="width:100%;border-radius:6px" preload="none" poster="../Figures/RoboTTT/circuit-1x-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/circuit-1x-1.mp4" type="video/mp4">
 <source src="videos/circuit-1x-1.mp4" type="video/mp4">
 </video>
@@ -801,7 +805,7 @@ remote. [10 stages.]{.dim}
 
 ::: {.column width="33%"}
 ```{=html}
-<video muted autoplay loop playsinline style="width:100%;border-radius:6px">
+<video muted loop playsinline style="width:100%;border-radius:6px" preload="none" poster="../Figures/RoboTTT/gear-bot-1x-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/gear-bot-1x-1.mp4" type="video/mp4">
 <source src="videos/gear-bot-1x-1.mp4" type="video/mp4">
 </video>
@@ -1002,7 +1006,7 @@ shortest episode. [Appendix A6.]{.dim}
 ![](../Figures/RoboTTT/one_shot_rollout.jpg){width="100%"}
 
 ```{=html}
-<video muted autoplay loop playsinline style="width:100%;border-radius:6px;margin-top:6px">
+<video muted loop playsinline style="width:100%;border-radius:6px;margin-top:6px" preload="none" poster="../Figures/RoboTTT/circuit-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/circuit-1.mp4" type="video/mp4">
 <source src="videos/circuit-1.mp4" type="video/mp4">
 </video>
@@ -1041,7 +1045,7 @@ It [encoded]{.hi} the video. It could not [use]{.hi} it.
 :::: {.columns}
 ::: {.column width="46%"}
 ```{=html}
-<video muted autoplay loop playsinline style="width:100%;border-radius:6px">
+<video muted loop playsinline style="width:100%;border-radius:6px" preload="none" poster="../Figures/RoboTTT/perturbation-roof-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/perturbation-roof.mp4" type="video/mp4">
 <source src="videos/perturbation-roof.mp4" type="video/mp4">
 </video>
@@ -1082,7 +1086,7 @@ every method has some of this.
 :::: {.columns}
 ::: {.column width="46%"}
 ```{=html}
-<video muted autoplay loop playsinline style="width:100%;border-radius:6px">
+<video muted loop playsinline style="width:100%;border-radius:6px" preload="none" poster="../Figures/RoboTTT/on-the-fly-roof-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/on-the-fly-roof.mp4" type="video/mp4">
 <source src="videos/on-the-fly-roof.mp4" type="video/mp4">
 </video>

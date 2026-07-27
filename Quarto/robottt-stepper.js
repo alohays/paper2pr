@@ -29,6 +29,17 @@
     return widget.querySelector(".rttt-controls button");
   }
 
+  var REDUCED = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* The widgets carry a speed selector. HOLD_MS is expressed in 1x time, so at
+     2x a fixed hold would run a beat and a half and land on the wrong caption. */
+  function holdFor(widget) {
+    var sel = widget.querySelector("select");
+    var speed = sel ? parseFloat(sel.value) : 1;
+    return HOLD_MS / (speed > 0 ? speed : 1);
+  }
+
   /* Put the widget on beat `target`, let it settle, then freeze. */
   function seek(widget, target) {
     var step = widget.querySelector(STEP);
@@ -44,12 +55,52 @@
     for (var i = 0; i < target; i++) step.click();   // Step also pauses
     widget.dataset.beat = target;
 
+    /* Honour the OS setting. The widgets check it at init, but driving them
+       from here would animate anyway, so the check has to be repeated: land on
+       the beat and leave it still. */
+    if (REDUCED) return;
+
     play = playPauseBtn(widget);
     if (play && /play/i.test(play.textContent)) play.click();
     widget._holdTimer = setTimeout(function () {
       var b = playPauseBtn(widget);
       if (b && /pause/i.test(b.textContent)) b.click();
-    }, HOLD_MS);
+    }, holdFor(widget));
+  }
+
+  /* `dataset.beat` is our cache of where we put the widget. Touching the
+     widget's own Step / Restart / Play buttons moves it behind our back, and a
+     stale cache makes the next arrow press seek from the wrong place -- which
+     looks like the animation running backwards. Drop the cache so the next
+     press re-seeks from scratch. */
+  function watchManualControls() {
+    document.querySelectorAll(".rttt-widget").forEach(function (w) {
+      if (w._manualWatched) return;
+      w._manualWatched = true;
+      w.addEventListener("click", function (ev) {
+        if (!ev.target.closest(".rttt-controls")) return;
+        if (w._holdTimer) clearTimeout(w._holdTimer);
+        delete w.dataset.beat;
+      });
+    });
+  }
+
+  /* Only the current slide's video streams. Every clip is preload="none" with
+     a poster, so an un-entered slide costs a few tens of KB instead of pulling
+     the CDN original. Without this the deck fetched every video at once on
+     load. */
+  function handleSlideVideos(section) {
+    document.querySelectorAll(".reveal video").forEach(function (v) {
+      if (section && section.contains(v)) return;
+      v.pause();
+      try { v.currentTime = 0; } catch (e) { /* nothing buffered yet */ }
+    });
+    if (!section) return;
+    section.querySelectorAll("video").forEach(function (v) {
+      v.muted = true;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { /* autoplay policy */ });
+    });
   }
 
   function sync(section) {
@@ -118,7 +169,9 @@
         (ev.fragment && ev.fragment.closest("section")))) ||
         reveal.getCurrentSlide();
       if (!section) return;
+      watchManualControls();
       pauseAllExcept(section);
+      handleSlideVideos(section);
       sync(section);
     }
     /* ?slide=N jumps straight to a slide. Used for headless review captures;

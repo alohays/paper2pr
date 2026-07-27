@@ -1,3 +1,7 @@
 format:
   revealjs:
-    html-math-method: katex
+    html-math-method:
+      method: katex
+      # Pin it. The default is katex@latest on jsdelivr, so an upstream
+      # release can change how a published deck renders without us touching it.
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
