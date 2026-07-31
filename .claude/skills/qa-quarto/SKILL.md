@@ -1,16 +1,23 @@
 ---
 name: qa-quarto
-description: Adversarial Quarto vs Beamer QA. Critic finds issues, fixer applies fixes, loops until APPROVED (max 5 rounds).
+description: "Adversarial Quarto vs Beamer QA for decks imported from a Beamer twin (legacy import path). Critic finds issues, fixer applies fixes, loops until APPROVED (max 5 rounds). Quarto-only decks should use /visual-audit or /slide-excellence instead."
 argument-hint: "[PaperName]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 context: fork
 ---
 
-# Adversarial Quarto vs Beamer QA Workflow
+# Adversarial Quarto vs Beamer QA Workflow (Import QA)
 
 Compare Quarto HTML slides against their Beamer PDF benchmark using an iterative critic/fixer loop.
 
-**Philosophy:** The Beamer PDF is the gold standard. The Quarto translation must be at least as good in every dimension.
+**Scope:** only decks that were imported from a Beamer twin
+(`/translate-to-quarto`). Quarto is the project's source of truth; for
+Quarto-only decks use `/visual-audit` or `/slide-excellence` instead.
+
+**Philosophy:** During an import, the Beamer PDF is the content benchmark.
+The Quarto version must lose nothing — but it follows the Quarto design
+principles, so layout differences that come from the minimalist theme
+(bigger type, centered content, split slides) are expected, not regressions.
 
 ---
 

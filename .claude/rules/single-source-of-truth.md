@@ -7,14 +7,19 @@ paths:
 
 # Single Source of Truth: Enforcement Protocol
 
-**The Beamer `.tex` file is the authoritative source for ALL content.** Everything else is derived.
+**The Quarto `.qmd` file is the authoritative source for ALL content.**
+Presentations are delivered from Quarto; everything else is derived.
+
+> Historical note: before 2026-07 the Beamer `.tex` was authoritative and
+> Quarto was the derived copy. That direction is now reversed. Beamer is an
+> optional export produced only when a PDF deck is explicitly needed.
 
 ## The SSOT Chain
 
 ```
-Beamer .tex (SOURCE OF TRUTH)
-  ├── extract_tikz.tex → PDF → SVGs (derived)
-  ├── Quarto .qmd → HTML (derived)
+Quarto .qmd (SOURCE OF TRUTH)
+  ├── rendered HTML → GitHub Pages (derived, via CI/CD)
+  ├── Beamer .tex (OPTIONAL derived export — only on request)
   ├── Bibliography_base.bib (shared)
   └── Figures/PaperName/*.rds → plotly charts (data source)
 
@@ -22,48 +27,35 @@ NEVER edit derived artifacts independently.
 ALWAYS propagate changes from source → derived.
 ```
 
----
+## Rules
 
-## TikZ Freshness Protocol (MANDATORY)
+1. **Author in Quarto.** New decks start as `.qmd` files following
+   `.claude/rules/slide-design-principles.md`.
+2. **Beamer only on request.** Do not create or update a `.tex` twin unless
+   the user asks for a PDF export. When one exists and the user is
+   maintaining it, propagate Quarto → Beamer (see `beamer-quarto-sync.md`).
+3. **Never edit rendered HTML** — it is a build artifact.
 
-**Before using ANY TikZ SVG in a Quarto slide, verify it matches the current Beamer source.**
+## TikZ Diagrams
 
-### Diff-Check Procedure
+TikZ diagrams (compiled via `Figures/PaperName/extract_tikz.tex` → PDF → SVG)
+remain a legitimate way to produce vector figures for Quarto slides. The
+`extract_tikz.tex` file is the source for those diagrams:
 
-1. Read the TikZ block from the Beamer `.tex` file
-2. Read the corresponding block from `Figures/PaperName/extract_tikz.tex`
-3. Compare EVERY coordinate, label, color, opacity, and anchor point
-4. If ANY difference exists: update `extract_tikz.tex` from Beamer, recompile, regenerate SVGs
-5. Only then reference the SVG in the QMD
+1. Edit the TikZ code in `extract_tikz.tex`
+2. Recompile and regenerate SVGs (`/extract-tikz`)
+3. Reference the SVG in the QMD
 
-### When to Re-Extract
+If a legacy Beamer deck also embeds the same TikZ code, treat
+`extract_tikz.tex` as the diagram source and update the Beamer copy only if
+that deck is still being maintained.
 
-Re-extract ALL TikZ diagrams when:
-- The Beamer `.tex` file has been modified since last extraction
-- Starting a new Quarto translation
-- Any TikZ-related quality issue is reported
-- Before any commit that includes QMD changes
-
----
-
-## Environment Parity (MANDATORY)
-
-**Every Beamer environment MUST have a CSS equivalent before translation begins.**
-
-1. Scan the Beamer source for all custom environments
-2. Check each against your theme SCSS file
-3. If ANY environment is missing from SCSS, create it BEFORE translating
-
----
-
-## Content Fidelity Checklist
+## Content Fidelity Checklist (when a Beamer export exists)
 
 ```
-[ ] Frame count: Beamer frames == Quarto slides
+[ ] Slide count: Quarto slides == Beamer frames
 [ ] Math check: every equation appears with identical notation
-[ ] Citation check: every \cite has a @key in Quarto
-[ ] Environment check: every Beamer box has CSS equivalent
-[ ] Figure check: every \includegraphics has SVG or plotly equivalent
-[ ] No added content: Quarto does not invent slides not in Beamer
-[ ] No dropped content: every Beamer idea appears in Quarto
+[ ] Citation check: every @key in Quarto has a \cite in Beamer
+[ ] Environment check: every Quarto box class has a Beamer environment
+[ ] No drift: neither file has content the other lacks
 ```

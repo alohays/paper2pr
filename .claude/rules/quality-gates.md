@@ -15,6 +15,10 @@ paths:
 
 ## Quarto Slides (.qmd)
 
+Design-principle deductions apply to decks on the main theme
+(`clean-academic.scss`). Legacy decks pinned to `clean-academic-legacy.scss`
+are graded without them. See `.claude/rules/slide-design-principles.md`.
+
 | Severity | Issue | Deduction |
 |----------|-------|-----------|
 | Critical | Compilation failure | -100 |
@@ -22,9 +26,12 @@ paths:
 | Critical | Broken citation | -15 |
 | Critical | Typo in equation | -10 |
 | Major | Text overflow | -5 |
+| Major | `.smaller`/`.smallest` or font-size override used to fit content | -5 per slide |
 | Major | TikZ label overlap | -5 |
+| Major | >5 bullets on a slide (>3 when a figure is present) | -3 per slide |
+| Major | >1 colored box on a slide | -3 per slide |
 | Major | Notation inconsistency | -3 |
-| Minor | Font size reduction | -1 per slide |
+| Minor | List nesting deeper than 1 sub-level | -1 per slide |
 | Minor | Long lines (>100 chars) | -1 (EXCEPT documented math formulas) |
 
 ## R Scripts (.R)

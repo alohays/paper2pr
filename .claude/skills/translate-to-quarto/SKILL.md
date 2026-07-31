@@ -1,16 +1,25 @@
 ---
 name: translate-to-quarto
-description: Translate Beamer LaTeX to Quarto RevealJS. Multi-phase workflow with TikZ extraction and QA.
+description: "LEGACY IMPORT — translate an existing Beamer LaTeX deck to Quarto RevealJS. New decks are authored directly in Quarto (see /create-lecture); use this only to import a pre-existing .tex deck."
 argument-hint: "[PaperName.tex]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 context: fork
 ---
 
-# Beamer → Quarto Translation Workflow
+# Beamer → Quarto Translation Workflow (Legacy Import)
 
-Full translation of a Beamer LaTeX lecture to Quarto RevealJS HTML slides.
+Full translation of a pre-existing Beamer LaTeX deck to Quarto RevealJS HTML
+slides.
 
-**CRITICAL: The Beamer .tex file is the SINGLE SOURCE OF TRUTH.**
+**Since 2026-07 Quarto is the project's source of truth** — new decks are
+authored directly in Quarto and this skill is only for importing legacy
+Beamer decks. During the translation itself the Beamer .tex is treated as
+the content source; after import, the QMD becomes authoritative and the
+.tex is marked legacy/frozen in `.claude/rules/beamer-quarto-sync.md`.
+
+Imported decks join the new design system, so target the main theme and
+`.claude/rules/slide-design-principles.md` — split any frame that exceeds
+the density budget rather than shrinking type.
 
 ---
 
@@ -62,8 +71,10 @@ Run `/proofread` on the QMD file.
 ## Phase 9: Final Verification & Deployment
 Render, open in browser, verify all elements.
 
-## Phase 10: Beamer Source Sync
-Apply any corrections back to Beamer source.
+## Phase 10: Handoff of Authority
+Mark the .tex as legacy/frozen in the deck inventory
+(`.claude/rules/beamer-quarto-sync.md`). From here on the QMD is the
+source of truth; corrections found during QA go into the QMD only.
 
 ## Phase 11: Documentation
 Update CLAUDE.md, session log, create PR.

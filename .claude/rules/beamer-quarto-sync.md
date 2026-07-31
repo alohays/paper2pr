@@ -4,55 +4,52 @@ paths:
   - "Quarto/**/*.qmd"
 ---
 
-# Beamer → Quarto Auto-Sync Rule (MANDATORY)
+# Quarto ↔ Beamer Sync Rule
 
-**Every edit to a Beamer `.tex` file MUST be immediately synced to the corresponding Quarto `.qmd` file — automatically, without the user asking.** This is non-negotiable.
+**Quarto `.qmd` is the source of truth. Beamer `.tex` is an optional export.**
+(Direction reversed 2026-07; presentations are delivered from Quarto.)
 
 ## The Rule
 
-When you modify a Beamer `.tex` file, you MUST also apply the equivalent change to the Quarto `.qmd` (if it exists) **in the same task**, before reporting completion. Do NOT wait to be asked. Do NOT just "flag the drift." Just do it.
+- Editing a Quarto `.qmd`: no Beamer sync is required. Only propagate
+  Quarto → Beamer when the user is actively maintaining a PDF export of that
+  deck and asks for it (or has asked for it as a standing request).
+- Editing a Beamer `.tex` (rare, legacy maintenance): you MUST apply the
+  equivalent change to the Quarto `.qmd` in the same task — the Quarto copy
+  is what gets presented and deployed, and it must never lag.
 
-## Lecture Mapping
+## Deck Inventory
 
-| Paper | Beamer | Quarto |
-|-------|--------|--------|
-| DreamZero | `Slides/DreamZero.tex` | `Quarto/DreamZero.qmd` |
-<!-- Add rows as you create new paper reviews -->
+| Paper | Quarto (source) | Beamer (status) |
+|-------|-----------------|-----------------|
+| DreamZero | `Quarto/DreamZero.qmd` | `Slides/DreamZero.tex` (legacy, frozen) |
+| DreamDojo | `Quarto/DreamDojo.qmd` | `Slides/DreamDojo.tex` (legacy, frozen) |
+| RoboTTT | `Quarto/RoboTTT.qmd` | none |
+| SUNY Career Sprint | `Quarto/SUNY.qmd` | none (career talk) |
+<!-- Add rows as you create new decks. New decks default to "none". -->
 
-## Workflow (Every Time)
+## Quarto → LaTeX Translation Reference (for exports)
 
-1. Apply fix to Beamer `.tex`
-2. **Immediately** apply equivalent fix to Quarto `.qmd`
-3. Compile Beamer (3-pass xelatex)
-4. Render Quarto (`./scripts/sync_to_docs.sh PaperName`)
-5. Only then report task complete
-
-## LaTeX → Quarto Translation Reference
-
-| Beamer | Quarto Equivalent |
+| Quarto | Beamer Equivalent |
 | ------ | ----------------- |
-| `\muted{text}` | `[text]{style="color: #525252;"}` |
-| `\key{text}` | `[**text**]{.primarygold}` |
-| `\textcolor{positive}{text}` | `[text]{.positive}` |
-| `\textcolor{negative}{text}` | `[text]{.negative}` |
-| `\item text` | `- text` |
-| `\begin{highlightbox}` | `::: {.highlightbox}` |
-| `\begin{methodbox}` | `::: {.methodbox}` |
+| `[text]{style="color: #525252;"}` | `\muted{text}` |
+| `[**text**]{.primarygold}` | `\key{text}` |
+| `[text]{.positive}` | `\textcolor{positive}{text}` |
+| `[text]{.negative}` | `\textcolor{negative}{text}` |
+| `- text` | `\item text` |
+| `::: {.highlightbox}` | `\begin{highlightbox}` |
+| `::: {.methodbox}` | `\begin{methodbox}` |
 | `$formula$` | `$formula$` (same) |
 
 ## When NOT to Sync
 
-- Quarto file doesn't exist yet
-- Change is LaTeX-only infrastructure (preamble, theme files)
-- Explicitly told to skip Quarto sync
+- The deck has no Beamer twin (the default for new decks)
+- The Beamer twin is marked legacy/frozen in the inventory above
+- Change is Quarto-only infrastructure (theme SCSS, YAML, widgets)
 
 ## Enforcement
 
-Before marking any Beamer editing task as complete, check:
+Before marking a Beamer editing task complete, check:
 > "Did I also update the Quarto file?"
 
 If the answer is no and a Quarto file exists, **you are NOT done.**
-
-## When to Update This Table
-
-After creating a new Quarto translation, add it to the mapping table above.

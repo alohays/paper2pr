@@ -1,6 +1,6 @@
 ---
 name: visual-audit
-description: Perform adversarial visual audit of Quarto or Beamer slides checking for overflow, font consistency, box fatigue, and layout issues.
+description: Perform adversarial visual audit of Quarto or Beamer slides checking for density violations, overflow, font consistency, box fatigue, and centering issues.
 argument-hint: "[QMD or TEX filename]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
@@ -13,26 +13,36 @@ Perform a thorough visual layout audit of a slide deck.
 
 1. **Read the slide file** specified in `$ARGUMENTS`
 
-2. **For Quarto (.qmd) files:**
+2. **Determine the ruleset:**
+   - Main theme (`clean-academic.scss`) → full design-principles audit
+     (`.claude/rules/slide-design-principles.md`)
+   - Legacy theme (`clean-academic-legacy.scss`) or SUNY's own theme →
+     legacy audit only (overflow, parity, spacing); skip density limits
+
+3. **For Quarto (.qmd) files:**
    - Render with `quarto render Quarto/$ARGUMENTS`
    - Open in browser to inspect each slide
 
-3. **For Beamer (.tex) files:**
+4. **For Beamer (.tex) files:**
    - Compile and check for overfull hbox warnings
 
-4. **Audit every slide for:**
+5. **Audit every slide for:**
 
+   **DENSITY (new decks):** >1 core message, >5 bullets (>3 with a figure),
+   >1 colored box, nesting >1 sub-level
    **OVERFLOW:** Content exceeding slide boundaries
-   **FONT CONSISTENCY:** Inline font-size overrides, inconsistent sizes
+   **FONT CONSISTENCY:** Any `.smaller`/`.smallest` in a new deck (forbidden),
+   inline font-size overrides below 1em
+   **CENTERING (new decks):** ad-hoc positioning fighting the theme,
+   unjustified `{.top-align}` or `{.left}`, missing `auto-stretch: false`
    **BOX FATIGUE:** 2+ colored boxes on one slide, wrong box types
-   **SPACING:** Missing negative margins, missing fig-align
    **LAYOUT:** Missing transitions, missing framing sentences, semantic colors
 
-5. **Produce a report** organized by slide with severity and recommendations
+6. **Produce a report** organized by slide with severity and recommendations
 
-6. **Follow the spacing-first principle:**
-   1. Reduce vertical spacing with negative margins
-   2. Consolidate lists
-   3. Move displayed equations inline
+7. **Follow the split-first principle:**
+   1. Split into two slides (the default answer)
+   2. Cut content (move to speaker notes)
+   3. Two columns (only for genuinely side-by-side pairings)
    4. Reduce image/SVG size
-   5. Last resort: font size reduction (never below 0.85em)
+   5. Font size reduction — never recommend it
