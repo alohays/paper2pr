@@ -11,7 +11,8 @@
 
 - **Plan first** -- enter plan mode before non-trivial tasks; save plans to `quality_reports/plans/`
 - **Verify after** -- compile/render and confirm output at the end of every task
-- **Single source of truth** -- Beamer `.tex` is authoritative; Quarto `.qmd` derives from it
+- **Single source of truth** -- Quarto `.qmd` is authoritative; Beamer `.tex` is an optional export (reversed 2026-07 — presentations are delivered from Quarto)
+- **Design principles** -- extreme minimalism, big type, centered content; see `.claude/rules/slide-design-principles.md` (mandatory for new decks)
 - **Quality gates** -- nothing ships below 80/100
 - **[LEARN] tags** -- when corrected, save `[LEARN:category] wrong → right` to MEMORY.md
 - **English only** -- all content committed to git must be in English (see Language Policy below)
@@ -43,7 +44,17 @@ Speaker notes (`::: {.notes}` blocks in QMD) are **local-only** and never reach 
 
 ## Project Scope
 
-Ongoing multi-paper review project. Each paper in `target-papers/` gets its own slide deck (30-40 slides, ~30 min). Target audience: basic deep learning knowledge. Presentations cover main ideas, technical details, and personal insights. When official code is available, include implementation-level observations.
+Ongoing multi-paper review project. Each paper in `target-papers/` gets its own slide deck (40-60 slides, ~30 min — minimalist slides mean more, lighter slides; splitting beats packing). Target audience: basic deep learning knowledge. Presentations cover main ideas, technical details, and personal insights. When official code is available, include implementation-level observations.
+
+## Slide Design Principles (new decks)
+
+Full spec: `.claude/rules/slide-design-principles.md`. The short version:
+
+1. **Extreme minimalism** -- one idea per slide; ≤5 bullets (≤3 with a figure), ≤1 colored box; split rather than pack
+2. **Big type** -- 40px root font; `.smaller`/`.smallest` and font-size overrides are forbidden in new decks (quality gate deducts -5 each)
+3. **Filled frame** -- title pinned at top, content centered vertically and horizontally (theme does this; escape hatches: `{.top-align}`, `{.left}`, `{.statement}`)
+
+New decks use `clean-academic.scss` with `center: false` and `auto-stretch: false`. Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to `clean-academic-legacy.scss` and exempt from the new rules.
 
 ## Folder Structure
 
@@ -73,14 +84,14 @@ paper2pr/
 ## Commands
 
 ```bash
-# LaTeX (3-pass, XeLaTeX only)
+# Quarto render (primary workflow — decks are authored and delivered in Quarto)
+cd Quarto && quarto render PaperName.qmd
+
+# LaTeX (optional Beamer export only; 3-pass, XeLaTeX)
 cd Slides && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
 BIBINPUTS=..:$BIBINPUTS bibtex PaperName
 TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
 TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
-
-# Quarto render
-cd Quarto && quarto render PaperName.qmd
 
 # Deploy to GitHub Pages (automatic via CI/CD on push to main)
 git push  # GitHub Actions renders Quarto, strips notes, deploys
@@ -120,9 +131,9 @@ chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
 | `/proofread [file]` | Grammar/typo/overflow review |
 | `/visual-audit [file]` | Slide layout audit |
 | `/pedagogy-review [file]` | Narrative, notation, pacing review |
-| `/qa-quarto [PaperName]` | Adversarial Quarto vs Beamer QA |
+| `/qa-quarto [PaperName]` | Adversarial Quarto vs Beamer QA (imported decks only) |
 | `/slide-excellence [file]` | Combined multi-agent review |
-| `/translate-to-quarto [file]` | Beamer → Quarto translation |
+| `/translate-to-quarto [file]` | Beamer → Quarto import (legacy decks only) |
 | `/validate-bib` | Cross-reference citations |
 | `/devils-advocate` | Challenge slide design |
 | `/create-lecture` | Full lecture creation |
@@ -230,8 +241,11 @@ clawteam launch research-paper          # Launch a pre-configured research team
 
 ## Current Project State
 
-| Paper | Beamer | Quarto | Key Content |
-|-------|--------|--------|-------------|
-| DreamZero | `DreamZero.tex` | `DreamZero.qmd` | NVIDIA — World Action Models as Zero-shot Policies |
-| DreamDojo | `DreamDojo.tex` | `DreamDojo.qmd` | NVIDIA — A Generalist Robot World Model from Large-Scale Human Videos |
-| SUNY Career Sprint | N/A (career talk) | `SUNY.qmd` | Career Roadmap for AI Researchers: From Papers to Products (April 4, 2026) |
+| Paper | Quarto (source) | Theme | Beamer | Key Content |
+|-------|-----------------|-------|--------|-------------|
+| DreamZero | `DreamZero.qmd` | legacy | `DreamZero.tex` (frozen) | NVIDIA — World Action Models as Zero-shot Policies |
+| DreamDojo | `DreamDojo.qmd` | legacy | `DreamDojo.tex` (frozen) | NVIDIA — A Generalist Robot World Model from Large-Scale Human Videos |
+| RoboTTT | `RoboTTT.qmd` | legacy | none | NVIDIA GEAR — Context Scaling for Robot Policies (PR-561) |
+| SUNY Career Sprint | `SUNY.qmd` | own (suny-career) | none (career talk) | Career Roadmap for AI Researchers: From Papers to Products (April 4, 2026) |
+
+New decks: main theme (`clean-academic.scss`) + `.claude/rules/slide-design-principles.md`. "legacy" = pinned to `clean-academic-legacy.scss`, exempt from the design principles.
