@@ -5,7 +5,7 @@ author: "Yunsung Lee"
 institute: "WoRV / MaumAI &nbsp;&middot;&nbsp; PR-561"
 format:
   revealjs:
-    theme: [default, clean-academic.scss, robottt.scss]
+    theme: [default, clean-academic-legacy.scss, robottt.scss]
     slide-number: true
     chalkboard: false
     preview-links: auto
