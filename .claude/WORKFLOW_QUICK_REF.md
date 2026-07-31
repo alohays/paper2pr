@@ -52,7 +52,7 @@ Repeat
 
 - **Figures:** Per-paper subdirectories in `Figures/PaperName/`, PDF for Beamer + SVG for Quarto
 - **Color palette:** Primary blue `#012169`, Gold `#B9975B`, Yellow `#F2A900`
-- **Source of truth:** Beamer `.tex` is authoritative; Quarto `.qmd` derives from it
+- **Source of truth:** Quarto `.qmd` is authoritative; Beamer `.tex` is an optional export (reversed 2026-07)
 - **Notation:** Follow the original paper's notation exactly
 - **Attribution:** All figures from papers must be attributed
 

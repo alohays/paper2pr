@@ -37,12 +37,16 @@ The report will be at: `quality_reports/[Lecture]_qa_critic_round[N].md`
 
 ### Common Fix Patterns
 
-**Overflow fixes (spacing-first priority):**
-1. Add negative margins: `style="margin-top: -0.3em;"`
-2. Consolidate lists (remove blank lines between bullets)
-3. Move displayed equations inline
+**Overflow fixes (split-first priority — see `.claude/rules/slide-design-principles.md`):**
+1. Split the slide into two (the default answer)
+2. Cut content — move the detail into speaker notes
+3. Two columns, only when the pairing is genuinely side-by-side
 4. Reduce image width
-5. Last resort: font reduction (never below 0.85em)
+5. ~~Font reduction / negative margins~~ — never. `.smaller`, `.smallest` and
+   sub-1em `font-size` each cost -5 in the quality gate on main-theme decks.
+
+Legacy decks pinned to `clean-academic-legacy.scss` are exempt from the
+density budget, but must still not gain new font-shrink markup.
 
 **Content parity fixes:**
 - Add missing equations (copy verbatim from Beamer)
