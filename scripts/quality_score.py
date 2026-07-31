@@ -35,13 +35,17 @@ QUARTO_RUBRIC = {
     },
     'major': {
         'text_overflow': {'points': 5},
+        'font_shrink_to_fit': {'points': 5},   # .smaller/.smallest or font-size override (new decks)
         'tikz_label_overlap': {'points': 5},
+        'bullet_density': {'points': 3},       # >5 bullets, or >3 with a figure (new decks)
+        'box_density': {'points': 3},          # >1 colored box per slide (new decks)
         'notation_inconsistency': {'points': 3},
         'missing_box_separation': {'points': 2},
         'color_contrast_low': {'points': 3},
     },
     'minor': {
-        'font_size_reduction': {'points': 1},
+        'deep_nesting': {'points': 1},         # list nesting >1 sub-level (new decks)
+        'font_size_reduction': {'points': 1},  # legacy decks only
         'missing_forward_ref': {'points': 1},
         'missing_framing_sentence': {'points': 1},
     }
@@ -198,6 +202,153 @@ class IssueDetector:
 
         broken = cited_keys - bib_keys
         return list(broken)
+
+    @staticmethod
+    def get_deck_theme(content: str) -> str:
+        """Classify a QMD deck by its theme line.
+
+        Returns 'main' for decks on clean-academic.scss (the minimalist
+        design principles apply) and 'legacy' for decks pinned to
+        clean-academic-legacy.scss or a deck-specific theme (SUNY).
+        """
+        m = re.search(r'^\s*theme:\s*\[([^\]]*)\]', content, re.MULTILINE)
+        themes = m.group(1) if m else ''
+        if 'clean-academic-legacy' in themes:
+            return 'legacy'
+        if 'clean-academic.scss' in themes:
+            return 'main'
+        return 'legacy'  # custom per-deck themes are graded without design checks
+
+    @staticmethod
+    def iter_slides(content: str):
+        """Yield (title, start_line, visible_lines) per level-2 slide.
+
+        visible_lines excludes YAML frontmatter, fenced code blocks, and
+        speaker-notes divs (they are not on-screen content). Each element
+        is (line_number, text).
+        """
+        lines = content.split('\n')
+        slides = []
+        title, start, buf = None, None, []
+        in_yaml = False
+        in_fence = False
+        notes_depth = 0   # >0 while inside a ::: {.notes} div
+        div_stack = []    # True for each open div that is a notes div
+
+        for i, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if i == 1 and stripped == '---':
+                in_yaml = True
+                continue
+            if in_yaml:
+                if stripped == '---':
+                    in_yaml = False
+                continue
+            if stripped.startswith('```'):
+                in_fence = not in_fence
+                continue
+            if in_fence:
+                continue
+            if stripped.startswith(':::'):
+                bare = stripped.rstrip(':').strip()
+                if bare:  # opener like ::: {.notes} or :::: {.columns}
+                    is_notes = '.notes' in stripped
+                    div_stack.append(is_notes)
+                    if is_notes:
+                        notes_depth += 1
+                elif div_stack:  # bare ::: closer
+                    if div_stack.pop():
+                        notes_depth -= 1
+                # keep non-notes openers visible so box classes are counted
+                if notes_depth == 0 and start is not None and bare:
+                    buf.append((i, line))
+                continue
+            if notes_depth > 0:
+                continue
+            m = re.match(r'^##\s+(.*)$|^##\s*$', line)
+            if m is not None and not line.startswith('###'):
+                if start is not None:
+                    slides.append((title, start, buf))
+                title = (m.group(1) or '(untitled)').strip() or '(untitled)'
+                # include the heading line itself: slide-level classes like
+                # {.smaller} live on it
+                start, buf = i, [(i, line)]
+                continue
+            if start is not None:
+                buf.append((i, line))
+
+        if start is not None:
+            slides.append((title, start, buf))
+        return slides
+
+    # Colored boxes the density rule counts (≤1 per slide)
+    BOX_CLASSES = ('keybox', 'methodbox', 'highlightbox', 'resultbox',
+                   'assumptionbox', 'quotebox')
+
+    @staticmethod
+    def check_design_density(content: str) -> List[Dict]:
+        """Density-budget violations per slide (main-theme decks only).
+
+        Enforces .claude/rules/slide-design-principles.md:
+          bullets ≤5 (≤3 when a figure shares the slide), colored boxes ≤1,
+          list nesting ≤1 sub-level.
+        Slides containing a panel-tabset are skipped for bullet counts —
+        tabs display one panel at a time.
+        """
+        violations = []
+        for title, start, vis in IssueDetector.iter_slides(content):
+            text = '\n'.join(t for _, t in vis)
+            top_bullets = sum(
+                1 for _, t in vis if re.match(r'^[-*+] |^\d+[.)] ', t)
+            )
+            deep_nested = sum(
+                1 for _, t in vis if re.match(r'^\s{4,}[-*+] |^\s{4,}\d+[.)] ', t)
+            )
+            has_figure = bool(re.search(r'!\[|<img|\{\{<\s*video', text))
+            has_tabset = '.panel-tabset' in text
+            boxes = sum(
+                len(re.findall(r'\{[^}]*\.%s\b' % cls, text))
+                for cls in IssueDetector.BOX_CLASSES
+            )
+
+            limit = 3 if has_figure else 5
+            if not has_tabset and top_bullets > limit:
+                violations.append({
+                    'type': 'bullet_density', 'slide': title, 'line': start,
+                    'detail': f'{top_bullets} bullets (limit {limit}'
+                              f'{" with figure" if has_figure else ""}) — split the slide',
+                })
+            if boxes > 1:
+                violations.append({
+                    'type': 'box_density', 'slide': title, 'line': start,
+                    'detail': f'{boxes} colored boxes (limit 1)',
+                })
+            if deep_nested:
+                violations.append({
+                    'type': 'deep_nesting', 'slide': title, 'line': start,
+                    'detail': f'{deep_nested} bullets nested deeper than 1 sub-level',
+                })
+        return violations
+
+    @staticmethod
+    def check_font_shrink(content: str) -> List[Dict]:
+        """Slides using .smaller/.smallest or sub-1em font-size overrides.
+
+        Forbidden in main-theme decks: if content does not fit at full
+        size, the slide must be split.
+        """
+        hits = []
+        for title, start, vis in IssueDetector.iter_slides(content):
+            text = '\n'.join(t for _, t in vis)
+            count = len(re.findall(r'\.small(?:er|est)\b', text))
+            count += len(re.findall(
+                r'font-size:\s*0?\.\d+em|font-size:\s*[0-6]\d?%', text))
+            if count:
+                hits.append({
+                    'type': 'font_shrink_to_fit', 'slide': title, 'line': start,
+                    'detail': f'{count} font-shrink usage(s) — split the slide instead',
+                })
+        return hits
 
     @staticmethod
     def check_plotly_widgets(html_file: Path, expected: int = None) -> Tuple[int, bool]:
@@ -427,6 +578,29 @@ class QualityScorer:
                 'points': 15
             })
             self.score -= 15
+
+        # Design-principle checks — main-theme decks only. Legacy decks
+        # (clean-academic-legacy.scss, per-deck themes) predate the
+        # minimalist principles and are graded without them.
+        if IssueDetector.get_deck_theme(content) == 'main':
+            for v in IssueDetector.check_font_shrink(content):
+                self.issues['major'].append({
+                    'type': v['type'],
+                    'description': f"Font shrink on slide \"{v['slide']}\" (line {v['line']})",
+                    'details': v['detail'],
+                    'points': 5
+                })
+                self.score -= 5
+            for v in IssueDetector.check_design_density(content):
+                severity = 'minor' if v['type'] == 'deep_nesting' else 'major'
+                points = 1 if v['type'] == 'deep_nesting' else 3
+                self.issues[severity].append({
+                    'type': v['type'],
+                    'description': f"{v['type'].replace('_', ' ')} on slide \"{v['slide']}\" (line {v['line']})",
+                    'details': v['detail'],
+                    'points': points
+                })
+                self.score -= points
 
         # Check plotly widgets (if HTML exists)
         html_file = self.filepath.parent.parent / 'docs' / 'slides' / self.filepath.with_suffix('.html').name
