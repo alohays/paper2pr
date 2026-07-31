@@ -98,10 +98,20 @@ class IssueDetector:
 
     @staticmethod
     def check_quarto_compilation(filepath: Path) -> Tuple[bool, str]:
-        """Check if Quarto file compiles successfully."""
+        """Check if Quarto file compiles successfully.
+
+        `--to html` used to be passed here. It overrode the deck's declared
+        `format: revealjs` and wrote the result to the same <Name>.html, so
+        merely *scoring* a deck replaced the rendered presentation with a
+        plain scrolling page -- and one that strip_speaker_notes.py cannot
+        clean, because notes come out as <div class="notes"> instead of
+        <aside class="notes">. sync_to_docs.sh then copied that into the
+        local preview. Letting the deck's own format win keeps the render a
+        refresh instead of a destruction.
+        """
         try:
             result = subprocess.run(
-                ['quarto', 'render', str(filepath.name), '--to', 'html'],
+                ['quarto', 'render', str(filepath.name)],
                 capture_output=True,
                 text=True,
                 timeout=120,
