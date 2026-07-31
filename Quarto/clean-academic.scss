@@ -1,6 +1,19 @@
 /*-- scss:defaults --*/
 
 // ==============================================================================
+// DESIGN PRINCIPLES (this theme enforces them — see .claude/rules/slide-design-principles.md)
+//
+//   1. Extreme minimalism — one idea per slide; never pack content in.
+//   2. Big type — 40px root; NEVER shrink text to make content fit.
+//      (.smaller/.smallest exist only for legacy decks — do not use in new slides.)
+//   3. Filled frame — title fixed at top, main content centered vertically
+//      AND horizontally in the remaining space.
+//
+// Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to
+// clean-academic-legacy.scss and are NOT affected by this file.
+// ==============================================================================
+
+// ==============================================================================
 // INSTITUTIONAL COLORS
 // ==============================================================================
 // Customize these for your university/institution:
@@ -27,11 +40,13 @@ $presentation-heading-font: "Source Sans Pro", "Helvetica Neue", sans-serif !def
 
 $presentation-heading-color: $primary-blue !default;
 $presentation-heading-font-weight: 600;
-$presentation-font-size-root: 30px;
+// Big type is the default. 40px root ≈ 1/18 of a 720px-tall slide — do not
+// lower this to fit more content; split the slide instead.
+$presentation-font-size-root: 40px;
 
 // Spacing
 $presentation-block-margin: 12px;
-$presentation-h2-font-size: 1.4em;
+$presentation-h2-font-size: 1.25em;
 
 // Colors
 $body-color: $jet !default;
@@ -42,7 +57,7 @@ $selection-bg: $primary-gold !default;
 /*-- scss:rules --*/
 
 // ==============================================================================
-// SLIDE LAYOUT
+// SLIDE LAYOUT — title fixed at top, content centered in the remaining space
 // ==============================================================================
 
 .reveal .slides {
@@ -54,10 +69,53 @@ $selection-bg: $primary-gold !default;
 }
 
 .reveal .slides section {
-  padding: 0.5em 0.6em;
+  padding: 0.5em 0.7em;
   top: 0 !important;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+// Content slides (## headings) become a flex column filling the full slide.
+// The h2 stays pinned at the top; the auto margins on the first element after
+// the h2 and on the last in-flow element split the leftover space equally,
+// which centers the content block vertically without moving the title.
+.reveal .slides section.level2 {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+}
+
+.reveal .slides section.level2 > h2 {
+  flex: 0 0 auto;
+}
+
+.reveal .slides section.level2 > h2 + * {
+  margin-top: auto;
+}
+
+// Last *in-flow* child gets the bottom auto margin. Absolutely-positioned
+// footnotes and speaker-note asides must not swallow it.
+.reveal .slides section.level2 > *:nth-last-child(1 of :not(.footnote, aside, .notes)) {
+  margin-bottom: auto;
+}
+
+// Untitled slides (no h2): center everything.
+.reveal .slides section.level2:not(:has(> h2)) {
+  justify-content: center;
+}
+
+// "## " with no text yields an empty h2 — hide it (and its gold underline);
+// the sibling margin rules still center the content below it.
+.reveal .slides section.level2 > h2:empty {
+  display: none;
+}
+
+// Escape hatch for intentionally top-anchored slides (e.g., full-bleed
+// figures): ## Title {.top-align}
+.reveal .slides section.level2.top-align > h2 + *,
+.reveal .slides section.level2.top-align > *:nth-last-child(1 of :not(.footnote, aside, .notes)) {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .reveal a {
@@ -75,12 +133,58 @@ $selection-bg: $primary-gold !default;
   font-weight: 300;
   margin-top: 0.4em;
   margin-bottom: 0.35em;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .reveal p + ul,
 .reveal p + ol {
   margin-top: 0.3em;
+}
+
+// ==============================================================================
+// HORIZONTAL CENTERING — element-wise defaults
+//
+//   fully centered (text too): figures, tables, math, videos, standalone
+//     paragraphs, sub-headings
+//   block-centered, text left:  bullet lists, colored boxes
+//   opt-out: wrap in a div with class .left
+// ==============================================================================
+
+// Standalone statements read as centered declarations.
+.reveal .slides section > p,
+.reveal .slides section > h3,
+.reveal .slides section > h4 {
+  text-align: center;
+}
+
+// Bullet lists: the block hugs its content and sits centered; text stays
+// left-aligned for readability.
+.reveal .slides section > ul,
+.reveal .slides section > ol,
+.reveal .column > ul,
+.reveal .column > ol {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.left {
+  text-align: left !important;
+
+  > ul, > ol {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// Big centered claim for statement slides.
+.statement {
+  font-size: 1.25em;
+  font-weight: 600;
+  text-align: center;
+  color: $primary-blue;
 }
 
 // ==============================================================================
@@ -98,7 +202,7 @@ $selection-bg: $primary-gold !default;
 
   .title {
     color: $primary-blue;
-    font-size: 2.2em;
+    font-size: 2em;
     font-weight: 700;
     margin-bottom: 0.2em;
     letter-spacing: -0.02em;
@@ -110,14 +214,14 @@ $selection-bg: $primary-gold !default;
     margin-top: 0.3em;
     margin-bottom: 1.2em;
     font-weight: 400;
-    font-size: 1.3em;
+    font-size: 1.15em;
   }
 
   .author,
   .quarto-title-author-name {
     color: $primary-blue;
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-top: 0.5em;
   }
 
@@ -127,7 +231,7 @@ $selection-bg: $primary-gold !default;
     font-style: italic;
     color: #555;
     margin-top: 0.4em;
-    font-size: 1.05em;
+    font-size: 0.95em;
   }
 
   .date,
@@ -135,7 +239,7 @@ $selection-bg: $primary-gold !default;
     color: $primary-gold;
     font-weight: 600;
     margin-top: 1.5em;
-    font-size: 1.1em;
+    font-size: 1em;
   }
 
   .quarto-title-authors {
@@ -156,7 +260,7 @@ $selection-bg: $primary-gold !default;
 .reveal h2 {
   color: $primary-blue;
   font-weight: 600;
-  font-size: 1.5em;
+  font-size: 1.25em;
   margin-bottom: 0.4em;
   padding-bottom: 0.2em;
   border-bottom: none;
@@ -243,8 +347,8 @@ $selection-bg: $primary-gold !default;
   margin-bottom: 0.4em;
 
   li {
-    margin-bottom: 0.3em;
-    line-height: 1.35;
+    margin-bottom: 0.4em;
+    line-height: 1.4;
     padding-left: 0.3em;
   }
 
@@ -282,8 +386,8 @@ $selection-bg: $primary-gold !default;
   margin-bottom: 0.4em;
 
   li {
-    margin-bottom: 0.3em;
-    line-height: 1.35;
+    margin-bottom: 0.4em;
+    line-height: 1.4;
     padding-left: 0.3em;
   }
 
@@ -294,54 +398,73 @@ $selection-bg: $primary-gold !default;
 }
 
 // ==============================================================================
-// BOX ENVIRONMENTS
+// BOX ENVIRONMENTS — at most ONE colored box per slide.
+// Boxes hug their content and sit centered; text inside stays left-aligned.
 // ==============================================================================
 
+%box-base {
+  width: fit-content;
+  max-width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
 .keybox {
+  @extend %box-base;
   background-color: rgba($primary-gold, 0.12);
   border-left: 4px solid $primary-gold;
   padding: 0.45em 0.9em;
-  margin: 0.6em 0;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
   border-radius: 6px;
-  line-height: 1.35;
+  line-height: 1.4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .highlightbox {
+  @extend %box-base;
   background-color: rgba($highlight-yellow, 0.08);
   border-left: 4px solid $highlight-yellow;
   padding: 0.45em 0.9em;
-  margin: 0.6em 0;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
   border-radius: 6px;
-  line-height: 1.35;
+  line-height: 1.4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .methodbox {
+  @extend %box-base;
   background-color: rgba($primary-blue, 0.06);
   border-left: 4px solid $primary-blue;
   padding: 0.45em 0.9em;
-  margin: 0.6em 0;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
   border-radius: 6px;
-  line-height: 1.35;
+  line-height: 1.4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .assumptionbox {
+  @extend %box-base;
   background-color: rgba($primary-gold, 0.08);
   border: 2px solid $primary-gold;
   padding: 0.45em 0.9em;
-  margin: 0.6em 0;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
   border-radius: 6px;
-  line-height: 1.35;
+  line-height: 1.4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .quotebox {
+  @extend %box-base;
   background-color: rgba($primary-gold, 0.08);
   border-left: 4px solid darken($primary-gold, 10%);
   padding: 0.45em 0.9em 0.45em 1.6em;
-  margin: 0.6em 0;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
   border-radius: 0 6px 6px 0;
   font-style: italic;
   line-height: 1.5;
@@ -360,29 +483,35 @@ $selection-bg: $primary-gold !default;
 }
 
 .resultbox {
+  @extend %box-base;
   background-color: rgba($primary-gold, 0.15);
   border: 2px solid $primary-gold;
   padding: 0.45em 0.9em;
-  margin: 0.6em 0;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
   border-radius: 6px;
-  line-height: 1.35;
+  line-height: 1.4;
   box-shadow: 1px -1px 4px rgba(0, 0, 0, 0.12);
 }
 
 .eqbox {
+  @extend %box-base;
   background-color: rgba($primary-blue, 0.04);
   padding: 0.35em 0.9em;
-  margin: 0.4em 0;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
   border-radius: 0;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .softbox {
+  @extend %box-base;
   background-color: rgba($primary-gold, 0.06);
   padding: 0.35em 0.9em;
-  margin: 0.4em 0;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
   border-radius: 0;
-  line-height: 1.35;
+  line-height: 1.4;
   font-style: italic;
 }
 
@@ -402,7 +531,7 @@ $selection-bg: $primary-gold !default;
 .reveal table th,
 .reveal table td {
   border: none;
-  padding: .23em;
+  padding: .23em .5em;
   text-align: left;
   font-weight: 300;
 }
@@ -434,7 +563,7 @@ $selection-bg: $primary-gold !default;
 .reveal section h1 {
   color: $primary-blue;
   text-align: center;
-  font-size: 2.2em;
+  font-size: 1.8em;
   font-weight: 700;
   letter-spacing: -0.02em;
   border-bottom: none;
@@ -465,6 +594,10 @@ $selection-bg: $primary-gold !default;
 
 // ==============================================================================
 // FONT SIZE UTILITIES
+//
+// .smaller / .smallest are LEGACY escape hatches kept only so old decks keep
+// rendering. Do NOT use them in new slides — if content does not fit at full
+// size, split the slide or cut content. The quality gate penalizes them.
 // ==============================================================================
 
 .bigger { font-size: 115%; }
@@ -565,7 +698,10 @@ $selection-bg: $primary-gold !default;
 .footnote {
   position: absolute;
   bottom: 1em;
-  font-size: 70%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.5em;
   color: #7f7f7f;
 }
 
@@ -576,14 +712,31 @@ $selection-bg: $primary-gold !default;
 // IMAGES AND FIGURES
 // ==============================================================================
 
-.reveal figure { margin: 0.8em 0; }
-.reveal img { max-height: 70vh; }
+.reveal figure { margin: 0.6em auto; text-align: center; }
+
+// object-fit keeps the picture undistorted when an author width and the
+// max-height cap disagree about the box's aspect ratio.
+.reveal img { max-height: 60vh; object-fit: contain; }
+
+// An image sharing a slide with a list must leave room for the text.
+.reveal .slides section.level2:has(ul, ol) img { max-height: 45vh; }
+
+// Quarto's auto-stretch (r-stretch) computes its height against reveal's
+// top-anchored layout, which our centered flex layout breaks (it resolves to
+// 0px and the image vanishes). Neutralize it; new decks should also set
+// auto-stretch: false in their YAML.
+.reveal .slides section.level2 img.r-stretch {
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 60vh;
+  margin: 0.4em auto;
+}
 .reveal p:has(> img) { text-align: center; }
 .reveal figcaption {
-  font-size: 0.75em;
+  font-size: 0.6em;
   color: #666;
   font-style: italic;
-  margin-top: 0.5em;
+  margin-top: 0.4em;
   text-align: center;
 }
 
@@ -592,15 +745,21 @@ $selection-bg: $primary-gold !default;
 // ==============================================================================
 
 .reveal .math { font-size: 0.95em; max-width: 100%; }
-.reveal .math.display { margin: 0.8em 0; max-width: 100%; overflow-x: auto; }
+.reveal .math.display {
+  margin: 0.6em auto;
+  max-width: 100%;
+  overflow-x: auto;
+  text-align: center;
+}
 
 // ==============================================================================
-// COLUMNS
+// COLUMNS — columns center their contents vertically against each other,
+// so mixed text + figure layouts feel balanced.
 // ==============================================================================
 
 .reveal .columns {
   display: flex !important;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.2em;
   max-width: 100%;
   box-sizing: border-box;
@@ -620,13 +779,16 @@ $selection-bg: $primary-gold !default;
 .reveal blockquote {
   background-color: rgba($primary-blue, 0.04);
   border-left: 4px solid $primary-gold;
-  padding: 1em 1.5em;
-  margin: 1em 0;
+  padding: 0.8em 1.2em;
+  margin: 0.8em auto;
+  width: fit-content;
+  max-width: 92%;
   border-radius: 0 6px 6px 0;
   font-style: italic;
   color: #444;
+  text-align: left;
 
-  p { margin: 0.3em 0; }
+  p { margin: 0.3em 0; text-align: left; }
 }
 
 .reveal code {
@@ -640,7 +802,7 @@ $selection-bg: $primary-gold !default;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
   border-radius: 6px;
-  padding: 1em;
+  padding: 0.8em;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -654,7 +816,7 @@ $selection-bg: $primary-gold !default;
   column-count: 1;
 
   div { margin-bottom: 0.5em; break-inside: avoid; }
-  p { margin: 0.2em 0; }
+  p { margin: 0.2em 0; text-align: left; }
 }
 
 .references { font-size: 0.5em; line-height: 1.4; }
@@ -697,7 +859,7 @@ $selection-bg: $primary-gold !default;
 
 .reveal video {
   max-width: 100%;
-  max-height: 65vh;
+  max-height: 60vh;
   margin: 0.4em auto;
   display: block;
   border-radius: 6px;
@@ -705,7 +867,7 @@ $selection-bg: $primary-gold !default;
 }
 
 .video-label {
-  font-size: 0.7em;
+  font-size: 0.6em;
   text-align: center;
   color: #666;
   margin-top: 0.2em;
