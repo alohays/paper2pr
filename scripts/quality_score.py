@@ -205,14 +205,40 @@ class IssueDetector:
 
     @staticmethod
     def get_deck_theme(content: str) -> str:
-        """Classify a QMD deck by its theme line.
+        """Classify a QMD deck by its theme setting.
 
         Returns 'main' for decks on clean-academic.scss (the minimalist
         design principles apply) and 'legacy' for decks pinned to
         clean-academic-legacy.scss or a deck-specific theme (SUNY).
+
+        YAML spells a theme three legal ways and Quarto itself round-trips
+        the inline form into the block form, so matching only `theme: [...]`
+        made the gate fail *open*: the same violations scored 89 written one
+        way and 100 written another.
+
+            theme: [default, clean-academic.scss]
+            theme: clean-academic.scss
+            theme:
+              - default
+              - clean-academic.scss
         """
-        m = re.search(r'^\s*theme:\s*\[([^\]]*)\]', content, re.MULTILINE)
-        themes = m.group(1) if m else ''
+        m = re.search(r'^([ \t]*)theme:[ \t]*(.*)$', content, re.MULTILINE)
+        if not m:
+            return 'legacy'
+        indent, inline = m.group(1), m.group(2).strip()
+        themes = inline
+        if not inline or inline.startswith('#'):
+            # Block form: take the following lines indented deeper than the key.
+            rest = content[m.end():].split('\n')[1:]
+            block = []
+            for line in rest:
+                if not line.strip():
+                    continue
+                lead = len(line) - len(line.lstrip())
+                if lead <= len(indent):
+                    break
+                block.append(line.strip().lstrip('-').strip())
+            themes = ' '.join(block)
         if 'clean-academic-legacy' in themes:
             return 'legacy'
         if 'clean-academic.scss' in themes:
