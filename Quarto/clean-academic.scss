@@ -714,12 +714,31 @@ $selection-bg: $primary-gold !default;
 
 .reveal figure { margin: 0.6em auto; text-align: center; }
 
+// Image height caps.
+//
+// These were written in `vh` and that was wrong. RevealJS lays the deck out on
+// a fixed $slide-height canvas and then `transform: scale()`s the whole thing,
+// so `vh` resolves against the *browser window* and is then read inside the
+// scaled coordinate space. The cap therefore tracked the window, not the
+// slide: `45vh` was 45% of the slide in a 720px-tall window, 56% at 900px and
+// 68% at 1080px, and the surplus was silently eaten by `overflow: hidden`
+// (measured: a figure+3-bullet slide lost its last bullet at 900px and two at
+// 1080px). It only ever looked right at exactly 720px, which is the one size
+// the theme was verified at.
+//
+// Absolute px against the canvas is deterministic. Percentages are not usable
+// here: an <img> inside Quarto's <p>/<figure> wrapper has no ancestor with a
+// definite height, so `max-height: 45%` computes to `none`.
+$slide-height: 720px;
+$img-cap: $slide-height * 0.6;       // 432px -- image is the whole slide
+$img-cap-with-list: $slide-height * 0.45;  // 324px -- text needs the rest
+
 // object-fit keeps the picture undistorted when an author width and the
 // max-height cap disagree about the box's aspect ratio.
-.reveal img { max-height: 60vh; object-fit: contain; }
+.reveal img { max-height: $img-cap; object-fit: contain; }
 
 // An image sharing a slide with a list must leave room for the text.
-.reveal .slides section.level2:has(ul, ol) img { max-height: 45vh; }
+.reveal .slides section.level2:has(ul, ol) img { max-height: $img-cap-with-list; }
 
 // Quarto's auto-stretch (r-stretch) computes its height against reveal's
 // top-anchored layout, which our centered flex layout breaks (it resolves to
@@ -728,7 +747,7 @@ $selection-bg: $primary-gold !default;
 .reveal .slides section.level2 img.r-stretch {
   height: auto !important;
   max-width: 100% !important;
-  max-height: 60vh;
+  max-height: $img-cap;
   margin: 0.4em auto;
 }
 .reveal p:has(> img) { text-align: center; }
@@ -859,7 +878,7 @@ $selection-bg: $primary-gold !default;
 
 .reveal video {
   max-width: 100%;
-  max-height: 60vh;
+  max-height: $img-cap;
   margin: 0.4em auto;
   display: block;
   border-radius: 6px;
