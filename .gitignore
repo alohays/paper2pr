@@ -70,7 +70,17 @@ target-papers/*
 # SUNY video assets (hosted via GitHub Release, not tracked in git)
 Figures/SUNY/videos/
 
-# Speaker notes backup (local only, not shared)
+# RoboTTT task videos. The deck lists NVIDIA's CDN first and these as a local
+# fallback; check_site_assets.py allows videos/*.mp4 to be missing from _site
+# for exactly that reason. Untracked *and* unignored meant one `git add -A`
+# would have committed 3.3 MB of them.
+Quarto/videos/
+
+# Speaker notes backup (local only, not shared).
+# NOTE: gitignore does not apply to files already tracked. .speaker-notes/
+# SUNY.json was committed to the public repo before this rule could bite and
+# had to be removed with `git rm --cached`. If a backup ever shows up in
+# `git status` as staged, it is being tracked -- untrack it, do not commit it.
 .speaker-notes/
 
 # Presenter scripts (local only — the deployed deck must not carry them)
