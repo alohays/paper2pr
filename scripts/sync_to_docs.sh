@@ -35,10 +35,15 @@ else
     # Render all QMD files (skip backups)
     echo "Rendering all Quarto files..."
     for qmd in *.qmd; do
-        if [ -f "$qmd" ] && [[ ! "$qmd" == *"_backup"* ]]; then
-            echo "  Rendering $qmd..."
-            quarto render "$qmd" || echo "  Warning: Failed to render $qmd"
-        fi
+        # Keep this skip list in step with the one in
+        # .github/workflows/deploy.yml, or the preview stops previewing
+        # what actually ships.
+        case "$qmd" in
+            *_backup*|design-test.qmd) echo "  Skipping $qmd"; continue ;;
+        esac
+        [ -f "$qmd" ] || continue
+        echo "  Rendering $qmd..."
+        quarto render "$qmd" || echo "  Warning: Failed to render $qmd"
     done
 fi
 

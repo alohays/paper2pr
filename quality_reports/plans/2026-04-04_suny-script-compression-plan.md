@@ -8,7 +8,9 @@ Target: reduce the SUNY speaker script from roughly 9,275 words to about 7,400 w
 - Keep the slide order and core claims unchanged.
 - Preserve the confident mentor tone.
 - Remove repetition, excess framing, and over-explanation before cutting core evidence.
-- Treat `.speaker-notes/SUNY.json` as the editable tracked source for note content.
+- Treat `.speaker-notes/SUNY.json` as the editable **local-only, gitignored**
+  source for note content. It must never be staged: it was tracked once by
+  mistake and pushed the full script to the public repo.
 - After integration, sync the compressed note content back into the local `Quarto/SUNY.qmd` working copy for presenter use.
 
 ## Parallel Work Split

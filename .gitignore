@@ -93,3 +93,8 @@ index_files/
 
 # GitHub Pages output (deployed via CI/CD, not tracked in git)
 docs/
+
+# SUNY script-compression working files (word counts + editing notes).
+# Untracked *and* unignored is the state that invites an accidental commit
+# of script material -- pick one. This picks ignored.
+quality_reports/suny_script_compression/

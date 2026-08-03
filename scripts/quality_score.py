@@ -221,34 +221,93 @@ class IssueDetector:
         design principles apply) and 'legacy' for decks pinned to
         clean-academic-legacy.scss or a deck-specific theme (SUNY).
 
-        YAML spells a theme three legal ways and Quarto itself round-trips
-        the inline form into the block form, so matching only `theme: [...]`
-        made the gate fail *open*: the same violations scored 89 written one
-        way and 100 written another.
+        This has to be exactly right or the gate fails *open* and every design
+        check is skipped in silence. YAML spells the same value at least four
+        legal ways, and Quarto's own render log round-trips the inline form
+        into the block form, so hand-matching spellings kept missing one:
 
             theme: [default, clean-academic.scss]
             theme: clean-academic.scss
             theme:
               - default
               - clean-academic.scss
+            theme:
+            - default                 # sequence at the key's own indent
+            - clean-academic.scss
+
+        So parse the frontmatter as YAML when PyYAML is importable, and keep
+        the hand scanner only as a fallback for environments without it.
         """
-        m = re.search(r'^([ \t]*)theme:[ \t]*(.*)$', content, re.MULTILINE)
-        if not m:
-            return 'legacy'
-        indent, inline = m.group(1), m.group(2).strip()
-        themes = inline
-        if not inline or inline.startswith('#'):
-            # Block form: take the following lines indented deeper than the key.
-            rest = content[m.end():].split('\n')[1:]
-            block = []
-            for line in rest:
-                if not line.strip():
-                    continue
-                lead = len(line) - len(line.lstrip())
-                if lead <= len(indent):
-                    break
-                block.append(line.strip().lstrip('-').strip())
-            themes = ' '.join(block)
+        m = re.match(r'^---\s*\n(.*?)\n---\s*(?:\n|$)', content, re.DOTALL)
+        front = m.group(1) if m else ''
+
+        try:
+            import yaml
+            data = yaml.safe_load(front) if front.strip() else None
+        except Exception:
+            data = None
+
+        themes = ''
+        if isinstance(data, dict):
+            def find_theme(node):
+                """Deepest-last search, but never mistake a nested `theme:`
+                belonging to another key (mermaid, revealjs-plugins, ...) for
+                the deck's own -- that misdirection reads as 'legacy' and
+                silently disables every design check."""
+                if isinstance(node, dict):
+                    if 'theme' in node:
+                        return node['theme']
+                    for k, v in node.items():
+                        if k == 'mermaid':      # has its own unrelated theme
+                            continue
+                        hit = find_theme(v)
+                        if hit is not None:
+                            return hit
+                elif isinstance(node, list):
+                    for item in node:
+                        hit = find_theme(item)
+                        if hit is not None:
+                            return hit
+                return None
+
+            # The deck's theme lives at format.revealjs.theme; look there first
+            # and only fall back to a search if the file is shaped differently.
+            found = None
+            fmt = data.get('format')
+            if isinstance(fmt, dict):
+                rj = fmt.get('revealjs')
+                if isinstance(rj, dict) and 'theme' in rj:
+                    found = rj['theme']
+            if found is None:
+                found = find_theme(data)
+            if isinstance(found, str):
+                themes = found
+            elif isinstance(found, (list, tuple)):
+                themes = ' '.join(str(x) for x in found)
+            elif found is not None:
+                themes = str(found)
+        else:
+            # Fallback: no PyYAML, or frontmatter that will not parse.
+            m2 = re.search(r'^([ \t]*)theme:[ \t]*(.*)$', front or content,
+                           re.MULTILINE)
+            if m2:
+                indent, inline = m2.group(1), m2.group(2).strip()
+                themes = inline
+                if not inline or inline.startswith('#'):
+                    rest = (front or content)[m2.end():].split('\n')[1:]
+                    block = []
+                    for line in rest:
+                        if not line.strip():
+                            continue
+                        lead = len(line) - len(line.lstrip())
+                        # A sequence item may sit at the key's own indent.
+                        if lead < len(indent) or (
+                                lead == len(indent)
+                                and not line.strip().startswith('-')):
+                            break
+                        block.append(line.strip().lstrip('-').strip())
+                    themes = ' '.join(block)
+
         if 'clean-academic-legacy' in themes:
             return 'legacy'
         if 'clean-academic.scss' in themes:
