@@ -61,3 +61,8 @@ horizontally so the frame feels full.
 - First real deck on the new theme will be the true stress test; the
   design-test fixture covers layout patterns, not real content pressure
 - `pages/` landing page and CI deploy untouched (no theme references there)
+
+
+---
+**Context compaction (manual) at 16:37**
+Check git log and quality_reports/plans/ for current state.
