@@ -28,7 +28,8 @@ are graded without them. See `.claude/rules/slide-design-principles.md`.
 | Major | Text overflow | -5 |
 | Major | `.smaller`/`.smallest` or font-size override used to fit content | -5 per slide |
 | Major | TikZ label overlap | -5 |
-| Major | >5 bullets on a slide (>3 when a figure is present) | -3 per slide |
+| Major | >5 bullets on a slide (>3 with a figure; one less again if a bullet wraps to two lines) | -3 per slide |
+| Major | >1 two-line bullet on a slide, or any bullet running past two lines | -3 per slide |
 | Major | >1 colored box on a slide | -3 per slide |
 | Major | Notation inconsistency | -3 |
 | Minor | List nesting deeper than 1 sub-level | -1 per slide |

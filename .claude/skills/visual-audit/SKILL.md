@@ -28,7 +28,9 @@ Perform a thorough visual layout audit of a slide deck.
 
 5. **Audit every slide for:**
 
-   **DENSITY (new decks):** >1 core message, >5 bullets (>3 with a figure),
+   **DENSITY (new decks):** >1 core message, >5 bullets (>3 with a figure;
+   one less again if any bullet wraps to two lines), >1 wrapped bullet,
+   any three-line bullet,
    >1 colored box, nesting >1 sub-level
    **OVERFLOW:** Content exceeding slide boundaries
    **FONT CONSISTENCY:** Any `.smaller`/`.smallest` in a new deck (forbidden),

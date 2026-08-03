@@ -25,10 +25,28 @@ Density budget (enforced by the quality gate):
 | Limit | Value |
 |-------|-------|
 | Core message per slide | 1 |
-| Bullets per slide | ≤ 5 (each ≤ 2 lines) |
+| Bullets per slide | ≤ 5, all on one line |
 | Bullets when a figure shares the slide | ≤ 3 |
+| Two-line bullets | ≤ 1 per slide, **and it costs a slot** (cap drops by 1) |
+| Three-line bullets | never |
 | Colored boxes per slide | ≤ 1 |
 | List nesting | ≤ 1 sub-level |
+
+**Write one-line bullets.** A bullet that wraps is a bullet that is doing too
+much — cut it or split the slide. One wrapped bullet per slide is tolerated,
+not encouraged, and it takes the place of another bullet: five one-liners is
+fine, four bullets with one wrapped is fine, five with one wrapped is not.
+With a figure the same arithmetic applies from a base of 3.
+
+At 1280×720 on the 40px root font, a bullet fits on one line up to about
+**70 characters** of rendered text (markup like `[x]{.hi}` and links do not
+count). 71–137 characters wrap to two lines; past that it is three, which the
+frame cannot absorb.
+
+> This replaces the original "≤5 bullets, each ≤2 lines". That budget did not
+> fit: five two-line bullets overflow the 720px canvas by 38px and the surplus
+> is silently clipped by `overflow: hidden`, while the gate scored the slide
+> 100/100. Measured, not estimated.
 
 A ~30 min talk may run 40–60 slides. Splitting is always preferred over
 cutting, and cutting is always preferred over cramming.

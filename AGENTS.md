@@ -50,7 +50,7 @@ Ongoing multi-paper review project. Each paper in `target-papers/` gets its own 
 
 Full spec: `.claude/rules/slide-design-principles.md`. The short version:
 
-1. **Extreme minimalism** -- one idea per slide; ≤5 bullets (≤3 with a figure), ≤1 colored box; split rather than pack
+1. **Extreme minimalism** -- one idea per slide; ≤5 one-line bullets (≤3 with a figure), ≤1 colored box; a bullet that wraps to two lines costs a slot and only one is allowed per slide; split rather than pack
 2. **Big type** -- 40px root font; `.smaller`/`.smallest` and font-size overrides are forbidden in new decks (quality gate deducts -5 each)
 3. **Filled frame** -- title pinned at top, content centered vertically and horizontally (theme does this; escape hatches: `{.top-align}`, `{.left}`, `{.statement}`)
 

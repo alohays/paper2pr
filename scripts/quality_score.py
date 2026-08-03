@@ -321,38 +321,108 @@ class IssueDetector:
     BOX_CLASSES = ('keybox', 'methodbox', 'highlightbox', 'resultbox',
                    'assumptionbox', 'quotebox')
 
+    # Where a bullet wraps on the main theme. Measured in-browser at 1280x720
+    # with the 40px root font, lengthening one bullet a character at a time:
+    #   <=70 chars -> 1 line | 71-137 -> 2 lines | >=138 -> 3 lines
+    # Source length is not rendered length, so strip_inline() below removes the
+    # markup that costs characters but no pixels before comparing.
+    ONE_LINE_CHARS = 70
+    TWO_LINE_CHARS = 137
+
+    @staticmethod
+    def strip_inline(text: str) -> str:
+        """Approximate what a bullet actually renders to, for width estimates."""
+        t = text
+        t = re.sub(r'^\s*(?:[-*+]|\d+[.)])\s+', '', t)     # list marker
+        t = re.sub(r'!?\[([^\]]*)\]\([^)]*\)', r'\1', t)   # links / images
+        t = re.sub(r'\[([^\]]*)\]\{[^}]*\}', r'\1', t)     # [text]{.class}
+        t = re.sub(r'<[^>]+>', '', t)                      # inline html
+        t = re.sub(r'\[-?@[\w:.#$%&\-+?<>~/]+\]', '', t)   # [@citekey]
+        t = re.sub(r'[*_`]', '', t)                        # bold/italic/code
+        return t.strip()
+
+    @staticmethod
+    def bullet_texts(vis) -> List[str]:
+        """Top-level bullets, with lazy continuation lines folded in."""
+        bullets, cur = [], None
+        for _, t in vis:
+            if re.match(r'^[-*+] |^\d+[.)] ', t):
+                if cur is not None:
+                    bullets.append(cur)
+                cur = t
+            elif cur is not None:
+                # a blank line, a new block, or a nested item ends the bullet
+                if not t.strip() or re.match(r'^\s*(?:[-*+]|\d+[.)])\s|^[#:<|]', t):
+                    bullets.append(cur)
+                    cur = None
+                else:
+                    cur += ' ' + t.strip()
+        if cur is not None:
+            bullets.append(cur)
+        return bullets
+
     @staticmethod
     def check_design_density(content: str) -> List[Dict]:
         """Density-budget violations per slide (main-theme decks only).
 
         Enforces .claude/rules/slide-design-principles.md:
-          bullets ≤5 (≤3 when a figure shares the slide), colored boxes ≤1,
-          list nesting ≤1 sub-level.
+          - bullets ≤5, or ≤3 when a figure shares the slide
+          - a two-line bullet costs one slot (cap drops by 1) and only one
+            such bullet is allowed per slide
+          - no bullet may run to three lines
+          - colored boxes ≤1, list nesting ≤1 sub-level
+
+        The two-line rules exist because the written budget did not fit the
+        frame: five bullets of two lines each overflow the 720px canvas by
+        38px and get clipped, while the gate happily scored them 100/100.
+
         Slides containing a panel-tabset are skipped for bullet counts —
         tabs display one panel at a time.
         """
         violations = []
         for title, start, vis in IssueDetector.iter_slides(content):
             text = '\n'.join(t for _, t in vis)
-            top_bullets = sum(
-                1 for _, t in vis if re.match(r'^[-*+] |^\d+[.)] ', t)
-            )
+            bullets = IssueDetector.bullet_texts(vis)
+            top_bullets = len(bullets)
             deep_nested = sum(
                 1 for _, t in vis if re.match(r'^\s{4,}[-*+] |^\s{4,}\d+[.)] ', t)
             )
-            has_figure = bool(re.search(r'!\[|<img|\{\{<\s*video', text))
+            has_figure = bool(
+                re.search(r'!\[|<img|<video|\{\{<\s*video', text))
             has_tabset = '.panel-tabset' in text
             boxes = sum(
                 len(re.findall(r'\{[^}]*\.%s\b' % cls, text))
                 for cls in IssueDetector.BOX_CLASSES
             )
 
-            limit = 3 if has_figure else 5
+            lengths = [len(IssueDetector.strip_inline(b)) for b in bullets]
+            two_line = [n for n in lengths
+                        if IssueDetector.ONE_LINE_CHARS < n <= IssueDetector.TWO_LINE_CHARS]
+            over_two = [n for n in lengths if n > IssueDetector.TWO_LINE_CHARS]
+
+            base = 3 if has_figure else 5
+            limit = base - 1 if two_line else base
+
             if not has_tabset and top_bullets > limit:
+                why = (f'limit {limit} = {base} - 1 because a two-line bullet is present'
+                       if two_line else
+                       f'limit {base}{" with figure" if has_figure else ""}')
                 violations.append({
                     'type': 'bullet_density', 'slide': title, 'line': start,
-                    'detail': f'{top_bullets} bullets (limit {limit}'
-                              f'{" with figure" if has_figure else ""}) — split the slide',
+                    'detail': f'{top_bullets} bullets ({why}) — split the slide',
+                })
+            if not has_tabset and len(two_line) > 1:
+                violations.append({
+                    'type': 'bullet_density', 'slide': title, 'line': start,
+                    'detail': f'{len(two_line)} bullets wrap to two lines (limit 1) '
+                              f'— tighten them to one line or split the slide',
+                })
+            if not has_tabset and over_two:
+                violations.append({
+                    'type': 'bullet_density', 'slide': title, 'line': start,
+                    'detail': f'{len(over_two)} bullet(s) run past two lines '
+                              f'({max(over_two)} chars; two lines end at '
+                              f'{IssueDetector.TWO_LINE_CHARS}) — split the slide',
                 })
             if boxes > 1:
                 violations.append({

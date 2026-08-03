@@ -25,6 +25,10 @@ demand the new density limits from them.
 ### DENSITY (new decks — the primary check)
 - More than 1 core message on a slide
 - More than 5 bullets (more than 3 when a figure shares the slide)
+- A bullet that wraps to two lines when another already does, or any
+  bullet running to three lines. One wrapped bullet is allowed and it
+  costs a slot: 5 one-liners OK, 4 + one wrapped OK, 5 + one wrapped not.
+  At 1280x720 a bullet fits one line up to ~70 rendered characters.
 - Bullets longer than 2 rendered lines
 - More than 1 colored box (methodbox, keybox, highlightbox, resultbox...)
 - List nesting deeper than 1 sub-level

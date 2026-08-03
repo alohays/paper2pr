@@ -20,7 +20,8 @@ optional export produced only on explicit request.
 
 1. **Read the knowledge base FIRST** — notation registry, narrative arc, applications database
 2. **Follow `.claude/rules/slide-design-principles.md`** — one idea per
-   slide, ≤5 bullets (≤3 with a figure), max 1 colored box per slide,
+   slide, ≤5 one-line bullets (≤3 with a figure; one less again if a
+   bullet wraps to two lines, and only one may wrap), max 1 colored box,
    never shrink fonts to fit; split slides instead (40–60 slides for ~30 min is fine)
 3. Every new symbol MUST be checked against the notation registry
 4. Motivation before formalism — no exceptions
@@ -81,7 +82,8 @@ optional export produced only on explicit request.
 [ ] No slide overflows at 1280x720
 [ ] All citations resolve
 [ ] Every definition has motivation + worked example
-[ ] Density budget respected (≤5 bullets, ≤1 colored box per slide)
+[ ] Density budget respected (≤5 one-line bullets, ≤1 wrapped bullet
+    which costs a slot, ≤1 colored box per slide)
 [ ] No .smaller/.smallest anywhere in the deck
 [ ] 2-3 Socratic questions embedded
 [ ] Transition slides between sections
