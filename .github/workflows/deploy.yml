@@ -25,44 +25,21 @@ jobs:
 
       - uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Resolve deck genres
-        id: genres
-        run: |
-          # Only directories listed in Quarto/_genres.txt are rendered and
-          # published. That replaces the old name-based skip list: the theme
-          # regression fixture now lives in Quarto/_fixtures/, which is not a
-          # genre, so it cannot ship to /slides/ by being forgotten about.
-          genres=$(grep -vE '^\s*(#|$)' Quarto/_genres.txt | tr '\n' ' ')
-          echo "list=$genres" >> "$GITHUB_OUTPUT"
-          echo "Genres: $genres"
+      # Every step below is a script, so the whole pipeline can be run locally
+      # before pushing. Only directories listed in Quarto/_genres.txt are
+      # rendered and published, which is why the theme regression fixture in
+      # Quarto/_fixtures/ cannot ship to /slides/ by being forgotten about.
+      #
+      # Inline shell here has failed twice in ways nothing local could catch:
+      # loose runtime assets silently not copied, and a loop that returned 1
+      # because a genre directory was empty. A step that only ever executes on
+      # CI is a step nobody can test before pushing.
 
-      - name: Render Quarto slides
-        # Through the environment, not `${{ }}` inside the script. GitHub
-        # pastes an expression into the shell as text, so a genre list is one
-        # edit away from being read as shell.
-        env:
-          GENRES: ${{ steps.genres.outputs.list }}
-        run: |
-          for genre in $GENRES; do
-            for qmd in Quarto/"$genre"/*.qmd; do
-              [ -f "$qmd" ] || continue
-              case "$(basename "$qmd")" in
-                *_backup*) echo "Skipping $qmd"; continue ;;
-              esac
-              echo "Rendering $qmd..."
-              quarto render "$qmd"
-            done
-          done
+      - name: Render decks
+        run: bash scripts/render_decks.sh
 
       - name: Strip speaker notes from HTML (safety net)
-        env:
-          GENRES: ${{ steps.genres.outputs.list }}
-        run: |
-          for genre in $GENRES; do
-            for html in Quarto/"$genre"/*.html; do
-              [ -f "$html" ] && python3 scripts/strip_speaker_notes.py "$html"
-            done
-          done
+        run: bash scripts/strip_notes.sh Quarto
 
       - name: Assemble site
         run: bash scripts/assemble_site.sh _site

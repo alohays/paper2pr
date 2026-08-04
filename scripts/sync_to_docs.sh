@@ -23,21 +23,7 @@ cd "$REPO_ROOT"
 DOCS_DIR="$REPO_ROOT/docs"
 
 echo "=== Rendering decks ==="
-if [ -n "${1:-}" ]; then
-  QMD=$(python3 scripts/deckpath.py "$1" --relative) || {
-    echo "Available decks:"
-    python3 scripts/deckpath.py --list | sed 's|^|  |'
-    exit 1
-  }
-  echo "  $QMD"
-  quarto render "$QMD"
-else
-  python3 scripts/deckpath.py --list | while read -r slug; do
-    qmd=$(python3 scripts/deckpath.py "$slug" --relative)
-    echo "  $qmd"
-    quarto render "$qmd" || echo "  Warning: failed to render $qmd"
-  done
-fi
+bash scripts/render_decks.sh ${1:+"$1"}
 
 echo
 echo "=== Assembling docs/ ==="
@@ -48,8 +34,7 @@ bash scripts/assemble_site.sh "$DOCS_DIR"
 # gitignored. CI strips in place because nothing there needs the notes.
 echo
 echo "=== Stripping speaker notes from the assembled copy ==="
-find "$DOCS_DIR/slides" -name '*.html' -exec \
-  python3 "$REPO_ROOT/scripts/strip_speaker_notes.py" {} \;
+bash scripts/strip_notes.sh "$DOCS_DIR/slides"
 
 echo
 echo "=== Checking every referenced asset made it ==="
