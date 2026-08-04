@@ -1,4 +1,10 @@
 # Strip speaker notes from QMD files before committing.
 # Notes remain in working directory but never enter git history.
 # Setup: ./scripts/setup-git-filters.sh (run once after clone)
-Quarto/*.qmd filter=strip-speaker-notes
+#
+# The pattern must stay recursive. A gitattributes pattern containing a slash
+# is anchored, and `*` does not cross a directory separator -- so `Quarto/*.qmd`
+# silently stops matching the moment a deck lives in Quarto/papers/ or
+# Quarto/lectures/. Nothing fails and nothing warns; the notes just land in git.
+# `scripts/test_note_filter.sh` asserts this stays true.
+Quarto/**/*.qmd filter=strip-speaker-notes

@@ -52,8 +52,11 @@ CLAUDE.local.md
 /.quarto/
 
 # Quarto rendered HTML (regenerable via quarto render)
-Quarto/*.html
-Quarto/*_files/
+# Recursive on purpose: decks live under Quarto/<genre>/, and an anchored
+# `Quarto/*.html` would stop ignoring render output the moment they moved,
+# which means committing a 400KB rendered deck on the next `git add`.
+Quarto/**/*.html
+Quarto/**/*_files/
 Quarto/Figures
 
 # Output artifacts — uncomment lines below based on your preference
