@@ -20,13 +20,18 @@ paths:
 
 ## Deck Inventory
 
-| Paper | Quarto (source) | Beamer (status) |
+| Deck | Quarto (source) | Beamer (status) |
 |-------|-----------------|-----------------|
-| DreamZero | `Quarto/DreamZero.qmd` | `Slides/DreamZero.tex` (legacy, frozen) |
-| DreamDojo | `Quarto/DreamDojo.qmd` | `Slides/DreamDojo.tex` (legacy, frozen) |
-| RoboTTT | `Quarto/RoboTTT.qmd` | none |
-| SUNY Career Sprint | `Quarto/SUNY.qmd` | none (career talk) |
+| DreamZero | `Quarto/papers/DreamZero.qmd` | `Slides/DreamZero.tex` (legacy, frozen) |
+| DreamDojo | `Quarto/papers/DreamDojo.qmd` | `Slides/DreamDojo.tex` (legacy, frozen) |
+| RoboTTT | `Quarto/papers/RoboTTT.qmd` | none |
+| SUNY Career Sprint | `Quarto/talks/SUNY.qmd` | none (career talk) |
 <!-- Add rows as you create new decks. New decks default to "none". -->
+
+Only these four have a Beamer side at all, and only the two frozen ones ever
+did. Everything created since is Quarto-only, so this rule concerns exactly
+the rows above. `python3 scripts/deckpath.py --list` is the live inventory;
+this table exists for the Beamer column, not as a deck index.
 
 ## Quarto → LaTeX Translation Reference (for exports)
 

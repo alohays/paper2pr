@@ -17,18 +17,21 @@ Extract TikZ diagrams from the Beamer source, compile to multi-page PDF, and con
 
 1. Find the Beamer source: `ls Slides/$ARGUMENTS*.tex`
 2. Extract all `\begin{tikzpicture}` blocks from Beamer
-3. Compare with `Figures/$ARGUMENTS/extract_tikz.tex`
+3. Compare with the deck's figures directory:
+   `FIGDIR="$(python3 scripts/deckpath.py $ARGUMENTS --field figures)"`, i.e.
+   `Figures/<genre>/<deck>/extract_tikz.tex`
 4. If ANY difference exists: update extract_tikz.tex from the Beamer source
 5. If extract_tikz.tex doesn't exist: create it from scratch
 
-### Step 1: Navigate to the lecture's Figures directory
+### Step 1: Navigate to the deck's Figures directory
 ```bash
-cd Figures/$ARGUMENTS
+cd "$(python3 scripts/deckpath.py $ARGUMENTS --field figures)"
 ```
 
 ### Step 2: Compile the extract_tikz.tex file
 ```bash
-TEXINPUTS=../../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode extract_tikz.tex
+# Three levels up now: Figures/<genre>/<deck>/ -> repo root
+TEXINPUTS=../../../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode extract_tikz.tex
 ```
 
 ### Step 3: Count the number of pages
@@ -50,7 +53,7 @@ done
 
 ### Step 5: Sync to docs/ for deployment
 ```bash
-cd ../..
+cd "$(git rev-parse --show-toplevel)"
 ./scripts/sync_to_docs.sh $ARGUMENTS
 ```
 

@@ -20,7 +20,7 @@ Perform a thorough visual layout audit of a slide deck.
      legacy audit only (overflow, parity, spacing); skip density limits
 
 3. **For Quarto (.qmd) files:**
-   - Render with `quarto render Quarto/$ARGUMENTS`
+   - Render with `quarto render "$(python3 scripts/deckpath.py $ARGUMENTS --field qmd)"`
    - Open in browser to inspect each slide
 
 4. **For Beamer (.tex) files:**

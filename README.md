@@ -10,8 +10,9 @@ A Claude Code multi-agent workflow that converts AI/ML papers into presentation-
 
 | Paper | Topic | Beamer | Quarto |
 |-------|-------|--------|--------|
-| DreamZero | World Action Models as Zero-shot Policies (NVIDIA) | [`Slides/DreamZero.tex`](Slides/DreamZero.tex) | [`Quarto/DreamZero.qmd`](Quarto/DreamZero.qmd) |
-| DreamDojo | A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA) | [`Slides/DreamDojo.tex`](Slides/DreamDojo.tex) | [`Quarto/DreamDojo.qmd`](Quarto/DreamDojo.qmd) |
+| DreamZero | World Action Models as Zero-shot Policies (NVIDIA) | [`Slides/DreamZero.tex`](Slides/DreamZero.tex) | [`Quarto/papers/DreamZero.qmd`](Quarto/papers/DreamZero.qmd) |
+| DreamDojo | A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA) | [`Slides/DreamDojo.tex`](Slides/DreamDojo.tex) | [`Quarto/papers/DreamDojo.qmd`](Quarto/papers/DreamDojo.qmd) |
+| RoboTTT | Scaling Context Length for Robot Policies with Test-Time Training | none | [`Quarto/papers/RoboTTT.qmd`](Quarto/papers/RoboTTT.qmd) |
 
 Each paper gets a ~30-slide deck (~30 min) covering main ideas, technical details, and implementation observations. Target audience: basic deep learning knowledge.
 
@@ -35,8 +36,8 @@ BIBINPUTS=..:$BIBINPUTS bibtex DreamZero
 TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode DreamZero.tex
 TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode DreamZero.tex
 
-# Quarto
-cd Quarto && quarto render DreamZero.qmd
+# Quarto -- decks live at Quarto/<genre>/<name>.qmd; resolve by bare name
+quarto render "$(python3 scripts/deckpath.py DreamZero --field qmd)"
 
 # Deploy to GitHub Pages
 ./scripts/sync_to_docs.sh DreamZero

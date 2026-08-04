@@ -104,7 +104,7 @@ If ANY of these fail, the verdict is **REJECTED**:
 # Quarto vs Beamer Audit: [Lecture Name]
 
 **Beamer source:** `Slides/PaperName.tex` ([N] pages)
-**Quarto source:** `Quarto/PaperName.qmd` ([M] slides)
+**Quarto source:** `Quarto/<genre>/PaperName.qmd` ([M] slides)
 **Round:** [N]
 **Date:** [YYYY-MM-DD]
 

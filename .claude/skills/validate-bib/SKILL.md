@@ -37,7 +37,7 @@ Cross-reference all citations in lecture files against bibliography entries.
 ## Files to scan:
 ```
 Slides/*.tex
-Quarto/*.qmd
+Quarto/*/*.qmd      # decks are one level down, under their genre
 ```
 
 ## Bibliography location:

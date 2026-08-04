@@ -13,7 +13,8 @@ Deployment is automated via GitHub Actions CI/CD. Pushing to `main` triggers ren
 
 1. **Commit and push** source changes to `main`
 2. GitHub Actions automatically:
-   - Renders all QMD files in `Quarto/`
+   - Renders every QMD under the genre directories listed in `Quarto/_genres.txt`
+     (a folder that is not a listed genre is never published)
    - Strips speaker notes from HTML (safety net)
    - Assembles site: HTML + RevealJS assets + Beamer PDFs + Figures
    - Deploys to GitHub Pages
@@ -25,15 +26,21 @@ For testing before push:
 
 1. **Run the sync script:**
    - If `$ARGUMENTS` is provided (e.g., "DreamZero"): `./scripts/sync_to_docs.sh $ARGUMENTS`
-   - If no argument: `./scripts/sync_to_docs.sh` (syncs all lectures)
+   - If no argument: `./scripts/sync_to_docs.sh` (renders and assembles every deck)
+
+   It calls the same `scripts/assemble_site.sh` that CI runs, then
+   `check_site_assets.py` over the result. That check is the point of
+   previewing locally: a deck whose figures or runtime JS did not get copied
+   renders perfectly and 404s in the browser.
 
 2. **Open in browser:**
-   - `open docs/slides/PaperName.html`          # macOS
+   - `open docs/slides/<genre>/DeckName.html`   # macOS
+   - `python3 scripts/deckpath.py DeckName --field genre` if unsure
 
 Note: `docs/` is gitignored — local preview output does not enter git.
 
 ## Speaker Notes Policy
 - QMD source always contains `::: {.notes}` blocks (single source of truth)
-- **Local** (`Quarto/*.html`): notes included — press `S` for speaker view
+- **Local** (`Quarto/<genre>/*.html`): notes included — press `S` for speaker view
 - **Public** (GitHub Pages): notes stripped by CI/CD pipeline
 - Git clean filter strips notes from QMD before commit (`.gitattributes`)

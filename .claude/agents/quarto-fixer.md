@@ -88,7 +88,7 @@ density budget, but must still not gain new font-shrink markup.
 ```markdown
 # Fix Report: [PaperName] — Round [N]
 
-**Source file:** `Quarto/PaperName.qmd`
+**Source file:** `Quarto/<genre>/PaperName.qmd`
 **Critic report:** `quality_reports/[PaperName]_qa_critic_round[N].md`
 **Date:** [YYYY-MM-DD]
 
