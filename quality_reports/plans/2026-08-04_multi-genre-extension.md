@@ -1,7 +1,7 @@
 # Multi-genre extension: paper2pr as the base for every deck
 
 **Date:** 2026-08-04
-**Status:** implemented 2026-08-04, all seven steps
+**Status:** implemented 2026-08-04; audited and completed the same day
 **Trigger:** six DGIST HSS118 lecture decks land between Sep and Dec 2026
 
 > **Outcome.** Everything below shipped. Two things the plan did not predict:
@@ -16,6 +16,35 @@
 > can be run and checked locally instead of only on CI, and a generated landing
 > page. Verification: `scripts/test_note_filter.sh`, `scripts/test_profiles.py`,
 > all four decks still 100/100, 176 asset references resolve, old URLs redirect.
+
+> **Audit, same day.** The migration was intact -- note backups, presenter
+> scripts and videos all byte-identical to the pre-move clone -- but "all seven
+> steps" was measured against §5's order of work, and §3 named two downstream
+> consumers that §5 never listed. Both were unbuilt, and four places asserted
+> they were built, including a header comment written into every generated
+> `deck.yml`. Fixed: the Korean gate now reads `language.slides`, and
+> `/write-speaker-notes` reads `language.notes` and derives its budget from
+> `duration_min` instead of the 30-minute figure it had hardcoded.
+>
+> Three more, none of them predicted here:
+>
+> - **PyYAML was an undeclared dependency that failed soft.** No requirements
+>   file, no mention anywhere. Absent, the loader warned on stderr and returned
+>   `{}`, so a lecture kept scoring and kept passing with paper-review numbers
+>   and both lecture checks off. Replaced by `scripts/minyaml.py`, checked
+>   against PyYAML on all seven config files.
+> - **Two skills created decks.** `/create-lecture` predated genres, wrote to a
+>   flat path, and hardcoded one audience. Retired into `/new-deck`.
+> - **The profile system is not exercised by any existing deck.** All four
+>   resolve to theme family `legacy`, where design checks are skipped entirely.
+>   "All four still 100/100" proves the migration was clean and proves nothing
+>   about the profiles; `test_profiles.py` fixtures are the only coverage until
+>   the first main-theme deck ships.
+>
+> The reusable lesson is narrower than "test more". Every one of these was a
+> claim in prose that no longer matched the code, and prose does not fail. The
+> checks that caught them -- diff two clones, block the import, run the hook
+> against a throwaway index -- all work by making the claim executable.
 
 ---
 
