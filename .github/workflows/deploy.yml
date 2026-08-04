@@ -25,63 +25,40 @@ jobs:
 
       - uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Resolve deck genres
+        id: genres
+        run: |
+          # Only directories listed in Quarto/_genres.txt are rendered and
+          # published. That replaces the old name-based skip list: the theme
+          # regression fixture now lives in Quarto/_fixtures/, which is not a
+          # genre, so it cannot ship to /slides/ by being forgotten about.
+          genres=$(grep -vE '^\s*(#|$)' Quarto/_genres.txt | tr '\n' ' ')
+          echo "list=$genres" >> "$GITHUB_OUTPUT"
+          echo "Genres: $genres"
+
       - name: Render Quarto slides
         run: |
-          cd Quarto
-          # Everything here is published, so anything that is not a real deck
-          # has to be named out explicitly. design-test.qmd is the theme
-          # regression fixture -- it renders fine, which is exactly why it
-          # would have shipped to /slides/design-test.html unnoticed.
-          for qmd in *.qmd; do
-            case "$qmd" in
-              *_backup*|design-test.qmd) echo "Skipping $qmd"; continue ;;
-            esac
-            [ -f "$qmd" ] || continue
-            echo "Rendering $qmd..."
-            quarto render "$qmd"
+          for genre in ${{ steps.genres.outputs.list }}; do
+            for qmd in Quarto/"$genre"/*.qmd; do
+              [ -f "$qmd" ] || continue
+              case "$(basename "$qmd")" in
+                *_backup*) echo "Skipping $qmd"; continue ;;
+              esac
+              echo "Rendering $qmd..."
+              quarto render "$qmd"
+            done
           done
 
       - name: Strip speaker notes from HTML (safety net)
         run: |
-          for html in Quarto/*.html; do
-            [ -f "$html" ] && python3 scripts/strip_speaker_notes.py "$html"
+          for genre in ${{ steps.genres.outputs.list }}; do
+            for html in Quarto/"$genre"/*.html; do
+              [ -f "$html" ] && python3 scripts/strip_speaker_notes.py "$html"
+            done
           done
 
       - name: Assemble site
-        run: |
-          mkdir -p _site/slides _site/Figures _site/files/code
-
-          # Landing page
-          cp pages/index.html _site/
-          touch _site/.nojekyll
-
-          # Rendered HTML + RevealJS assets
-          for html in Quarto/*.html; do
-            [ -f "$html" ] || continue
-            name=$(basename "$html" .html)
-            cp "$html" _site/slides/
-            [ -d "Quarto/${name}_files" ] && cp -r "Quarto/${name}_files" _site/slides/
-          done
-
-          # Loose runtime assets sitting next to the qmd. Quarto compiles scss
-          # into <name>_files, but a plain <script src="foo.js"> in the header
-          # is left for us to ship -- robottt-stepper.js drives the animated
-          # widgets and shipped missing once, which killed arrow-key stepping
-          # on the live deck while every slide still rendered fine.
-          find Quarto -maxdepth 1 -type f \( -name '*.js' -o -name '*.css' \) \
-            -exec cp {} _site/slides/ \;
-
-          # Quarto fonts (for SUNY and other self-hosted font presentations)
-          [ -d "Quarto/fonts" ] && cp -r Quarto/fonts _site/slides/fonts
-
-          # Beamer PDFs
-          cp Slides/*.pdf _site/slides/ 2>/dev/null || true
-
-          # Figures (both PDF and SVG)
-          cp -r Figures/* _site/Figures/ 2>/dev/null || true
-
-          # R scripts (if any)
-          cp scripts/R/*.R _site/files/code/ 2>/dev/null || true
+        run: bash scripts/assemble_site.sh _site
 
       - name: Check every referenced local asset made it into the site
         run: python3 scripts/check_site_assets.py _site

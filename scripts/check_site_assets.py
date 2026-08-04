@@ -19,7 +19,9 @@ from urllib.parse import unquote, urlparse
 # copy second. The local copy is deliberately not deployed (the media is not in
 # git), so a missing videos/*.mp4 is by design, not an oversight.
 ALLOW_MISSING = (
-    re.compile(r"^videos/.*\.mp4$"),
+    # The `../` prefix appeared when decks moved into Quarto/<genre>/; the
+    # reference is still the same deliberately-undeployed local fallback.
+    re.compile(r"^(?:\.\./)*videos/.*\.mp4$"),
 )
 
 # src/href covers <script>, <link>, <img>, <source>. RevealJS also pulls media

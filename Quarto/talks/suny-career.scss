@@ -50,10 +50,18 @@ $right-arrow: "\2192";
 // ==============================================================================
 // FONT FACE — INSTRUMENT SERIF (self-hosted TTF)
 // ==============================================================================
+//
+// The url() is resolved by the browser against the COMPILED css, which Quarto
+// writes to <deck>_files/libs/revealjs/dist/theme/ -- not against this file.
+// So the climb is counted from there: theme -> dist -> revealjs -> libs ->
+// <deck>_files -> <genre>/ -> slides/, six levels, then down into fonts/.
+// It was five while decks lived at the Quarto root; the genre directory added
+// one. Deploy copies Quarto/fonts to slides/fonts, which is where this lands.
+// check_site_assets.py fails the build if the arithmetic is ever wrong again.
 
 @font-face {
   font-family: 'Instrument Serif';
-  src: url('../../../../../fonts/instrument-serif-regular.ttf') format('truetype');
+  src: url('../../../../../../fonts/instrument-serif-regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -61,7 +69,7 @@ $right-arrow: "\2192";
 
 @font-face {
   font-family: 'Instrument Serif';
-  src: url('../../../../../fonts/instrument-serif-italic.ttf') format('truetype');
+  src: url('../../../../../../fonts/instrument-serif-italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;

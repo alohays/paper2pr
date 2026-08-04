@@ -1,0 +1,10 @@
+# The deck genres, one per line. Single source of truth.
+#
+# A directory under Quarto/ is only rendered and published if it is listed
+# here, so a stray folder cannot ship a deck by accident. scripts/deckpath.py
+# and .github/workflows/deploy.yml both read this file; /new-deck validates
+# against it. Adding a genre means adding a line here and a profile in
+# .claude/rules/slide-profiles/.
+papers
+talks
+lectures
