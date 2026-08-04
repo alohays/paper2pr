@@ -1,8 +1,21 @@
 # Multi-genre extension: paper2pr as the base for every deck
 
 **Date:** 2026-08-04
-**Status:** design, not yet implemented
+**Status:** implemented 2026-08-04, all seven steps
 **Trigger:** six DGIST HSS118 lecture decks land between Sep and Dec 2026
+
+> **Outcome.** Everything below shipped. Two things the plan did not predict:
+> `.gitignore` carried the same non-recursive bug as `.gitattributes`, so render
+> output would have become committable at the same moment notes did; and
+> `quality_score.py` located the bibliography by counting levels back from the
+> deck, which sent a 100/100 deck to 0/100 the instant it moved. The second was
+> caught only by scoring the same deck in the pre-move clone as a baseline --
+> worth repeating for the next structural change.
+>
+> Also added beyond the plan: `scripts/assemble_site.sh`, so the assemble step
+> can be run and checked locally instead of only on CI, and a generated landing
+> page. Verification: `scripts/test_note_filter.sh`, `scripts/test_profiles.py`,
+> all four decks still 100/100, 176 asset references resolve, old URLs redirect.
 
 ---
 
