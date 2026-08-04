@@ -17,6 +17,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import deckpath  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 QUARTO_DIR = REPO_ROOT / "Quarto"
 NOTES_DIR = REPO_ROOT / ".speaker-notes"
@@ -28,9 +31,17 @@ NOTES_PATTERN = re.compile(
 )
 
 
+def resolve(name: str) -> deckpath.Deck:
+    """Find a deck by bare name, genre/name, or qmd path."""
+    try:
+        return deckpath.find(name)
+    except (deckpath.DeckNotFound, deckpath.AmbiguousDeck) as e:
+        sys.exit(f"Error: {e}")
+
+
 def find_qmd(name: str) -> Path:
-    """Find QMD file by paper name."""
-    path = QUARTO_DIR / f"{name}.qmd"
+    """Find QMD file by deck name."""
+    path = resolve(name).qmd
     if not path.exists():
         sys.exit(f"Error: {path} not found")
     return path
@@ -81,8 +92,10 @@ def backup(name: str) -> None:
         print(f"No notes found in {qmd_path.name}")
         return
 
-    NOTES_DIR.mkdir(exist_ok=True)
-    out_path = NOTES_DIR / f"{name}.json"
+    # Backups are genre-scoped like everything else a deck owns, so a lecture
+    # and a paper review can share a name without overwriting each other.
+    out_path = resolve(name).notes_json
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(
         json.dumps(notes, ensure_ascii=False, indent=2),
         encoding="utf-8",
@@ -92,7 +105,7 @@ def backup(name: str) -> None:
 
 def restore(name: str) -> None:
     """Restore notes from .speaker-notes/ into QMD."""
-    backup_path = NOTES_DIR / f"{name}.json"
+    backup_path = resolve(name).notes_json
     if not backup_path.exists():
         sys.exit(f"Error: No backup found at {backup_path}")
 
@@ -150,8 +163,9 @@ def main():
     if len(sys.argv) >= 3:
         names = [sys.argv[2]]
     else:
-        # All QMD files
-        names = [p.stem for p in QUARTO_DIR.glob("*.qmd")]
+        # Every deck, addressed as genre/name so the sweep stays unambiguous
+        # even if two genres ever share a deck name.
+        names = [d.slug for d in deckpath.all_decks()]
 
     for name in names:
         if action == "backup":

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Push the presenter scripts into the deck's speaker notes.
 
-The masters are
-  Quarto/_script/RoboTTT-script.md     main deck, the words to say
-  Quarto/_script/RoboTTT-appendix.md   appendix slides, for jumping to on a question
+The masters for a deck are
+  Quarto/_script/<genre>/<deck>-script.md     main deck, the words to say
+  Quarto/_script/<genre>/<deck>-appendix.md   appendix slides, for jumping to
 Each `### <id> | <slide title>` section becomes the `::: {.notes}` block of the
 matching `## <slide title>` in
-  Quarto/RoboTTT.qmd
+  Quarto/<genre>/<deck>.qmd
 so the RevealJS presenter view (press S) shows them beside the slide.
 
 This has to REBUILD, not just replace. `.gitattributes` runs a clean filter
@@ -20,7 +20,8 @@ Sections are matched on the heading text, not on position, so reordering
 slides in either file cannot silently misalign them. Anything unmatched is a
 hard error rather than a skipped slide.
 
-Usage:  python3 scripts/sync_notes.py [--check]
+Usage:  python3 scripts/sync_notes.py [Deck] [--check]
+        Deck defaults to RoboTTT, the only deck with masters so far.
         --check reports drift and exits non-zero instead of writing.
 """
 import os
@@ -28,11 +29,25 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-QMD = os.path.join(HERE, "Quarto", "RoboTTT.qmd")
-SCRIPTS = [
-    os.path.join(HERE, "Quarto", "_script", "RoboTTT-script.md"),
-    os.path.join(HERE, "Quarto", "_script", "RoboTTT-appendix.md"),
-]
+sys.path.insert(0, os.path.join(HERE, "scripts"))
+import deckpath  # noqa: E402
+
+
+def resolve_deck(argv):
+    """-> (qmd path, [script master paths]) for the deck named on the CLI."""
+    positional = [a for a in argv[1:] if not a.startswith("-")]
+    ref = positional[0] if positional else "RoboTTT"
+    try:
+        deck = deckpath.find(ref)
+    except (deckpath.DeckNotFound, deckpath.AmbiguousDeck) as e:
+        raise SystemExit(f"error: {e}")
+    return str(deck.qmd), [
+        os.path.join(str(deck.script_dir), f"{deck.name}-script.md"),
+        os.path.join(str(deck.script_dir), f"{deck.name}-appendix.md"),
+    ]
+
+
+QMD, SCRIPTS = resolve_deck(sys.argv)
 
 TITLE_KEY = "(title slide)"
 

@@ -2,28 +2,31 @@
 # preview.sh
 # Live preview Quarto slides with hot-reload
 #
-# Usage: ./scripts/preview.sh [PaperName]
-# Example: ./scripts/preview.sh DreamZero
+# Usage: ./scripts/preview.sh [Deck]
+# Examples:
+#   ./scripts/preview.sh DreamZero          # bare name, genre resolved for you
+#   ./scripts/preview.sh papers/DreamZero   # explicit, if a name is ambiguous
 
 set -e
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-QUARTO_DIR="$REPO_ROOT/Quarto"
+cd "$REPO_ROOT"
 
-PAPER="${1:-DreamZero}"
-QMD="${PAPER}.qmd"
+DECK="${1:-DreamZero}"
+shift || true
 
-if [ ! -f "$QUARTO_DIR/$QMD" ]; then
-  echo "ERROR: Quarto/$QMD not found"
-  echo "Available slides:"
-  ls "$QUARTO_DIR"/*.qmd 2>/dev/null | xargs -n1 basename | sed 's|\.qmd||'
+# scripts/deckpath.py knows the Quarto/<genre>/ layout so this script does not.
+if ! QMD=$(python3 scripts/deckpath.py "$DECK" --relative 2>&1); then
+  echo "$QMD"
+  echo
+  echo "Available decks:"
+  python3 scripts/deckpath.py --list | sed 's|^|  |'
   exit 1
 fi
 
-echo "=== Previewing $PAPER ==="
-echo "Edit Quarto/${PAPER}.qmd — browser will auto-reload"
+echo "=== Previewing $DECK ==="
+echo "Edit $QMD — browser will auto-reload"
 echo "Note: Figures may not display in preview (use /deploy for full render)"
 echo ""
 
-cd "$QUARTO_DIR"
 exec quarto preview "$QMD" "$@"

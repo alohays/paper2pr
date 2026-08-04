@@ -1,111 +1,60 @@
 #!/bin/bash
 # sync_to_docs.sh
-# LOCAL PREVIEW TOOL — renders Quarto slides and assembles docs/ locally.
-# Production deployment is handled by GitHub Actions CI/CD (.github/workflows/deploy.yml).
+# LOCAL PREVIEW TOOL — renders decks and assembles docs/ the way CI does.
+# Production deployment is handled by GitHub Actions (.github/workflows/deploy.yml).
 # The docs/ directory is gitignored; this script is for local testing only.
 #
-# Usage: ./scripts/sync_to_docs.sh [lecture_name]
+# Usage: ./scripts/sync_to_docs.sh [Deck]
 # Examples:
-#   ./scripts/sync_to_docs.sh                    # Sync all lectures
-#   ./scripts/sync_to_docs.sh DreamZero          # Sync only DreamZero
+#   ./scripts/sync_to_docs.sh                    # render and assemble everything
+#   ./scripts/sync_to_docs.sh DreamZero          # render one deck, assemble everything
+#   ./scripts/sync_to_docs.sh papers/DreamZero   # explicit genre
+#
+# The assembly itself is scripts/assemble_site.sh, the same script CI runs.
+# This file used to carry its own copy of that logic along with a comment
+# telling the reader to keep the two skip lists in step by hand. They are one
+# list now, so a preview cannot quietly stop matching what ships.
 
 set -e
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-QUARTO_DIR="$REPO_ROOT/Quarto"
+cd "$REPO_ROOT"
+
 DOCS_DIR="$REPO_ROOT/docs"
 
-echo "=== Syncing Quarto slides to docs/ ==="
-echo "Repo root: $REPO_ROOT"
-
-# 1. Render Quarto files
-cd "$QUARTO_DIR"
-
-if [ -n "$1" ]; then
-    # Render specific lecture
-    echo "Rendering $1..."
-    matched_qmd=$(ls ${1}_*.qmd ${1}.qmd 2>/dev/null | head -1)
-    if [ -n "$matched_qmd" ]; then
-        quarto render "$matched_qmd"
-    else
-        echo "Error: No QMD file found matching '${1}'"
-        exit 1
-    fi
+echo "=== Rendering decks ==="
+if [ -n "${1:-}" ]; then
+  QMD=$(python3 scripts/deckpath.py "$1" --relative) || {
+    echo "Available decks:"
+    python3 scripts/deckpath.py --list | sed 's|^|  |'
+    exit 1
+  }
+  echo "  $QMD"
+  quarto render "$QMD"
 else
-    # Render all QMD files (skip backups)
-    echo "Rendering all Quarto files..."
-    for qmd in *.qmd; do
-        # Keep this skip list in step with the one in
-        # .github/workflows/deploy.yml, or the preview stops previewing
-        # what actually ships.
-        case "$qmd" in
-            *_backup*|design-test.qmd) echo "  Skipping $qmd"; continue ;;
-        esac
-        [ -f "$qmd" ] || continue
-        echo "  Rendering $qmd..."
-        quarto render "$qmd" || echo "  Warning: Failed to render $qmd"
-    done
+  python3 scripts/deckpath.py --list | while read -r slug; do
+    qmd=$(python3 scripts/deckpath.py "$slug" --relative)
+    echo "  $qmd"
+    quarto render "$qmd" || echo "  Warning: failed to render $qmd"
+  done
 fi
 
-# 2. Sync HTML files and their _files directories to docs/slides/
-echo "Syncing HTML and assets to docs/slides/..."
-mkdir -p "$DOCS_DIR/slides"
+echo
+echo "=== Assembling docs/ ==="
+bash scripts/assemble_site.sh "$DOCS_DIR"
 
-for html in *.html; do
-    if [ -f "$html" ]; then
-        echo "  Copying $html..."
-        cp "$html" "$DOCS_DIR/slides/"
+# Strip speaker notes from the assembled copy only. The rendered HTML next to
+# each qmd keeps its notes -- that copy is the presenter view, and it is
+# gitignored. CI strips in place because nothing there needs the notes.
+echo
+echo "=== Stripping speaker notes from the assembled copy ==="
+find "$DOCS_DIR/slides" -name '*.html' -exec \
+  python3 "$REPO_ROOT/scripts/strip_speaker_notes.py" {} \;
 
-        # Copy associated _files directory if it exists
-        files_dir="${html%.html}_files"
-        if [ -d "$files_dir" ]; then
-            echo "  Copying $files_dir/..."
-            rm -rf "$DOCS_DIR/slides/$files_dir"
-            cp -r "$files_dir" "$DOCS_DIR/slides/"
-        fi
-    fi
-done
+echo
+echo "=== Checking every referenced asset made it ==="
+python3 scripts/check_site_assets.py "$DOCS_DIR"
 
-# 2b. Strip speaker notes from deployed HTML (keep notes local-only)
-echo "Stripping speaker notes from public HTML..."
-python3 "$REPO_ROOT/scripts/strip_speaker_notes.py" "$DOCS_DIR/slides/"*.html
-
-# 2c. Sync Quarto fonts to docs/slides/fonts/
-echo "Syncing Quarto fonts..."
-if [ -d "$QUARTO_DIR/fonts" ]; then
-    mkdir -p "$DOCS_DIR/slides/fonts"
-    cp "$QUARTO_DIR/fonts/"* "$DOCS_DIR/slides/fonts/"
-    echo "  Copied $(ls "$QUARTO_DIR/fonts/" | wc -l | tr -d ' ') font files"
-fi
-
-# 3. Sync Beamer PDFs to docs/slides/
-echo "Syncing Beamer PDFs..."
-for pdf in "$REPO_ROOT/Slides/"*.pdf; do
-    if [ -f "$pdf" ]; then
-        echo "  Copying $(basename "$pdf")..."
-        cp "$pdf" "$DOCS_DIR/slides/"
-    fi
-done
-
-# 4. Sync R scripts to docs/files/code/
-echo "Syncing R scripts..."
-mkdir -p "$DOCS_DIR/files/code"
-for rscript in "$REPO_ROOT/scripts/R/"*.R; do
-    if [ -f "$rscript" ]; then
-        echo "  Copying $(basename "$rscript")..."
-        cp "$rscript" "$DOCS_DIR/files/code/"
-    fi
-done
-
-# 5. Sync Figures directory (using rsync for efficiency)
-echo "Syncing Figures/..."
-if command -v rsync &> /dev/null; then
-    rsync -av --delete "$REPO_ROOT/Figures/" "$DOCS_DIR/Figures/"
-else
-    rm -rf "$DOCS_DIR/Figures"
-    cp -r "$REPO_ROOT/Figures" "$DOCS_DIR/Figures"
-fi
-
-echo ""
-echo "=== Sync complete! ==="
-echo "Files synced to: $DOCS_DIR/slides/"
+echo
+echo "=== Sync complete ==="
+echo "Open: $DOCS_DIR/slides/"

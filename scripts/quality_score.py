@@ -6,9 +6,9 @@ Calculates objective quality scores (0-100) based on defined rubrics.
 Enforces quality gates: 80 (commit), 90 (PR), 95 (excellence).
 
 Usage:
-    python scripts/quality_score.py Quarto/DreamZero.qmd
-    python scripts/quality_score.py Quarto/DreamZero.qmd --summary
-    python scripts/quality_score.py Quarto/*.qmd
+    python scripts/quality_score.py Quarto/papers/DreamZero.qmd
+    python scripts/quality_score.py Quarto/papers/DreamZero.qmd --summary
+    python scripts/quality_score.py Quarto/*/*.qmd
     python scripts/quality_score.py Slides/DreamZero.tex
     python scripts/quality_score.py scripts/R/analysis.R
 """
@@ -20,6 +20,15 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 import re
 import json
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+# Anchored to the repo, not counted back from the deck. This used to be
+# `filepath.parent.parent`, which was right only while every deck sat at the
+# Quarto root; once decks moved to Quarto/<genre>/ it resolved to
+# Quarto/Bibliography_base.bib, the file was not there, and every citation in
+# the deck was reported broken -- a 100/100 deck scored 0 without a single
+# character of it having changed.
+BIB_FILE = REPO_ROOT / 'Bibliography_base.bib'
 
 # ==============================================================================
 # SCORING RUBRIC (from .claude/rules/quality-gates.md)
@@ -728,7 +737,7 @@ class QualityScorer:
             self.score -= 20
 
         # Check broken citations (LaTeX-style \cite patterns)
-        bib_file = self.filepath.parent.parent / 'Bibliography_base.bib'
+        bib_file = BIB_FILE
         broken_citations = IssueDetector.check_broken_citations(content, bib_file)
 
         # Also check Quarto-style @key citations
@@ -848,7 +857,7 @@ class QualityScorer:
             return self._generate_report()
 
         # Check for undefined/broken citations (\cite, \citep, \citet patterns)
-        bib_file = self.filepath.parent.parent / 'Bibliography_base.bib'
+        bib_file = BIB_FILE
         if not bib_file.exists():
             # Also check same directory
             bib_file = self.filepath.parent / 'Bibliography_base.bib'
@@ -1016,10 +1025,10 @@ def main():
         epilog="""
 Examples:
   # Score a single Quarto file
-  python scripts/quality_score.py Quarto/DreamZero.qmd
+  python scripts/quality_score.py Quarto/papers/DreamZero.qmd
 
   # Score multiple files
-  python scripts/quality_score.py Quarto/*.qmd
+  python scripts/quality_score.py Quarto/*/*.qmd
 
   # Score a Beamer/LaTeX file
   python scripts/quality_score.py Slides/DreamZero.tex
@@ -1028,10 +1037,10 @@ Examples:
   python scripts/quality_score.py scripts/R/analysis.R
 
   # Summary only (no detailed issues)
-  python scripts/quality_score.py Quarto/DreamZero.qmd --summary
+  python scripts/quality_score.py Quarto/papers/DreamZero.qmd --summary
 
   # Verbose output (include minor issues)
-  python scripts/quality_score.py Quarto/DreamZero.qmd --verbose
+  python scripts/quality_score.py Quarto/papers/DreamZero.qmd --verbose
 
 Quality Thresholds:
   80/100 = Commit threshold (blocks if below)
