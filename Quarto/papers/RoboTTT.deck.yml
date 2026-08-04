@@ -1,0 +1,15 @@
+# Backfilled for a deck that predates /new-deck. The profile matches what the
+# genre default already resolved to, so nothing about how it is graded changes.
+profile: paper-review
+title: "RoboTTT"
+description: "Scaling Context Length for Robot Policies with Test-Time Training (NVIDIA GEAR, Stanford, UT Austin)"
+
+audience:
+  assumes: practitioner
+duration_min: 30
+delivery: in-person
+publish: web
+
+language:
+  slides: en
+  notes: ko

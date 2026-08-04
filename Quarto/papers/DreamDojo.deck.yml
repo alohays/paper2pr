@@ -1,0 +1,15 @@
+# Backfilled for a deck that predates /new-deck. The profile matches what the
+# genre default already resolved to, so nothing about how it is graded changes.
+profile: paper-review
+title: "DreamDojo"
+description: "A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA)"
+
+audience:
+  assumes: practitioner
+duration_min: 30
+delivery: in-person
+publish: web
+
+language:
+  slides: en
+  notes: ko

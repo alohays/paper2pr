@@ -23,7 +23,10 @@ GENRES=$(grep -vE '^\s*(#|$)' Quarto/_genres.txt | tr '\n' ' ')
 rm -rf "$OUT"
 mkdir -p "$OUT/slides" "$OUT/Figures" "$OUT/files/code"
 
-# Landing page
+# Landing page, regenerated from the decks that exist right now. The committed
+# copy is there so it can be opened locally; this line is what guarantees the
+# published one is never stale, whatever state the committed copy is in.
+python3 scripts/build_landing.py >/dev/null
 cp pages/index.html "$OUT/"
 touch "$OUT/.nojekyll"
 

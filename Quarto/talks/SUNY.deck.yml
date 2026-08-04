@@ -1,0 +1,16 @@
+# Backfilled for a deck that predates /new-deck. The profile matches what the
+# genre default already resolved to, so nothing about how it is graded changes.
+profile: invited-talk
+title: "SUNY Korea Keynote"
+description: "Career Roadmap for AI Researchers (April 2026)"
+
+audience:
+  assumes: none
+  description: "Undergraduates deciding whether to go into research at all."
+duration_min: 45
+delivery: in-person
+publish: web
+
+language:
+  slides: en
+  notes: ko

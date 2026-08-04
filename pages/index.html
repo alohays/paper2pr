@@ -15,47 +15,73 @@
       background: #fff;
     }
     h1 { font-size: 2em; margin-bottom: 0.2em; }
+    h2 { font-size: 1.25em; margin-top: 2.2em; margin-bottom: 0.1em; }
     .subtitle { color: #666; font-size: 1.1em; margin-bottom: 2em; }
-    table { width: 100%; border-collapse: collapse; margin: 1.5em 0; }
+    .section-note { color: #888; font-size: 0.9em; margin: 0 0 0.6em; }
+    table { width: 100%; border-collapse: collapse; margin: 0.6em 0 0; }
     th, td { text-align: left; padding: 0.6em 0.8em; border-bottom: 1px solid #eee; }
     th { font-weight: 600; border-bottom: 2px solid #ddd; }
+    td.name { white-space: nowrap; font-weight: 600; }
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    .empty { color: #999; font-style: italic; margin: 0.4em 0 0; }
     .footer { margin-top: 3em; padding-top: 1.5em; border-top: 1px solid #eee; color: #888; font-size: 0.9em; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #111; color: #e6e6e6; }
+      th { border-bottom-color: #333; }
+      td, th { border-bottom-color: #262626; }
+      .subtitle, .section-note, .footer, .empty { color: #999; }
+      a { color: #6cb6ff; }
+    }
   </style>
 </head>
 <body>
   <h1>Paper2PR</h1>
-  <p class="subtitle">AI/ML Paper Review Presentations</p>
+  <p class="subtitle">Slide decks by Yunsung Lee — paper reviews, talks, and lectures.</p>
 
-  <h2>Slides</h2>
+  <h2>Paper reviews</h2>
+  <p class="section-note">Reading one paper closely and saying whether it holds.</p>
   <table>
     <thead>
-      <tr><th>Paper</th><th>Topic</th><th>Slides</th></tr>
+      <tr><th>Deck</th><th>Topic</th><th>Slides</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td>DreamZero</td>
-        <td>World Action Models as Zero-shot Policies (NVIDIA)</td>
-        <td><a href="slides/DreamZero.html">View</a></td>
-      </tr>
-      <tr>
-        <td>DreamDojo</td>
+        <td class="name">DreamDojo</td>
         <td>A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA)</td>
-        <td><a href="slides/DreamDojo.html">View</a></td>
+        <td><a href="slides/papers/DreamDojo.html">View</a></td>
       </tr>
       <tr>
-        <td>SUNY</td>
-        <td>Career Roadmap for AI Researchers (SUNY Korea Keynote, April 2026)</td>
-        <td><a href="slides/SUNY.html">View</a></td>
+        <td class="name">DreamZero</td>
+        <td>World Action Models as Zero-shot Policies (NVIDIA)</td>
+        <td><a href="slides/papers/DreamZero.html">View</a></td>
       </tr>
       <tr>
-        <td>RoboTTT</td>
+        <td class="name">RoboTTT</td>
         <td>Scaling Context Length for Robot Policies with Test-Time Training (NVIDIA GEAR, Stanford, UT Austin)</td>
-        <td><a href="slides/RoboTTT.html">View</a></td>
+        <td><a href="slides/papers/RoboTTT.html">View</a></td>
       </tr>
     </tbody>
   </table>
+
+  <h2>Talks</h2>
+  <p class="section-note">Invited and keynote.</p>
+  <table>
+    <thead>
+      <tr><th>Deck</th><th>Topic</th><th>Slides</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="name">SUNY Korea Keynote</td>
+        <td>Career Roadmap for AI Researchers (April 2026)</td>
+        <td><a href="slides/talks/SUNY.html">View</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Lectures</h2>
+  <p class="section-note">Course sessions, taught as a series.</p>
+  <p class="empty">Nothing here yet.</p>
 
   <div class="footer">
     <p>
