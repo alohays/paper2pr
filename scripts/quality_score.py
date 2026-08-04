@@ -234,6 +234,9 @@ class IssueDetector:
         'AI', 'PC', 'USB', 'GPS', 'CPU', 'GPU', 'PDF', 'URL', 'HTML', 'API',
         '2D', '3D', 'ID', 'TV', 'OK', 'CEO', 'IT', 'DNA', 'LED', 'US', 'UK',
         'KAIST', 'DGIST', 'MIT', 'Q', 'A', 'QA',
+        # Editorial placeholders. All-caps and the right length, so the
+        # acronym matcher happily flagged the TODO in its own scaffold.
+        'TODO', 'FIXME', 'XXX', 'NOTE', 'WIP', 'TBD', 'TBA',
     }
     ACRONYM_RE = re.compile(r'\b([A-Z][A-Z0-9]{1,7})\b')
 

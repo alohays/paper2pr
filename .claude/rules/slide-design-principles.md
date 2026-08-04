@@ -97,16 +97,20 @@ The theme does all of this automatically. Escape hatches:
 
 ## Required YAML for new decks
 
+Decks live at `Quarto/<genre>/<name>.qmd`, so the shared theme is one level
+up. `/new-deck` writes this for you.
+
 ```yaml
 format:
   revealjs:
-    theme: [default, clean-academic.scss]
+    theme: [default, ../clean-academic.scss]
     width: 1280
     height: 720
     center: false          # theme handles centering; keep titles pinned
     auto-stretch: false    # r-stretch fights the centered flex layout
     html-math-method:
       method: katex
+bibliography: ../../Bibliography_base.bib
 ```
 
 ## Review priority (split-first, replaces spacing-first)
