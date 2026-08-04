@@ -13,6 +13,21 @@ content decisions the theme cannot make for you.
 Legacy decks pinned to `clean-academic-legacy.scss` (DreamZero, DreamDojo,
 RoboTTT) and SUNY's own theme are exempt — do not retrofit them.
 
+> **This file is the shared core. The numbers below are the paper-review
+> defaults.** What actually applies to a given deck comes from its profile in
+> `.claude/rules/slide-profiles/<profile>.yml` — `paper-review`, `lecture`, or
+> `invited-talk` — which sets the bullet budget and turns on genre-specific
+> checks. A deck picks its profile in `<deck>.deck.yml`, and a deck without
+> one inherits its genre's default.
+>
+> The three principles here do not vary by genre. The budgets do, because the
+> budgets follow from who is in the room and how long you have. A lecture for
+> first-years gets four bullets, not five, and owes every acronym an
+> expansion; a paper review owes neither. Run
+> `python3 scripts/deckprofile.py <deck>` to see what a deck is actually held
+> to, and `python3 scripts/test_profiles.py` to confirm the profiles still
+> grade differently from each other.
+
 ---
 
 ## 1. Extreme Minimalism — one idea per slide

@@ -1,0 +1,45 @@
+profile: lecture
+label: Course lecture
+genre_default: lectures
+
+audience:
+  assumes: none              # none | practitioner | expert
+  description: >
+    First- and second-year undergraduates, most of them not majoring in
+    anything adjacent. They have seen AI in the news. They have not seen a
+    loss curve. Nothing carries over from a previous course, only from your
+    own previous session.
+duration_min: 60
+
+bullets:
+  # One fewer than a paper review at the same slide size. The room is twice
+  # as long but the per-slide budget is tighter, not looser: a slide has to
+  # survive being read by someone who cannot fill the gaps from background.
+  max_per_slide: 4
+  max_with_figure: 3
+  max_two_line: 1
+
+checks:
+  font_shrink: forbid
+  box_density: 1
+  max_nesting: 1
+  # Lecture-only. Both are mechanically checkable and both are what a
+  # sixteen-week course for non-majors actually lives or dies on.
+  expand_acronyms: true
+  prior_session_callback: true
+
+guidance: |
+  Every acronym gets expanded the first time it appears on a slide, with the
+  Korean gloss in the speaker notes rather than on the slide. VLA is
+  "Vision-Language-Action (VLA)" once, then VLA forever after.
+
+  Open by connecting to the previous session. Students who missed a week
+  need a way back in, and students who did not need the thread. One slide,
+  near the top, that names where the last session ended.
+
+  The reliable move for this audience is "you already know X, and this is X
+  reused": diffusion they have seen making images is the same machinery
+  generating actions. Reach for that before reaching for a new abstraction.
+
+  Readings are optional depth, never required. Say so on the slide, or half
+  the room will assume they are behind.

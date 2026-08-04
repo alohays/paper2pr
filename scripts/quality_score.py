@@ -21,6 +21,9 @@ from typing import Dict, List, Tuple
 import re
 import json
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import deckprofile  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 # Anchored to the repo, not counted back from the deck. This used to be
 # `filepath.parent.parent`, which was right only while every deck sat at the
@@ -49,6 +52,8 @@ QUARTO_RUBRIC = {
         'bullet_density': {'points': 3},       # >5 bullets, or >3 with a figure (new decks)
         'box_density': {'points': 3},          # >1 colored box per slide (new decks)
         'notation_inconsistency': {'points': 3},
+        'unexpanded_acronym': {'points': 2},        # lecture profile only
+        'missing_prior_session_callback': {'points': 3},  # lecture profile only
         'missing_box_separation': {'points': 2},
         'color_contrast_low': {'points': 3},
     },
@@ -221,6 +226,91 @@ class IssueDetector:
 
         broken = cited_keys - bib_keys
         return list(broken)
+
+    # Acronyms a first-year undergraduate meets outside this course anyway.
+    # Everything else has to be spelled out once. Keep this list short -- the
+    # whole point of the check is that "obvious to me" is not the standard.
+    COMMON_ACRONYMS = {
+        'AI', 'PC', 'USB', 'GPS', 'CPU', 'GPU', 'PDF', 'URL', 'HTML', 'API',
+        '2D', '3D', 'ID', 'TV', 'OK', 'CEO', 'IT', 'DNA', 'LED', 'US', 'UK',
+        'KAIST', 'DGIST', 'MIT', 'Q', 'A', 'QA',
+    }
+    ACRONYM_RE = re.compile(r'\b([A-Z][A-Z0-9]{1,7})\b')
+
+    @staticmethod
+    def check_acronym_expansion(content: str) -> List[Dict]:
+        """Every acronym expanded the first time it appears on a slide.
+
+        Lecture profile only. An audience with no background cannot recover
+        from a term it never saw defined, and the author is the last person
+        able to notice which ones those are -- by the time you write the deck
+        every acronym in it feels obvious.
+
+        An acronym counts as expanded if the words appear next to it in
+        either order: "Vision-Language-Action (VLA)" or "VLA (Vision-Language
+        -Action)". Only the FIRST appearance is checked; after that it is
+        shorthand, which is the point.
+        """
+        violations = []
+        seen = set()
+        for title, start, vis in IssueDetector.iter_slides(content):
+            for line_no, text in vis:
+                stripped = IssueDetector.strip_inline(text)
+                for acr in IssueDetector.ACRONYM_RE.findall(stripped):
+                    if acr in IssueDetector.COMMON_ACRONYMS or acr in seen:
+                        continue
+                    seen.add(acr)
+                    expanded = (
+                        re.search(r'[A-Za-z][\w-]*[\s-][^()]*\(\s*%s\s*\)' % acr,
+                                  stripped)
+                        or re.search(r'\b%s\s*\([^)]*[A-Za-z]{3}[^)]*\)' % acr,
+                                     stripped)
+                    )
+                    if not expanded:
+                        violations.append({
+                            'type': 'unexpanded_acronym', 'slide': title,
+                            'line': line_no,
+                            'detail': f'"{acr}" appears first here without an '
+                                      f'expansion - write it out once, e.g. '
+                                      f'"... ({acr})"',
+                        })
+        return violations
+
+    RECALL_RE = re.compile(
+        r'\.recap\b'
+        r'|last (session|week|time|lecture)'
+        r'|previous(ly| session| week| lecture)'
+        r'|where we (left off|stopped|ended)'
+        r'|recap|so far',
+        re.I)
+
+    @staticmethod
+    def check_prior_session_callback(content: str) -> List[Dict]:
+        """A lecture opens by reconnecting to the session before it.
+
+        Lecture profile only, and only from the second session onward -- a
+        deck that declares itself first in the series is exempt via
+        `series_index: 1` in its config.
+
+        Students who missed a week need a way back in and the ones who did
+        not need the thread picked up. One slide near the top is enough; this
+        looks at the first three.
+        """
+        slides = list(IssueDetector.iter_slides(content))
+        if not slides:
+            return []
+        head = slides[:3]
+        for title, start, vis in head:
+            blob = title + ' ' + ' '.join(t for _, t in vis)
+            if IssueDetector.RECALL_RE.search(blob):
+                return []
+        return [{
+            'type': 'missing_prior_session_callback',
+            'slide': head[0][0], 'line': head[0][1],
+            'detail': 'no callback to the previous session in the first three '
+                      'slides - name where the last one ended, or set '
+                      'series_index: 1 in the deck config if this is the first',
+        }]
 
     @staticmethod
     def get_deck_theme(content: str) -> str:
@@ -430,7 +520,7 @@ class IssueDetector:
         return bullets
 
     @staticmethod
-    def check_design_density(content: str) -> List[Dict]:
+    def check_design_density(content: str, profile=None) -> List[Dict]:
         """Density-budget violations per slide (main-theme decks only).
 
         Enforces .claude/rules/slide-design-principles.md:
@@ -468,7 +558,8 @@ class IssueDetector:
                         if IssueDetector.ONE_LINE_CHARS < n <= IssueDetector.TWO_LINE_CHARS]
             over_two = [n for n in lengths if n > IssueDetector.TWO_LINE_CHARS]
 
-            base = 3 if has_figure else 5
+            base = (profile.bullets_max_with_figure if has_figure
+                    else profile.bullets_max) if profile else (3 if has_figure else 5)
             limit = base - 1 if two_line else base
 
             if not has_tabset and top_bullets > limit:
@@ -479,10 +570,11 @@ class IssueDetector:
                     'type': 'bullet_density', 'slide': title, 'line': start,
                     'detail': f'{top_bullets} bullets ({why}) — split the slide',
                 })
-            if not has_tabset and len(two_line) > 1:
+            two_line_limit = profile.bullets_max_two_line if profile else 1
+            if not has_tabset and len(two_line) > two_line_limit:
                 violations.append({
                     'type': 'bullet_density', 'slide': title, 'line': start,
-                    'detail': f'{len(two_line)} bullets wrap to two lines (limit 1) '
+                    'detail': f'{len(two_line)} bullets wrap to two lines (limit {two_line_limit}) '
                               f'— tighten them to one line or split the slide',
                 })
             if not has_tabset and over_two:
@@ -492,10 +584,11 @@ class IssueDetector:
                               f'({max(over_two)} chars; two lines end at '
                               f'{IssueDetector.TWO_LINE_CHARS}) — split the slide',
                 })
-            if boxes > 1:
+            box_limit = profile.box_density if profile else 1
+            if boxes > box_limit:
                 violations.append({
                     'type': 'box_density', 'slide': title, 'line': start,
-                    'detail': f'{boxes} colored boxes (limit 1)',
+                    'detail': f'{boxes} colored boxes (limit {box_limit})',
                 })
             if deep_nested:
                 violations.append({
@@ -712,6 +805,13 @@ class QualityScorer:
         """Score Quarto lecture slides."""
         content = self.filepath.read_text(encoding='utf-8')
 
+        # The deck's profile decides the density budget and which extra
+        # checks apply. A deck with no config resolves to its genre's
+        # default profile, and a file outside Quarto/<genre>/ gets None --
+        # in which case every limit falls back to what it was before
+        # profiles existed.
+        profile = deckprofile.load_for_path(self.filepath)
+
         # Check compilation
         compiles, error = IssueDetector.check_quarto_compilation(self.filepath)
         if not compiles:
@@ -765,7 +865,7 @@ class QualityScorer:
                     'points': 5
                 })
                 self.score -= 5
-            for v in IssueDetector.check_design_density(content):
+            for v in IssueDetector.check_design_density(content, profile):
                 severity = 'minor' if v['type'] == 'deep_nesting' else 'major'
                 points = 1 if v['type'] == 'deep_nesting' else 3
                 self.issues[severity].append({
@@ -775,6 +875,30 @@ class QualityScorer:
                     'points': points
                 })
                 self.score -= points
+
+        # Profile-gated checks. These are off for a paper review by
+        # design: an audience that already knows the notation does not need
+        # every acronym spelled out, and a one-off talk has no previous
+        # session to call back to.
+        if profile and profile.expand_acronyms:
+            for v in IssueDetector.check_acronym_expansion(content):
+                self.issues['major'].append({
+                    'type': v['type'],
+                    'description': f"Unexpanded acronym on slide \"{v['slide']}\" (line {v['line']})",
+                    'details': v['detail'],
+                    'points': 2
+                })
+                self.score -= 2
+        if (profile and profile.prior_session_callback
+                and int(profile.raw.get('series_index', 0)) != 1):
+            for v in IssueDetector.check_prior_session_callback(content):
+                self.issues['major'].append({
+                    'type': v['type'],
+                    'description': f"No callback to the previous session (line {v['line']})",
+                    'details': v['detail'],
+                    'points': 3
+                })
+                self.score -= 3
 
         # Check plotly widgets (if HTML exists)
         html_file = self.filepath.parent.parent / 'docs' / 'slides' / self.filepath.with_suffix('.html').name

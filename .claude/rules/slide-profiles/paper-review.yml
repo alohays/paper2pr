@@ -1,0 +1,40 @@
+profile: paper-review
+label: Paper review
+genre_default: papers
+
+# Who is in the room and how long you have. Everything below follows from
+# these two lines; change them and the numbers should change with them.
+audience:
+  assumes: practitioner      # none | practitioner | expert
+  description: >
+    Working ML people. They know what a transformer is, what a loss curve
+    means, and why a baseline matters. You are not teaching the field, you
+    are arguing about one paper inside it.
+duration_min: 30
+
+bullets:
+  max_per_slide: 5
+  max_with_figure: 3
+  # A bullet that wraps costs a slot, and only one may wrap. The written
+  # budget did not fit the frame: five two-line bullets overflow the 720px
+  # canvas by 38px and get clipped while scoring 100.
+  max_two_line: 1
+
+checks:
+  font_shrink: forbid        # .smaller/.smallest and font-size overrides
+  box_density: 1
+  max_nesting: 1
+  expand_acronyms: false     # the audience already knows them
+  prior_session_callback: false
+
+guidance: |
+  Structure that works here: what problem, what was tried before, what this
+  paper does differently, does the evidence hold, what it means for us.
+
+  Assume the notation. Spell out only what this specific paper invented.
+  Personal read matters more than coverage -- the audience can read the
+  abstract themselves, so the value you add is judgment about whether the
+  result is real and whether it changes anything.
+
+  When official code exists, say something implementation-level. That is
+  usually the part nobody else in the room has looked at.
