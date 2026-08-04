@@ -1,8 +1,8 @@
 ---
 name: new-deck
-description: Interview the presenter about a new deck's premises, then scaffold it. Use when starting any new slide deck - paper review, invited talk, or course lecture.
+description: Start a new slide deck - paper review, invited talk, or course lecture. Interviews the presenter about the deck's premises, scaffolds it, and carries the authoring workflow through to the quality gate. This is the single entry point for creating a deck.
 argument-hint: "[rough topic or deck name]"
-allowed-tools: ["Read", "Bash", "AskUserQuestion"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Agent", "AskUserQuestion"]
 ---
 
 # Start a new deck
@@ -77,18 +77,63 @@ Or pass the whole answer set as JSON on stdin with `--from-answers -`.
 It refuses to overwrite an existing file and refuses a name already taken in
 another genre. Both are hard errors, not prompts.
 
-## 4. Hand off
+## 4. Write the deck
 
-Tell the user what to run next:
+The scaffold is two slides and a config. Authoring is the rest, and it is a
+collaborative, iterative process: **the presenter drives the vision, you are a
+thinking partner.** Work in batches of 5-10 slides and share each batch for
+feedback — do not bulk-dump a finished deck.
+
+Read first, in this order:
+
+- `.claude/rules/slide-design-principles.md` — the shared core
+- `.claude/rules/slide-profiles/<profile>.yml` — this deck's budget *and* its
+  prose guidance; the numbers there are the ones the gate enforces
+- previous decks in the same genre, and for a lecture series, where the last
+  session ended
+
+Non-negotiable while drafting, whatever the genre:
+
+1. **Motivation before formalism.** No exceptions.
+2. **A worked example within two slides of every definition.**
+3. **Check every new symbol against the notation already in use** in the
+   series, so the same thing does not get two names across sessions.
+4. **Transition slides at major conceptual pivots.**
+5. **Density budget on every slide as you write it**, from the profile — not
+   from memory, and not from another genre's numbers.
+6. **Never shrink fonts to fit.** Split the slide instead. `.smaller` and
+   `.smallest` are worth -5 each at the gate.
+7. **Every citation resolves** against `Bibliography_base.bib`.
+
+Figures: R scripts follow `.claude/rules/r-code-conventions.md`; TikZ diagrams
+go in `Figures/<genre>/<name>/extract_tikz.tex` and export through
+`/extract-tikz`.
+
+## 5. Verify before calling it done
 
 ```bash
-bash scripts/preview.sh <name>
-python3 scripts/quality_score.py Quarto/<genre>/<name>.qmd --summary
+bash scripts/preview.sh <name>            # walk every slide in a browser
+python3 scripts/quality_score.py "$(python3 scripts/deckpath.py <name> --field qmd)" --summary
 ```
 
-Then read `.claude/rules/slide-design-principles.md` for the shared core and
-`.claude/rules/slide-profiles/<profile>.yml` for what this deck specifically
-owes — the profile carries genre guidance alongside its numbers.
+Rendering is not verification. Overflow does not raise, and the gate cannot
+see a slide that is technically legal and pedagogically empty. Walk it.
+
+```
+[ ] Renders without errors
+[ ] No slide overflows at 1280x720
+[ ] All citations resolve
+[ ] Every definition has motivation + a worked example
+[ ] Density budget respected -- the profile's numbers, not five by habit
+[ ] No .smaller/.smallest anywhere
+[ ] Transition slides between sections
+[ ] Score >= 80 to commit, >= 90 to ship
+[ ] /devils-advocate run
+```
+
+For a lecture, additionally: every acronym expanded on first appearance, and
+an opening slide that names where the previous session ended. The gate checks
+both, but only for decks on the `lecture` profile.
 
 ## Changing the premises later
 

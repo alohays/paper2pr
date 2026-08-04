@@ -48,7 +48,7 @@ cd Quarto && quarto render DreamZero.qmd
 claude
 ```
 
-Then use skills like `/create-lecture`, `/translate-to-quarto`, `/slide-excellence`, `/deploy`.
+Then use skills like `/new-deck`, `/write-speaker-notes`, `/slide-excellence`, `/deploy`.
 
 ---
 
@@ -89,7 +89,7 @@ This project uses a multi-agent Claude Code workflow:
 
 | Command | What It Does |
 |---------|-------------|
-| `/create-lecture` | Full lecture creation from paper |
+| `/new-deck` | Interview, scaffold, and author a new deck |
 | `/translate-to-quarto` | Beamer → Quarto translation |
 | `/slide-excellence` | Combined multi-agent review |
 | `/compile-latex` | 3-pass XeLaTeX + bibtex |

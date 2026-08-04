@@ -614,7 +614,7 @@ argument-hint: "[filename without .tex extension]"
 | `/proofread` | Grammar and consistency check | Before every commit |
 | `/qa-quarto` | Adversarial Quarto QA | After translating Beamer to Quarto |
 | `/slide-excellence` | Full multi-agent review | Before major milestones |
-| `/create-lecture` | New lecture from scratch | Starting a new topic |
+| `/new-deck` | New deck of any genre | Starting a paper review, talk, or lecture |
 | `/commit` | Stage, commit, PR, merge | After any completed task |
 
 ## Agents --- Specialized Reviewers
@@ -1016,7 +1016,7 @@ The orchestrator does NOT replace skills. It coordinates them:
 
 - `/qa-quarto` remains available as a standalone adversarial QA loop
 - `/slide-excellence` remains available for comprehensive multi-agent review
-- `/create-lecture` remains available as a guided creation workflow
+- `/new-deck` remains available as a guided creation workflow
 
 The difference: when you invoke a skill directly, it runs its specific workflow. When the orchestrator is active, it decides which agents to invoke based on context. The orchestrator is the default; skills are for targeted use.
 
@@ -1030,25 +1030,29 @@ The difference: when you invoke a skill directly, it runs its specific workflow.
 Both are valid. The orchestrator is the "I trust you, handle it" path. Skills are the "I know exactly what I want" path.
 :::
 
-## Pattern 3: Creating a New Lecture {#pattern-3-creating-a-new-lecture}
+## Pattern 3: Creating a New Deck {#pattern-3-creating-a-new-lecture}
 
-The `/create-lecture` skill guides you through a structured lecture creation workflow --- from gathering source material to deploying polished slides:
+`/new-deck` is the single entry point for every genre --- paper review, invited talk, or course lecture. It starts by asking what the deck is for, because the quality gate cannot enforce a budget nobody declared:
 
 ```
-/create-lecture
+/new-deck
   |
-  +-- Phase 1: Gather materials (papers, outlines)
-  +-- Phase 2: Design slide structure
-  +-- Phase 3: Draft Beamer slides
-  +-- Phase 4: Generate R figures
+  +-- Phase 1: Interview --- genre, audience, duration, series position,
+  |            language, delivery, publication
+  +-- Phase 2: Scaffold --- <deck>.deck.yml + qmd stub + Figures dir
+  |            (dry-run the config first; it is what the deck is graded on)
+  +-- Phase 3: Author in batches of 5-10 slides, against the profile's
+  |            budget rather than a remembered one
+  +-- Phase 4: Figures (R scripts, /extract-tikz)
   +-- Phase 5: Polish and verify
   |     +-- /slide-excellence (domain + visual + pedagogy)
   |     +-- /proofread (grammar/typos)
   |     +-- /visual-audit (layout)
   +-- Phase 6: Deploy
-        +-- /translate-to-quarto (optional)
         +-- /deploy
 ```
+
+Decks authored before genres existed were created with `/create-lecture`, which assumed one audience and one length for everything and wrote to a flat `Quarto/`. It was retired once the repo started carrying three genres; `/new-deck` covers what it did.
 
 ## Pattern 4: Translating Beamer to Quarto {#pattern-4-translating-beamer-to-quarto}
 
@@ -1914,7 +1918,7 @@ For capabilities beyond file editing and shell commands --- web search during li
 | `/translate-to-quarto` | `.claude/skills/translate-to-quarto/` | Beamer to Quarto translation |
 | `/validate-bib` | `.claude/skills/validate-bib/` | Bibliography validation |
 | `/devils-advocate` | `.claude/skills/devils-advocate/` | Design challenge questions |
-| `/create-lecture` | `.claude/skills/create-lecture/` | Full lecture creation |
+| `/new-deck` | `.claude/skills/new-deck/` | Interview, scaffold, and author a deck |
 | `/commit` | `.claude/skills/commit/` | Stage, commit, PR, and merge |
 | `/lit-review` | `.claude/skills/lit-review/` | Literature search and synthesis |
 | `/research-ideation` | `.claude/skills/research-ideation/` | Research questions and strategies |

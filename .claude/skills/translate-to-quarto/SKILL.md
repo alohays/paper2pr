@@ -1,6 +1,6 @@
 ---
 name: translate-to-quarto
-description: "LEGACY IMPORT — translate an existing Beamer LaTeX deck to Quarto RevealJS. New decks are authored directly in Quarto (see /create-lecture); use this only to import a pre-existing .tex deck."
+description: "LEGACY IMPORT — translate an existing Beamer LaTeX deck to Quarto RevealJS. New decks are authored directly in Quarto (see /new-deck); use this only to import a pre-existing .tex deck."
 argument-hint: "[PaperName.tex]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 context: fork

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -2434,7 +2434,7 @@ window.Quarto = {
   <li><a href="#just-do-it-mode" id="toc-just-do-it-mode" class="nav-link" data-scroll-target="#just-do-it-mode"><span class="header-section-number">5.2.4</span> “Just Do It” Mode</a></li>
   <li><a href="#relationship-to-existing-skills" id="toc-relationship-to-existing-skills" class="nav-link" data-scroll-target="#relationship-to-existing-skills"><span class="header-section-number">5.2.5</span> Relationship to Existing Skills</a></li>
   </ul></li>
-  <li><a href="#pattern-3-creating-a-new-lecture" id="toc-pattern-3-creating-a-new-lecture" class="nav-link" data-scroll-target="#pattern-3-creating-a-new-lecture"><span class="header-section-number">5.3</span> Pattern 3: Creating a New Lecture</a></li>
+  <li><a href="#pattern-3-creating-a-new-lecture" id="toc-pattern-3-creating-a-new-lecture" class="nav-link" data-scroll-target="#pattern-3-creating-a-new-lecture"><span class="header-section-number">5.3</span> Pattern 3: Creating a New Deck</a></li>
   <li><a href="#pattern-4-translating-beamer-to-quarto" id="toc-pattern-4-translating-beamer-to-quarto" class="nav-link" data-scroll-target="#pattern-4-translating-beamer-to-quarto"><span class="header-section-number">5.4</span> Pattern 4: Translating Beamer to Quarto</a></li>
   <li><a href="#pattern-5-replication-first-coding" id="toc-pattern-5-replication-first-coding" class="nav-link" data-scroll-target="#pattern-5-replication-first-coding"><span class="header-section-number">5.5</span> Pattern 5: Replication-First Coding</a></li>
   <li><a href="#pattern-6-multi-agent-review" id="toc-pattern-6-multi-agent-review" class="nav-link" data-scroll-target="#pattern-6-multi-agent-review"><span class="header-section-number">5.6</span> Pattern 6: Multi-Agent Review</a></li>
@@ -2537,7 +2537,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 28, 2026</p>
+      <p class="date-modified">August 4, 2026</p>
     </div>
   </div>
     
@@ -3377,9 +3377,9 @@ APPROVED   NEEDS WORK
 <td>Before major milestones</td>
 </tr>
 <tr class="even">
-<td><code>/create-lecture</code></td>
-<td>New lecture from scratch</td>
-<td>Starting a new topic</td>
+<td><code>/new-deck</code></td>
+<td>New deck of any genre</td>
+<td>Starting a paper review, talk, or lecture</td>
 </tr>
 <tr class="odd">
 <td><code>/commit</code></td>
@@ -3987,7 +3987,7 @@ APPROVED   NEEDS WORK
 <ul>
 <li><code>/qa-quarto</code> remains available as a standalone adversarial QA loop</li>
 <li><code>/slide-excellence</code> remains available for comprehensive multi-agent review</li>
-<li><code>/create-lecture</code> remains available as a guided creation workflow</li>
+<li><code>/new-deck</code> remains available as a guided creation workflow</li>
 </ul>
 <p>The difference: when you invoke a skill directly, it runs its specific workflow. When the orchestrator is active, it decides which agents to invoke based on context. The orchestrator is the default; skills are for targeted use.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -4011,21 +4011,24 @@ APPROVED   NEEDS WORK
 </section>
 </section>
 <section id="pattern-3-creating-a-new-lecture" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="pattern-3-creating-a-new-lecture"><span class="header-section-number">5.3</span> Pattern 3: Creating a New Lecture</h2>
-<p>The <code>/create-lecture</code> skill guides you through a structured lecture creation workflow — from gathering source material to deploying polished slides:</p>
-<pre><code>/create-lecture
+<h2 data-number="5.3" class="anchored" data-anchor-id="pattern-3-creating-a-new-lecture"><span class="header-section-number">5.3</span> Pattern 3: Creating a New Deck</h2>
+<p><code>/new-deck</code> is the single entry point for every genre — paper review, invited talk, or course lecture. It starts by asking what the deck is for, because the quality gate cannot enforce a budget nobody declared:</p>
+<pre><code>/new-deck
   |
-  +-- Phase 1: Gather materials (papers, outlines)
-  +-- Phase 2: Design slide structure
-  +-- Phase 3: Draft Beamer slides
-  +-- Phase 4: Generate R figures
+  +-- Phase 1: Interview --- genre, audience, duration, series position,
+  |            language, delivery, publication
+  +-- Phase 2: Scaffold --- &lt;deck&gt;.deck.yml + qmd stub + Figures dir
+  |            (dry-run the config first; it is what the deck is graded on)
+  +-- Phase 3: Author in batches of 5-10 slides, against the profile&#39;s
+  |            budget rather than a remembered one
+  +-- Phase 4: Figures (R scripts, /extract-tikz)
   +-- Phase 5: Polish and verify
   |     +-- /slide-excellence (domain + visual + pedagogy)
   |     +-- /proofread (grammar/typos)
   |     +-- /visual-audit (layout)
   +-- Phase 6: Deploy
-        +-- /translate-to-quarto (optional)
         +-- /deploy</code></pre>
+<p>Decks authored before genres existed were created with <code>/create-lecture</code>, which assumed one audience and one length for everything and wrote to a flat <code>Quarto/</code>. It was retired once the repo started carrying three genres; <code>/new-deck</code> covers what it did.</p>
 </section>
 <section id="pattern-4-translating-beamer-to-quarto" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="pattern-4-translating-beamer-to-quarto"><span class="header-section-number">5.4</span> Pattern 4: Translating Beamer to Quarto</h2>
@@ -5307,9 +5310,9 @@ Decision point (1-2 hours):
 <td>Design challenge questions</td>
 </tr>
 <tr class="odd">
-<td><code>/create-lecture</code></td>
-<td><code>.claude/skills/create-lecture/</code></td>
-<td>Full lecture creation</td>
+<td><code>/new-deck</code></td>
+<td><code>.claude/skills/new-deck/</code></td>
+<td>Interview, scaffold, and author a deck</td>
 </tr>
 <tr class="even">
 <td><code>/commit</code></td>

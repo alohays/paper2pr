@@ -167,7 +167,7 @@ chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
 | `/translate-to-quarto [file]` | Beamer → Quarto import (legacy decks only) |
 | `/validate-bib` | Cross-reference citations |
 | `/devils-advocate` | Challenge slide design |
-| `/create-lecture` | Full lecture creation |
+| `/new-deck [topic]` | Interview, scaffold, and author a new deck of any genre |
 | `/commit [msg]` | Stage, commit, PR, merge |
 | `/review-paper [file]` | Manuscript review |
 | `/data-analysis [dataset]` | End-to-end R data analysis workflow |
