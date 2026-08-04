@@ -64,6 +64,9 @@ DEFAULTS = {
     "language": {"slides": "en", "notes": "ko"},
 }
 
+# Top-level keys, which follow the same deck-then-profile-then-default order.
+TOP_DEFAULTS = {"duration_min": 30}
+
 
 class ConfigError(Exception):
     """A config file exists but could not be read. Never soften this."""
@@ -106,6 +109,23 @@ class DeckConfig:
             if isinstance(sec, dict) and key in sec:
                 return sec[key]
         return DEFAULTS[section][key]
+
+    def _top(self, key: str):
+        for src in (self.raw, self.profile_raw):
+            if key in src:
+                return src[key]
+        return TOP_DEFAULTS[key]
+
+    @property
+    def duration_min(self) -> int:
+        """How long the deck runs. The notes budget is derived from this, so
+        a 60-minute lecture does not inherit a 30-minute script length."""
+        try:
+            return int(self._top("duration_min"))
+        except (TypeError, ValueError):
+            raise ConfigError(
+                f"{self.deck.config}: duration_min must be a number of "
+                f"minutes, got {self._top('duration_min')!r}")
 
     @property
     def bullets_max(self) -> int:
@@ -165,6 +185,7 @@ class DeckConfig:
             "deck": self.deck.slug,
             "profile": self.profile,
             "has_config": self.has_config,
+            "duration_min": self.duration_min,
             "bullets_max": self.bullets_max,
             "bullets_max_with_figure": self.bullets_max_with_figure,
             "bullets_max_two_line": self.bullets_max_two_line,

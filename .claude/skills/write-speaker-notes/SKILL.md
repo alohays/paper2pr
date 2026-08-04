@@ -1,7 +1,7 @@
 ---
 name: write-speaker-notes
 description: Generate speaker notes (presentation script) for Quarto RevealJS slides. Supports English and Korean. Use when user asks to "write speaker notes", "add presentation script", "speaker script", "발표 스크립트", or "스피커 노트".
-argument-hint: "[PaperName] [--lang en|ko]"
+argument-hint: "[DeckName] [--lang en|ko to override the deck's config]"
 allowed-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob", "Agent"]
 ---
 
@@ -16,12 +16,39 @@ Generate a verbatim reading script for Quarto RevealJS slides. The presenter sho
 ## Phase 0: Pre-Flight Checks
 
 ### 0A. Identify Target File
-Parse the argument to find `Quarto/[PaperName].qmd`. If no argument, ask the user.
+Decks live at `Quarto/<genre>/<name>.qmd`. Resolve the argument rather than
+building a path by hand:
+
+```bash
+python3 scripts/deckpath.py [PaperName] --field qmd
+```
+
+A bare name works; `genre/name` disambiguates if two genres ever share one.
+If no argument, ask the user. `python3 scripts/deckpath.py --list` shows what
+exists.
 
 ### 0B. Language Selection
-Parse `--lang` flag. If not provided, ask the user:
-- `en` — English script (~3,000–3,500 words for 30 min, speaking rate ~130 words/min)
-- `ko` — Korean script (~8,000–8,500 chars for 30 min, speaking rate ~280 chars/min)
+The deck already declared this. Read it, do not ask:
+
+```bash
+python3 scripts/deckprofile.py [PaperName] --field notes_language
+python3 scripts/deckprofile.py [PaperName] --field duration_min 2>/dev/null
+```
+
+- `ko` — Korean script, ~280 chars/min
+- `en` — English script, ~130 words/min
+
+Multiply by the deck's `duration_min` for the budget: a 60-minute lecture in
+Korean is ~16,800 chars, not the ~8,500 that a 30-minute paper review takes.
+Deriving it from the declared duration is the point — a hardcoded budget
+silently belongs to whichever genre it was written for.
+
+`--lang` still overrides, for the one-off case where the notes are being
+written in a different language from what the deck will normally use. Say so
+explicitly when you override, so the mismatch with the config is visible.
+
+If the deck has no config (the four decks that predate `/new-deck`), fall
+back to asking the user.
 
 ### 0C. Check for Existing Notes
 Search the QMD for `::: {.notes}` blocks.
@@ -83,9 +110,15 @@ After all batches are complete:
 1. Count total script length:
    - **Korean:** count characters excluding spaces, punctuation, and markdown syntax
    - **English:** count words excluding markdown syntax
-2. Compare against target range:
-   - Korean: 8,000–8,500 chars (acceptable: 7,200–9,350, i.e., ±10%)
-   - English: 3,000–3,500 words (acceptable: 2,700–3,850, i.e., ±10%)
+2. Compare against the target derived from the deck's own `duration_min`
+   (Phase 0B), not a fixed number:
+   - Korean: `duration_min × 280` chars (±10%)
+   - English: `duration_min × 115` words (±10%)
+
+   For the 30-minute paper reviews this skill was written against that is
+   8,400 chars / 3,450 words, which is where the old fixed figures came
+   from. A 60-minute lecture is twice that, and a 20-minute conference talk
+   is a third of it.
 3. If outside acceptable range:
    - **Too long:** identify the longest notes and ask the script-writer agent to trim
    - **Too short:** identify slides with thin notes and ask for expansion
@@ -95,7 +128,7 @@ After all batches are complete:
 
 ## Phase 4: Render & Verify
 
-1. Run `cd Quarto && quarto render [PaperName].qmd`
+1. Run `quarto render "$(python3 scripts/deckpath.py [PaperName] --field qmd)"`
 2. Verify render succeeds without errors
 3. Check the HTML output for `<aside class="notes">` elements
 4. Report number of slides with notes vs total slides
@@ -133,10 +166,10 @@ Present a summary to the user including:
 ## Examples
 
 ### Example 1: First-time script generation
-**User says:** `/write-speaker-notes DreamZero --lang ko`
+**User says:** `/write-speaker-notes DreamZero`
 **Actions:**
-1. Find `Quarto/DreamZero.qmd`
-2. Set language to Korean, target 8,000–8,500 chars
+1. `deckpath.py DreamZero --field qmd` → `Quarto/papers/DreamZero.qmd`
+2. `deckprofile.py DreamZero` → notes `ko`, 30 min → target ~8,400 chars
 3. Read QMD, count slides, locate source paper
 4. Generate notes in 4-5 batches via script-writer agent
 5. Verify total char count within range
@@ -151,10 +184,20 @@ Present a summary to the user including:
 3. Generate notes only for unannotated slides
 4. Verify count and render
 
-### Example 3: Language switch
+### Example 3: One-off language override
 **User says:** "/write-speaker-notes DreamZero --lang en"
 **Actions:**
-1. If Korean notes exist, warn and ask whether to replace
-2. If replacing, remove all existing `::: {.notes}` blocks first
-3. Generate English script targeting 3,000–3,500 words
-4. Verify and render
+1. Say plainly that the deck declares `notes: ko` and this run overrides it.
+   If English is what the deck should use from now on, the fix is
+   `language.notes` in `DreamZero.deck.yml`, not repeating the flag.
+2. If Korean notes exist, warn and ask whether to replace
+3. If replacing, remove all existing `::: {.notes}` blocks first
+4. Generate English script targeting `duration_min × 115` words
+5. Verify and render
+
+### Example 4: A 60-minute lecture
+**User says:** `/write-speaker-notes dgist-2026f-w02`
+**Actions:**
+1. `deckprofile.py` → notes `ko`, 60 min → target ~16,800 chars
+2. Roughly twice a paper review's script. Budget the batches for it rather
+   than writing a 30-minute script and calling the deck overlong.
