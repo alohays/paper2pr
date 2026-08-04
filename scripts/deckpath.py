@@ -131,6 +131,13 @@ def find(ref: str) -> Deck:
         if len(rel.parts) != 2:
             raise DeckNotFound(
                 f"{ref} is not at Quarto/<genre>/<name>.qmd")
+        # The directory has to be a real genre. Quarto/_fixtures/ holds the
+        # theme regression file, which is a qmd two levels down and would
+        # otherwise resolve to a Deck in a genre that does not exist.
+        if rel.parts[0] not in genres():
+            raise DeckNotFound(
+                f"{ref} is under {rel.parts[0]}/, which is not a genre in "
+                f"Quarto/_genres.txt ({', '.join(genres())})")
         return Deck(name=rel.stem, genre=rel.parts[0])
 
     if "/" in ref:

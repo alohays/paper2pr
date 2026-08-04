@@ -37,8 +37,13 @@ jobs:
           echo "Genres: $genres"
 
       - name: Render Quarto slides
+        # Through the environment, not `${{ }}` inside the script. GitHub
+        # pastes an expression into the shell as text, so a genre list is one
+        # edit away from being read as shell.
+        env:
+          GENRES: ${{ steps.genres.outputs.list }}
         run: |
-          for genre in ${{ steps.genres.outputs.list }}; do
+          for genre in $GENRES; do
             for qmd in Quarto/"$genre"/*.qmd; do
               [ -f "$qmd" ] || continue
               case "$(basename "$qmd")" in
@@ -50,8 +55,10 @@ jobs:
           done
 
       - name: Strip speaker notes from HTML (safety net)
+        env:
+          GENRES: ${{ steps.genres.outputs.list }}
         run: |
-          for genre in ${{ steps.genres.outputs.list }}; do
+          for genre in $GENRES; do
             for html in Quarto/"$genre"/*.html; do
               [ -f "$html" ] && python3 scripts/strip_speaker_notes.py "$html"
             done

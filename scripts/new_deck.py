@@ -49,8 +49,25 @@ def die(msg: str):
     raise SystemExit(1)
 
 
+# Everything the answer set may contain. An unrecognised key is a typo, and
+# a typo here is invisible: `audiance: none` would leave audience at its
+# default and write `assumes: practitioner` into the config for a room of
+# first-years, which is precisely the premise the interview exists to pin
+# down. Reject it instead.
+ANSWER_KEYS = {
+    "name", "genre", "profile", "title", "subtitle",
+    "audience", "audience_size", "duration", "delivery", "publish",
+    "slide_lang", "notes_lang", "series_index", "prior",
+}
+
+
 def validate(a: dict) -> dict:
     """Normalise and check the answers, failing on anything ambiguous."""
+    unknown = sorted(set(a) - ANSWER_KEYS)
+    if unknown:
+        die(f"unrecognised answer key(s): {', '.join(unknown)}. "
+            f"Known: {', '.join(sorted(ANSWER_KEYS))}")
+
     name = str(a.get("name", "")).strip()
     if not NAME_RE.match(name):
         die(f"deck name {name!r} must start with a letter and use only "
