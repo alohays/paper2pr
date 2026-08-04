@@ -892,8 +892,11 @@ class QualityScorer:
                     'points': 2
                 })
                 self.score -= 2
+        # A deck that does not say where it sits in the series is checked.
+        # Guessing "first" would switch the check off for every lecture that
+        # forgot to declare one, which is the population most likely to need it.
         if (profile and profile.prior_session_callback
-                and int(profile.raw.get('series_index', 0)) != 1):
+                and profile.series_index != 1):
             for v in IssueDetector.check_prior_session_callback(content):
                 self.issues['major'].append({
                     'type': v['type'],

@@ -15,6 +15,10 @@ from its genre, and the quality gate's theme-based main/legacy split still
 decides whether design checks run at all. That is what keeps the four decks
 that predate this system scoring what they scored before.
 
+A config that exists but cannot be parsed is a hard error, not a warning.
+Falling back to defaults there would grade a lecture as a paper review and
+still print a passing score.
+
 Usage as a library:
     from deckprofile import load
     cfg = load(deck)              # deck from deckpath.find(...)
@@ -34,6 +38,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deckpath  # noqa: E402
+import minyaml  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = REPO_ROOT / ".claude" / "rules" / "slide-profiles"
@@ -60,22 +65,31 @@ DEFAULTS = {
 }
 
 
+class ConfigError(Exception):
+    """A config file exists but could not be read. Never soften this."""
+
+
 def _load_yaml(path: Path):
+    """Read a config file, or fail. Absent is fine; unreadable is not.
+
+    This used to catch everything and return {}, which meant a deck with a
+    malformed config -- or a machine without PyYAML -- kept scoring, silently
+    graded against built-in defaults instead of its own declared budget. A
+    lecture would quietly get the paper-review numbers with both lecture
+    checks off. The parser is stdlib now (scripts/minyaml.py) so the import
+    can no longer fail, and a file we cannot parse stops the run.
+    """
     if not path.exists():
         return {}
     try:
-        import yaml
-    except ImportError:
-        # The gate must not fail open just because PyYAML is absent. Say so
-        # and fall back to defaults rather than silently skipping checks.
-        print(f"warning: PyYAML not installed, ignoring {path.name}",
-              file=sys.stderr)
-        return {}
-    try:
-        return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception as e:
-        print(f"warning: could not parse {path}: {e}", file=sys.stderr)
-        return {}
+        loaded = minyaml.load_path(path)
+    except minyaml.MinYamlError as e:
+        raise ConfigError(f"{path}: {e}") from e
+    except OSError as e:
+        raise ConfigError(f"{path}: {e}") from e
+    if not isinstance(loaded, dict):
+        raise ConfigError(f"{path}: expected a mapping at the top level")
+    return loaded
 
 
 @dataclass
@@ -130,6 +144,19 @@ class DeckConfig:
         return str(self._get("language", "notes"))
 
     @property
+    def series_index(self) -> int | None:
+        """Position in a course series; 1 has no previous session to recall."""
+        value = self.raw.get("series_index")
+        if value is None:
+            return None
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            raise ConfigError(
+                f"{self.deck.config}: series_index must be a number, "
+                f"got {value!r}")
+
+    @property
     def has_config(self) -> bool:
         return bool(self.raw)
 
@@ -145,6 +172,7 @@ class DeckConfig:
             "max_nesting": self.max_nesting,
             "expand_acronyms": self.expand_acronyms,
             "prior_session_callback": self.prior_session_callback,
+            "series_index": self.series_index,
             "slide_language": self.slide_language,
             "notes_language": self.notes_language,
         }
@@ -191,11 +219,11 @@ def main(argv=None):
 
     try:
         cfg = load(deckpath.find(args.deck))
-    except (deckpath.DeckNotFound, deckpath.AmbiguousDeck) as e:
+        d = cfg.as_dict()
+    except (deckpath.DeckNotFound, deckpath.AmbiguousDeck, ConfigError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
 
-    d = cfg.as_dict()
     if args.field:
         if args.field not in d:
             print(f"error: unknown field {args.field!r}. "
