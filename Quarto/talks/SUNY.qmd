@@ -21,7 +21,7 @@ format:
     css: suny-theme-compat.css
     include-in-header:
       text: |
-        <link rel="stylesheet" href="fonts/pretendard.css">
+        <link rel="stylesheet" href="../fonts/pretendard.css">
     include-after-body:
       text: |
         <script>
@@ -196,7 +196,7 @@ format:
 
     <div class="visual">
       <div class="glow"></div>
-      <img class="silhouette" src="../Figures/SUNY/surfer-wave-silhouette.svg" alt="Surfer silhouette riding a wave">
+      <img class="silhouette" src="../../Figures/talks/SUNY/surfer-wave-silhouette.svg" alt="Surfer silhouette riding a wave">
     </div>
   </div>
 
@@ -309,7 +309,7 @@ format:
     </div>
 
     <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-      <img src="../Figures/SUNY/speaker-profile-cards.png" alt="Speaker profile: Experience, Strength, Other" style="width:100%; max-height:420px; object-fit:contain; border-radius:6px;">
+      <img src="../../Figures/talks/SUNY/speaker-profile-cards.png" alt="Speaker profile: Experience, Strength, Other" style="width:100%; max-height:420px; object-fit:contain; border-radius:6px;">
     </div>
   </div>
 
@@ -1413,7 +1413,7 @@ format:
   <div class="layout">
     <div class="left">
       <p class="eyebrow">Part 2 · My first wave</p>
-      <img class="logo" src="../Figures/SUNY/wrtn/wrtn-logo-black.svg" alt="Wrtn Technologies logo">
+      <img class="logo" src="../../Figures/talks/SUNY/wrtn/wrtn-logo-black.svg" alt="Wrtn Technologies logo">
       <h1 class="headline">Korea's leading AI-native startup.</h1>
       <p class="sub">Your Own AI — the AI that's just yours. I joined when the wave was still forming and ended up owning product work end-to-end.</p>
       <div class="role-card">
@@ -1422,9 +1422,9 @@ format:
       </div>
     </div>
     <div class="right">
-      <div class="hero-web"><img src="../Figures/SUNY/wrtn/wrtn-ui-web-1.png" alt="Wrtn web product UI"></div>
-      <div class="mobile mobile-a"><img src="../Figures/SUNY/wrtn/wrtn-ui-mobile-1.png" alt="Wrtn mobile UI"></div>
-      <div class="mobile mobile-b"><img src="../Figures/SUNY/wrtn/wrtn-ui-mobile-1.png" alt="Wrtn mobile UI details"></div>
+      <div class="hero-web"><img src="../../Figures/talks/SUNY/wrtn/wrtn-ui-web-1.png" alt="Wrtn web product UI"></div>
+      <div class="mobile mobile-a"><img src="../../Figures/talks/SUNY/wrtn/wrtn-ui-mobile-1.png" alt="Wrtn mobile UI"></div>
+      <div class="mobile mobile-b"><img src="../../Figures/talks/SUNY/wrtn/wrtn-ui-mobile-1.png" alt="Wrtn mobile UI details"></div>
     </div>
   </div>
 
@@ -1520,7 +1520,7 @@ format:
 <div id="s15" class="suny-slide deck-dark">
 
   <div class="bg-image">
-    <img src="../Figures/SUNY/wrtn/wrtn-ui-web-1.png" alt="">
+    <img src="../../Figures/talks/SUNY/wrtn/wrtn-ui-web-1.png" alt="">
   </div>
   <div class="gold-rule"></div>
 
@@ -1777,7 +1777,7 @@ format:
       <p class="sub">Personalized conversations, proactive prompts, multimodal entry points — all inside one AI-native consumer product.</p>
     </div>
     <div class="stage" style="grid-template-columns:1fr; justify-items:center;">
-      <img src="../Figures/SUNY/wrtn/wrtn-seri-demo.png" alt="Wrtn Seri AI companion — chat, voice call, diary" style="width:100%; max-height:320px; object-fit:contain; border-radius:18px;">
+      <img src="../../Figures/talks/SUNY/wrtn/wrtn-seri-demo.png" alt="Wrtn Seri AI companion — chat, voice call, diary" style="width:100%; max-height:320px; object-fit:contain; border-radius:18px;">
     </div>
     <div class="chips">
       <span class="chip">personalized chat</span>
@@ -2965,7 +2965,7 @@ format:
 
     <div class="right">
       <div class="main-fig">
-        <img src="../Figures/SUNY/d2e/main-fig.png" alt="D2E: game data to robot manipulation" style="max-width: 420px;">
+        <img src="../../Figures/talks/SUNY/d2e/main-fig.png" alt="D2E: game data to robot manipulation" style="max-width: 420px;">
       </div>
       <div class="stats-row">
         <div class="stat-card">
@@ -3601,7 +3601,7 @@ format:
 
     <div class="right">
       <div class="asset-img">
-        <img src="../Figures/SUNY/worv/results_cost.png" alt="CostNav cost results" style="max-width: 340px;">
+        <img src="../../Figures/talks/SUNY/worv/results_cost.png" alt="CostNav cost results" style="max-width: 340px;">
       </div>
       <div class="video-wrap">
         <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser.mp4" style="width: 300px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser-poster.jpg" muted loop preload="metadata" controls></video>
@@ -6836,7 +6836,7 @@ format:
     <!-- QR placeholder -->
     <div class="qr-col">
       <div class="qr-box">
-        <img src='../Figures/SUNY/linkedin-qr.png' alt='LinkedIn QR code' style='width:100%; border-radius:8px;'>
+        <img src='../../Figures/talks/SUNY/linkedin-qr.png' alt='LinkedIn QR code' style='width:100%; border-radius:8px;'>
         <p class="scan-label">SCAN ME</p>
       </div>
       <p class="qr-note">LinkedIn</p>
@@ -6994,7 +6994,7 @@ format:
 
     <div class="visual">
       <div class="tide-line"></div>
-      <img class="surfer" src="../Figures/SUNY/surfer-wave-silhouette.svg" alt="Surfer silhouette against a wave">
+      <img class="surfer" src="../../Figures/talks/SUNY/surfer-wave-silhouette.svg" alt="Surfer silhouette against a wave">
     </div>
   </div>
 

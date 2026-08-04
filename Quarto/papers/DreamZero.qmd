@@ -5,7 +5,7 @@ author: "Yunsung Lee"
 institute: "WoRV / MaumAI"
 format:
   revealjs:
-    theme: [default, clean-academic-legacy.scss]
+    theme: [default, ../clean-academic-legacy.scss]
     slide-number: true
     chalkboard: false
     preview-links: auto
@@ -37,7 +37,7 @@ format:
             });
           });
           </script>
-bibliography: ../Bibliography_base.bib
+bibliography: ../../Bibliography_base.bib
 ---
 
 <!---------------------------------------------------------------------------->
@@ -48,7 +48,7 @@ bibliography: ../Bibliography_base.bib
 ## {background-color="white"}
 
 ::: {style="text-align: center;"}
-![](../Figures/DreamZero/dreamzero-header-v2.svg){fig-align="center" width="85%"}
+![](../../Figures/papers/DreamZero/dreamzero-header-v2.svg){fig-align="center" width="85%"}
 :::
 
 <video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_post_train/hsl/DreamZero_AgiBotPostTrain_FruitPacking_2x.m3u8" data-autoplay loop muted playsinline width="60%" style="display: block; margin: 0 auto; border-radius: 6px;">
@@ -147,7 +147,7 @@ $\Rightarrow$ Robotics needs [**vastly more experience**]{.hi-gold} to match hum
 
 ## VLAs: The Evidence
 
-![](../Figures/DreamZero/eval_bar_chart.svg){fig-align="center" width="75%"}
+![](../../Figures/papers/DreamZero/eval_bar_chart.svg){fig-align="center" width="75%"}
 
 [VLA from-scratch at $\sim$0% on diverse data]{style="font-size: 0.75em;"}
 
@@ -279,7 +279,7 @@ $\rightarrow$ [**>42% relative improvement**]{.positive} on unseen robot tasks
 
 ## Architecture Overview
 
-![](../Figures/DreamZero/dreamzero_model.svg){fig-align="center" width="88%"}
+![](../../Figures/papers/DreamZero/dreamzero_model.svg){fig-align="center" width="88%"}
 
 :::: {.columns}
 ::: {.column width="32%"}
@@ -317,7 +317,7 @@ Joint video frames
 - Distorts native FPS $\rightarrow$ breaks alignment
 - Especially harmful mid-task
 
-![](../Figures/DreamZero/bidiraug.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/bidiraug.svg){fig-align="center" width="100%"}
 :::
 
 ::: {.column width="48%"}
@@ -424,7 +424,7 @@ $$
 
 ## Attention Masking Strategy
 
-![](../Figures/DreamZero/dreamzero_attention_figure.svg){fig-align="center" width="78%"}
+![](../../Figures/papers/DreamZero/dreamzero_attention_figure.svg){fig-align="center" width="78%"}
 
 ::: {.methodbox}
 **Key Rules**
@@ -479,7 +479,7 @@ Trains actions to denoise from *predominantly noisy* visual context.
 
 ## DreamZero-Flash: Results
 
-![](../Figures/DreamZero/dreamzero-flash_noise_distribution_comparison.svg){fig-align="center" width="60%"}
+![](../../Figures/papers/DreamZero/dreamzero-flash_noise_distribution_comparison.svg){fig-align="center" width="60%"}
 
 ::: {.resultbox}
 **Result**
@@ -550,7 +550,7 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 :::
 
 ::: {.column width="46%"}
-![](../Figures/DreamZero/agibot_dc_envs.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/agibot_dc_envs.svg){fig-align="center" width="100%"}
 
 [22 diverse environments]{style="font-size: 0.75em;"}
 :::
@@ -574,7 +574,7 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 :::
 
 ::: {.column width="46%"}
-![](../Figures/DreamZero/agibot_stats_3.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/agibot_stats_3.svg){fig-align="center" width="100%"}
 
 [Skill distribution]{style="font-size: 0.75em;"}
 :::
@@ -586,7 +586,7 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 
 ## Evaluation Protocol: Setup
 
-![](../Figures/DreamZero/main_eval_setting.svg){fig-align="center" width="80%"}
+![](../../Figures/papers/DreamZero/main_eval_setting.svg){fig-align="center" width="80%"}
 
 Default: [**unseen environments**]{.hi}, [**unseen objects**]{.hi}
 Training and evaluation in [**different geographic locations**]{.negative}
@@ -623,7 +623,7 @@ Training and evaluation in [**different geographic locations**]{.negative}
 
 ## Seen Tasks: $2\times$ Improvement
 
-![](../Figures/DreamZero/eval_bar_chart.svg){fig-align="center" width="78%"}
+![](../../Figures/papers/DreamZero/eval_bar_chart.svg){fig-align="center" width="78%"}
 
 ::: {.resultbox}
 DreamZero: [**62.2%**]{.positive} avg. task progress
@@ -637,7 +637,7 @@ VLA from-scratch: [**$\sim$0%**]{.negative}
 
 ## Unseen Tasks: Zero-shot Generalization
 
-![](../Figures/DreamZero/unseen_success_rates.svg){fig-align="center" width="78%"}
+![](../../Figures/papers/DreamZero/unseen_success_rates.svg){fig-align="center" width="78%"}
 
 ::: {.resultbox}
 DreamZero: [**39.5%**]{.positive} on novel tasks
@@ -680,7 +680,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ## Joint Video-Action Prediction in Action
 
-![](../Figures/DreamZero/dreamzero_gen.svg){fig-align="center" width="85%"}
+![](../../Figures/papers/DreamZero/dreamzero_gen.svg){fig-align="center" width="85%"}
 
 - Tight alignment between predicted and actual trajectories
 - Most failures: video generation errors, not action extraction
@@ -704,7 +704,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ## Post-training: Retained Generalization
 
-![](../Figures/DreamZero/posttrain.svg){fig-align="center" width="78%"}
+![](../../Figures/papers/DreamZero/posttrain.svg){fig-align="center" width="78%"}
 
 - [**Matches or outperforms**]{.positive} pretrained VLAs
 - Evaluated in [**unseen environments**]{.hi} even after task-specific training
@@ -715,7 +715,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ## Cross-Embodiment Transfer
 
-![](../Figures/DreamZero/embodiment_transfer.svg){fig-align="center" width="75%"}
+![](../../Figures/papers/DreamZero/embodiment_transfer.svg){fig-align="center" width="75%"}
 
 | **Method** | **Task Progress** |
 |:---|:---:|
@@ -745,7 +745,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ## Few-shot Adaptation to New Robot
 
-![](../Figures/DreamZero/yam_transfer.svg){fig-align="center" width="82%"}
+![](../../Figures/papers/DreamZero/yam_transfer.svg){fig-align="center" width="82%"}
 
 - 55 trajectories ($\sim$30 min play data) on YAM robot
 - Retains [**language following**]{.positive} + generalizes to novel objects
@@ -769,7 +769,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 ## Free-form Evaluation
 
-![](../Figures/DreamZero/free_form.svg){fig-align="center" width="85%"}
+![](../../Figures/papers/DreamZero/free_form.svg){fig-align="center" width="85%"}
 
 [**100+ novel tasks**]{.hi} via natural language instructions
 "Pop the balloon", "Press elevator button", "Paint", "Iron clothes"
@@ -797,7 +797,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 ::: {.column width="48%"}
 [**Seen Tasks (10 evaluated):**]{.hi}
 
-![](../Figures/DreamZero/agibot_seen_example.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/agibot_seen_example.svg){fig-align="center" width="100%"}
 
 [take, place, push, open, pour]{style="font-size: 0.85em;"}
 :::
@@ -805,7 +805,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 ::: {.column width="48%"}
 [**Unseen Tasks (10 evaluated):**]{.hi}
 
-![](../Figures/DreamZero/agibot_unseen_example.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/agibot_unseen_example.svg){fig-align="center" width="100%"}
 
 [iron, untie, shake hands, remove hat]{style="font-size: 0.85em;"}
 :::
@@ -875,7 +875,7 @@ Full video gallery: `dreamzero0.github.io`
 
 ## Failure Analysis: When DreamZero Breaks
 
-![](../Figures/DreamZero/generated.svg){fig-align="center" width="75%"}
+![](../../Figures/papers/DreamZero/generated.svg){fig-align="center" width="75%"}
 
 [**Error causal chain:**]{.hi} Video backbone hallucinates $\rightarrow$ wrong predicted frames $\rightarrow$ IDM extracts actions from wrong video $\rightarrow$ robot executes incorrect motion
 

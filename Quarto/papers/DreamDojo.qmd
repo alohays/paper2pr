@@ -5,7 +5,7 @@ author: "Yunsung Lee"
 institute: "WoRV / MaumAI"
 format:
   revealjs:
-    theme: [default, clean-academic-legacy.scss]
+    theme: [default, ../clean-academic-legacy.scss]
     slide-number: true
     chalkboard: false
     preview-links: auto
@@ -20,13 +20,13 @@ format:
       # Pinned. The default resolves katex@latest on jsdelivr, so an
       # upstream release can change a published deck without us touching it.
       url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
-bibliography: ../Bibliography_base.bib
+bibliography: ../../Bibliography_base.bib
 ---
 
 ## {background-color="white"}
 
 ::: {style="text-align: center;"}
-![](../Figures/DreamDojo/teaser_compressed.svg){fig-align="center" width="60%"}
+![](../../Figures/papers/DreamDojo/teaser_compressed.svg){fig-align="center" width="60%"}
 :::
 
 <video src="https://dreamdojo-world.github.io/dreamdojo_demo.mp4" muted autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
@@ -136,7 +136,7 @@ Despite the embodiment gap, the underlying physics during interactions is largel
 
 [--- @gao2026dreamdojo]{style="display: block; text-align: right;"}
 
-![](../Figures/DreamDojo/dataset_compressed.svg){fig-align="center" width="82%"}
+![](../../Figures/papers/DreamDojo/dataset_compressed.svg){fig-align="center" width="82%"}
 
 [**Key idea:**]{.hi} Human videos capture the same physics --- contact, gravity, deformation, tool use --- just with different end-effectors.
 
@@ -159,7 +159,7 @@ Despite the embodiment gap, the underlying physics during interactions is largel
 
 [**vs. prior largest (AgiBot World):**]{.hi} [**15x**]{.positive} duration, [**96x**]{.positive} skills, [**2,000x**]{.positive} scenes
 
-![](../Figures/DreamDojo/mecka_compressed.svg){fig-align="center" width="70%"}
+![](../../Figures/papers/DreamDojo/mecka_compressed.svg){fig-align="center" width="70%"}
 
 
 
@@ -197,12 +197,12 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 
 :::: {.columns}
 ::: {.column width="48%"}
-![](../Figures/DreamDojo/egodex.png){fig-align="center" width="82%"}
+![](../../Figures/papers/DreamDojo/egodex.png){fig-align="center" width="82%"}
 
 [EgoDex sample]{style="font-size: 0.75em;"}
 :::
 ::: {.column width="48%"}
-![](../Figures/DreamDojo/inlab.png){fig-align="center" width="82%"}
+![](../../Figures/papers/DreamDojo/inlab.png){fig-align="center" width="82%"}
 
 [In-lab PSNR curves]{style="font-size: 0.75em;"}
 :::
@@ -216,7 +216,7 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 
 ## System Overview: Three-Phase Pipeline
 
-![](../Figures/DreamDojo/overview_compressed.svg){fig-align="center" width="90%"}
+![](../../Figures/papers/DreamDojo/overview_compressed.svg){fig-align="center" width="90%"}
 
 [**Phase 1:**]{.hi} Pretrain on human videos with [**latent actions**]{.hi-gold}
 
@@ -266,7 +266,7 @@ Actionless pretraining wastes interaction knowledge. Ground-truth actions requir
 
 ## Latent Action Model (LAM)
 
-![](../Figures/DreamDojo/lam_compressed.svg){fig-align="center" width="88%"}
+![](../../Figures/papers/DreamDojo/lam_compressed.svg){fig-align="center" width="88%"}
 
 ::: {.eqbox}
 [**VAE with information bottleneck:**]{.hi}
@@ -404,7 +404,7 @@ where $\mathbf{v}_t = \epsilon - \mathbf{x}$ (velocity = noise $-$ clean data)
 
 ## Two Key Innovations for Controllability
 
-![](../Figures/DreamDojo/design_compressed.svg){fig-align="center" width="80%"}
+![](../../Figures/papers/DreamDojo/design_compressed.svg){fig-align="center" width="80%"}
 
 ::: {.methodbox}
 **Design Choices**
@@ -497,7 +497,7 @@ $\mathcal{L}_{\text{final}} = \mathcal{L}_{\text{flow}} + \lambda\,\mathcal{L}_{
 
 ## Post-Training: Adapting to Target Robots
 
-![](../Figures/DreamDojo/pretrain_compressed.svg){fig-align="center" width="80%"}
+![](../../Figures/papers/DreamDojo/pretrain_compressed.svg){fig-align="center" width="80%"}
 
 ::: {.methodbox}
 **Post-Training Recipe**
@@ -617,12 +617,12 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 
 :::: {.columns}
 ::: {.column width="48%"}
-![](../Figures/DreamDojo/long_compressed.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamDojo/long_compressed.svg){fig-align="center" width="100%"}
 
 [1-minute rollouts]{style="font-size: 0.75em;"}
 :::
 ::: {.column width="48%"}
-![](../Figures/DreamDojo/context_compressed.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamDojo/context_compressed.svg){fig-align="center" width="100%"}
 
 [Context advantage]{style="font-size: 0.75em;"}
 :::
@@ -650,7 +650,7 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 
 ## Benchmark Construction: 6 OOD Eval Sets
 
-![](../Figures/DreamDojo/benchmark_compressed.svg){fig-align="center" width="85%"}
+![](../../Figures/papers/DreamDojo/benchmark_compressed.svg){fig-align="center" width="85%"}
 
 ::: {.methodbox}
 **6 Evaluation Sets on GR-1**
@@ -763,7 +763,7 @@ Post-trained on GR-1, G1, AgiBot, and YAM --- each with separate post-training r
 
 :::: {.columns}
 ::: {.column width="38%"}
-![](../Figures/DreamDojo/correlation_compressed.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamDojo/correlation_compressed.svg){fig-align="center" width="100%"}
 :::
 
 ::: {.column width="58%"}
@@ -797,7 +797,7 @@ DreamDojo can reliably rank policies without deploying on a real robot.
 ::: {.column width="48%"}
 [**Model-Based Planning:**]{.hi}
 
-![](../Figures/DreamDojo/mpc_compressed.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamDojo/mpc_compressed.svg){fig-align="center" width="100%"}
 
 - 5 policy checkpoints $\rightarrow$ action proposals
 - DreamDojo predicts futures, value model selects

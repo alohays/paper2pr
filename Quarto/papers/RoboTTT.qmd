@@ -5,7 +5,7 @@ author: "Yunsung Lee"
 institute: "WoRV / MaumAI &nbsp;&middot;&nbsp; PR-561"
 format:
   revealjs:
-    theme: [default, clean-academic-legacy.scss, robottt.scss]
+    theme: [default, ../clean-academic-legacy.scss, robottt.scss]
     slide-number: true
     chalkboard: false
     preview-links: auto
@@ -27,13 +27,13 @@ format:
       text: |
         <script src="robottt-stepper.js"></script>
 title-slide-attributes:
-  data-background-image: "../Figures/RoboTTT/pull.jpg"
+  data-background-image: "../../Figures/papers/RoboTTT/pull.jpg"
   data-background-size: cover
   data-background-opacity: "0.13"
 resources:
   - videos
   - robottt-stepper.js
-bibliography: ../Bibliography_base.bib
+bibliography: ../../Bibliography_base.bib
 ---
 
 ## Roadmap {.bigger}
@@ -193,7 +193,7 @@ RoboTTT touches exactly one place: it inserts a TTT layer
 :::
 
 ::: {.column width="46%"}
-![](../Figures/RoboTTT/model_arch.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/model_arch.svg){width="100%"}
 
 ::: {.srcnote}
 Figure 2: sequence training on the left, inference on the right. We walk
@@ -264,7 +264,7 @@ RoboTTT is an RNN policy whose recurrent state happens to be
 
 ::::: {.slidebody}
 
-![](../Figures/RoboTTT/nv1-memory-shapes.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/nv1-memory-shapes.svg){width="100%"}
 
 :::::
 
@@ -321,7 +321,7 @@ Every comparison later in the talk turns on that one substitution.
 
 ::::: {.slidebody}
 
-{{< include _widgets/nv-spectrum.qmd >}}
+{{< include ../_widgets/nv-spectrum.qmd >}}
 
 :::::
 
@@ -379,7 +379,7 @@ to ask what happens when you [scale the training context]{.hi-gold}.
 
 ::::: {.slidebody}
 
-{{< include _widgets/nv-update.qmd >}}
+{{< include ../_widgets/nv-update.qmd >}}
 
 [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver}
 
@@ -430,7 +430,7 @@ $W$ itself is a [fast weight]{.hi}: it keeps moving after deployment.
 
 ::::: {.slidebody}
 
-![](../Figures/RoboTTT/nv4-inner-outer.svg){width="94%"}
+![](../../Figures/papers/RoboTTT/nv4-inner-outer.svg){width="94%"}
 
 :::::
 
@@ -466,7 +466,7 @@ Hold on to that; we come back to it at the end.
 
 ::::: {.slidebody}
 
-{{< include _widgets/rttt-dit.qmd >}}
+{{< include ../_widgets/rttt-dit.qmd >}}
 
 [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver}
 
@@ -501,7 +501,7 @@ $$[\,R_1, \Phi_1, q_1, \tilde A_1,\; \ldots,\; R_T, \Phi_T, q_T, \tilde A_T\,]$$
 :::
 
 ::: {.column width="43%"}
-![](../Figures/RoboTTT/model_arch.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/model_arch.svg){width="100%"}
 
 ::: {.srcnote}
 Figure 2. Left: sequence training. Right: inference, fast weights propagating
@@ -526,7 +526,7 @@ GR00T without it.
 
 ::::: {.slidebody}
 
-{{< include _widgets/rttt-tanh.qmd >}}
+{{< include ../_widgets/rttt-tanh.qmd >}}
 
 [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver}
 
@@ -560,7 +560,7 @@ knew.
 :::
 
 ::: {.column width="46%"}
-![](../Figures/RoboTTT/gating.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/gating.svg){width="100%"}
 
 ::: {.srcnote}
 Figure 3. Flattened tokens go through the TTT layer, then the tanh gate, then
@@ -608,7 +608,7 @@ robot trajectories specifically*.
 
 ::::: {.slidebody}
 
-{{< include _widgets/rttt-forcing.qmd >}}
+{{< include ../_widgets/rttt-forcing.qmd >}}
 
 [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver}
 
@@ -663,7 +663,7 @@ This is a load-bearing detail, not a tuning trick.
 
 ::::: {.slidebody}
 
-{{< include _widgets/rttt-tbptt.qmd >}}
+{{< include ../_widgets/rttt-tbptt.qmd >}}
 
 [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver}
 
@@ -677,7 +677,7 @@ This is a load-bearing detail, not a tuning trick.
 
 ::::: {.slidebody}
 
-{{< include _widgets/rttt-context.qmd >}}
+{{< include ../_widgets/rttt-context.qmd >}}
 
 [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver} [.]{.fragment .beat-driver}
 
@@ -745,7 +745,7 @@ batch drops from 64 to 16 above 4K context.
 
 ::::: {.slidebody}
 
-![](../Figures/RoboTTT/tasks.jpg){width="88%" fig-align="center"}
+![](../../Figures/papers/RoboTTT/tasks.jpg){width="88%" fig-align="center"}
 
 :::: {.columns}
 ::: {.column width="33%"}
@@ -783,9 +783,9 @@ remote. [10 stages.]{.dim}
 :::: {.columns}
 ::: {.column width="33%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../Figures/RoboTTT/pup-go-car-1x-poster.jpg">
+<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/pup-go-car-1x-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/pup-go-car-1x.mp4" type="video/mp4">
-<source src="videos/pup-go-car-1x.mp4" type="video/mp4">
+<source src="../videos/pup-go-car-1x.mp4" type="video/mp4">
 </video>
 ```
 
@@ -794,9 +794,9 @@ remote. [10 stages.]{.dim}
 
 ::: {.column width="33%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../Figures/RoboTTT/circuit-1x-1-poster.jpg">
+<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/circuit-1x-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/circuit-1x-1.mp4" type="video/mp4">
-<source src="videos/circuit-1x-1.mp4" type="video/mp4">
+<source src="../videos/circuit-1x-1.mp4" type="video/mp4">
 </video>
 ```
 
@@ -805,9 +805,9 @@ remote. [10 stages.]{.dim}
 
 ::: {.column width="33%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../Figures/RoboTTT/gear-bot-1x-1-poster.jpg">
+<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/gear-bot-1x-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/gear-bot-1x-1.mp4" type="video/mp4">
-<source src="videos/gear-bot-1x-1.mp4" type="video/mp4">
+<source src="../videos/gear-bot-1x-1.mp4" type="video/mp4">
 </video>
 ```
 
@@ -864,7 +864,7 @@ plus a count of fully successful trials.
 
 :::: {.columns}
 ::: {.column width="54%"}
-![](../Figures/RoboTTT/main_exp_bar.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/main_exp_bar.svg){width="100%"}
 
 ::: {.srcnote}
 Figure 7. Rubric-based task completion score, averaged over the three tasks.
@@ -962,7 +962,7 @@ good enough.
 
 :::: {.columns}
 ::: {.column width="58%"}
-![](../Figures/RoboTTT/ctx_scaling.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/ctx_scaling.svg){width="100%"}
 
 ::: {.srcnote}
 Figure 8. Pretraining context length from 128 to 8K timesteps, then post-train
@@ -1003,12 +1003,12 @@ shortest episode. [Appendix A6.]{.dim}
 
 :::: {.columns}
 ::: {.column width="56%"}
-![](../Figures/RoboTTT/one_shot_rollout.jpg){width="100%"}
+![](../../Figures/papers/RoboTTT/one_shot_rollout.jpg){width="100%"}
 
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;margin-top:6px;aspect-ratio:16/9" preload="none" poster="../Figures/RoboTTT/circuit-1-poster.jpg">
+<video muted loop playsinline style="width:100%;border-radius:6px;margin-top:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/circuit-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/circuit-1.mp4" type="video/mp4">
-<source src="videos/circuit-1.mp4" type="video/mp4">
+<source src="../videos/circuit-1.mp4" type="video/mp4">
 </video>
 ```
 :::
@@ -1045,9 +1045,9 @@ It [encoded]{.hi} the video. It could not [use]{.hi} it.
 :::: {.columns}
 ::: {.column width="46%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../Figures/RoboTTT/perturbation-roof-poster.jpg">
+<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/perturbation-roof-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/perturbation-roof.mp4" type="video/mp4">
-<source src="videos/perturbation-roof.mp4" type="video/mp4">
+<source src="../videos/perturbation-roof.mp4" type="video/mp4">
 </video>
 ```
 :::
@@ -1086,9 +1086,9 @@ every method has some of this.
 :::: {.columns}
 ::: {.column width="46%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../Figures/RoboTTT/on-the-fly-roof-poster.jpg">
+<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/on-the-fly-roof-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/on-the-fly-roof.mp4" type="video/mp4">
-<source src="videos/on-the-fly-roof.mp4" type="video/mp4">
+<source src="../videos/on-the-fly-roof.mp4" type="video/mp4">
 </video>
 ```
 
@@ -1299,7 +1299,7 @@ Project page and all videos: research.nvidia.com/labs/gear/robottt]{.dim}
 
 :::: {.columns}
 ::: {.column width="52%"}
-![](../Figures/RoboTTT/ablation.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/ablation.svg){width="100%"}
 :::
 
 ::: {.column width="46%"}
@@ -1331,7 +1331,7 @@ Project page and all videos: research.nvidia.com/labs/gear/robottt]{.dim}
 
 :::: {.columns}
 ::: {.column width="50%"}
-![](../Figures/RoboTTT/dagger_results.svg){width="100%"}
+![](../../Figures/papers/RoboTTT/dagger_results.svg){width="100%"}
 
 Data: 50 DAgger trajectories collected with RoboTTT as base policy + 50 with
 GR00T, pooled to 100 and used to train every method.
@@ -1353,7 +1353,7 @@ GR00T fine-tuned on full trajectories = GR00T fine-tuned on corrections only =
 [57%]{.hi}. Identical.
 :::
 
-![](../Figures/RoboTTT/dagger_rollout.jpg){width="100%"}
+![](../../Figures/papers/RoboTTT/dagger_rollout.jpg){width="100%"}
 :::
 ::::
 
@@ -1409,13 +1409,13 @@ successfully using the remote.
 
 ::: {.panel-tabset}
 ### Pup Go Car
-![](../Figures/RoboTTT/task_pupgo.jpg){width="100%"}
+![](../../Figures/papers/RoboTTT/task_pupgo.jpg){width="100%"}
 
 ### Gear Bot
-![](../Figures/RoboTTT/task_gear_bot.jpg){width="100%"}
+![](../../Figures/papers/RoboTTT/task_gear_bot.jpg){width="100%"}
 
 ### Circuit
-![](../Figures/RoboTTT/task_circuit.jpg){width="100%"}
+![](../../Figures/papers/RoboTTT/task_circuit.jpg){width="100%"}
 :::
 
 :::::
@@ -1443,7 +1443,7 @@ successfully using the remote.
 **Data mixture**: tabletop bimanual robot data plus EgoScale egocentric human
 video, curated to emphasise long trajectories.
 
-![](../Figures/RoboTTT/episode_len_dist.svg){width="42%" fig-align="center"}
+![](../../Figures/papers/RoboTTT/episode_len_dist.svg){width="42%" fig-align="center"}
 
 :::::
 
