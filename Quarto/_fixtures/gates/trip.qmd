@@ -1,0 +1,59 @@
+---
+title: "Gate fixture: trip"
+subtitle: "Trips every WP2 check at least once"
+author: "Yunsung Lee"
+institute: "WoRV / MaumAI"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+format:
+  revealjs:
+    theme: [default, ../../clean-academic.scss]
+    width: 1280
+    height: 720
+    margin: 0
+    center: false
+    auto-stretch: false
+    slide-number: true
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
+    filters:
+      - ../../_filters/slide-types.lua
+    include-in-header:
+      - text: '<link rel="stylesheet" href="../../fonts/pretendard.css">'
+---
+
+# A level-1 heading
+
+## Dash expressions
+
+- Smart punctuation turns this --- into an em dash
+- And this -- into an en dash
+
+<!-- A comment --- with dashes and Project Nightjar is not visible text. -->
+
+## A third-party figure, not attributed
+
+![](../assets/placeholder-poster.jpg){width="50%"}
+
+- figures.yml says this file is third-party, and nothing names its source
+
+## A third-party background, not attributed {background-image="../assets/placeholder-poster.jpg"}
+
+- Quarto source writes `background-image=` on the header; the renderer adds `data-`
+
+## A third-party clip through the shortcode, not attributed
+
+{{< video ../assets/placeholder-video.mp4 >}}
+
+## Raw HTML is on screen too
+
+```{=html}
+<p>An em dash written as an entity &mdash; and the term Project Nightjar, both inside a raw block.</p>
+```
+
+## A forbidden term
+
+- This slide mentions Project Nightjar in visible text
+- And an INTERNAL-ONLY NUMBER, matched case-insensitively
+

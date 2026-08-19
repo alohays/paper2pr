@@ -9,7 +9,11 @@ audience:
   description: "Undergraduates deciding whether to go into research at all."
 duration_min: 45
 delivery: in-person
-publish: web
+
+# Delivered before the dash rule (WP2, 2026-08-19); the text is not being
+# rewritten, so the dash lint is off for this deck only. New decks keep it.
+checks:
+  dash_lint: false
 
 language:
   slides: en

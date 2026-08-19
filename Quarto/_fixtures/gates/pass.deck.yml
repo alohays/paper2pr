@@ -1,0 +1,17 @@
+# Gate fixture: a lecture deck that trips none of the WP2 checks.
+# korean_allowance is deliberately NOT set, so the lecture profile's 300
+# applies (exercised by scripts/test_profiles.py).
+profile: lecture
+title: "Gate fixture: pass"
+
+audience:
+  assumes: none
+duration_min: 60
+video_min: 10
+qa_min: 5
+
+language:
+  slides: en
+  notes: ko
+
+series_index: 1

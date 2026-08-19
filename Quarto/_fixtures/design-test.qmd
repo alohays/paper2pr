@@ -29,7 +29,15 @@ format:
       - text: '<link rel="stylesheet" href="../fonts/pretendard.css">'
 ---
 
-# Part I: Layout
+## {.divider}
+
+::: {.divider-number}
+1
+:::
+
+::: {.divider-title}
+Layout
+:::
 
 ## Five Bullets at the Density Limit
 
@@ -37,7 +45,7 @@ format:
 - Second point with a [highlighted term]{.hi} inline
 - Third point, also kept to one line
 - Fourth point with a [positive result]{.positive}
-- Fifth and final point — the density ceiling
+- Fifth and final point - the density ceiling
 
 ## A Standalone Statement
 
@@ -110,10 +118,11 @@ An untitled slide centers everything, title included.
 Source: placeholder attribution (2026)
 :::
 
-# Part II: Slide Types
-
-Every class below is styled by the SLIDE TYPES section of the theme; the
-placeholder assets under `assets/` are committed so this deck renders anywhere.
+<!-- Every class from here on is styled by the SLIDE TYPES section of the
+theme; the placeholder assets under `assets/` are committed so this deck
+renders anywhere. Section breaks are `## {.divider}` slides, never a level-1
+heading: a `# ` heading makes reveal nest every following slide under it as a
+vertical stack, which is why the quality gate blocks on one. -->
 
 ## {.divider}
 

@@ -36,6 +36,11 @@ def config_files() -> list[Path]:
     found = sorted((REPO_ROOT / ".claude" / "rules" / "slide-profiles")
                    .glob("*.yml"))
     found += sorted((REPO_ROOT / "Quarto").glob("*/*.deck.yml"))
+    # Per-deck asset manifests: a list of mappings, the one shape the deck
+    # configs never use, so they are the only files that exercise it.
+    found += sorted((REPO_ROOT / "Figures").glob("*/*/figures.yml"))
+    found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/*.deck.yml"))
+    found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/figures.yml"))
     return found
 
 
@@ -85,6 +90,17 @@ cases = [
     ("null and empty",
      'series_index:\nname: ~\n',
      {"series_index": None, "name": None}),
+    ("block sequence of mappings (figures.yml shape)",
+     'figures:\n  - file: a.png\n    source: X Lab\n    third_party: true\n'
+     '  - file: b.svg\n    third_party: false\n',
+     {"figures": [{"file": "a.png", "source": "X Lab", "third_party": True},
+                  {"file": "b.svg", "third_party": False}]}),
+    ("sequence of mappings at the key's own indent, with a nested map",
+     'items:\n- file: a\n  meta:\n    k: 1\n- file: b\n',
+     {"items": [{"file": "a", "meta": {"k": 1}}, {"file": "b"}]}),
+    ("a URL item is a scalar, not a mapping",
+     'urls:\n  - https://example.org/a\n',
+     {"urls": ["https://example.org/a"]}),
 ]
 for label, text, expected in cases:
     try:

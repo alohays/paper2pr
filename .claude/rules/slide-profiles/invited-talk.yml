@@ -21,6 +21,18 @@ checks:
   max_nesting: 1
   expand_acronyms: false
   prior_session_callback: false
+  # WP2 gates (D22). A talk reuses other people's figures in front of a
+  # room that did not see the paper, so each third-party figure names its
+  # source on the slide.
+  dash_lint: true
+  attribution: true
+  forbidden_terms: true
+  level1_heading: fail
+
+language:
+  slides: en
+  notes: ko
+  korean_allowance: 0        # English slides carry no Hangul at all
 
 guidance: |
   The length and the room both move, so pin them in the deck config before

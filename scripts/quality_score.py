@@ -9,6 +9,32 @@ Usage:
     python scripts/quality_score.py Quarto/papers/DreamZero.qmd
     python scripts/quality_score.py Quarto/papers/DreamZero.qmd --summary
     python scripts/quality_score.py Quarto/*/*.qmd
+
+Which checks run is decided by the deck's profile (scripts/deckprofile.py,
+.claude/rules/slide-profiles/<profile>.yml, `checks:`). Two of them are
+BLOCKERS rather than deductions: any hit forces the score to 0 and a
+non-zero exit, because the deck is either leaking or mis-rendering.
+
+  level1_heading   a line starting with "# " after the front matter (outside
+                   fences and notes). Quarto turns a level-1 heading into a
+                   vertical stack and every following slide nests under it;
+                   section dividers are written as "## {.divider}".
+  forbidden_terms  Quarto/<genre>/<deck>.forbidden.txt exists and a term in
+                   it appears in the visible slide text. File format: one
+                   term per line, "#" starts a comment, blank lines are
+                   ignored, matching is a case-insensitive substring match
+                   on visible text (never on speaker notes). Seed it with
+                   internal project names, unpublished numbers, anything
+                   that must not reach a public page.
+
+Visible text, for every check below, means the slide body outside fenced
+code blocks, outside ::: {.notes} divs, outside the YAML front matter and
+outside HTML comments. A raw block (```{=html} ... ```) is NOT a code block:
+its content goes straight to the screen, so the dash lint, the forbidden-term
+scan and the attribution check read it as visible text (tags, <style> and
+<script> bodies stripped). The level-1 check does not: a "# " inside raw
+HTML is literal text, not a heading, and makes no stack. Deductions
+(dash_lint, attribution) are listed in .claude/rules/quality-gates.md.
 """
 
 import sys
@@ -49,8 +75,10 @@ QUARTO_RUBRIC = {
         'bullet_density': {'points': 3},       # >5 bullets, or >3 with a figure (new decks)
         'box_density': {'points': 3},          # >1 colored box per slide (new decks)
         'notation_inconsistency': {'points': 3},
-        'unexpanded_acronym': {'points': 2},        # lecture profile only
+        'unexpanded_acronym': {'points': 2},        # profiles with expand_acronyms
         'missing_prior_session_callback': {'points': 3},  # lecture profile only
+        'dash_expression': {'points': 2, 'cap': 10},      # profiles with dash_lint
+        'missing_attribution': {'points': 5, 'cap': 20},  # profiles with attribution
         'missing_box_separation': {'points': 2},
         'color_contrast_low': {'points': 3},
     },
@@ -61,6 +89,10 @@ QUARTO_RUBRIC = {
         'missing_framing_sentence': {'points': 1},
     }
 }
+
+# Blockers: not deductions. Any hit forces the score to 0 (see the module
+# docstring). Kept out of QUARTO_RUBRIC so nothing sums them as points.
+BLOCKERS = ('level1_heading', 'forbidden_term')
 
 THRESHOLDS = {
     'commit': 80,
@@ -203,7 +235,14 @@ class IssueDetector:
         # acronym matcher happily flagged the TODO in its own scaffold.
         'TODO', 'FIXME', 'XXX', 'NOTE', 'WIP', 'TBD', 'TBA',
     }
-    ACRONYM_RE = re.compile(r'\b([A-Z][A-Z0-9]{1,7})\b')
+    # A candidate is an all-caps token of 2-8 characters that stands on its
+    # own: not glued to a hyphen or another word character on either side.
+    # That is what keeps "RT-2", "QT-Opt", "DALL-E" and "LAION-5B" whole --
+    # the old \b...\b version split them at the hyphen and flagged "RT",
+    # "QT", "DALL" and "LAION" as acronyms nobody had expanded. Tokens with
+    # fewer than two letters ("A100", "3D") are not acronyms either; that
+    # filter is applied in check_acronym_expansion.
+    ACRONYM_RE = re.compile(r'(?<![\w-])([A-Z][A-Z0-9]{1,7})(?![\w-])')
 
     @staticmethod
     def check_acronym_expansion(content: str) -> List[Dict]:
@@ -226,6 +265,8 @@ class IssueDetector:
                 stripped = IssueDetector.strip_inline(text)
                 for acr in IssueDetector.ACRONYM_RE.findall(stripped):
                     if acr in IssueDetector.COMMON_ACRONYMS or acr in seen:
+                        continue
+                    if sum(c.isalpha() for c in acr) < 2:
                         continue
                     seen.add(acr)
                     expanded = (
@@ -585,6 +626,392 @@ class IssueDetector:
                 })
         return hits
 
+    # ------------------------------------------------------------------
+    # WP2 gates: visible-text helpers, dash lint, attribution, forbidden
+    # terms, level-1 heading. All of them read "visible text" the same way
+    # (see the module docstring) and none of them touch iter_slides, so the
+    # checks that predate them keep scoring exactly what they scored.
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _blank(m) -> str:
+        return re.sub(r'[^\n]', ' ', m.group(0))
+
+    @staticmethod
+    def blank_html_comments(content: str) -> str:
+        """Replace every <!-- ... --> with spaces, newlines kept, so line
+        numbers survive and nothing inside a comment is visible text."""
+        return re.sub(r'<!--.*?-->', IssueDetector._blank, content,
+                      flags=re.DOTALL)
+
+    @staticmethod
+    def blank_invisible_html(content: str) -> str:
+        """HTML comments plus <style>...</style> and <script>...</script>
+        bodies, blanked the same way. Raw blocks carry CSS with custom
+        properties (`var(--accent)`) and scripts with `--` operators, none
+        of which a viewer reads; without this the dash lint would bill a
+        chart for its stylesheet."""
+        out = IssueDetector.blank_html_comments(content)
+        out = re.sub(r'<style\b[^>]*>.*?</style\s*>', IssueDetector._blank,
+                     out, flags=re.DOTALL | re.I)
+        out = re.sub(r'<script\b[^>]*>.*?</script\s*>', IssueDetector._blank,
+                     out, flags=re.DOTALL | re.I)
+        return out
+
+    RAW_FENCE_RE = re.compile(r'^`{3,}\s*\{=')   # ```{=html}, ```{=latex}
+
+    @staticmethod
+    def iter_visible_lines(content: str):
+        """Yield (line_no, line, slide_title, raw) for every on-screen
+        source line.
+
+        Same state machine as iter_slides (front matter, fences, notes)
+        plus HTML comments, <style> and <script> bodies blanked, and three
+        differences that the new checks need: lines before the first `##`
+        are yielded too (slide_title is None there), `:::` closers are
+        yielded so a caller can find the extent of a div, and the body of a
+        raw block (```{=html}) is yielded with raw=True -- it is on screen,
+        unlike a code block, so the text checks must read it. Headings and
+        divs are not parsed inside a raw block; `##` there is literal text.
+        """
+        lines = IssueDetector.blank_invisible_html(content).split('\n')
+        in_yaml = False
+        in_fence = False
+        in_raw = False
+        notes_depth = 0
+        div_stack = []
+        title = None
+        for i, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if i == 1 and stripped == '---':
+                in_yaml = True
+                continue
+            if in_yaml:
+                if stripped == '---':
+                    in_yaml = False
+                continue
+            if stripped.startswith('```'):
+                if in_fence:
+                    in_fence = False
+                    in_raw = False
+                else:
+                    in_fence = True
+                    in_raw = bool(IssueDetector.RAW_FENCE_RE.match(stripped))
+                continue
+            if in_fence:
+                if in_raw and notes_depth == 0:
+                    yield i, line, title, True
+                continue
+            if stripped.startswith(':::'):
+                bare = stripped.rstrip(':').strip()
+                if bare:
+                    is_notes = '.notes' in stripped or bare == 'notes'
+                    div_stack.append(is_notes)
+                    if is_notes:
+                        notes_depth += 1
+                        continue
+                elif div_stack:
+                    if div_stack.pop():
+                        notes_depth -= 1
+                        continue
+                if notes_depth == 0:
+                    yield i, line, title, False
+                continue
+            if notes_depth > 0:
+                continue
+            m = re.match(r'^##\s+(.*)$|^##\s*$', line)
+            if m is not None and not line.startswith('###'):
+                title = (m.group(1) or '(untitled)').strip() or '(untitled)'
+            yield i, line, title, False
+
+    @staticmethod
+    def visible_slides(content: str):
+        """[(title, start_line, [(line_no, line), ...])] from
+        iter_visible_lines, one entry per `##` slide (lines before the first
+        slide are dropped, as iter_slides drops them). Raw-block lines are
+        included in the slide they sit in."""
+        out = []
+        cur = None
+        for ln, line, title, raw in IssueDetector.iter_visible_lines(content):
+            if not raw and re.match(r'^##(?!#)', line):
+                cur = (title, ln, [])
+                out.append(cur)
+            if cur is not None:
+                cur[2].append((ln, line))
+        return out
+
+    @staticmethod
+    def rendered_text(text: str) -> str:
+        """What a source line contributes to the screen: drop inline code,
+        inline math, link and image targets, HTML tags and attribute blocks
+        (none of which Quarto's smart punctuation touches, and none of which
+        a viewer reads), keep the words."""
+        t = re.sub(r'`[^`]*`', ' ', text)
+        t = re.sub(r'\$\$.*?\$\$', ' ', t)
+        t = re.sub(r'(?<!\\)\$[^$\n]+?\$', ' ', t)
+        t = re.sub(r'!?\[([^\]]*)\]\([^)]*\)', r'\1', t)
+        t = re.sub(r'<[^>]+>', ' ', t)
+        t = re.sub(r'\{[^}]*\}', ' ', t)
+        return t
+
+    TABLE_RULE_RE = re.compile(r'^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$')
+    # `--`/`---`, the literal characters, and the HTML entities a raw block
+    # would use to write the same thing (they render identically).
+    DASH_RE = re.compile('-{2,}|[\u2014\u2013]|&(?:mdash|ndash|#8212|#8211|#x2014|#x2013);',
+                         re.I)
+
+    @staticmethod
+    def check_dash_expressions(content: str) -> List[Dict]:
+        """`---`, `--`, and literal em/en dashes in visible text.
+
+        Quarto's smart punctuation renders `---` as an em dash and `--` as an
+        en dash. The presenter writes a plain hyphen instead, everywhere.
+        Lines that are only a rule (`---` slide break, `-----`, a table
+        delimiter row) are syntax, not text, and are skipped; so is math,
+        where `--` is two minus signs. Raw ```{=html} blocks are read too
+        (tags stripped, <style>/<script> bodies blanked): the characters in
+        them reach the screen exactly as written, entities included.
+
+        One entry per slide (title, count, first snippet); the caller
+        deducts 2 per hit with a cap of 10.
+        """
+        hits = []
+        for title, start, vis in IssueDetector.visible_slides(content):
+            count = 0
+            snippet = None
+            first_line = None
+            in_math = False
+            for ln, line in vis:
+                stripped = line.strip()
+                if stripped.startswith('$$') and stripped.count('$$') == 1:
+                    in_math = not in_math
+                    continue
+                if in_math:
+                    continue
+                if re.match(r'^\s*-{3,}\s*$', line):
+                    continue
+                if IssueDetector.TABLE_RULE_RE.match(line):
+                    continue
+                text = IssueDetector.rendered_text(line)
+                for m in IssueDetector.DASH_RE.finditer(text):
+                    count += 1
+                    if snippet is None:
+                        lo = max(0, m.start() - 25)
+                        hi = min(len(text), m.end() + 25)
+                        snippet = text[lo:hi].strip()
+                        first_line = ln
+            if count:
+                hits.append({
+                    'type': 'dash_expression', 'slide': title,
+                    'line': first_line or start, 'count': count,
+                    'detail': f'{count} dash expression(s) (---, -- or a '
+                              f'literal em/en dash) - write a plain hyphen; '
+                              f'first at line {first_line}: "{snippet}"',
+                })
+        return hits
+
+    @staticmethod
+    def load_figures_manifest(path: Path) -> List[Dict]:
+        """figures.yml -> the entries under `figures:`. Each is a mapping
+        with file, source, licence, third_party; anything else is an error
+        (a manifest that cannot be read must not pass as 'no manifest')."""
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import minyaml  # noqa: E402
+        data = minyaml.load_path(path)
+        figures = data.get('figures') if isinstance(data, dict) else None
+        if figures is None:
+            return []
+        if not isinstance(figures, list):
+            raise ValueError(f'{path}: `figures:` must be a list')
+        out = []
+        for entry in figures:
+            if not isinstance(entry, dict) or not entry.get('file'):
+                raise ValueError(
+                    f'{path}: each figures entry needs at least `file:`')
+            out.append(entry)
+        return out
+
+    # Every way a slide can put a file on screen: markdown image, HTML
+    # src/poster, the slide-types `video=`/`poster=` header attributes, a
+    # reveal background (Quarto source writes `background-image=` on the
+    # header; the renderer adds the `data-` prefix, so both spellings are
+    # accepted), and the `{{< video path >}}` shortcode.
+    ASSET_REF_RE = re.compile(
+        r'!\[[^\]]*\]\(\s*<?([^)\s>]+)'                      # ![alt](path)
+        r'|(?:src|poster|video|(?:data-)?background-image'
+        r'|(?:data-)?background-video)'
+        r'\s*=\s*["\']?([^"\'\s>}]+)'                         # attr="path"
+        r'|\{\{<\s*video\s+["\']?([^"\'\s>]+)',              # {{< video path >}}
+        re.I)
+
+    @staticmethod
+    def slide_asset_basenames(vis) -> List[str]:
+        names = []
+        for _, line in vis:
+            for m in IssueDetector.ASSET_REF_RE.finditer(line):
+                ref = m.group(1) or m.group(2) or m.group(3)
+                if ref:
+                    names.append(Path(ref.split('?')[0].split('#')[0]).name)
+        return names
+
+    @staticmethod
+    def slide_caption_text(vis) -> str:
+        """Text of every .footnote / .video-caption div, figure caption
+        (image alt text, <figcaption>) and [..]{.footnote} span on the
+        slide. This is where a source has to be named."""
+        parts = []
+        depth = 0          # >0 while inside a caption div
+        stack = []         # True for each open div that is a caption div
+        for _, line in vis:
+            stripped = line.strip()
+            if stripped.startswith(':::'):
+                bare = stripped.rstrip(':').strip()
+                if bare:
+                    is_cap = bool(re.search(
+                        r'\.(footnote|video-caption|caption)\b'
+                        r'|^(footnote|video-caption|caption)$', bare))
+                    stack.append(is_cap)
+                    if is_cap:
+                        depth += 1
+                elif stack:
+                    if stack.pop():
+                        depth -= 1
+                continue
+            if depth > 0:
+                parts.append(line)
+            parts += re.findall(r'!\[([^\]]+)\]\(', line)
+            parts += re.findall(r'<figcaption[^>]*>(.*?)</figcaption>', line, re.I)
+            parts += re.findall(r'\[([^\]]*)\]\{[^}]*\.(?:footnote|caption)\b', line)
+        return ' '.join(parts)
+
+    @staticmethod
+    def check_attribution(content: str, manifest: Path) -> List[Dict]:
+        """Every slide that shows a third-party figure names its source.
+
+        `manifest` is the deck's figures.yml. For each entry with
+        third_party: true, any slide referencing that file (by basename, via
+        ![](..), <img src> -- inside a raw block too --, a video poster, a
+        `background-image=` header attribute, a `{{< video >}}` shortcode or
+        a data-background) must carry
+        the entry's `source` string, case-insensitively, inside a .footnote
+        div, a .video-caption div or a figure caption. 5 per missing, cap
+        20 (applied by the caller).
+        """
+        entries = IssueDetector.load_figures_manifest(manifest)
+        third = {}
+        for e in entries:
+            if e.get('third_party'):
+                third[Path(str(e['file'])).name] = e
+        if not third:
+            return []
+        hits = []
+        for title, start, vis in IssueDetector.visible_slides(content):
+            names = IssueDetector.slide_asset_basenames(vis)
+            caption = IssueDetector.slide_caption_text(vis).lower()
+            seen = set()
+            for name in names:
+                if name not in third or name in seen:
+                    continue
+                seen.add(name)
+                source = str(third[name].get('source') or '').strip()
+                licence = str(third[name].get('licence') or '').strip()
+                if source and source.lower() in caption:
+                    continue
+                want = source or '<source missing in figures.yml>'
+                hits.append({
+                    'type': 'missing_attribution', 'slide': title,
+                    'line': start, 'file': name,
+                    'detail': f'{name} is third-party (source: {want}'
+                              f'{", licence: " + licence if licence else ""}) '
+                              f'but this slide has no .footnote or caption '
+                              f'naming "{want}"',
+                })
+        return hits
+
+    @staticmethod
+    def load_forbidden_terms(path: Path) -> List[str]:
+        """<deck>.forbidden.txt: one term per line, # comments, blanks
+        ignored. Returned in file order, duplicates dropped."""
+        terms = []
+        for raw in path.read_text(encoding='utf-8').splitlines():
+            line = raw.strip()
+            if not line or line.startswith('#'):
+                continue
+            if line not in terms:
+                terms.append(line)
+        return terms
+
+    @staticmethod
+    def front_matter_titles(content: str) -> List[Tuple[int, str]]:
+        """(line_no, value) of title: and subtitle: in the front matter.
+        They are rendered on the title slide, so a forbidden term there is
+        as public as one on a body slide."""
+        m = re.match(r'^---\s*\n(.*?)\n---\s*(?:\n|$)', content, re.DOTALL)
+        if not m:
+            return []
+        out = []
+        for i, line in enumerate(m.group(1).split('\n'), 2):
+            mm = re.match(r'^(title|subtitle):\s*(.+)$', line)
+            if mm:
+                out.append((i, mm.group(2).strip().strip('"\'')))
+        return out
+
+    @staticmethod
+    def check_forbidden_terms(content: str, forbidden: Path) -> List[Dict]:
+        """Any forbidden term in visible text is a BLOCKER.
+
+        Case-insensitive substring match, on visible text only -- never on
+        speaker notes, which is where the internal context is supposed to
+        live. Raw ```{=html} blocks count as visible (this is a leak gate;
+        a term inside hand-written HTML is on the public page all the same).
+        Reports every line:term pair.
+        """
+        terms = IssueDetector.load_forbidden_terms(forbidden)
+        if not terms:
+            return []
+        hits = []
+        candidates = [(ln, IssueDetector.rendered_text(line), title)
+                      for ln, line, title, _raw
+                      in IssueDetector.iter_visible_lines(content)]
+        candidates += [(ln, text, '(title slide)')
+                       for ln, text in IssueDetector.front_matter_titles(content)]
+        for ln, text, title in candidates:
+            low = text.lower()
+            for term in terms:
+                if term.lower() in low:
+                    hits.append({
+                        'type': 'forbidden_term', 'slide': title,
+                        'line': ln, 'term': term,
+                        'detail': f'forbidden term "{term}" (from '
+                                  f'{forbidden.name}) in visible text: '
+                                  f'"{text.strip()[:80]}"',
+                    })
+        return hits
+
+    @staticmethod
+    def check_level1_headings(content: str) -> List[Dict]:
+        """A `# ` line after the front matter (outside fences, notes and
+        comments) is a BLOCKER: Quarto renders it as a vertical stack and
+        every slide that follows nests under it, so the deck's navigation
+        and slide count silently change. Section dividers are written as
+        `## {.divider}`. Raw ```{=html} lines are skipped: a "# " there is
+        literal text and builds no stack."""
+        hits = []
+        for ln, line, title, raw in IssueDetector.iter_visible_lines(content):
+            if raw:
+                continue
+            if re.match(r'^#(?!#)(\s|$)', line):
+                hits.append({
+                    'type': 'level1_heading', 'slide': title, 'line': ln,
+                    'heading': line.strip(),
+                    'detail': f'level-1 heading "{line.strip()}" at line {ln}: '
+                              f'Quarto turns it into a vertical stack and every '
+                              f'following slide nests under it. Write section '
+                              f'dividers as "## {{.divider}}" (see '
+                              f'Quarto/_fixtures/design-test.qmd)',
+                })
+        return hits
+
     @staticmethod
     def check_plotly_widgets(html_file: Path, expected: int = None) -> Tuple[int, bool]:
         """Check if plotly charts rendered in HTML."""
@@ -654,6 +1081,7 @@ class QualityScorer:
             'major': [],
             'minor': []
         }
+        self.blockers = []      # forced-0 findings; see BLOCKERS
         self.auto_fail = False
 
     def score_quarto(self) -> Dict:
@@ -758,6 +1186,58 @@ class QualityScorer:
                 })
                 self.score -= 3
 
+        # WP2 gates. Each is switched by the profile (see the profile yml,
+        # checks:), so a deck whose profile leaves one off is not touched by
+        # it. The two blockers force the score to 0 below.
+        if profile and profile.dash_lint:
+            hits = IssueDetector.check_dash_expressions(content)
+            cap = QUARTO_RUBRIC['major']['dash_expression']['cap']
+            per = QUARTO_RUBRIC['major']['dash_expression']['points']
+            spent = 0
+            for v in hits:
+                points = min(per * v['count'], max(cap - spent, 0))
+                spent += points
+                self.issues['major'].append({
+                    'type': v['type'],
+                    'description': f"Dash expression(s) on slide \"{v['slide']}\" (line {v['line']})",
+                    'details': v['detail'] + ('' if points else ' (cap reached, no further deduction)'),
+                    'points': points
+                })
+                self.score -= points
+        if profile and profile.attribution and profile.figures_manifest:
+            try:
+                hits = IssueDetector.check_attribution(content, profile.figures_manifest)
+            except Exception as e:   # unreadable manifest: say so, loudly
+                hits = [{'type': 'missing_attribution', 'slide': '(manifest)',
+                         'line': 0, 'detail': f'figures.yml could not be read: {e}'}]
+            cap = QUARTO_RUBRIC['major']['missing_attribution']['cap']
+            per = QUARTO_RUBRIC['major']['missing_attribution']['points']
+            spent = 0
+            for v in hits:
+                points = min(per, max(cap - spent, 0))
+                spent += points
+                self.issues['major'].append({
+                    'type': v['type'],
+                    'description': f"Missing attribution on slide \"{v['slide']}\" (line {v['line']})",
+                    'details': v['detail'] + ('' if points else ' (cap reached, no further deduction)'),
+                    'points': points
+                })
+                self.score -= points
+        if profile and profile.forbidden_terms and profile.forbidden_file:
+            for v in IssueDetector.check_forbidden_terms(content, profile.forbidden_file):
+                self.blockers.append({
+                    'type': v['type'],
+                    'description': f"{self.filepath}:{v['line']}: forbidden term \"{v['term']}\"",
+                    'details': v['detail'],
+                })
+        if profile and profile.level1_heading != 'off':
+            for v in IssueDetector.check_level1_headings(content):
+                self.blockers.append({
+                    'type': v['type'],
+                    'description': f"{self.filepath}:{v['line']}: level-1 heading \"{v['heading']}\"",
+                    'details': v['detail'],
+                })
+
         # Check plotly widgets (if HTML exists)
         html_file = self.filepath.parent.parent / 'docs' / 'slides' / self.filepath.with_suffix('.html').name
         if html_file.exists():
@@ -774,6 +1254,8 @@ class QualityScorer:
                 self.score -= 10 * missing
 
         self.score = max(0, self.score)
+        if self.blockers:
+            self.score = 0
         return self._generate_report()
 
     def _generate_report(self) -> Dict:
@@ -781,6 +1263,9 @@ class QualityScorer:
         if self.auto_fail:
             status = 'FAIL'
             threshold = 'None (auto-fail)'
+        elif self.blockers:
+            status = 'BLOCKED'
+            threshold = 'None (blocker: score forced to 0)'
         elif self.score >= THRESHOLDS['excellence']:
             status = 'EXCELLENCE'
             threshold = 'excellence'
@@ -805,6 +1290,8 @@ class QualityScorer:
             'status': status,
             'threshold': threshold,
             'auto_fail': self.auto_fail,
+            'blocked': bool(self.blockers),
+            'blockers': self.blockers,
             'issues': {
                 'critical': self.issues['critical'],
                 'major': self.issues['major'],
@@ -813,6 +1300,7 @@ class QualityScorer:
                     'critical': critical_count,
                     'major': major_count,
                     'minor': minor_count,
+                    'blocker': len(self.blockers),
                     'total': total_count
                 }
             },
@@ -835,7 +1323,18 @@ class QualityScorer:
 
         print(f"## Overall Score: {report['score']}/100 {status_emoji.get(report['status'], '')}")
 
-        if report['status'] == 'BLOCKED':
+        if report['blockers']:
+            # Shown in every mode, summary included: a blocker is the one
+            # finding a reader must not have to scroll for.
+            print(f"\n## BLOCKERS (score forced to 0): {len(report['blockers'])}")
+            for b in report['blockers']:
+                print(f"BLOCKER [{b['type']}] {b['description']}")
+                print(f"    {b['details']}")
+
+        if report['status'] == 'BLOCKED' and report['blockers']:
+            print(f"\n**Status:** BLOCKED - {len(report['blockers'])} blocker(s); "
+                  f"fix them, the rest of the score is moot until then")
+        elif report['status'] == 'BLOCKED':
             print(f"\n**Status:** BLOCKED - Cannot commit (score < {THRESHOLDS['commit']})")
         elif report['status'] == 'COMMIT_READY':
             print(f"\n**Status:** Ready for commit (score >= {THRESHOLDS['commit']})")
@@ -857,13 +1356,16 @@ class QualityScorer:
             print(f"\n**Total issues:** {report['issues']['counts']['total']} "
                   f"({report['issues']['counts']['critical']} critical, "
                   f"{report['issues']['counts']['major']} major, "
-                  f"{report['issues']['counts']['minor']} minor)")
+                  f"{report['issues']['counts']['minor']} minor"
+                  + (f", {report['issues']['counts']['blocker']} BLOCKER"
+                     if report['blockers'] else '') + ")")
             return
 
         # Detailed issues
         print(f"\n## Critical Issues (MUST FIX): {report['issues']['counts']['critical']}")
         if report['issues']['counts']['critical'] == 0:
-            print("No critical issues - safe to commit\n")
+            print("No critical issues" + ("\n" if report['blockers']
+                                          else " - safe to commit\n"))
         else:
             for i, issue in enumerate(report['issues']['critical'], 1):
                 print(f"{i}. **{issue['description']}** (-{issue['points']} points)")
@@ -881,7 +1383,11 @@ class QualityScorer:
                 print(f"{i}. {issue['description']} (-{issue['points']} points)\n")
 
         # Recommendations
-        if report['status'] == 'BLOCKED':
+        if report['blockers']:
+            print("## Recommended Actions")
+            print("1. Fix every BLOCKER above (the score stays 0 until they are gone)")
+            print(f"2. Re-run quality score (target: >={THRESHOLDS['commit']})\n")
+        elif report['status'] == 'BLOCKED':
             print("## Recommended Actions")
             print("1. Fix all critical issues above")
             print(f"2. Re-run quality score (target: >={THRESHOLDS['commit']})")
@@ -923,7 +1429,7 @@ Quality Thresholds:
 
 Exit Codes:
   0 = Score >= 80 (commit allowed)
-  1 = Score < 80 (commit blocked)
+  1 = Score < 80 (commit blocked), including any BLOCKER (forced 0)
   2 = Auto-fail (compilation error)
         """
     )
