@@ -13,7 +13,9 @@
 // (.divider-number / .divider-title / .divider-sub), `## {.video-full
 // video=".." poster=".."}` full-bleed clip with a .video-caption strip
 // (.video-caption-title / .video-caption-meta), .video-inline for a 16:9 clip
-// inside a content slide, figure.chart-figure + svg.chart for inline SVG
+// inside a content slide, figure.video-card (what {{< video-card >}} emits:
+// clip + caption strip; .two-up wraps two of them in a row; the first @media
+// print block swaps every video for its poster), figure.chart-figure + svg.chart for inline SVG
 // charts (CSS vars --accent / --accent2 / --chart-muted), .formula-legend +
 // .gloss under a display formula, .timeline (.tl-item > .tl-thumb / .tl-date /
 // .tl-name, one row up to six items, two rows of four from seven), and
@@ -1124,6 +1126,121 @@ $img-cap-with-list: $slide-height * 0.4;
 .reveal .slides section.level2:has(ul, ol) video.video-inline,
 .reveal .slides section.level2:has(ul, ol) .video-inline video {
   max-height: $img-cap-with-list;
+}
+
+// ---- figure.video-card: what {{< video-card slug >}} emits (_filters/
+// video-card.lua): a 16:9 clip with 4px corners and a caption strip below it
+// in the .video-caption language (title semibold left, meta right, 0.45em,
+// muted). The <img.video-poster-print> inside is for print only (below).
+.reveal figure.video-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+
+  video.video-inline {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  img.video-poster-print {
+    display: none;
+  }
+
+  figcaption.video-caption {
+    // width 0 + min-width 100%: the caption never widens the card, the
+    // video does (otherwise a long title stretched the video past 16:9
+    // and object-fit cropped it); the strip then takes the video's width
+    // and wraps to two lines when the meta does not fit beside the title.
+    width: 0;
+    min-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.1em 1em;
+    margin: 0.25em 0 0;
+    padding: 0 0.1em;
+    font-size: 1em;        // the global figcaption is 0.6em; the spans size themselves
+    font-style: normal;
+    text-align: left;
+    line-height: 1.3;
+    color: #5a5a5a;
+
+    .video-caption-title {
+      font-size: 0.5em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: $primary-blue;
+    }
+
+    .video-caption-meta {
+      font-size: 0.45em;
+      font-weight: 300;
+      color: #6b6b6b;
+    }
+  }
+}
+
+// ---- .two-up: two cards side by side.
+//   ::: {.two-up}
+//   {{< video-card a >}}
+//   {{< video-card b >}}
+//   :::
+// A flex row, each card 48 percent; the video fills the card's width and the
+// list cap (the slide is a flex column, so the row container has to be the
+// author's div: two sibling figures would stack).
+.reveal .two-up {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4%;
+  width: 100%;
+  max-width: 100%;
+
+  > figure.video-card {
+    flex: 0 0 48%;
+    width: 48%;
+    max-width: 48%;
+    margin: 0;
+
+    video.video-inline {
+      width: 100%;
+      max-height: none;
+    }
+  }
+}
+
+// ---- print: a <video> prints as a black box, so hide every video and show
+// the poster the shortcode carries beside it; reveal's data-background-image
+// already does this for .video-full slides. scripts/export_pdf.sh (WP7)
+// depends on this block.
+@media print {
+  .reveal figure.video-card video.video-inline,
+  .reveal video.video-inline,
+  .reveal .slides section video,
+  .reveal .backgrounds video {
+    display: none !important;
+  }
+
+  .reveal figure.video-card img.video-poster-print {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 4px;
+    margin: 0 auto;
+  }
+
+  // The card's caption survives; a fragment caption is revealed.
+  .reveal figure.video-card figcaption.video-caption.fragment {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 // ---- figure.chart-figure: inline SVG chart at 64% of the slide width. The
