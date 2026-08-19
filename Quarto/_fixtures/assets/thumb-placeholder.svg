@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180" role="img" aria-label="placeholder thumbnail">
+  <rect width="320" height="180" fill="#E8EDF5"/>
+  <rect x="24" y="24" width="272" height="132" rx="6" fill="none" stroke="#aab4c8" stroke-width="3"/>
+  <line x1="24" y1="24" x2="296" y2="156" stroke="#aab4c8" stroke-width="3"/>
+  <line x1="296" y1="24" x2="24" y2="156" stroke="#aab4c8" stroke-width="3"/>
+  <text x="160" y="98" font-family="Source Sans Pro, Helvetica Neue, sans-serif" font-size="28" text-anchor="middle" fill="#012169">16:9</text>
+</svg>

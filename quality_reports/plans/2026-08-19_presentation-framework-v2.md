@@ -1,7 +1,7 @@
 # Presentation framework v2: finish the pivot before the first lecture deck lands
 
 **Date:** 2026-08-19
-**Status:** analysis complete, implementation not started. Nothing in the repo was changed by the analysis.
+**Status:** implementation in progress on the `framework-v2` stack (gh-stack, one branch per WP). WP0 decided and landed; see each WP section for its record.
 **Trigger:** the first course lecture, `dgist-2026f-w02` (DGIST HSS118, 2026-09-04, 42 slides, 8-10 videos, 100+ non-major first-years), is the first deck that will be graded by the main theme and the `lecture` profile at the same time. Neither has ever met a real deck.
 **Decided by:** the presenter, in a 28-question interview on 2026-08-18/19. The Korean record of that interview lives in the vault (`1-projects/maum/dgist-future-literacy-2026fall/lectures/paper2pr-readiness.md`); this file is the English source of truth for the work.
 **Evidence:** two read-only audits, both code-verified (scaffold dry-run, brief slides scored by `quality_score.py`, a probe deck rendered against `clean-academic.scss`, the asset-gate regex executed). Copies: vault `lectures/paper2pr-audit/01-w02-readiness-audit.md` and `02-framework-inventory.md`. Line numbers below refer to HEAD `6530b84`.
@@ -69,6 +69,13 @@ Ordered. Each package ends in a commit set on a branch; the branch merges when i
 - Build, outside the repo tree or in a throwaway branch, three W02 slides (hook video full-bleed, the `pi(a | o, l)` formula slide, the 2012-2026 timeline) twice: once on `clean-academic.scss`, once on a dark lecture variant (Pretendard or equivalent, high contrast for a lit room). Screenshot both at 1280x720.
 - Present the six images; the presenter picks. Record the pick here.
 - Accept: a written decision plus the chosen theme file(s) checked in with a fixture slide for each new class.
+
+**Decision (2026-08-19): variant A, the light academic theme.** Three variants were rendered on the same five W02 slides plus the title slide (A light academic = `clean-academic.scss` + new classes; B dark lecture, navy/gold, Pretendard + Instrument Serif; C Swiss light, white/black + red, Archivo + Nunito), each critiqued from two lenses (designer, back-row student) and given one fix round. Reviewer averages were C 7.8, B 7.5, A 7.2; the presenter picked A for continuity with the existing decks, and it is the safest palette for a lit 100-seat room. Consequences, all landed on this branch:
+
+- The overlay was folded into `Quarto/clean-academic.scss` (it stays the main theme for every genre; the identity is the presenter's, not an institution's). New classes: `.divider`, `.video-full` + `.video-caption`, `.video-inline`, `figure.chart-figure`, `.formula-legend`, `.gloss`, `.timeline` (one row up to six items, two rows of four from seven). Gold used as text darkened to `#9A7B3F`; `.footnote` 0.45em left; Pretendard is the Hangul fallback in every font stack.
+- Full-bleed slides use reveal background attributes, not stretched CSS: `Quarto/_filters/slide-types.lua` maps `## {.divider}` to `data-background-color` and `## {.video-full video=... poster=...}` to `data-background-video` (+ loop, muted, cover) and `data-background-image`. `Quarto/_quarto.yml` wires the filter, sets `margin: 0` (the 1280x720 section is the viewport), and links `../fonts/pretendard.css` for every deck under a genre directory. `_fixtures/` is underscore-prefixed and therefore outside the Quarto project: fixtures repeat those defaults themselves.
+- Fixtures: `Quarto/_fixtures/design-test.qmd` gained a "Slide Types" part with committed placeholder assets; `Quarto/_fixtures/theme-mockups/` keeps the W02 sample (`body.qmd` + `w02-sample.qmd`, media gitignored). `Quarto/_fixtures/shoot.py` drives headless Chrome over the DevTools protocol (the `--screenshot` one-liner painted SVG text from a stale layout); WP6 moves it under `scripts/` as the render audit.
+- Rejected variants B and C were not committed; the side-by-side comparison page and their contact sheets were shown to the presenter at decision time and live in the session scratchpad only. If a dark variant is wanted later, it is a new piece of work, not a revert.
 
 ### WP1 - Remove the dead layers (D3, D5)
 

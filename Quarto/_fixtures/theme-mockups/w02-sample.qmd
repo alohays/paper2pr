@@ -1,0 +1,32 @@
+---
+title: "The Paradigm Shift Toward Embodied AI"
+subtitle: "HSS118 Future Literacy, Week 2"
+author: "Yunsung Lee"
+institute: "DGIST, 2026-09-04"
+# The title gradient is a reveal background so it fills the viewport at any
+# aspect ratio; the theme drops its own section gradient when this is set.
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+format:
+  revealjs:
+    theme: [default, ../../clean-academic.scss]
+    # _fixtures/ is underscore-prefixed, so Quarto treats it as OUTSIDE the
+    # project: Quarto/_quarto.yml defaults, the filter and the font link do NOT
+    # apply here and are repeated below. Real decks under Quarto/<genre>/
+    # inherit them from _quarto.yml and set none of this.
+    width: 1280
+    height: 720
+    margin: 0
+    center: false
+    auto-stretch: false
+    slide-number: true
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
+    filters:
+      - ../../_filters/slide-types.lua
+    include-in-header:
+      - text: '<link rel="stylesheet" href="../../fonts/pretendard.css">'
+---
+
+{{< include body.qmd >}}
