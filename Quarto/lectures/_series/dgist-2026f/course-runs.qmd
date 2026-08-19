@@ -1,0 +1,14 @@
+<!-- Shared slide of the dgist-2026f series. Included by every lecture deck of
+the series with the include shortcode (_series/dgist-2026f/course-runs.qmd) (the
+path is relative to Quarto/lectures/<deck>.qmd). Per-deck speaker notes go in
+the deck right after the include line: everything before the next ## belongs
+to this slide. The rules and the LMS line come from the series lock
+(rules / lms_note in Quarto/lectures/_series/dgist-2026f.yml). -->
+
+## How this course runs
+
+{{< series-rules >}}
+
+::: {.footnote}
+{{< series-field lms_note >}}
+:::

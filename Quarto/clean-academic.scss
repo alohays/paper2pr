@@ -18,7 +18,10 @@
 // print block swaps every video for its poster), figure.chart-figure + svg.chart for inline SVG
 // charts (CSS vars --accent / --accent2 / --chart-muted), .formula-legend +
 // .gloss under a display formula, .timeline (.tl-item > .tl-thumb / .tl-date /
-// .tl-name, one row up to six items, two rows of four from seven), and
+// .tl-name, one row up to six items, two rows of four from seven), the series
+// slides (figure.semester-map holding the inlined semester SVG; `## {.qr-slide}`
+// with the .qr-block / .qr-meta that {{< series-qr >}} emits, see
+// _filters/series.lua), and
 // .footnote. .divider and .video-full get their full-bleed backgrounds from
 // _filters/slide-types.lua (reveal data-background-* attributes), never from
 // a stretched box; the project's reveal margin is 0 so the 1280x720 section is
@@ -977,6 +980,14 @@ $img-cap-with-list: $slide-height * 0.4;
 // this section stretches a box to the edge. The project's reveal margin is 0,
 // so at 16:9 the 1280x720 section coincides with the viewport and absolutely
 // positioned children (.video-caption) reach the edge.
+//
+// Series slides (_filters/series.lua, the lock written by scripts/
+// series_assets.py): figure.semester-map wraps the inlined semester SVG
+// ({{< semester-map >}}; full content width, at most 440px tall);
+// `## Title {.qr-slide}` centres the .qr-block that {{< series-qr >}} emits
+// (a 420px QR, the tool / code / URL line under it, one sentence below). The
+// QR is large on purpose and appears only on the orientation and Q&A slides
+// (plan D19): nothing persistent in the slide chrome.
 // ==============================================================================
 
 // Palette hooks for inline SVG charts and any raw HTML that wants the palette
@@ -1240,6 +1251,93 @@ $img-cap-with-list: $slide-height * 0.4;
   .reveal figure.video-card figcaption.video-caption.fragment {
     opacity: 1;
     visibility: visible;
+  }
+}
+
+// ---- figure.semester-map: the inlined semester timeline ({{< semester-map >}}
+// -> <figure class="semester-map"><svg viewBox="0 0 1100 300">...</svg></figure>).
+// Full content width (1168px at the 56px padding), so the 1100x300 map lands
+// at about 318px tall; the cap is for a shorter slide. The SVG text declares
+// font-family: inherit, which is why it is inlined rather than linked: the
+// theme font reaches it. An <img.semester-map> (someone linking the file)
+// gets the same box.
+.reveal figure.semester-map,
+.reveal img.semester-map {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  color: $jet;
+}
+
+.reveal figure.semester-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 440px;
+  overflow: visible;
+}
+
+.reveal img.semester-map {
+  max-height: 440px;
+  object-fit: contain;
+}
+
+// ---- .qr-slide + .qr-block: the two QR slides of a series ({{< series-qr >}}).
+// The block is a column: the code (about 420px square, centred), the meta line
+// under it at 0.6em with the code bold, and the one-line instruction the
+// author writes below the shortcode at 0.7em. The h2 stays pinned at the
+// top; the block sits in the centred content area like any other content.
+.reveal .qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  margin: 0 auto;
+
+  img.qr {
+    display: block;
+    width: 420px;
+    height: 420px;
+    max-height: 420px;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0;
+    // the qrencode SVG paints its own white quiet zone (2 modules)
+    background: #fff;
+  }
+
+  .qr-meta {
+    margin-top: 0.35em;
+    font-size: 0.6em;
+    font-weight: 300;
+    line-height: 1.3;
+    color: #3a3a3a;
+    text-align: center;
+    white-space: nowrap;
+
+    .qr-tool { font-weight: 400; }
+    .qr-code { font-weight: 700; color: $primary-blue; margin-right: 0.6em; }
+    .qr-url { font-weight: 300; color: #6b6b6b; }
+  }
+}
+
+// A smaller QR when it shares the slide with a list (not the series design,
+// but the block should not break a slide that does it).
+.reveal .slides section.level2:has(ul, ol) .qr-block img.qr {
+  width: $img-cap-with-list;
+  height: $img-cap-with-list;
+  max-height: $img-cap-with-list;
+}
+
+.reveal .slides section.qr-slide {
+  > .qr-block + p {
+    font-size: 0.7em;
+    font-weight: 300;
+    color: #3a3a3a;
+    text-align: center;
+    margin-top: 0.5em;
   }
 }
 

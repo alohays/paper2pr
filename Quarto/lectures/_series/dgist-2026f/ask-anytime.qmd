@@ -1,0 +1,13 @@
+<!-- Shared slide of the dgist-2026f series. Included by every lecture deck of
+the series with the include shortcode (_series/dgist-2026f/ask-anytime.qmd) (the
+path is relative to Quarto/lectures/<deck>.qmd). Per-deck speaker notes go in
+the deck right after the include line: everything before the next ## belongs
+to this slide. The QR and the code come from the series lock (qa_tool in
+Quarto/lectures/_series/dgist-2026f.yml; re-run scripts/series_assets.py
+after replacing the PLACEHOLDER). -->
+
+## Ask anytime {.qr-slide}
+
+{{< series-qr >}}
+
+Questions go on the wall any time; we answer them in the last ten minutes.
