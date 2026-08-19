@@ -1,8 +1,6 @@
 ---
 paths:
-  - "Slides/**/*.tex"
   - "Quarto/**/*.qmd"
-  - "scripts/**/*.R"
 ---
 
 # Quality Gates & Scoring Rubrics
@@ -19,39 +17,27 @@ Design-principle deductions apply to decks on the main theme
 (`clean-academic.scss`). Legacy decks pinned to `clean-academic-legacy.scss`
 are graded without them. See `.claude/rules/slide-design-principles.md`.
 
+The bullet and density numbers below are the **paper-review defaults**. The
+numbers a given deck is actually held to come from its profile in
+`.claude/rules/slide-profiles/<profile>.yml` (`paper-review`, `lecture`,
+`invited-talk`), selected by `<deck>.deck.yml` and read via
+`python3 scripts/deckprofile.py <deck>`. `quality_score.py` applies the
+profile's budgets, not this table, when they differ.
+
 | Severity | Issue | Deduction |
 |----------|-------|-----------|
-| Critical | Compilation failure | -100 |
+| Critical | Render failure (`quarto render`) | -100 |
 | Critical | Equation overflow | -20 |
 | Critical | Broken citation | -15 |
 | Critical | Typo in equation | -10 |
 | Major | Text overflow | -5 |
 | Major | `.smaller`/`.smallest` or font-size override used to fit content | -5 per slide |
-| Major | TikZ label overlap | -5 |
 | Major | >5 bullets on a slide (>3 with a figure; one less again if a bullet wraps to two lines) | -3 per slide |
 | Major | >1 two-line bullet on a slide, or any bullet running past two lines | -3 per slide |
 | Major | >1 colored box on a slide | -3 per slide |
 | Major | Notation inconsistency | -3 |
 | Minor | List nesting deeper than 1 sub-level | -1 per slide |
 | Minor | Long lines (>100 chars) | -1 (EXCEPT documented math formulas) |
-
-## R Scripts (.R)
-
-| Severity | Issue | Deduction |
-|----------|-------|-----------|
-| Critical | Syntax errors | -100 |
-| Critical | Domain-specific bugs | -30 |
-| Critical | Hardcoded absolute paths | -20 |
-| Major | Missing set.seed() | -10 |
-| Major | Missing figure generation | -5 |
-
-## Beamer Slides (.tex)
-
-| Severity | Issue | Deduction |
-|----------|-------|-----------|
-| Critical | XeLaTeX compilation failure | -100 |
-| Critical | Undefined citation | -15 |
-| Critical | Overfull hbox > 10pt | -10 |
 
 ## Enforcement
 
@@ -61,15 +47,6 @@ are graded without them. See `.claude/rules/slide-design-principles.md`.
 
 ## Quality Reports
 
-Generated **only at merge time**. Use `templates/quality-report.md` for format.
-Save to `quality_reports/merges/YYYY-MM-DD_[branch-name].md`.
-
-## Tolerance Thresholds (Research)
-
-<!-- Customize for your domain -->
-
-| Quantity | Tolerance | Rationale |
-|----------|-----------|-----------|
-| Point estimates | [e.g., 1e-6] | [Numerical precision] |
-| Standard errors | [e.g., 1e-4] | [MC variability] |
-| Coverage rates | [e.g., +/- 0.01] | [MC with B reps] |
+Generated **only at merge time**. Reports are free-form markdown saved under
+`quality_reports/merges/YYYY-MM-DD_[branch-name].md` (score, blocking issues,
+recommendations, what was verified).

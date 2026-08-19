@@ -1,10 +1,11 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
+  - "Quarto/papers/**/*.qmd"
 ---
 
 # Paper Review Knowledge Base: Paper2PR
+
+> This template applies to paper-review decks (`Quarto/papers/`) only. Invited talks and course lectures do not use it.
 
 ## Notation Registry (General AI/ML Conventions)
 

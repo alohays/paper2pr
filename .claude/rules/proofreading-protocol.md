@@ -1,13 +1,12 @@
 ---
 paths:
-  - "Slides/**/*.tex"
   - "Quarto/**/*.qmd"
   - "quality_reports/**"
 ---
 
 # Proofreading Agent Protocol (MANDATORY)
 
-**Every lecture file MUST be reviewed before any commit or PR.**
+**Every deck (`Quarto/<genre>/*.qmd`) MUST be reviewed before any commit or PR.**
 
 **CRITICAL RULE: The agent must NEVER apply changes directly. It proposes all changes for review first.**
 
@@ -15,8 +14,8 @@ paths:
 
 1. **Grammar** -- subject-verb agreement, missing articles, wrong prepositions
 2. **Typos** -- misspellings, search-and-replace corruption, duplicated words
-3. **Overflow** -- overfull hbox (Beamer), content exceeding slide boundaries (Quarto)
-4. **Consistency** -- notation, citation style (`\citet` vs `\citep`, `[@key]`), terminology
+3. **Overflow** -- content exceeding the 1280x720 slide canvas
+4. **Consistency** -- notation, citation style (`@key` vs `[@key]`), terminology
 5. **Academic quality** -- informal abbreviations, missing words, awkward phrasing
 
 ## Three-Phase Workflow
@@ -30,7 +29,7 @@ Each agent:
    - Current text
    - Proposed fix
    - Category (grammar / typo / overflow / consistency)
-3. Saves report to `quality_reports/` (e.g., `quality_reports/PaperName_report.md`)
+3. Saves report to `quality_reports/` (e.g., `quality_reports/DeckName_report.md`)
 4. **Does NOT modify any source files**
 
 ### Phase 2: Review & Approve
