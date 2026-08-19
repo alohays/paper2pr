@@ -32,16 +32,21 @@ The deck already declared this. Read it, do not ask:
 
 ```bash
 python3 scripts/deckprofile.py [PaperName] --field notes_language
-python3 scripts/deckprofile.py [PaperName] --field duration_min 2>/dev/null
+python3 scripts/deckprofile.py [PaperName] --field speaking_min 2>/dev/null
 ```
 
-- `ko` — Korean script, ~280 chars/min
-- `en` — English script, ~130 words/min
+- `ko` - Korean script, 280 Hangul syllables/min
+- `en` - English script, 130 words/min
 
-Multiply by the deck's `duration_min` for the budget: a 60-minute lecture in
-Korean is ~16,800 chars, not the ~8,500 that a 30-minute paper review takes.
-Deriving it from the declared duration is the point — a hardcoded budget
-silently belongs to whichever genre it was written for.
+Multiply by the deck's `speaking_min` for the budget. `speaking_min` is
+derived by `deckprofile.py` as `duration_min - video_min - qa_min` (floored
+at 0): the minutes the presenter actually talks, not the wall-clock slot. A
+60-minute lecture with 10 minutes of clips and 5 of questions is a
+45-minute script, ~12,600 Hangul syllables in Korean or ~5,850 words in
+English; a 30-minute paper review with neither is ~8,400 / ~3,900. Deriving
+it from the declared numbers is the point - a hardcoded budget silently
+belongs to whichever genre it was written for, and a budget on the slot
+length over-writes every deck that plays video.
 
 `--lang` still overrides, for the one-off case where the notes are being
 written in a different language from what the deck will normally use. Say so
@@ -113,15 +118,16 @@ After all batches are complete:
 1. Count total script length:
    - **Korean:** count characters excluding spaces, punctuation, and markdown syntax
    - **English:** count words excluding markdown syntax
-2. Compare against the target derived from the deck's own `duration_min`
+2. Compare against the target derived from the deck's own `speaking_min`
    (Phase 0B), not a fixed number:
-   - Korean: `duration_min × 280` chars (±10%)
-   - English: `duration_min × 115` words (±10%)
+   - Korean: `speaking_min × 280` Hangul syllables (±10%)
+   - English: `speaking_min × 130` words (±10%)
 
    For the 30-minute paper reviews this skill was written against that is
-   8,400 chars / 3,450 words, which is where the old fixed figures came
-   from. A 60-minute lecture is twice that, and a 20-minute conference talk
-   is a third of it.
+   8,400 syllables / 3,900 words, which is where the old fixed figures came
+   from. A 60-minute lecture with no video is twice that, a 20-minute
+   conference talk is a third of it, and a lecture that plays clips is
+   budgeted on the minutes left after them.
 3. If outside acceptable range:
    - **Too long:** identify the longest notes and ask the script-writer agent to trim
    - **Too short:** identify slides with thin notes and ask for expansion
@@ -172,7 +178,7 @@ Present a summary to the user including:
 **User says:** `/write-speaker-notes DreamZero`
 **Actions:**
 1. `deckpath.py DreamZero --field qmd` → `Quarto/papers/DreamZero.qmd`
-2. `deckprofile.py DreamZero` → notes `ko`, 30 min → target ~8,400 chars
+2. `deckprofile.py DreamZero` → notes `ko`, speaking_min 30 → target ~8,400 syllables
 3. Read QMD, count slides, locate source paper
 4. Generate notes in 4-5 batches via script-writer agent
 5. Verify total char count within range
@@ -195,12 +201,14 @@ Present a summary to the user including:
    `language.notes` in `DreamZero.deck.yml`, not repeating the flag.
 2. If Korean notes exist, warn and ask whether to replace
 3. If replacing, remove all existing `::: {.notes}` blocks first
-4. Generate English script targeting `duration_min × 115` words
+4. Generate English script targeting `speaking_min × 130` words
 5. Verify and render
 
 ### Example 4: A 60-minute lecture
 **User says:** `/write-speaker-notes dgist-2026f-w02`
 **Actions:**
-1. `deckprofile.py` → notes `ko`, 60 min → target ~16,800 chars
-2. Roughly twice a paper review's script. Budget the batches for it rather
-   than writing a 30-minute script and calling the deck overlong.
+1. `deckprofile.py` → notes `ko`, duration 60 with `video_min: 10` and
+   `qa_min: 5` → speaking_min 45 → target ~12,600 syllables
+2. Half again a paper review's script, not double: the clips and the
+   questions are not narrated. Budget the batches for it rather than
+   writing a 60-minute script and calling the deck overlong.

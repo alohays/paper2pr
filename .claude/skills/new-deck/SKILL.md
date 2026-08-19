@@ -29,11 +29,20 @@ recommendation when there is an obvious default.
 directory and, unless overridden, the profile.
 
 **Audience prior knowledge** — `none`, `practitioner`, or `expert`. The single
-most consequential answer. `none` turns on the acronym-expansion check and
-tightens the bullet budget; guessing `practitioner` for a room of first-years
-produces a deck that scores well and lands badly.
+most consequential answer: it sets which profile's bullet budget and checks
+apply (and it is what the review agents read the deck against); guessing
+`practitioner` for a room of first-years produces a deck that scores well and
+lands badly. The acronym-expansion check is off for every shipped profile
+(D17: the matcher cannot tell a model name from a term), so spelling terms
+out is judgment, not a gate.
 
-**Duration** in minutes, and roughly how many people.
+**Duration** in minutes, and roughly how many people. Then two optional
+subtractions: **video_min** (minutes of clips that play without narration)
+and **qa_min** (minutes reserved for questions). `deckprofile.py` derives
+`speaking_min = duration_min - video_min - qa_min`, and that is what the
+speaker-notes budget runs on; a 60-minute lecture with 10 minutes of video
+is a 50-minute script, not a 60-minute one. Omit both when the deck is all
+talk.
 
 **Where it sits in a series** — for a lecture, which session number and what
 the audience has already seen. `series_index: 1` exempts the deck from the
@@ -42,14 +51,22 @@ prior-session callback check; anything else requires it.
 **Language** — slides default to English, notes to Korean, for every genre.
 Confirm rather than re-derive. Non-English slides are allowed by declaring
 `language.slides` here, which is why the Korean gate can stay strict
-everywhere else instead of having a directory punched out of it.
+everywhere else instead of having a directory punched out of it. An English
+deck may still carry a little Hangul (term glosses, Wooclap instructions):
+the lecture profile allows 300 characters, the others 0, and a deck can set
+its own `language.korean_allowance` by editing the generated `deck.yml` --
+not an interview question unless the presenter raises it.
 
 **Delivery** — `in-person`, `remote`, or `hybrid`. Remote changes what you can
 rely on: no pointing at the screen, no reading the room, and a network that
 may not hold.
 
-**Publication** — `web`, `pdf-only`, or `private`. Ask directly if the deck
-will carry anything not yet public. See `.claude/rules/` on internal content.
+**Sources** - paths or URLs the fact-check agent will compare the slides
+against: a paper PDF, a vault research note, a reference list. Optional, a
+list; it can grow later. There is no publication question: merging to `main`
+publishes (plan D11). Ask instead whether the deck will carry anything not
+yet public, and if so seed `Quarto/<genre>/<name>.forbidden.txt` (one term
+per line; any hit in visible slide text is a BLOCKER at the gate).
 
 **Deck name** — kebab-case, unique across every genre, since the speaker-note
 backups are keyed on it and `preview.sh <name>` takes a bare name. For a course series use `<venue>-<term>-w<NN>`, e.g.
@@ -67,8 +84,9 @@ against — cheaper to correct now than after six decks exist.
 python3 scripts/new_deck.py \
   --name dgist-2026f-w02 --genre lectures \
   --title "The Paradigm Shift Toward Embodied AI" \
-  --audience none --duration 60 --series-index 2 \
-  --delivery in-person --publish web
+  --audience none --duration 60 --video-min 10 --qa-min 5 \
+  --series-index 2 --delivery in-person \
+  --sources ../vault/1-projects/dgist/w02-research.md
 ```
 
 Or pass the whole answer set as JSON on stdin with `--from-answers -`.
@@ -106,7 +124,16 @@ Non-negotiable while drafting, whatever the genre:
 
 Figures: inline SVG, a matplotlib script, or a generated image, chosen per
 figure by judgment. They live under `Figures/<genre>/<name>/`; browsers cannot
-render PDF inline, so export vector figures as SVG.
+render PDF inline, so export vector figures as SVG. Keep
+`Figures/<genre>/<name>/figures.yml` alongside them (`file`, `source`,
+`licence`, `third_party` per figure): every `third_party: true` figure must
+name its `source` in a `.footnote` or caption on the slide that shows it, or
+the gate deducts.
+
+Write a plain hyphen, never `---` or `--` (Quarto renders them as em and en
+dashes; the gate deducts), and never a level-1 `#` heading after the title
+(Quarto stacks every following slide under it; the gate blocks). Section
+breaks are `## {.divider}` slides.
 
 ## 5. Verify before calling it done
 
@@ -125,14 +152,18 @@ see a slide that is technically legal and pedagogically empty. Walk it.
 [ ] Every definition has motivation + a worked example
 [ ] Density budget respected -- the profile's numbers, not five by habit
 [ ] No .smaller/.smallest anywhere
-[ ] Transition slides between sections
+[ ] Transition slides are ## {.divider} slides, no level-1 heading anywhere
+[ ] No ---, --, or literal em/en dash in slide text
+[ ] Third-party figures name their source on the slide (figures.yml)
+[ ] No term from <name>.forbidden.txt in slide text
 [ ] Score >= 80 to commit, >= 90 to ship
 [ ] /slide-excellence run (visual, pedagogy incl. challenges, proofreading)
 ```
 
-For a lecture, additionally: every acronym expanded on first appearance, and
-an opening slide that names where the previous session ended. The gate checks
-both, but only for decks on the `lecture` profile.
+For a lecture, additionally: an opening slide that names where the previous
+session ended (the gate checks it for decks on the `lecture` profile with
+`series_index` other than 1), and terms spelled out on first appearance by
+judgment, with the Korean gloss in the notes.
 
 ## Changing the premises later
 

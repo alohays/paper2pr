@@ -13,7 +13,7 @@
 - **Verify after** -- compile/render and confirm output at the end of every task
 - **Single source of truth** -- Quarto `.qmd` is the only source; there is no other export format. Presentations are delivered from the rendered RevealJS HTML
 - **Design principles** -- extreme minimalism, big type, centered content; see `.claude/rules/slide-design-principles.md` (mandatory for new decks)
-- **Quality gates** -- nothing ships below 80/100
+- **Quality gates** -- nothing ships below 80/100; a forbidden term or a level-1 heading is a BLOCKER (score 0), see `.claude/rules/quality-gates.md`
 - **[LEARN] tags** -- when corrected, save `[LEARN:category] wrong → right` to MEMORY.md
 - **English only** -- all content committed to git must be in English (see Language Policy below)
 
@@ -27,6 +27,7 @@
 - `.claude/skills/` and `.claude/agents/` may contain Korean examples for bilingual functionality
 - Speaker notes in QMD files are automatically stripped by the git clean filter (see Speaker Notes below)
 - A deck that declares `language.slides: ko` in its own `<deck>.deck.yml`. That is the supported way to get Korean slides -- per deck, written on purpose. Do not add a path exemption for it; a directory exemption covers every future deck in that directory, including the ones that should stay English.
+- An English deck may carry up to `language.korean_allowance` Hangul characters (term glosses, Wooclap instructions), counted on the staged qmd after the notes filter. The lecture profile allows 300, the others 0; a deck may set its own number.
 
 **Enforcement:**
 - Pre-commit hook (`scripts/check-korean-pre-commit.sh`) blocks Korean text in staged files
@@ -58,7 +59,23 @@ python3 scripts/backup_notes.py restore DreamZero   # after clone or accidental 
 
 Decks live at `Quarto/<genre>/<name>.qmd`, where genre is one of the lines in `Quarto/_genres.txt`. A deck's figures, speaker-note backups, and presenter scripts are scoped the same way, so one rule finds everything a deck owns.
 
-Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, for how long, what they have already seen, which language the slides and notes are in. Those are not documentation. `quality_score.py` reads them to pick a bullet budget and decide which checks apply, and the Korean gate reads them to decide whether this deck may carry non-English slides. Start a deck with `/new-deck`, which interviews for exactly those answers.
+Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, for how long, what they have already seen, which language the slides and notes are in. Those are not documentation. `quality_score.py` reads them to pick a bullet budget and decide which checks apply, the Korean gate reads them to decide how much Hangul this deck may carry, and `/write-speaker-notes` reads them for the script budget. Start a deck with `/new-deck`, which interviews for exactly those answers. Merging to `main` publishes; there is no publish field.
+
+`deck.yml` fields (`python3 scripts/deckprofile.py <deck>` shows the resolved values):
+
+| Field | Read by | Meaning |
+|-------|---------|---------|
+| `profile` | gate | which `slide-profiles/<profile>.yml` grades the deck (default: the genre's) |
+| `duration_min` | notes budget | wall-clock minutes of the slot |
+| `video_min`, `qa_min` | notes budget | minutes spent on clips and on Q&A; `speaking_min = duration_min - video_min - qa_min` is what the script is budgeted on |
+| `language.slides`, `language.notes` | Korean gate, notes | `ko` slides are exempt from the gate; notes default to `ko` |
+| `language.korean_allowance` | Korean gate | max Hangul characters an English deck may carry after the notes filter (deck, else profile: lecture 300, others 0) |
+| `sources` | fact-check agent | paths or URLs the slides are compared against |
+| `series_index` | gate | `1` exempts the deck from the prior-session callback |
+| `checks.*` | gate | per-deck override of any profile switch (e.g. `level1_heading: off`) |
+| `audience.*`, `delivery` | review agents | context for `/slide-excellence`, not consumed by the gate |
+
+Two optional files next to a deck are read when they exist: `Quarto/<genre>/<deck>.forbidden.txt` (one term per line, `#` comments; any hit in visible slide text is a BLOCKER) and `Figures/<genre>/<deck>/figures.yml` (`file`, `source`, `licence`, `third_party` per figure; a third-party figure needs its source on the slide). Both are documented in `.claude/rules/quality-gates.md`.
 
 | Genre | Profile | Audience | Length |
 |-------|---------|----------|--------|
@@ -94,7 +111,8 @@ paper2pr/
 │   ├── clean-academic*.scss     # Shared themes (main + legacy)
 │   ├── fonts/                   # Pretendard (Hangul fallback), linked by _quarto.yml
 │   ├── _widgets/ _script/       # Shared includes; presenter scripts (gitignored)
-│   ├── _fixtures/               # design-test.qmd + theme-mockups/ -- not a genre, never published
+│   ├── _fixtures/               # design-test.qmd + theme-mockups/ + gates/ -- not a genre, never published
+│   │   └── gates/               # pass.qmd / trip.qmd: one deck that trips every gate check, one that passes
 │   └── <genre>/                 # <deck>.qmd + <deck>.deck.yml + per-deck assets
 ├── .speaker-notes/<genre>/      # Note backups (gitignored -- notes never enter git)
 ├── pages/index.html             # Landing page, GENERATED by scripts/build_landing.py
@@ -130,9 +148,9 @@ git push  # GitHub Actions renders Quarto, strips notes, deploys
 
 # Regression tests
 bash scripts/test_note_filter.sh    # the note filter still covers every depth
-python3 scripts/test_profiles.py    # the profiles still grade differently
+python3 scripts/test_profiles.py    # the profiles still grade differently; the gate checks still trip on the fixtures
 python3 scripts/test_minyaml.py     # the config parser still agrees with PyYAML
-bash scripts/test_korean_gate.sh    # the Korean gate still blocks, and still exempts
+bash scripts/test_korean_gate.sh    # the Korean gate still blocks, still exempts, still honours korean_allowance
 
 # Quality score
 python scripts/quality_score.py Quarto/<genre>/<Deck>.qmd
