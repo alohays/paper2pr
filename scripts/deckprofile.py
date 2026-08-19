@@ -38,7 +38,19 @@ then the profile, then the built-in default):
                                  pre-commit gate reads it
     sources                      list of paths or URLs the fact-check agent
                                  compares the slides against (deck only, [])
-    series_index                 position in a course series
+    series, series_index         the course series (Quarto/lectures/_series/
+                                 <series>.yml) and the deck's session index in
+                                 it. When both are set the session is resolved
+                                 from the series lock (Figures/lectures/_series/
+                                 <series>/series.json, written by
+                                 scripts/series_assets.py) or from the yml when
+                                 the lock is absent: series_course,
+                                 session_date, session_title, prior_session
+                                 (title, date, presenter, week, kind of the
+                                 nearest earlier session that is not a holiday
+                                 or exam week; a guest counts). A series_index
+                                 that is not a session of the series is a
+                                 ConfigError, never a silent None.
     audience.*, delivery         context for the review agents, not the gate
 
 Two optional files next to the deck are surfaced as paths when they exist:
@@ -76,6 +88,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deckpath  # noqa: E402
 import minyaml  # noqa: E402
+import series_assets  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = REPO_ROOT / ".claude" / "rules" / "slide-profiles"
@@ -335,6 +348,92 @@ class DeckConfig:
                 f"got {value!r}")
 
     @property
+    def series(self) -> str | None:
+        """The course series this deck belongs to (deck.yml series:), or
+        None. The name is the yml's stem under Quarto/lectures/_series/."""
+        value = self.raw.get("series")
+        if value is None or str(value).strip() == "":
+            return None
+        return str(value).strip()
+
+    def _series_data(self) -> dict | None:
+        """The series lock (or derived yml) when the deck names a series.
+        Cached per config; a missing or broken series file is a ConfigError."""
+        if self.series is None:
+            return None
+        cached = getattr(self, "_series_cache", None)
+        if cached is not None:
+            return cached
+        try:
+            data = series_assets.load_lock_or_yml(self.series)
+        except series_assets.SeriesError as e:
+            raise ConfigError(
+                f"{self.deck.config}: series {self.series!r}: {e}") from e
+        self._series_cache = data
+        return data
+
+    @property
+    def series_session(self) -> dict | None:
+        """This deck's session in its series (the lock entry: index, date,
+        title, presenter, week, short_date, prior_index ...), or None when
+        the deck declares no series or no series_index. A series_index that
+        the series does not have is a ConfigError: the deck would otherwise
+        be graded and listed as a session that does not exist."""
+        data = self._series_data()
+        if data is None or self.series_index is None:
+            return None
+        s = series_assets.session_by_index(data, self.series_index)
+        if s is None:
+            n = len(data.get("sessions", []))
+            raise ConfigError(
+                f"{self.deck.config}: series_index {self.series_index} is not a "
+                f"session of series {self.series!r} (it has 1..{n})")
+        return s
+
+    @property
+    def series_course(self) -> str | None:
+        data = self._series_data()
+        return data.get("course") if data else None
+
+    @property
+    def session_date(self) -> str | None:
+        s = self.series_session
+        return s["date"] if s else None
+
+    @property
+    def session_title(self) -> str | None:
+        s = self.series_session
+        return s["title"] if s else None
+
+    @property
+    def prior_session(self) -> dict | None:
+        """Title, date, short_date, presenter, week, kind and index of the
+        session before this one in the series, skipping holiday and exam
+        weeks (a guest or DGIST-arranged session counts). None for the first
+        session, or when the deck is not in a series."""
+        s = self.series_session
+        if not s:
+            return None
+        data = self._series_data()
+        pi = s.get("prior_index")
+        if pi is None:
+            pi = series_assets.prior_index(data["sessions"], s["index"])
+        if pi is None:
+            return None
+        p = series_assets.session_by_index(data, pi)
+        if p is None:
+            return None
+        return {
+            "index": p["index"],
+            "week": p.get("week") or series_assets.week_label(p["index"]),
+            "date": p["date"],
+            "short_date": p.get("short_date") or series_assets.short_date(p["date"]),
+            "title": p["title"],
+            "presenter": p.get("presenter") or "",
+            "kind": p["kind"],
+        }
+
+    @property
     def has_config(self) -> bool:
         return bool(self.raw)
 
@@ -358,7 +457,12 @@ class DeckConfig:
             "attribution": self.attribution,
             "forbidden_terms": self.forbidden_terms,
             "level1_heading": self.level1_heading,
+            "series": self.series,
             "series_index": self.series_index,
+            "series_course": self.series_course,
+            "session_date": self.session_date,
+            "session_title": self.session_title,
+            "prior_session": self.prior_session,
             "slide_language": self.slide_language,
             "notes_language": self.notes_language,
             "korean_allowance": self.korean_allowance,

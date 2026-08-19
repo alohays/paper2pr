@@ -1177,11 +1177,22 @@ class QualityScorer:
         # forgot to declare one, which is the population most likely to need it.
         if (profile and profile.prior_session_callback
                 and profile.series_index != 1):
+            # When the deck sits in a series, the series file knows which
+            # session came before (a guest or DGIST slot counts; holiday and
+            # exam weeks are skipped), so the message can name it. The check
+            # itself is unchanged: the resolution only sharpens the wording.
+            expected = ''
+            prior = getattr(profile, 'prior_session', None)
+            if prior:
+                who = f" by {prior['presenter']}" if prior.get('presenter') else ''
+                expected = (f"; the series says the previous session was "
+                            f"{prior['week']} ({prior['short_date']}): "
+                            f"\"{prior['title']}\"{who}")
             for v in IssueDetector.check_prior_session_callback(content):
                 self.issues['major'].append({
                     'type': v['type'],
                     'description': f"No callback to the previous session (line {v['line']})",
-                    'details': v['detail'],
+                    'details': v['detail'] + expected,
                     'points': 3
                 })
                 self.score -= 3

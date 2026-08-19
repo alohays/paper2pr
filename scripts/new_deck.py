@@ -19,6 +19,14 @@ Usage:
         --audience none --duration 60 --video-min 10 --qa-min 5 \\
         --series-index 2 --sources ../vault/research.md
 
+    # In a course series (Quarto/lectures/_series/<series>.yml): the title and
+    # date come from the series file, the name defaults to <series>-w<NN>,
+    # the genre to lectures, and the stub carries the four shared include
+    # slides. deck.yml gets series: / series_index:, the qmd front matter
+    # series: <course> (what the series shortcodes read).
+    python3 scripts/new_deck.py --series dgist-2026f --series-index 2 \\
+        --audience none --duration 60 --video-min 10 --qa-min 5
+
     echo '{"name": "...", "genre": "lectures", ...}' \\
         | python3 scripts/new_deck.py --from-answers -
 
@@ -35,6 +43,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deckpath  # noqa: E402
 import deckprofile  # noqa: E402
+import series_assets  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -57,9 +66,9 @@ def die(msg: str):
 # first-years, which is precisely the premise the interview exists to pin
 # down. Reject it instead.
 ANSWER_KEYS = {
-    "name", "genre", "profile", "title", "subtitle",
+    "name", "genre", "profile", "title", "subtitle", "date",
     "audience", "audience_size", "duration", "video_min", "qa_min",
-    "delivery", "slide_lang", "notes_lang", "series_index", "prior",
+    "delivery", "slide_lang", "notes_lang", "series", "series_index", "prior",
     "sources",
 }
 
@@ -70,6 +79,43 @@ def validate(a: dict) -> dict:
     if unknown:
         die(f"unrecognised answer key(s): {', '.join(unknown)}. "
             f"Known: {', '.join(sorted(ANSWER_KEYS))}")
+
+    # A series resolves the session first: it supplies the default name,
+    # genre, title and date, and it is checked before anything is written.
+    series = str(a.get("series") or "").strip() or None
+    series_index = a.get("series_index")
+    session = None
+    prior = None
+    if series_index is not None:
+        try:
+            series_index = int(series_index)
+        except (TypeError, ValueError):
+            die("series_index must be a number")
+    if series:
+        try:
+            data = series_assets.load_lock_or_yml(series)
+        except series_assets.SeriesError as e:
+            die(f"series {series!r}: {e}. Known series: "
+                f"{', '.join(series_assets.courses()) or 'none'}")
+        if series_index is None:
+            die(f"--series {series} needs --series-index (1.."
+                f"{len(data['sessions'])})")
+        session = series_assets.session_by_index(data, series_index)
+        if session is None:
+            die(f"series_index {series_index} is not a session of {series!r} "
+                f"(1..{len(data['sessions'])})")
+        pi = session.get("prior_index")
+        if pi is None:
+            pi = series_assets.prior_index(data["sessions"], series_index)
+        prior = series_assets.session_by_index(data, pi) if pi else None
+        if not a.get("name"):
+            a["name"] = session.get("deck") or f"{series}-w{series_index:02d}"
+        if not a.get("genre"):
+            a["genre"] = "lectures"
+        if not a.get("title"):
+            a["title"] = session["title"]
+        if not a.get("date"):
+            a["date"] = session["date"]
 
     name = str(a.get("name", "")).strip()
     if not NAME_RE.match(name):
@@ -147,7 +193,11 @@ def validate(a: dict) -> dict:
         "delivery": delivery,
         "slide_lang": str(a.get("slide_lang") or "en"),
         "notes_lang": str(a.get("notes_lang") or "ko"),
-        "series_index": a.get("series_index"),
+        "date": str(a.get("date") or ""),
+        "series": series,
+        "series_index": series_index,
+        "session": session,
+        "prior_session": prior,
         "prior": a.get("prior") or [],
         "sources": [str(x).strip() for x in sources],
     }
@@ -211,7 +261,18 @@ def deck_yml(v: dict) -> str:
             "# URLs. Add to it as the deck grows.",
             "sources:",
         ] + [f"  - {json.dumps(src)}" for src in v["sources"]]
-    if v["series_index"] is not None:
+    if v["series"]:
+        lines += [
+            "",
+            "# The course series (Quarto/lectures/_series/<series>.yml) and this",
+            "# deck's session in it. deckprofile.py resolves the session date,",
+            "# title and the previous session from the series lock; the gate",
+            "# names that session when the callback slide is missing;",
+            "# build_landing.py groups the deck under the course.",
+            f"series: {v['series']}",
+            f"series_index: {int(v['series_index'])}",
+        ]
+    elif v["series_index"] is not None:
         lines += [
             "",
             "# Position in its series. 1 exempts the deck from the "
@@ -231,20 +292,57 @@ def deck_yml(v: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def series_includes(series: str) -> tuple[str, str]:
+    """The shared slides every lecture of a series carries, as include
+    lines with a TODO notes block after each (notes written right after an
+    include belong to the included slide). Returns (top, bottom): the
+    semester map, the course rules and the ask-anytime QR go near the top,
+    the Q&A QR is the very last slide."""
+    def inc(name, note):
+        return (f"{{{{< include _series/{series}/{name}.qmd >}}}}\n"
+                "\n"
+                "::: {.notes}\n"
+                f"TODO: {note}\n"
+                ":::\n"
+                "\n")
+    top = (inc("semester-map", "where today sits in the semester, in one breath")
+           + inc("course-runs", "the rules, once; point at the LMS")
+           + inc("ask-anytime", "show the wall; say questions are answered in the last ten minutes"))
+    bottom = inc("qa", "work through the wall; close")
+    return top, bottom
+
+
 def qmd_stub(v: dict) -> str:
     recap = ""
     if v["profile"] == "lecture" and (v["series_index"] or 0) != 1:
+        prior = v.get("prior_session")
+        if prior:
+            who = f" by {prior['presenter']}" if prior.get("presenter") else ""
+            week = prior.get("week") or series_assets.week_label(prior["index"])
+            when = prior.get("short_date") or series_assets.short_date(prior["date"])
+            hint = (f"- TODO: name where the previous session ended "
+                    f"({week}, {when}: {prior['title']}{who})\n")
+        else:
+            hint = "- TODO: name where the previous session ended\n"
         recap = (
             "## Where we left off\n"
             "\n"
-            "- TODO: name where the previous session ended\n"
+            + hint +
             "\n"
             "::: {.notes}\n"
             "TODO\n"
             ":::\n"
             "\n"
         )
+    top_includes = bottom_includes = ""
+    if v["series"]:
+        top_includes, bottom_includes = series_includes(v["series"])
+        bottom_includes = "\n" + bottom_includes.rstrip("\n") + "\n"
     sub = f'subtitle: {json.dumps(v["subtitle"])}\n' if v["subtitle"] else ""
+    date = f'date: {json.dumps(v["date"])}\n' if v["date"] else ""
+    # The course the series shortcodes read ({{< semester-map >}} and the
+    # shared include slides look the lock up by this name).
+    series = f'series: {v["series"]}\n' if v["series"] else ""
     # Canvas, centering, slide numbers, math renderer, the slide-types filter
     # and the Pretendard link come from Quarto/_quarto.yml for every deck
     # under a genre directory; only what is deck-specific is written here.
@@ -252,7 +350,7 @@ def qmd_stub(v: dict) -> str:
 title: {json.dumps(v['title'])}
 {sub}author: Yunsung Lee
 institute: WoRV / MaumAI
-# Full-bleed title gradient as a reveal background (fills the viewport at any
+{date}{series}# Full-bleed title gradient as a reveal background (fills the viewport at any
 # aspect ratio; the theme drops its own section gradient when this is set).
 title-slide-attributes:
   data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
@@ -262,7 +360,7 @@ format:
 bibliography: ../../Bibliography_base.bib
 ---
 
-{recap}## First slide
+{recap}{top_includes}## First slide
 
 - TODO
 
@@ -270,7 +368,7 @@ bibliography: ../../Bibliography_base.bib
 TODO: the words to say, in {v['notes_lang']}. Notes never reach git -- the
 clean filter strips them on the way in.
 :::
-"""
+{bottom_includes}"""
 
 
 def scaffold(v: dict, dry_run: bool = False) -> list[Path]:
@@ -318,7 +416,12 @@ def main(argv=None):
     ap.add_argument("--delivery", choices=DELIVERY)
     ap.add_argument("--slide-lang", default=None)
     ap.add_argument("--notes-lang", default=None)
+    ap.add_argument("--series",
+                    help="course series (Quarto/lectures/_series/<series>.yml); "
+                         "with --series-index it prefills title, date and the "
+                         "deck name <series>-w<NN>, and adds the shared slides")
     ap.add_argument("--series-index", type=int)
+    ap.add_argument("--date", help="ISO date shown on the title slide")
     ap.add_argument("--prior", nargs="*", default=None,
                     help="decks or sessions the audience has already seen")
     ap.add_argument("--sources", nargs="*", default=None,
@@ -335,9 +438,9 @@ def main(argv=None):
     else:
         answers = {}
 
-    for key in ("name", "genre", "profile", "title", "subtitle", "audience",
-                "duration", "video_min", "qa_min", "delivery", "series_index",
-                "prior", "sources"):
+    for key in ("name", "genre", "profile", "title", "subtitle", "date",
+                "audience", "duration", "video_min", "qa_min", "delivery",
+                "series", "series_index", "prior", "sources"):
         val = getattr(args, key, None)
         if val is not None:
             answers[key] = val
@@ -348,8 +451,10 @@ def main(argv=None):
     if args.notes_lang is not None:
         answers["notes_lang"] = args.notes_lang
 
-    if not answers.get("name") or not answers.get("genre"):
-        die("--name and --genre are required (or supply them in --from-answers)")
+    if not answers.get("series") and (
+            not answers.get("name") or not answers.get("genre")):
+        die("--name and --genre are required (or supply them in --from-answers, "
+            "or give --series with --series-index to derive them)")
 
     v = validate(answers)
     written = scaffold(v, dry_run=args.dry_run)

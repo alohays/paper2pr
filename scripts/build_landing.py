@@ -10,6 +10,12 @@ until someone clicks a dead link. Reading the same Quarto/_genres.txt and
 Titles and descriptions come from each deck's config. A deck without one still
 gets listed, under its own name -- being unlisted would be the worse failure.
 
+Lecture decks that declare `series:` in their deck.yml are grouped under
+their course ("<course> (<code>, <institution>, <term>)", from the series
+lock or yml via deckprofile), one row per deck ordered by series_index:
+week label, date, title, link. Decks without a series stay in the plain
+table, as before.
+
 Usage:
     python3 scripts/build_landing.py            # write pages/index.html
     python3 scripts/build_landing.py -          # print to stdout
@@ -53,6 +59,9 @@ STYLE = """    body {
     a { color: #0366d6; text-decoration: none; }
     a:hover { text-decoration: underline; }
     .empty { color: #999; font-style: italic; margin: 0.4em 0 0; }
+    h3.series { font-size: 1.05em; margin: 1.4em 0 0; font-weight: 600; }
+    td.week { white-space: nowrap; font-weight: 600; width: 4em; }
+    td.date { white-space: nowrap; color: #666; width: 7em; }
     .footer { margin-top: 3em; padding-top: 1.5em; border-top: 1px solid #eee; color: #888; font-size: 0.9em; }
     @media (prefers-color-scheme: dark) {
       body { background: #111; color: #e6e6e6; }
@@ -64,11 +73,14 @@ STYLE = """    body {
 
 
 def rows_for(genre: str) -> list[str]:
+    """Rows for the decks of a genre that are not in a series."""
     out = []
     for deck in deckpath.all_decks():
         if deck.genre != genre:
             continue
         cfg = deckprofile.load(deck)
+        if cfg.series and cfg.series_index is not None:
+            continue
         title = html.escape(str(cfg.raw.get("title") or deck.name))
         desc = html.escape(str(cfg.raw.get("description") or ""))
         href = f"slides/{deck.genre}/{deck.name}.html"
@@ -79,6 +91,48 @@ def rows_for(genre: str) -> list[str]:
             f'        <td><a href="{href}">View</a></td>\n'
             "      </tr>"
         )
+    return out
+
+
+def series_groups(genre: str) -> list[tuple[str, str, list[str]]]:
+    """-> [(series name, heading, rows)] for the decks of a genre that
+    declare a series, rows ordered by series_index. The heading is
+    "<course> (<code>, <institution>, <term>)" from the series data that
+    deckprofile resolves (lock, or the yml when the lock is absent)."""
+    groups: dict[str, dict] = {}
+    for deck in deckpath.all_decks():
+        if deck.genre != genre:
+            continue
+        cfg = deckprofile.load(deck)
+        if not (cfg.series and cfg.series_index is not None):
+            continue
+        data = cfg._series_data() or {}
+        g = groups.setdefault(cfg.series, {
+            "heading": "{} ({}, {}, {})".format(
+                data.get("course") or cfg.series, data.get("code") or "?",
+                data.get("institution") or "?", data.get("term") or "?"),
+            "decks": [],
+        })
+        session = cfg.series_session or {}
+        g["decks"].append((cfg.series_index, session, cfg, deck))
+    out = []
+    for name in sorted(groups):
+        g = groups[name]
+        rows = []
+        for idx, session, cfg, deck in sorted(g["decks"], key=lambda t: t[0]):
+            week = session.get("week") or f"W{idx:02d}"
+            date = session.get("date") or ""
+            title = str(cfg.raw.get("title") or session.get("title") or deck.name)
+            href = f"slides/{deck.genre}/{deck.name}.html"
+            rows.append(
+                "      <tr>\n"
+                f'        <td class="week">{html.escape(week)}</td>\n'
+                f'        <td class="date">{html.escape(date)}</td>\n'
+                f'        <td class="name">{html.escape(title)}</td>\n'
+                f'        <td><a href="{href}">View</a></td>\n'
+                "      </tr>"
+            )
+        out.append((name, g["heading"], rows))
     return out
 
 
@@ -102,22 +156,37 @@ def build() -> str:
     for genre in deckpath.genres():
         heading, note = GENRE_HEADING.get(genre, (genre.title(), ""))
         rows = rows_for(genre)
+        groups = series_groups(genre)
         parts.append(f"\n  <h2>{html.escape(heading)}</h2>")
         if note:
             parts.append(f'  <p class="section-note">{html.escape(note)}</p>')
-        if not rows:
+        if not rows and not groups:
             parts.append('  <p class="empty">Nothing here yet.</p>')
             continue
-        parts += [
-            "  <table>",
-            "    <thead>",
-            "      <tr><th>Deck</th><th>Topic</th><th>Slides</th></tr>",
-            "    </thead>",
-            "    <tbody>",
-            *rows,
-            "    </tbody>",
-            "  </table>",
-        ]
+        for name, series_heading, series_rows in groups:
+            parts += [
+                f'  <h3 class="series" id="series-{html.escape(name)}">'
+                f"{html.escape(series_heading)}</h3>",
+                "  <table>",
+                "    <thead>",
+                "      <tr><th>Week</th><th>Date</th><th>Session</th><th>Slides</th></tr>",
+                "    </thead>",
+                "    <tbody>",
+                *series_rows,
+                "    </tbody>",
+                "  </table>",
+            ]
+        if rows:
+            parts += [
+                "  <table>",
+                "    <thead>",
+                "      <tr><th>Deck</th><th>Topic</th><th>Slides</th></tr>",
+                "    </thead>",
+                "    <tbody>",
+                *rows,
+                "    </tbody>",
+                "  </table>",
+            ]
 
     parts += [
         "",

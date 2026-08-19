@@ -1,0 +1,177 @@
+# Series file for the DGIST HSS118 course (2026 Fall). One file per course,
+# at Quarto/lectures/_series/<course>.yml; the directory is underscore-
+# prefixed, so Quarto never renders anything in it as a deck.
+#
+# Read by scripts/series_assets.py (writes the lock Figures/lectures/_series/
+# <course>/series.json plus the QR and semester-map images the shared slides
+# use), scripts/deckprofile.py (a deck that declares `series:` and
+# `series_index:` in its deck.yml resolves its session and the prior session
+# from here), scripts/new_deck.py (--series / --series-index prefill the
+# title and date) and scripts/build_landing.py (groups the lecture decks).
+# Parsed with scripts/minyaml.py: plain nested mappings, block sequences and
+# quoted scalars only (no flow mappings, no anchors). Dates are quoted so
+# that PyYAML and minyaml read the same string.
+#
+# Schema
+#   course        course name                              string
+#   code          course code                              string
+#   term          term                                     string
+#   institution   institution                              string
+#   room, time    where and when the class meets           strings
+#   instructor    the presenter                            string
+#   co_instructor co-instructor, with role                 string
+#   course_page   public course page URL                   string
+#   lms_note      one line telling students where the official record lives
+#   qa_tool       name, url, code, note: the question wall the QR points at.
+#                 url/code are PLACEHOLDER until the event exists; replace
+#                 them and re-run scripts/series_assets.py <course>
+#   rules         short lines for the "How this course runs" slide
+#   notation      policy (the one symbol reused every week), note
+#   sessions      exactly one mapping per week, in order:
+#     index       1..N, unique, the week number (W02 = index 2)
+#     date        YYYY-MM-DD, quoted, must be the course weekday (a Friday)
+#     kind        lecture | guest | keynote | dgist | holiday | exam
+#     title       full session title
+#     short       optional shorter title for the semester map (two lines of
+#                 at most 24 characters; the map refuses a longer label)
+#     presenter   name, or "" when DGIST arranges the session
+#     deck        deck name for a session that has one, else "" (a planned
+#                 name is fine: the resolver tolerates a deck that does not
+#                 exist yet)
+#     remote      true when the presenter joins remotely (optional)
+#     tentative   true when the slot is not confirmed (optional)
+#
+# Derived by series_assets.py into the lock, never written here: week label
+# ("W02"), short date ("Sep 4"), prior_index (nearest earlier session that is
+# not a holiday or exam week; a guest or DGIST session counts).
+course: Future Literacy
+code: HSS118
+term: 2026 Fall
+institution: DGIST
+room: E7-233
+time: "Fridays 13:00-14:00"
+instructor: Yunsung Lee
+co_instructor: "Chris (Hongseop) Choi, CEO, Maum AI"
+course_page: https://alohays.github.io/teaching/dgist-hss118-2026f/
+lms_note: "Official notices, assignments, deadlines and grades live on the DGIST LMS."
+
+qa_tool:
+  name: Wooclap
+  url: https://app.wooclap.com/PLACEHOLDER
+  code: PLACEHOLDER
+  note: "replace url and code once the Message wall event exists; re-run scripts/series_assets.py"
+
+rules:
+  - Attendance is taken every session
+  - A short reflection report replaces the midterm exam; a synthesis essay replaces the final
+  - "Official notices, deadlines and grades: the LMS, not this deck"
+  - "Questions: scan the QR any time; we answer them in the last ten minutes"
+
+notation:
+  policy: "pi(a | o, l)"
+  note: the one symbol reused every week
+
+sessions:
+  - index: 1
+    date: "2026-08-28"
+    kind: dgist
+    title: Special lecture on AI
+    presenter: ""
+    deck: ""
+  - index: 2
+    date: "2026-09-04"
+    kind: lecture
+    title: The Paradigm Shift Toward Embodied AI
+    presenter: Yunsung Lee
+    deck: dgist-2026f-w02
+  - index: 3
+    date: "2026-09-11"
+    kind: guest
+    title: Video and Robot Foundation Models
+    presenter: Hyeongmin Lee (SeoulTech)
+    deck: ""
+    remote: true
+  - index: 4
+    date: "2026-09-18"
+    kind: lecture
+    title: Foundations of Robot Hardware, Control, and Modern Platforms
+    short: Robot Hardware, Control, and Platforms
+    presenter: Yunsung Lee
+    deck: dgist-2026f-w04
+  - index: 5
+    date: "2026-09-25"
+    kind: holiday
+    title: "No class: Chuseok holiday"
+    presenter: ""
+    deck: ""
+  - index: 6
+    date: "2026-10-02"
+    kind: lecture
+    title: Action as a New Modality and the Scaling of Robot Learning Data
+    short: Action as a Modality and Robot Learning Data
+    presenter: Yunsung Lee
+    deck: dgist-2026f-w06
+  - index: 7
+    date: "2026-10-09"
+    kind: holiday
+    title: "No class: Hangul Day"
+    presenter: ""
+    deck: ""
+  - index: 8
+    date: "2026-10-16"
+    kind: exam
+    title: "Midterm week: a reflection report replaces the exam"
+    presenter: ""
+    deck: ""
+  - index: 9
+    date: "2026-10-23"
+    kind: lecture
+    title: "Methods for Learning Action: Imitation, Reinforcement Learning, and Diffusion Policies"
+    short: "Learning Action: Imitation, RL, Diffusion"
+    presenter: Yunsung Lee
+    deck: dgist-2026f-w09
+  - index: 10
+    date: "2026-10-30"
+    kind: dgist
+    title: Leadership talk on entrepreneurship
+    presenter: ""
+    deck: ""
+  - index: 11
+    date: "2026-11-06"
+    kind: guest
+    title: Spatial AI to Physical AI
+    presenter: Sunghwan Hong (ETH Zurich)
+    deck: ""
+    remote: true
+  - index: 12
+    date: "2026-11-13"
+    kind: dgist
+    title: Leadership talk
+    presenter: ""
+    deck: ""
+  - index: 13
+    date: "2026-11-20"
+    kind: dgist
+    title: Leadership talk
+    presenter: ""
+    deck: ""
+  - index: 14
+    date: "2026-11-27"
+    kind: lecture
+    title: Ethics, Safety, and Social Responsibility in the Age of Embodied AI
+    short: Ethics, Safety, and Social Responsibility
+    presenter: Yunsung Lee
+    deck: dgist-2026f-w14
+  - index: 15
+    date: "2026-12-04"
+    kind: keynote
+    title: The Physical AI Megatrend and the Coming Industrial Revolution
+    short: The Physical AI Megatrend
+    presenter: Chris (Hongseop) Choi
+    deck: ""
+  - index: 16
+    date: "2026-12-11"
+    kind: exam
+    title: "Final week: a synthesis essay replaces the exam"
+    presenter: ""
+    deck: ""
