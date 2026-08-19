@@ -101,3 +101,8 @@ docs/
 # Untracked *and* unignored is the state that invites an accidental commit
 # of script material -- pick one. This picks ignored.
 quality_reports/suny_script_compression/
+
+# Fixture media and screenshots stay local: media/ holds third-party stills and
+# clips, shots/ is regenerable evidence (quarto render + shoot.sh).
+Quarto/_fixtures/theme-mockups/media/
+Quarto/_fixtures/**/shots/
