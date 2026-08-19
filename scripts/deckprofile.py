@@ -45,7 +45,10 @@ Two optional files next to the deck are surfaced as paths when they exist:
 Quarto/<genre>/<deck>.forbidden.txt (forbidden_file) and
 Figures/<genre>/<deck>/figures.yml (figures_manifest; a figures.yml sitting
 next to the qmd is accepted as a fallback, which is how the fixtures under
-Quarto/_fixtures/ carry one).
+Quarto/_fixtures/ carry one). The video home is surfaced the same way:
+videos_manifest (Figures/<genre>/<deck>/videos.yml, when it exists),
+videos_lock (videos.json, when it exists), videos_dir (always, the local
+media directory) and release_tag (media-<deck>); see scripts/deckpath.py.
 
 A qmd outside the genre directories (the fixtures) resolves by path when a
 <name>.deck.yml sits next to it; bare-name lookup never finds those, so a
@@ -295,6 +298,30 @@ class DeckConfig:
         return None
 
     @property
+    def videos_manifest(self) -> Path | None:
+        """Figures/<genre>/<deck>/videos.yml when it exists, else None."""
+        path = self.deck.videos_manifest
+        return path if path.exists() else None
+
+    @property
+    def videos_lock(self) -> Path | None:
+        """Figures/<genre>/<deck>/videos.json (written by media_prep.py)
+        when it exists, else None."""
+        path = self.deck.videos_lock
+        return path if path.exists() else None
+
+    @property
+    def videos_dir(self) -> Path:
+        """Where the deck's trimmed clips and posters live locally
+        (gitignored; the Release carries them)."""
+        return self.deck.videos_dir
+
+    @property
+    def release_tag(self) -> str:
+        """GitHub Release tag that hosts the deck's media: media-<deck>."""
+        return self.deck.release_tag
+
+    @property
     def series_index(self) -> int | None:
         """Position in a course series; 1 has no previous session to recall."""
         value = self.raw.get("series_index")
@@ -338,6 +365,10 @@ class DeckConfig:
             "sources": self.sources,
             "forbidden_file": _rel(self.forbidden_file),
             "figures_manifest": _rel(self.figures_manifest),
+            "videos_manifest": _rel(self.videos_manifest),
+            "videos_lock": _rel(self.videos_lock),
+            "videos_dir": _rel(self.videos_dir),
+            "release_tag": self.release_tag,
         }
 
 

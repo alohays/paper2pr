@@ -39,8 +39,10 @@ def config_files() -> list[Path]:
     # Per-deck asset manifests: a list of mappings, the one shape the deck
     # configs never use, so they are the only files that exercise it.
     found += sorted((REPO_ROOT / "Figures").glob("*/*/figures.yml"))
+    found += sorted((REPO_ROOT / "Figures").glob("*/*/videos.yml"))
     found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/*.deck.yml"))
     found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/figures.yml"))
+    found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/videos.yml"))
     return found
 
 

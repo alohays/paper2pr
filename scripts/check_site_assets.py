@@ -8,7 +8,27 @@ shows up when someone interacts with it. That is exactly how
 `robottt-stepper.js` shipped missing: every slide rendered correctly and only
 the arrow-key stepping was dead.
 
+Two kinds of failure:
+  * a local reference whose file is not under the site root (the original
+    case above);
+  * a reference into Figures/**/videos/ -- a deck's trimmed clips and posters
+    live on a GitHub Release (scripts/media_release.sh), never in git and
+    never in the deployed tree, so a page that still points there was built
+    from a videos.json written with `media_prep.py --local` (authoring mode).
+    That fails even when the file happens to exist in a local preview, which
+    it never will on CI.
+
 Usage:  python3 scripts/check_site_assets.py _site
+
+Self-test of the rules (what scripts/test_media.py asserts):
+  >>> LOCAL_MEDIA.search("../../Figures/lectures/w02/videos/hook.mp4") is not None
+  True
+  >>> LOCAL_MEDIA.search("../../Figures/lectures/w02/hook-poster.jpg") is None
+  True
+  >>> any(p.match("../videos/task1.mp4") for p in ALLOW_MISSING)
+  True
+  >>> is_external("https://github.com/alohays/paper2pr/releases/download/media-x/a.mp4")
+  True
 """
 import os
 import re
@@ -24,13 +44,20 @@ ALLOW_MISSING = (
     re.compile(r"^(?:\.\./)*videos/.*\.mp4$"),
 )
 
+# Local media of a deck: Figures/<genre>/<deck>/videos/<slug>.mp4 and the
+# posters beside it. Gitignored, hosted on the Release; a deployed page must
+# reference the Release URL (external) instead. Matched on the raw reference
+# so a `../../Figures/...` from slides/<genre>/ is caught before resolution.
+LOCAL_MEDIA = re.compile(r"(?:^|/)Figures/[^/]+/[^/]+/videos/")
+
 # src/href covers <script>, <link>, <img>, <source>. RevealJS also pulls media
-# in through data-background-* attributes, <video> through poster, and
-# stylesheets through url() -- a 404 in any of them is just as invisible as the
-# one this script was written for.
+# in through data-background-* attributes (and data-src, its lazy-load hook
+# that the video-card shortcode uses for <source>), <video> through poster
+# and data-background-poster, and stylesheets through url() -- a 404 in any
+# of them is just as invisible as the one this script was written for.
 REF = re.compile(
-    r'(?:(?:src|href|poster|data-background-image|data-background-video'
-    r'|data-background-iframe)\s*=\s*"([^"]+)"'
+    r'(?:(?:src|data-src|href|poster|data-background-image|data-background-video'
+    r'|data-background-poster|data-background-iframe)\s*=\s*"([^"]+)"'
     r'|url\(\s*["\']?([^"\')]+?)["\']?\s*\))'
 )
 
@@ -98,6 +125,11 @@ def check(site_root):
             if any(p.match(rel) for p in ALLOW_MISSING):
                 continue
             checked += 1
+            if LOCAL_MEDIA.search(rel):
+                missing.append((os.path.relpath(page, site_root),
+                                rel + "   (local media: never deployed; re-run "
+                                      "media_prep.py without --local)"))
+                continue
             target = resolve(site_root, here, rel)
             if target is None:
                 missing.append((os.path.relpath(page, site_root),
@@ -122,7 +154,9 @@ def main():
         for page, rel in missing:
             print(f"   {page}  ->  {rel}", file=sys.stderr)
         print("\nAdd them to the 'Assemble site' step in "
-              ".github/workflows/deploy.yml.", file=sys.stderr)
+              ".github/workflows/deploy.yml -- or, for local media, point the "
+              "deck at its Release (python3 scripts/media_prep.py <deck>, "
+              "without --local).", file=sys.stderr)
         return 1
 
     print(f"all {checked} local references resolve under {site_root}")

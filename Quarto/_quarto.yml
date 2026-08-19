@@ -24,5 +24,13 @@ format:
       # deck at Quarto/<genre>/ and to the deployed slides/<genre>/ alike.
       - text: '<link rel="stylesheet" href="../fonts/pretendard.css">'
     filters:
-      # Slide-type shorthands (.divider, .video-full) -> reveal background attrs.
+      # Slide-type shorthands (.divider, .video-full, video="@slug") -> reveal
+      # background attrs.
       - _filters/slide-types.lua
+    # {{< video-card slug >}} / {{< video-caption slug >}}, reading the deck's
+    # Figures/<genre>/<deck>/videos.json. Quarto 1.8 registers shortcode
+    # handlers from this key only: the same file under `filters:` runs as a
+    # filter and its handlers are never found (probed 2026-08-19). Paths are
+    # relative to this project directory, like `filters:`.
+    shortcodes:
+      - _filters/video-card.lua

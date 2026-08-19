@@ -19,6 +19,20 @@ Usage as a library:
     deck = find("DreamZero")
     deck.qmd, deck.genre, deck.figures, deck.notes_json, deck.script
     deck.config, deck.forbidden, deck.figures_manifest
+    deck.videos_manifest, deck.videos_lock, deck.videos_dir, deck.release_tag
+
+Videos (WP3) have one home per deck, next to the figures:
+    Figures/<genre>/<deck>/videos.yml    the hand-written manifest (committed)
+    Figures/<genre>/<deck>/videos.json   the lock file media_prep.py writes
+                                         (committed; the shortcodes read it)
+    Figures/<genre>/<deck>/videos/       trimmed mp4s and posters (gitignored,
+                                         uploaded to the GitHub Release
+                                         tagged media-<deck>)
+find_media() also accepts a direct path to a videos.yml or to the directory
+holding one, so a fixture outside Figures/ (Quarto/_fixtures/video/) goes
+through the same media scripts. A path under Quarto/_fixtures/ gets the
+release tag media-fixture-<dir>, so a fixture release can never collide with
+a deck's.
 
 Usage from the shell:
     python3 scripts/deckpath.py DreamZero              # -> Quarto/papers/DreamZero.qmd
@@ -111,11 +125,101 @@ class Deck:
         return self.figures / "figures.yml"
 
     @property
+    def media(self) -> "MediaHome":
+        """The deck's video home (manifest, lock, media dir, release tag)."""
+        return MediaHome(slug=self.slug, name=self.name,
+                         manifest=self.figures / "videos.yml")
+
+    @property
+    def videos_manifest(self) -> Path:
+        """Figures/<genre>/<deck>/videos.yml: the hand-written clip list."""
+        return self.media.manifest
+
+    @property
+    def videos_lock(self) -> Path:
+        """Figures/<genre>/<deck>/videos.json: written by media_prep.py, read
+        by the video-card / video-caption shortcodes and by @slug."""
+        return self.media.lock
+
+    @property
+    def videos_dir(self) -> Path:
+        """Figures/<genre>/<deck>/videos/: trimmed clips and posters.
+        Gitignored; they live on the GitHub Release instead."""
+        return self.media.videos_dir
+
+    @property
+    def release_tag(self) -> str:
+        """GitHub Release tag that hosts this deck's media: media-<deck>."""
+        return self.media.release_tag
+
+    @property
     def slug(self) -> str:
         return f"{self.genre}/{self.name}"
 
     def __str__(self) -> str:
         return self.slug
+
+
+@dataclass(frozen=True)
+class MediaHome:
+    """Where a deck (or a fixture) keeps its videos.yml, videos.json and the
+    local media directory, and which Release tag hosts the uploads. Built by
+    Deck.media for decks and by find_media() for paths."""
+    slug: str            # "genre/name" for a deck, "_fixtures/video" for a fixture
+    name: str            # what the release tag is built from
+    manifest: Path       # .../videos.yml
+
+    @property
+    def lock(self) -> Path:
+        return self.manifest.with_name("videos.json")
+
+    @property
+    def videos_dir(self) -> Path:
+        return self.manifest.parent / "videos"
+
+    @property
+    def release_tag(self) -> str:
+        return f"media-{self.name}"
+
+    def __str__(self) -> str:
+        return self.slug
+
+
+def find_media(ref: str) -> MediaHome:
+    """Resolve a deck reference (as find() does) or a path.
+
+    A path is recognised when it exists: either a videos.yml file or a
+    directory that holds one. Fixtures under Quarto/_fixtures/<dir>/ become
+    slug "_fixtures/<dir>" with release tag media-fixture-<dir>; any other
+    directory becomes media-<dir>. Decks keep media-<deck>.
+    """
+    ref = ref.strip()
+    p = Path(ref)
+    p = p if p.is_absolute() else (Path.cwd() / p)
+    if p.is_dir() and (p / "videos.yml").exists():
+        p = p / "videos.yml"
+    if p.is_file() and p.name == "videos.yml":
+        p = p.resolve()
+        home = p.parent
+        try:
+            rel = home.relative_to(REPO_ROOT)
+        except ValueError:
+            rel = home
+        if len(rel.parts) >= 2 and rel.parts[0] == "Figures" and rel.parts[1] in genres():
+            # Figures/<genre>/<deck>/videos.yml: the deck itself, by path.
+            if len(rel.parts) == 3:
+                return Deck(name=rel.parts[2], genre=rel.parts[1]).media
+        fixtures = (QUARTO_DIR / "_fixtures").resolve()
+        if home.parent == fixtures:
+            return MediaHome(slug=f"_fixtures/{home.name}",
+                             name=f"fixture-{home.name}", manifest=p)
+        return MediaHome(slug=rel.as_posix(), name=home.name, manifest=p)
+    if ref.endswith("videos.yml") or (p.exists() and p.is_dir()):
+        raise DeckNotFound(f"{ref}: no videos.yml there")
+    if not p.exists() and Path(ref).parts[:1] in (("Quarto",), ("Figures",)):
+        raise DeckNotFound(
+            f"{ref}: no such path (expected a videos.yml or its directory)")
+    return find(ref).media
 
 
 def all_decks() -> list[Deck]:
@@ -183,16 +287,34 @@ FIELDS = {
     "config": lambda d: d.config,
     "forbidden": lambda d: d.forbidden,
     "figures-manifest": lambda d: d.figures_manifest,
+    "videos-manifest": lambda d: d.videos_manifest,
+    "videos-lock": lambda d: d.videos_lock,
+    "videos-dir": lambda d: d.videos_dir,
+    "release-tag": lambda d: d.release_tag,
     "genre": lambda d: d.genre,
     "name": lambda d: d.name,
     "slug": lambda d: d.slug,
 }
 
+# The fields a MediaHome can answer; the CLI routes these through
+# find_media() so that `deckpath.py Quarto/_fixtures/video --field videos-lock`
+# works for a fixture as it does for a deck.
+MEDIA_FIELDS = {
+    "videos-manifest": lambda m: m.manifest,
+    "videos-lock": lambda m: m.lock,
+    "videos-dir": lambda m: m.videos_dir,
+    "release-tag": lambda m: m.release_tag,
+    "media-slug": lambda m: m.slug,
+}
+
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("deck", nargs="?", help="bare name, genre/name, or a .qmd path")
-    ap.add_argument("--field", default="qmd", choices=sorted(FIELDS),
+    ap.add_argument("deck", nargs="?",
+                    help="bare name, genre/name, a .qmd path, or (media "
+                         "fields only) a videos.yml path or its directory")
+    ap.add_argument("--field", default="qmd",
+                    choices=sorted(set(FIELDS) | set(MEDIA_FIELDS)),
                     help="which path or attribute to print (default: qmd)")
     ap.add_argument("--relative", action="store_true",
                     help="print paths relative to the repo root")
@@ -210,12 +332,19 @@ def main(argv=None):
         ap.error("a deck name is required unless --list or --genres is given")
 
     try:
-        deck = find(args.deck)
+        if args.field in MEDIA_FIELDS:
+            # Media fields also resolve from a videos.yml path or its
+            # directory (fixtures live outside Figures/), so go through
+            # find_media and read the field off the MediaHome.
+            home = find_media(args.deck)
+            value = MEDIA_FIELDS[args.field](home)
+        else:
+            deck = find(args.deck)
+            value = FIELDS[args.field](deck)
     except (DeckNotFound, AmbiguousDeck) as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
 
-    value = FIELDS[args.field](deck)
     if isinstance(value, Path) and args.relative:
         try:
             value = value.relative_to(REPO_ROOT)

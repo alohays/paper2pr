@@ -55,8 +55,13 @@ done
 # slides/fonts/ from inside a genre directory.
 [ -d "Quarto/fonts" ] && cp -r Quarto/fonts "$OUT/slides/fonts"
 
-# Figures, already genre-scoped on disk
+# Figures, already genre-scoped on disk. A deck's trimmed clips and posters
+# (Figures/<genre>/<deck>/videos/, gitignored) are not figures: they live on
+# the deck's GitHub Release and the pages point there, so the local copies
+# are pruned even from a local preview -- check_site_assets.py fails any
+# page that still references them, and CI never has them anyway.
 cp -r Figures/* "$OUT/Figures/" 2>/dev/null || true
+find "$OUT/Figures" -mindepth 3 -maxdepth 3 -type d -name videos -prune -exec rm -rf {} + 2>/dev/null || true
 
 # Redirect stubs for the URLs these decks had before genres existed. Cheap
 # insurance: the links are already out in a CV, in email, and in chat, and a

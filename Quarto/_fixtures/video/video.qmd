@@ -1,0 +1,62 @@
+---
+title: "Video Pipeline Fixture"
+subtitle: "videos.yml -> media_prep.py -> media-fixture-video Release -> shortcodes"
+author: "Yunsung Lee"
+institute: "WoRV / MaumAI"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+# Where the shortcodes and `video="@slug"` find the lock file. Real decks under
+# Quarto/<genre>/ do not set this: their lock is Figures/<genre>/<deck>/videos.json.
+# Three clips, all cut from the repo's own placeholder by
+# `python3 scripts/media_prep.py Quarto/_fixtures/video` (see videos.yml); the
+# files themselves are gitignored and live on the public Release
+# media-fixture-video, which is what every src in the rendered page points at.
+# (An HTML comment before the first `##` would become an empty first slide,
+# which is why this note sits in the front matter.)
+video-manifest: videos.json
+format:
+  revealjs:
+    theme: [default, ../../clean-academic.scss]
+    # _fixtures/ is underscore-prefixed, so Quarto treats it as OUTSIDE the
+    # project: Quarto/_quarto.yml defaults, the filter, the shortcodes and the
+    # font link do NOT apply here and are repeated below. Real decks under
+    # Quarto/<genre>/ inherit them from _quarto.yml and set none of this.
+    width: 1280
+    height: 720
+    margin: 0
+    center: false
+    auto-stretch: false
+    slide-number: true
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
+    filters:
+      - ../../_filters/slide-types.lua
+    shortcodes:
+      - ../../_filters/video-card.lua
+    include-in-header:
+      - text: '<link rel="stylesheet" href="../../fonts/pretendard.css">'
+---
+
+## {.video-full video="@hook"}
+
+{{< video-caption hook >}}
+
+## Inline card with two bullets
+
+{{< video-card demo >}}
+
+- The clip plays from the Release URL, poster first, muted loop
+- Its caption is a fragment: one more step reveals the provenance
+
+## Two-up montage
+
+::: {.two-up}
+{{< video-card hook >}}
+
+{{< video-card montage >}}
+:::
+
+::: {.footnote}
+Left: caption visible. Right: caption none. Both 48 percent wide in one flex row.
+:::

@@ -1,0 +1,85 @@
+{
+  "deck": "_fixtures/video",
+  "release_tag": "media-fixture-video",
+  "generated_by": "scripts/media_prep.py",
+  "videos": [
+    {
+      "slug": "hook",
+      "title": "Placeholder clip fills the frame",
+      "publisher": "paper2pr fixture",
+      "source_url": "https://github.com/alohays/paper2pr",
+      "published": "2026-08",
+      "autonomy": "autonomous",
+      "speed": "1x",
+      "segment": "0-2",
+      "source": "../../assets/placeholder-video.mp4",
+      "keep_audio": false,
+      "caption": "visible",
+      "licence_note": "repo-owned placeholder, no third-party material",
+      "file": "hook.mp4",
+      "poster_file": "hook-poster.jpg",
+      "size_mb": 0.01,
+      "duration_s": 2.0,
+      "autonomy_label": "autonomous",
+      "cut": {
+        "segment": "0-2",
+        "keep_audio": false,
+        "source": "../../assets/placeholder-video.mp4"
+      },
+      "release_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/hook.mp4",
+      "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/hook-poster.jpg"
+    },
+    {
+      "slug": "demo",
+      "title": "Inline card with a fragment caption",
+      "publisher": "paper2pr fixture",
+      "source_url": "https://github.com/alohays/paper2pr",
+      "published": "2026-08",
+      "autonomy": "claimed",
+      "speed": "2x",
+      "segment": "1-3",
+      "source": "../../assets/placeholder-video.mp4",
+      "keep_audio": false,
+      "caption": "fragment",
+      "licence_note": null,
+      "file": "demo.mp4",
+      "poster_file": "demo-poster.jpg",
+      "size_mb": 0.01,
+      "duration_s": 2.0,
+      "autonomy_label": "autonomy claimed",
+      "cut": {
+        "segment": "1-3",
+        "keep_audio": false,
+        "source": "../../assets/placeholder-video.mp4"
+      },
+      "release_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/demo.mp4",
+      "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/demo-poster.jpg"
+    },
+    {
+      "slug": "montage",
+      "title": "Second card of the montage",
+      "publisher": "paper2pr fixture",
+      "source_url": "https://github.com/alohays/paper2pr",
+      "published": "2026-08",
+      "autonomy": "teleop",
+      "speed": "1x",
+      "segment": null,
+      "source": "../../assets/placeholder-video.mp4",
+      "keep_audio": false,
+      "caption": "none",
+      "licence_note": null,
+      "file": "montage.mp4",
+      "poster_file": "montage-poster.jpg",
+      "size_mb": 0.02,
+      "duration_s": 3.0,
+      "autonomy_label": "teleoperated",
+      "cut": {
+        "segment": null,
+        "keep_audio": false,
+        "source": "../../assets/placeholder-video.mp4"
+      },
+      "release_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/montage.mp4",
+      "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/montage-poster.jpg"
+    }
+  ]
+}
