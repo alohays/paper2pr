@@ -11,7 +11,7 @@
 
 - **Plan first** -- enter plan mode before non-trivial tasks; save plans to `quality_reports/plans/`
 - **Verify after** -- compile/render and confirm output at the end of every task
-- **Single source of truth** -- Quarto `.qmd` is authoritative; Beamer `.tex` is an optional export (reversed 2026-07 — presentations are delivered from Quarto)
+- **Single source of truth** -- Quarto `.qmd` is the only source; there is no other export format. Presentations are delivered from the rendered RevealJS HTML
 - **Design principles** -- extreme minimalism, big type, centered content; see `.claude/rules/slide-design-principles.md` (mandatory for new decks)
 - **Quality gates** -- nothing ships below 80/100
 - **[LEARN] tags** -- when corrected, save `[LEARN:category] wrong → right` to MEMORY.md
@@ -39,8 +39,16 @@ Speaker notes (`::: {.notes}` blocks in QMD) are **local-only** and never reach 
 
 1. **Git clean filter** strips notes from QMD before staging (`.gitattributes` + `scripts/strip_qmd_notes.py`)
 2. **CI/CD pipeline** strips notes from HTML during GitHub Actions deployment (`scripts/strip_speaker_notes.py`)
-3. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [PaperName]`
+3. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [Deck]`; backups land in `.speaker-notes/` (gitignored)
 4. **Setup** (run once after clone): `bash scripts/setup-git-filters.sh`
+
+```bash
+./scripts/setup-git-filters.sh                 # one-time, after clone
+python3 scripts/backup_notes.py backup DreamZero    # insurance against git checkout
+python3 scripts/backup_notes.py restore DreamZero   # after clone or accidental checkout
+```
+
+- **Never maintain separate branches** for notes vs no-notes; the filter and CI strip are the only mechanism
 
 ---
 
@@ -58,7 +66,7 @@ Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, fo
 | `talks` | `invited-talk` | varies, declare it | varies |
 | `lectures` | `lecture` | no background | ~60 min |
 
-Paper reviews: each paper in `target-papers/` gets a deck (40-60 slides — minimalist slides mean more, lighter slides; splitting beats packing) covering main ideas, technical details, and personal insight. When official code is available, include implementation-level observations.
+Paper reviews: each paper is reviewed from its arXiv or PDF source, which the presenter supplies; nothing copyrighted is checked in. A review deck runs 40-60 slides (minimalist slides mean more, lighter slides; splitting beats packing) covering main ideas, technical details, and personal insight. When official code is available, include implementation-level observations.
 
 ## Slide Design Principles (new decks)
 
@@ -67,6 +75,7 @@ Shared core: `.claude/rules/slide-design-principles.md`. Per-genre budgets and e
 1. **Extreme minimalism** -- one idea per slide; ≤5 one-line bullets (≤3 with a figure), ≤1 colored box; a bullet that wraps to two lines costs a slot and only one is allowed per slide; split rather than pack
 2. **Big type** -- 40px root font; `.smaller`/`.smallest` and font-size overrides are forbidden in new decks (quality gate deducts -5 each)
 3. **Filled frame** -- title pinned at top, content centered vertically and horizontally (theme does this; escape hatches: `{.top-align}`, `{.left}`, `{.statement}`)
+4. **Slide types** -- dividers, full-bleed video, inline video, charts, formula legends, timelines are theme classes, not hand-built layouts; see the Quarto CSS Classes table below and `Quarto/_fixtures/design-test.qmd` for a rendered example of each
 
 New decks use `clean-academic.scss` with `center: false` and `auto-stretch: false`. Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to `clean-academic-legacy.scss` and exempt from the new rules.
 
@@ -76,27 +85,23 @@ New decks use `clean-academic.scss` with `center: false` and `auto-stretch: fals
 paper2pr/
 ├── AGENTS.md                    # Canonical agent instructions for this repo
 ├── .claude/                     # Rules, skills, agents, hooks
-├── target-papers/               # Source papers (paper/ + code/ per entry)
-│   └── YYMM-papername/
-│       ├── paper/               # LaTeX source, figures, bib
-│       └── code/                # Official implementation (if available)
 ├── Bibliography_base.bib        # Centralized bibliography (grows per paper)
-├── Figures/<genre>/<deck>/      # PDF (Beamer) + SVG (Quarto)
-├── Preambles/header.tex         # Shared Beamer preamble
-├── Slides/                      # Beamer .tex files (optional export)
+├── Figures/<genre>/<deck>/      # Per-deck figures, SVG/PNG only
 ├── Quarto/
 │   ├── _genres.txt              # Which directories publish. Single source of truth
-│   ├── clean-academic*.scss     # Shared themes
+│   ├── _quarto.yml              # Project defaults for every deck (canvas, filter, fonts)
+│   ├── _filters/slide-types.lua # .divider / .video-full -> reveal background attributes
+│   ├── clean-academic*.scss     # Shared themes (main + legacy)
+│   ├── fonts/                   # Pretendard (Hangul fallback), linked by _quarto.yml
 │   ├── _widgets/ _script/       # Shared includes; presenter scripts (gitignored)
-│   ├── _fixtures/               # design-test.qmd -- not a genre, never published
+│   ├── _fixtures/               # design-test.qmd + theme-mockups/ -- not a genre, never published
 │   └── <genre>/                 # <deck>.qmd + <deck>.deck.yml + per-deck assets
 ├── .speaker-notes/<genre>/      # Note backups (gitignored -- notes never enter git)
 ├── pages/index.html             # Landing page, GENERATED by scripts/build_landing.py
 ├── scripts/                     # Utility scripts. Python here is stdlib-only
 │                                #   on purpose -- see scripts/minyaml.py
-├── quality_reports/             # Plans, session logs, merge reports
-├── explorations/                # Research sandbox
-└── templates/                   # Session log, quality report templates
+├── quality_reports/             # Plans, session logs, merge reports (history, never edited)
+└── templates/                   # Session log and speaker-notes report templates
 ```
 
 ---
@@ -117,12 +122,6 @@ python3 scripts/deckpath.py --list
 # What is this deck graded against?
 python3 scripts/deckprofile.py <Deck>
 
-# LaTeX (optional Beamer export only; 3-pass, XeLaTeX)
-cd Slides && TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
-BIBINPUTS=..:$BIBINPUTS bibtex PaperName
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode PaperName.tex
-
 # Deploy to GitHub Pages (automatic via CI/CD on push to main)
 git push  # GitHub Actions renders Quarto, strips notes, deploys
 
@@ -138,12 +137,9 @@ bash scripts/test_korean_gate.sh    # the Korean gate still blocks, and still ex
 # Quality score
 python scripts/quality_score.py Quarto/<genre>/<Deck>.qmd
 
-# Optional tools (install via: bash scripts/setup-optional-tools.sh --all)
-diff-pdf old.pdf new.pdf                    # Visual PDF regression test
-diff-pdf --output-diff=diff.pdf old.pdf new.pdf  # Save diff as PDF
-tex-fmt --check Slides/PaperName.tex        # Check LaTeX formatting
-tex-fmt Slides/PaperName.tex                # Format LaTeX in-place
-chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
+# Theme fixture: one slide per layout rule and slide type (outside the Quarto project,
+# so it repeats the _quarto.yml defaults itself)
+cd Quarto/_fixtures && quarto render design-test.qmd
 ```
 
 ---
@@ -162,46 +158,18 @@ chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
 
 | Command | What It Does |
 |---------|-------------|
-| `/compile-latex [file]` | 3-pass XeLaTeX + bibtex |
-| `/deploy [PaperName]` | Render Quarto + deploy (CI/CD on push) |
-| `/proofread [file]` | Grammar/typo/overflow review |
-| `/visual-audit [file]` | Slide layout audit |
-| `/pedagogy-review [file]` | Narrative, notation, pacing review |
-| `/qa-quarto [PaperName]` | Adversarial Quarto vs Beamer QA (imported decks only) |
-| `/slide-excellence [file]` | Combined multi-agent review |
-| `/translate-to-quarto [file]` | Beamer → Quarto import (legacy decks only) |
-| `/validate-bib` | Cross-reference citations |
-| `/devils-advocate` | Challenge slide design |
-| `/new-deck [topic]` | Interview, scaffold, and author a new deck of any genre |
+| `/new-deck [topic]` | Interview a new deck's premises, scaffold it, and carry authoring through the quality gate (the single entry point) |
+| `/deploy [Deck]` | Render Quarto + deploy (CI/CD on push) |
+| `/slide-excellence [Deck]` | The one review fan-out: slide-auditor + pedagogy-reviewer + proofreader (grammar, overflow, narrative, design challenge), one report per agent |
+| `/visual-audit [Deck]` | Standalone adversarial layout audit (density, overflow, font, box fatigue, centering) |
+| `/write-speaker-notes [Deck] [--lang en\|ko]` | Generate presentation script (speaker notes) for Quarto slides |
+| `/validate-bib` | Cross-reference citations against `Bibliography_base.bib` |
 | `/commit [msg]` | Stage, commit, PR, merge |
-| `/review-paper [file]` | Manuscript review |
-| `/data-analysis [dataset]` | End-to-end R data analysis workflow |
-| `/extract-tikz [PaperName]` | Extract TikZ diagrams → PDF → SVG |
-| `/interview-me [topic]` | Interactive interview to formalize research idea |
-| `/lit-review [topic]` | Structured literature search and synthesis |
-| `/research-ideation [topic]` | Generate research questions and strategies |
-| `/review-r [file]` | R code review for quality and reproducibility |
 | `/learn [skill-name]` | Extract discovery into persistent skill |
 | `/context-status` | Show session health + context usage |
-| `/write-speaker-notes [Deck] [--lang en\|ko]` | Generate presentation script (speaker notes) for Quarto slides |
-| `/new-deck [topic]` | Interview a new deck's premises, then scaffold it |
 | `/deep-audit` | Repository-wide consistency audit |
-| `/pdf-diff [PaperName] [branch]` | Visual PDF regression test vs baseline |
 
 ---
-
-## Beamer Custom Environments
-
-| Environment | Effect | Use Case |
-|-------------|--------|----------|
-| `methodbox` | Blue-bordered box | Technical details, architecture descriptions |
-| `keybox` | Gold-bordered box | Key insights, important takeaways |
-| `highlightbox` | Yellow-bordered box | Notable findings, emphasis points |
-| `assumptionbox` | Gold full-border box | Assumptions, hypotheses |
-| `quotebox` | Italic with quote mark | Direct quotes from papers |
-| `resultbox` | Gold-bordered with shadow | Main experimental results |
-| `eqbox` | Subtle blue background | Key equations |
-| `softbox` | Subtle gold italic | Side remarks, intuition |
 
 ## Quarto CSS Classes
 
@@ -217,72 +185,31 @@ chktex -q Slides/PaperName.tex              # LaTeX semantic lint (advisory)
 | `.positive` | Green + bold | Good outcomes in comparisons |
 | `.negative` | Red + bold | Bad outcomes, limitations |
 | `.neutral` | Gray | Context, reference values |
-| `.smaller` | 85% font size | Dense content slides |
-| `.smallest` | 80% font size | Very dense content |
 | `.compact` | Tighter spacing | Lists needing more items |
 | `.footnote` | Bottom-positioned small text | Source attributions |
 | `.methodbox` | Blue-bordered div | Technical details |
 | `.keybox` | Gold-bordered div | Key insights |
 | `.highlightbox` | Yellow-bordered div | Notable findings |
 | `.resultbox` | Gold-bordered with shadow | Main results |
+| `## {.divider}` | Navy full-bleed chapter block; `.divider-number` / `.divider-title` / `.divider-sub` stack | Section breaks |
+| `## {.video-full video=".." poster=".."}` + `.video-caption` | Clip as the slide background (looped, muted, cover), slide chrome hidden, caption strip at the bottom | Hook clips, montages |
+| `.video-inline` | 16:9 clip inside a normal content slide | A demo next to bullets |
+| `figure.chart-figure` | Inline SVG chart at 64% width, bullets a notch smaller | One chart plus takeaways |
+| `.formula-legend` | Centered symbol list under a 2em display formula | Hero equation slides |
+| `.gloss` | Small gray line pinned to the bottom of the content area | Korean or plain-language gloss of a term |
+| `.timeline` | `.tl-item` grid on a gold rail: one row up to six items, two rows of four from seven | Dated milestones |
 
----
-
-## Speaker Notes Policy
-
-Speaker notes (`::: {.notes}`) live in the working directory QMD only. Two layers of protection:
-
-| Layer | What | How |
-|-------|------|-----|
-| **Git** | QMD committed without notes | `git clean filter` via `.gitattributes` |
-| **Deploy** | HTML deployed without notes | `strip_speaker_notes.py` via GitHub Actions CI/CD |
-
-```bash
-# One-time setup (after clone)
-./scripts/setup-git-filters.sh
-
-# Backup notes (insurance against git checkout)
-python3 scripts/backup_notes.py backup DreamZero
-
-# Restore notes (after clone or accidental checkout)
-python3 scripts/backup_notes.py restore DreamZero
-```
-
-- **Never maintain separate branches** for notes vs no-notes
-- Notes backup: `.speaker-notes/` (gitignored)
-
----
-
-## ClawTeam Multi-Agent Coordination (Optional, Experimental)
-
-[ClawTeam](https://github.com/HKUDS/ClawTeam) (v0.2.0) is a multi-agent coordination CLI that spawns AI agents in tmux panes with inter-agent messaging and task management. It is available for ad-hoc experimentation but **not integrated into standard workflows** -- existing skills (`/slide-excellence`, `/qa-quarto`, etc.) remain the primary multi-agent approach.
-
-**What it offers:** True OS-level process parallelism (each agent gets its own context window), visual tmux monitoring, git worktree workspace isolation per agent.
-
-**Why not deeply integrated yet:** ClawTeam v0.2.0 templates require inline prompts (no `prompt_file` support), which would duplicate agent definitions from `.claude/agents/` and violate Single Source of Truth. Revisit when ClawTeam supports external prompt file references.
-
-```bash
-# Ad-hoc usage examples
-clawteam spawn claude -t review -n auditor --task "Review Slides/SUNY.tex for visual overflow"
-clawteam spawn claude -t review -n pedagogy --task "Check narrative arc in Slides/SUNY.tex"
-clawteam board show review              # Kanban view of team tasks
-clawteam inbox send review auditor "Check slide 15 font size"
-clawteam team status review             # Team member status
-
-# Built-in templates (generic, not paper2pr-specific)
-clawteam template list                  # hedge-fund, software-dev, research-paper, code-review, strategy-room
-clawteam launch research-paper          # Launch a pre-configured research team
-```
+`.smaller` and `.smallest` still exist in the theme for the legacy decks only; they are forbidden in new decks (quality gate deducts -5 each). `.divider` and `.video-full` get their full-bleed backgrounds from `Quarto/_filters/slide-types.lua`, which turns the class and its `video=` / `poster=` attributes into reveal `data-background-*` attributes; `Quarto/_quarto.yml` wires the filter for every deck under a genre directory. Each slide type has a rendered example in `Quarto/_fixtures/design-test.qmd`.
 
 ---
 
 ## Current Project State
 
-| Paper | Quarto (source) | Theme | Beamer | Key Content |
-|-------|-----------------|-------|--------|-------------|
-| DreamZero | `DreamZero.qmd` | legacy | `DreamZero.tex` (frozen) | NVIDIA — World Action Models as Zero-shot Policies |
-| DreamDojo | `DreamDojo.qmd` | legacy | `DreamDojo.tex` (frozen) | NVIDIA — A Generalist Robot World Model from Large-Scale Human Videos |
-| RoboTTT | `RoboTTT.qmd` | legacy | none | NVIDIA GEAR — Context Scaling for Robot Policies (PR-561) |
-| SUNY Career Sprint | `SUNY.qmd` | own (suny-career) | none (career talk) | Career Roadmap for AI Researchers: From Papers to Products (April 4, 2026) |
+| Deck | Quarto (source) | Theme | Key Content |
+|------|-----------------|-------|-------------|
+| DreamZero | `papers/DreamZero.qmd` | legacy | NVIDIA - World Action Models as Zero-shot Policies |
+| DreamDojo | `papers/DreamDojo.qmd` | legacy | NVIDIA - A Generalist Robot World Model from Large-Scale Human Videos |
+| RoboTTT | `papers/RoboTTT.qmd` | legacy | NVIDIA GEAR - Context Scaling for Robot Policies (PR-561) |
+| SUNY Career Sprint | `talks/SUNY.qmd` | own (suny-career) | Career Roadmap for AI Researchers: From Papers to Products (April 4, 2026) |
 
 New decks: main theme (`clean-academic.scss`) + `.claude/rules/slide-design-principles.md`. "legacy" = pinned to `clean-academic-legacy.scss`, exempt from the design principles.
