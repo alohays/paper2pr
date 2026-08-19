@@ -26,6 +26,18 @@ checks:
   max_nesting: 1
   expand_acronyms: false     # the audience already knows them
   prior_session_callback: false
+  # WP2 gates (D22). Dash expressions are avoided in every genre; paper
+  # figures are quoted under fair use and cited in the text, so the
+  # per-figure attribution footer is not required here.
+  dash_lint: true
+  attribution: false
+  forbidden_terms: true
+  level1_heading: fail
+
+language:
+  slides: en
+  notes: ko
+  korean_allowance: 0        # English slides carry no Hangul at all
 
 guidance: |
   Structure that works here: what problem, what was tried before, what this

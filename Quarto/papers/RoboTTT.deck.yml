@@ -8,7 +8,6 @@ audience:
   assumes: practitioner
 duration_min: 30
 delivery: in-person
-publish: web
 
 language:
   slides: en

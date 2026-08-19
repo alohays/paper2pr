@@ -1,5 +1,6 @@
 # Backfilled for a deck that predates /new-deck. The profile matches what the
-# genre default already resolved to, so nothing about how it is graded changes.
+# genre default already resolved to, so nothing about how it is graded changes
+# (except the level-1 switch below, added when that blocker was introduced).
 profile: paper-review
 title: "DreamDojo"
 description: "A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA)"
@@ -8,7 +9,15 @@ audience:
   assumes: practitioner
 duration_min: 30
 delivery: in-person
-publish: web
+
+# This deck predates the divider class and uses level-1 headings as its
+# section title slides on purpose: reveal nests the slides that follow
+# under each one as a vertical stack, and that is how it was delivered.
+# The level-1 blocker is therefore off here; new decks write section
+# breaks as `## {.divider}` and keep the default.
+checks:
+  level1_heading: off
+  dash_lint: false  # delivered before the dash rule (WP2); text not rewritten
 
 language:
   slides: en

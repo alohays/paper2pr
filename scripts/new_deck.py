@@ -16,7 +16,8 @@ What it writes:
 Usage:
     python3 scripts/new_deck.py --name dgist-2026f-w02 --genre lectures \\
         --title "The Paradigm Shift Toward Embodied AI" \\
-        --audience none --duration 60 --series-index 2
+        --audience none --duration 60 --video-min 10 --qa-min 5 \\
+        --series-index 2 --sources ../vault/research.md
 
     echo '{"name": "...", "genre": "lectures", ...}' \\
         | python3 scripts/new_deck.py --from-answers -
@@ -41,7 +42,8 @@ NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]{1,63}$")
 
 AUDIENCE_LEVELS = ("none", "practitioner", "expert")
 DELIVERY = ("in-person", "remote", "hybrid")
-PUBLISH = ("web", "pdf-only", "private")
+# There is no "publish" answer. Merging to main is publishing (plan D11):
+# a field that nothing reads would only suggest a mechanism that is not there.
 
 
 def die(msg: str):
@@ -56,8 +58,9 @@ def die(msg: str):
 # down. Reject it instead.
 ANSWER_KEYS = {
     "name", "genre", "profile", "title", "subtitle",
-    "audience", "audience_size", "duration", "delivery", "publish",
-    "slide_lang", "notes_lang", "series_index", "prior",
+    "audience", "audience_size", "duration", "video_min", "qa_min",
+    "delivery", "slide_lang", "notes_lang", "series_index", "prior",
+    "sources",
 }
 
 
@@ -100,14 +103,35 @@ def validate(a: dict) -> dict:
     if delivery not in DELIVERY:
         die(f"delivery must be one of {', '.join(DELIVERY)}")
 
-    publish = str(a.get("publish", "web")).strip()
-    if publish not in PUBLISH:
-        die(f"publish must be one of {', '.join(PUBLISH)}")
-
     try:
         duration = int(a.get("duration") or 30)
     except (TypeError, ValueError):
         die("duration must be a number of minutes")
+
+    def optional_minutes(key):
+        raw_value = a.get(key)
+        if raw_value in (None, ""):
+            return None
+        try:
+            n = int(raw_value)
+        except (TypeError, ValueError):
+            die(f"{key} must be a number of minutes")
+        if n < 0:
+            die(f"{key} cannot be negative")
+        return n
+
+    video_min = optional_minutes("video_min")
+    qa_min = optional_minutes("qa_min")
+    if (video_min or 0) + (qa_min or 0) > duration:
+        die(f"video_min + qa_min ({(video_min or 0) + (qa_min or 0)}) exceeds "
+            f"duration ({duration}); there would be no time left to speak")
+
+    sources = a.get("sources") or []
+    if isinstance(sources, str):
+        sources = [sources]
+    if not isinstance(sources, list) or not all(
+            isinstance(x, str) and x.strip() for x in sources):
+        die("sources must be a list of non-empty strings (paths or URLs)")
 
     return {
         "name": name,
@@ -118,12 +142,14 @@ def validate(a: dict) -> dict:
         "audience": level,
         "audience_size": a.get("audience_size") or "",
         "duration": duration,
+        "video_min": video_min,
+        "qa_min": qa_min,
         "delivery": delivery,
-        "publish": publish,
         "slide_lang": str(a.get("slide_lang") or "en"),
         "notes_lang": str(a.get("notes_lang") or "ko"),
         "series_index": a.get("series_index"),
         "prior": a.get("prior") or [],
+        "sources": [str(x).strip() for x in sources],
     }
 
 
@@ -132,8 +158,11 @@ def deck_yml(v: dict) -> str:
         "# Written by /new-deck. These are the premises the deck was built on;",
         "# every downstream tool reads them from here rather than guessing.",
         "#   quality_score.py  -> bullet budget and the profile's extra checks",
-        "#   the Korean gate   -> whether non-English slides are allowed here",
-        "#   write-speaker-notes -> which language the notes are in",
+        "#   the Korean gate   -> whether non-English slides are allowed here,",
+        "#                        and how much Hangul an English deck may carry",
+        "#   write-speaker-notes -> which language the notes are in, and the",
+        "#                        speaking minutes the script is budgeted on",
+        "#   slide-excellence  -> audience, delivery, sources (review context)",
         "# Changing a value here changes how the deck is graded, so change it",
         "# when the premise changes, not to make a warning go away.",
         f"profile: {v['profile']}",
@@ -143,6 +172,10 @@ def deck_yml(v: dict) -> str:
         lines.append(f"subtitle: {json.dumps(v['subtitle'])}")
     lines += [
         "",
+        "# audience.assumes, audience.size, audience.prior and delivery are",
+        "# context for the review agents (slide-excellence reads them), not",
+        "# consumed by the gate; the gate's budget and checks come from the",
+        "# profile above.",
         "audience:",
         f"  assumes: {v['audience']}    # none | practitioner | expert",
     ]
@@ -151,14 +184,33 @@ def deck_yml(v: dict) -> str:
     if v["prior"]:
         lines.append("  prior: [" + ", ".join(str(p) for p in v["prior"]) + "]")
     lines += [
-        f"duration_min: {v['duration']}",
         f"delivery: {v['delivery']}    # in-person | remote | hybrid",
-        f"publish: {v['publish']}    # web | pdf-only | private",
+        "",
+        "# Wall-clock minutes. video_min (clips playing without narration) and",
+        "# qa_min (questions) are subtracted: the speaker-notes budget runs on",
+        "# speaking_min = duration_min - video_min - qa_min.",
+        f"duration_min: {v['duration']}",
+    ]
+    if v["video_min"] is not None:
+        lines.append(f"video_min: {v['video_min']}")
+    if v["qa_min"] is not None:
+        lines.append(f"qa_min: {v['qa_min']}")
+    lines += [
         "",
         "language:",
         f"  slides: {v['slide_lang']}",
         f"  notes: {v['notes_lang']}",
+        "  # korean_allowance: <n>  -- max Hangul characters on English slides",
+        "  # (term glosses, Wooclap instructions). Omit to take the profile's",
+        "  # default (lecture 300, others 0). Slides declared ko are not counted.",
     ]
+    if v["sources"]:
+        lines += [
+            "",
+            "# What the fact-check agent compares the slides against: paths or",
+            "# URLs. Add to it as the deck grows.",
+            "sources:",
+        ] + [f"  - {json.dumps(src)}" for src in v["sources"]]
     if v["series_index"] is not None:
         lines += [
             "",
@@ -167,6 +219,15 @@ def deck_yml(v: dict) -> str:
             "# callback check -- there is no previous session to call back to.",
             f"series_index: {int(v['series_index'])}",
         ]
+    lines += [
+        "",
+        "# Two optional files next to this deck are read when they exist:",
+        f"#   Quarto/{v['genre']}/{v['name']}.forbidden.txt  (one term per line;",
+        "#     any hit in visible slide text is a BLOCKER at the gate)",
+        f"#   Figures/{v['genre']}/{v['name']}/figures.yml  (file, source, licence,",
+        "#     third_party per figure; third-party figures need their source on",
+        "#     the slide)",
+    ]
     return "\n".join(lines) + "\n"
 
 
@@ -184,20 +245,20 @@ def qmd_stub(v: dict) -> str:
             "\n"
         )
     sub = f'subtitle: {json.dumps(v["subtitle"])}\n' if v["subtitle"] else ""
+    # Canvas, centering, slide numbers, math renderer, the slide-types filter
+    # and the Pretendard link come from Quarto/_quarto.yml for every deck
+    # under a genre directory; only what is deck-specific is written here.
     return f"""---
 title: {json.dumps(v['title'])}
 {sub}author: Yunsung Lee
 institute: WoRV / MaumAI
+# Full-bleed title gradient as a reveal background (fills the viewport at any
+# aspect ratio; the theme drops its own section gradient when this is set).
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
 format:
   revealjs:
     theme: [default, ../clean-academic.scss]
-    width: 1280
-    height: 720
-    center: false
-    auto-stretch: false
-    slideNumber: true
-    html-math-method:
-      method: katex
 bibliography: ../../Bibliography_base.bib
 ---
 
@@ -250,13 +311,18 @@ def main(argv=None):
     ap.add_argument("--audience", choices=AUDIENCE_LEVELS)
     ap.add_argument("--audience-size")
     ap.add_argument("--duration", type=int)
+    ap.add_argument("--video-min", type=int, default=None,
+                    help="minutes of the slot spent on clips (default: not written)")
+    ap.add_argument("--qa-min", type=int, default=None,
+                    help="minutes of the slot reserved for Q&A (default: not written)")
     ap.add_argument("--delivery", choices=DELIVERY)
-    ap.add_argument("--publish", choices=PUBLISH)
     ap.add_argument("--slide-lang", default=None)
     ap.add_argument("--notes-lang", default=None)
     ap.add_argument("--series-index", type=int)
     ap.add_argument("--prior", nargs="*", default=None,
                     help="decks or sessions the audience has already seen")
+    ap.add_argument("--sources", nargs="*", default=None,
+                    help="paths or URLs the fact-check agent compares against")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
 
@@ -270,7 +336,8 @@ def main(argv=None):
         answers = {}
 
     for key in ("name", "genre", "profile", "title", "subtitle", "audience",
-                "duration", "delivery", "publish", "series_index", "prior"):
+                "duration", "video_min", "qa_min", "delivery", "series_index",
+                "prior", "sources"):
         val = getattr(args, key, None)
         if val is not None:
             answers[key] = val

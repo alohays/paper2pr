@@ -8,9 +8,11 @@ returned an empty dict, so a deck kept scoring and kept passing the gate with
 the wrong budget and both lecture checks switched off. An undeclared
 dependency that fails soft is worse than a parser we own.
 
-This handles exactly what <deck>.deck.yml and .claude/rules/slide-profiles/
-*.yml contain: nested mappings by indent, scalars, quoted strings, inline
-comments, flow sequences, block sequences, and block scalars (| and >).
+This handles exactly what <deck>.deck.yml, .claude/rules/slide-profiles/
+*.yml and the per-deck asset manifests (figures.yml, videos.yml) contain:
+nested mappings by indent, scalars, quoted strings, inline comments, flow
+sequences, block sequences, block sequences of mappings (`- file: x` with
+the item's remaining keys indented under it), and block scalars (| and >).
 
 Everything else -- anchors, aliases, tags, multiple documents, flow mappings,
 tab indentation -- raises MinYamlError naming the file and line. Refusing to
@@ -22,11 +24,17 @@ scripts/test_minyaml.py, which is what keeps "small subset" honest.
 """
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 BLOCK_MARKERS = ("|", ">", "|-", ">-", "|+", ">+")
 _BOOLS = {"true": True, "false": False, "yes": True, "no": False,
           "on": True, "off": False}
+
+# A sequence item that is itself a mapping: `- key: value` or `- key:` (the
+# value nested below). The key must look like a plain YAML key so that
+# `- https://example.org` and `- 12:30` stay scalars.
+_MAPPING_ITEM_RE = re.compile(r"^[A-Za-z0-9_][\w.-]*:(\s|$)")
 
 
 class MinYamlError(ValueError):
@@ -220,6 +228,16 @@ class _Reader:
             if not (content == "-" or content.startswith("- ")):
                 break
             rest = content[1:].strip()
+            if _MAPPING_ITEM_RE.match(rest):
+                # `- file: x` opens a mapping whose remaining keys sit at the
+                # column of `file`. Re-point the line at that column and let
+                # parse_mapping read it and everything indented to match;
+                # it stops by itself at the next `- ` (a shallower indent).
+                after_dash = raw[ind + 1:]
+                key_col = ind + 1 + (len(after_dash) - len(after_dash.lstrip()))
+                self.lines[self.i] = " " * key_col + raw[key_col:]
+                items.append(self.parse_mapping(key_col))
+                continue
             self.i += 1
             if rest == "":
                 items.append(self.parse_child(indent))

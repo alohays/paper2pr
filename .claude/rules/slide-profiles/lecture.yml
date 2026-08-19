@@ -23,15 +23,35 @@ checks:
   font_shrink: forbid
   box_density: 1
   max_nesting: 1
-  # Lecture-only. Both are mechanically checkable and both are what a
-  # sixteen-week course for non-majors actually lives or dies on.
-  expand_acronyms: true
+  # Off by the presenter's decision (2026-08-19, D17): the checker cannot
+  # tell a model name (RT-2, OpenVLA) from a term that needs spelling out,
+  # and the expansions live in the speaker notes for this audience anyway.
+  # The check itself stays available to any profile that wants it.
+  expand_acronyms: false
+  # Mechanically checkable and what a sixteen-week course for non-majors
+  # actually lives or dies on.
   prior_session_callback: true
+  # WP2 gates (D22). A lecture quotes other people's clips and figures, so
+  # every third-party figure carries its source on the slide.
+  dash_lint: true
+  attribution: true
+  forbidden_terms: true
+  level1_heading: fail
+
+language:
+  slides: en
+  notes: ko
+  # D18: English slides may carry a little Hangul -- term glosses, Wooclap
+  # instructions -- without declaring the whole deck Korean. Counted on the
+  # staged qmd after the notes filter; the pre-commit gate enforces it.
+  korean_allowance: 300
 
 guidance: |
-  Every acronym gets expanded the first time it appears on a slide, with the
-  Korean gloss in the speaker notes rather than on the slide. VLA is
-  "Vision-Language-Action (VLA)" once, then VLA forever after.
+  Spell a term out the first time it appears on a slide when the room has
+  never met it; the Korean gloss goes in the speaker notes rather than on
+  the slide. VLA is "Vision-Language-Action (VLA)" once, then VLA forever
+  after. This is judgment, not a gate: the acronym check is off for
+  lectures because it cannot tell a model name from a term.
 
   Open by connecting to the previous session. Students who missed a week
   need a way back in, and students who did not need the thread. One slide,
@@ -40,6 +60,3 @@ guidance: |
   The reliable move for this audience is "you already know X, and this is X
   reused": diffusion they have seen making images is the same machinery
   generating actions. Reach for that before reaching for a new abstraction.
-
-  Readings are optional depth, never required. Say so on the slide, or half
-  the room will assume they are behind.

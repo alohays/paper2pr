@@ -18,6 +18,7 @@ Usage as a library:
     from deckpath import find, all_decks, genres
     deck = find("DreamZero")
     deck.qmd, deck.genre, deck.figures, deck.notes_json, deck.script
+    deck.config, deck.forbidden, deck.figures_manifest
 
 Usage from the shell:
     python3 scripts/deckpath.py DreamZero              # -> Quarto/papers/DreamZero.qmd
@@ -98,6 +99,18 @@ class Deck:
         return QUARTO_DIR / self.genre / f"{self.name}.deck.yml"
 
     @property
+    def forbidden(self) -> Path:
+        """Per-deck forbidden-term list (one term per line). Optional: the
+        quality gate only reads it when it exists."""
+        return QUARTO_DIR / self.genre / f"{self.name}.forbidden.txt"
+
+    @property
+    def figures_manifest(self) -> Path:
+        """Provenance of the deck's figures (file, source, licence,
+        third_party). Optional, same as the forbidden list."""
+        return self.figures / "figures.yml"
+
+    @property
     def slug(self) -> str:
         return f"{self.genre}/{self.name}"
 
@@ -168,6 +181,8 @@ FIELDS = {
     "script": lambda d: d.script,
     "script-dir": lambda d: d.script_dir,
     "config": lambda d: d.config,
+    "forbidden": lambda d: d.forbidden,
+    "figures-manifest": lambda d: d.figures_manifest,
     "genre": lambda d: d.genre,
     "name": lambda d: d.name,
     "slug": lambda d: d.slug,
