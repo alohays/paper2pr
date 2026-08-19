@@ -57,6 +57,14 @@ Quarto/papers/robottt-anim/
 # SUNY video assets (hosted via GitHub Release, not tracked in git)
 Figures/talks/SUNY/videos/
 
+# Every deck's trimmed clips and posters: Figures/<genre>/<deck>/videos/
+# (written by scripts/media_prep.py, uploaded to the Release media-<deck> by
+# scripts/media_release.sh). The manifest (videos.yml) and the lock file
+# (videos.json) beside them ARE tracked. The fixture's copy under
+# Quarto/_fixtures/video/videos/ is ignored by the same rule below.
+Figures/**/videos/
+Quarto/_fixtures/video/videos/
+
 # RoboTTT task videos. The deck lists NVIDIA's CDN first and these as a local
 # fallback; check_site_assets.py allows videos/*.mp4 to be missing from _site
 # for exactly that reason. Untracked *and* unignored meant one `git add -A`
