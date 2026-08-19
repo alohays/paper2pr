@@ -1,7 +1,28 @@
+# Project-level defaults for every deck under Quarto/<genre>/. A deck's own
+# front matter overrides any key here; the legacy decks set all of these
+# themselves. NOTE: _fixtures/ is underscore-prefixed, so Quarto treats it as
+# outside the project and none of this applies there; every fixture qmd repeats
+# what it needs (canvas, filter, font link).
 format:
   revealjs:
+    # 16:9 canvas, content pinned by the theme, not by reveal. margin 0 makes
+    # the 1280x720 section coincide with the viewport at 16:9, so full-bleed
+    # slide types reach the edge; the theme's section padding is the margin.
+    width: 1280
+    height: 720
+    margin: 0
+    center: false
+    auto-stretch: false
+    slide-number: true
     html-math-method:
       method: katex
       # Pin it. The default is katex@latest on jsdelivr, so an upstream
       # release can change how a published deck renders without us touching it.
       url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
+    include-in-header:
+      # Pretendard (Hangul fallback in the theme's font stack). Relative to the
+      # deck at Quarto/<genre>/ and to the deployed slides/<genre>/ alike.
+      - text: '<link rel="stylesheet" href="../fonts/pretendard.css">'
+    filters:
+      # Slide-type shorthands (.divider, .video-full) -> reveal background attrs.
+      - _filters/slide-types.lua
