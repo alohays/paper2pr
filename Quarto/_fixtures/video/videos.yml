@@ -1,0 +1,35 @@
+# Fixture manifest for the video pipeline (WP3). Every entry points at the
+# repo's own 3-second placeholder clip, so media_prep.py and media_release.sh
+# can run here without any third-party media; the release it feeds is
+# media-fixture-video (deckpath.find_media derives the tag from the _fixtures/
+# path). Real decks keep this file at Figures/<genre>/<deck>/videos.yml.
+videos:
+  - slug: hook
+    title: Placeholder clip fills the frame
+    publisher: paper2pr fixture
+    source_url: https://github.com/alohays/paper2pr
+    published: 2026-08
+    autonomy: autonomous
+    speed: 1x
+    segment: 0-2
+    source: ../../assets/placeholder-video.mp4
+    caption: visible
+    licence_note: repo-owned placeholder, no third-party material
+  - slug: demo
+    title: Inline card with a fragment caption
+    publisher: paper2pr fixture
+    source_url: https://github.com/alohays/paper2pr
+    published: 2026-08
+    autonomy: claimed
+    speed: 2x
+    segment: 1-3
+    source: ../../assets/placeholder-video.mp4
+    caption: fragment
+  - slug: montage
+    title: Second card of the montage
+    publisher: paper2pr fixture
+    source_url: https://github.com/alohays/paper2pr
+    published: 2026-08
+    autonomy: teleop
+    source: ../../assets/placeholder-video.mp4
+    caption: none
