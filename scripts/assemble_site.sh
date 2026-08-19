@@ -21,7 +21,7 @@ OUT="${1:-_site}"
 GENRES=$(grep -vE '^\s*(#|$)' Quarto/_genres.txt | tr '\n' ' ')
 
 rm -rf "$OUT"
-mkdir -p "$OUT/slides" "$OUT/Figures" "$OUT/files/code"
+mkdir -p "$OUT/slides" "$OUT/Figures"
 
 # Landing page, regenerated from the decks that exist right now. The committed
 # copy is there so it can be opened locally; this line is what guarantees the
@@ -55,15 +55,8 @@ done
 # slides/fonts/ from inside a genre directory.
 [ -d "Quarto/fonts" ] && cp -r Quarto/fonts "$OUT/slides/fonts"
 
-# Beamer PDFs keep their flat names -- they were never genre-scoped and the
-# links to them are the ones already in circulation.
-cp Slides/*.pdf "$OUT/slides/" 2>/dev/null || true
-
 # Figures, already genre-scoped on disk
 cp -r Figures/* "$OUT/Figures/" 2>/dev/null || true
-
-# R scripts (if any)
-cp scripts/R/*.R "$OUT/files/code/" 2>/dev/null || true
 
 # Redirect stubs for the URLs these decks had before genres existed. Cheap
 # insurance: the links are already out in a CV, in email, and in chat, and a

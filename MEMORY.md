@@ -19,27 +19,27 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 ## Documentation Standards
 
-[LEARN:documentation] When adding new features, update BOTH README and guide immediately to prevent documentation drift. Stale docs break user trust.
+[LEARN:documentation] When adding new features, update BOTH README.md and AGENTS.md immediately to prevent documentation drift. Stale docs break user trust. (The upstream `guide/` this entry used to name was removed in 2026-08; AGENTS.md is the single canonical description.)
 
-[LEARN:documentation] Always document new templates in README's "What's Included" section with purpose description. Template inventory must be complete and accurate.
+[LEARN:documentation] Always document new templates in the AGENTS.md folder tree with a purpose description. Template inventory must be complete and accurate.
 
-[LEARN:documentation] Guide must be generic (framework-oriented) not prescriptive. Provide templates with examples for multiple workflows (LaTeX, R, Python, Jupyter), let users customize. No "thou shalt" rules.
+[LEARN:documentation] (Historical; the upstream `guide/` was removed in 2026-08.) The guide was meant to be generic (framework-oriented) not prescriptive, with templates for multiple workflows. This repo's docs now describe one framework, single Quarto path, and are allowed to be prescriptive.
 
 [LEARN:documentation] Date fields in frontmatter and README must reflect latest significant changes. Users check dates to assess currency.
 
 ## Design Philosophy
 
-[LEARN:design] Framework-oriented > Prescriptive rules. Constitutional governance works as a TEMPLATE with examples users customize to their domain. Same for requirements specs.
+[LEARN:design] (Historical; the constitutional-governance and requirements-spec templates this entry described were removed in 2026-08.) The upstream template favored framework-oriented rules users customize to their domain. This repo is one framework for one presenter, single Quarto path, and its rules are allowed to be prescriptive; requirements are free-form markdown in the plan file (see `plan-first-workflow.md`).
 
-[LEARN:design] Quality standard for guide additions: useful + pedagogically strong + drives usage + leaves great impression + improves upon starting fresh + no redundancy + not slow. All 7 criteria must hold.
+[LEARN:design] Quality standard for documentation additions (AGENTS.md, README.md): useful + pedagogically strong + drives usage + leaves great impression + improves upon starting fresh + no redundancy + not slow. All 7 criteria must hold.
 
-[LEARN:design] Generic means working for any academic workflow: pure LaTeX (no Quarto), pure R (no LaTeX), Python/Jupyter, any domain (not just econometrics). Test recommendations across use cases.
+[LEARN:design] (Historical; the LaTeX/Beamer and R paths were removed in 2026-08.) The upstream template aimed to serve any academic workflow. This repo targets exactly one: Quarto RevealJS decks for paper reviews, invited talks and course lectures. Test recommendations against those three genres, not against other toolchains.
 
 ## File Organization
 
 [LEARN:files] Specifications go in `quality_reports/specs/YYYY-MM-DD_description.md`, not scattered in root or other directories. Maintains structure.
 
-[LEARN:files] Templates belong in `templates/` directory with descriptive names. Currently have: session-log.md, quality-report.md, exploration-readme.md, archive-readme.md, requirements-spec.md, constitutional-governance.md.
+[LEARN:files] Templates belong in `templates/` directory with descriptive names. Currently have: session-log.md, speaker-notes-report.md (the upstream template set was removed in 2026-08).
 
 ## Constitutional Governance
 

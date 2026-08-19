@@ -12,8 +12,7 @@ Cross-reference all citations in lecture files against bibliography entries.
 
 1. **Read the bibliography file** and extract all citation keys
 
-2. **Scan all lecture files for citation keys:**
-   - `.tex` files: look for `\cite{`, `\citet{`, `\citep{`, `\citeauthor{`, `\citeyear{`
+2. **Scan all deck files for citation keys:**
    - `.qmd` files: look for `@key`, `[@key]`, `[@key1; @key2]`
    - Extract all unique citation keys used
 
@@ -36,9 +35,9 @@ Cross-reference all citations in lecture files against bibliography entries.
 
 ## Files to scan:
 ```
-Slides/*.tex
 Quarto/*/*.qmd      # decks are one level down, under their genre
 ```
+(`python3 scripts/deckpath.py --list` names every deck.)
 
 ## Bibliography location:
 ```

@@ -12,7 +12,7 @@
 6. **Present to user** — wait for approval
 7. **Exit plan mode** — only after approval
 8. **Save initial session log** — capture goal and key context while fresh
-9. **Implement via orchestrator** — see `orchestrator-protocol.md`
+9. **Implement** - work the plan in order; delegate independent pieces to subagents when there are 2+
 
 ## Step 3: Requirements Specification (For Complex/Ambiguous Tasks)
 
@@ -28,7 +28,7 @@
 
 **Protocol:**
 1. Use AskUserQuestion to clarify ambiguities (max 3-5 questions)
-2. Create `quality_reports/specs/YYYY-MM-DD_description.md` using `templates/requirements-spec.md`
+2. Write the requirements as free-form markdown at the top of the plan file (`quality_reports/plans/YYYY-MM-DD_description.md`)
 3. Mark each requirement:
    - **MUST** (non-negotiable)
    - **SHOULD** (preferred)
@@ -39,8 +39,6 @@
    - **BLOCKED:** Cannot proceed until answered
 5. Get user approval on spec
 6. THEN proceed to Step 4 (draft the plan) with spec as input
-
-**Template:** `templates/requirements-spec.md`
 
 **Why this helps:** Catches ambiguity BEFORE planning. Reduces mid-plan pivots by 30-50%.
 

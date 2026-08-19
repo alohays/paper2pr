@@ -13,4 +13,4 @@ publish: web
 
 language:
   slides: en
-  notes: ko
+  notes: ko  # no notes written yet; ko is the language they will be in

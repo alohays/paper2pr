@@ -54,7 +54,7 @@ For every quantitative or qualitative claim on slides:
 - [ ] Are "zero-shot" / "few-shot" / "generalization" claims properly scoped?
 
 **Cross-reference with:**
-- The target paper source in `target-papers/*/paper/`
+- The deck's sources, named in `<deck>.deck.yml` under `sources:` or supplied by the presenter (a paper PDF, a research note)
 - The project bibliography file
 - The knowledge base in `.claude/rules/` (if it has a notation/citation registry)
 
@@ -88,7 +88,7 @@ Read the presentation backwards — from conclusion to introduction:
 
 ## Lens 6: Code-Implementation Insights (Optional — when code is available)
 
-When official implementation code exists in `target-papers/*/code/`:
+When the deck's sources include an official implementation (a code path or repository named in `sources:` or by the presenter):
 
 - [ ] Are code-level observations accurately described on slides?
 - [ ] Do engineering details cited from the codebase match the actual implementation?

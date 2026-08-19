@@ -20,4 +20,4 @@ When wrapping up: high-level summary, quality scores, open questions, blockers.
 ## Quality Reports
 
 Generated **only at merge time** -- not at every commit or PR.
-Save to `quality_reports/merges/YYYY-MM-DD_[branch-name].md` using `templates/quality-report.md`.
+Save to `quality_reports/merges/YYYY-MM-DD_[branch-name].md` as free-form markdown (score, blocking issues, recommendations, what was verified). `templates/session-log.md` is the only template kept for session logs.

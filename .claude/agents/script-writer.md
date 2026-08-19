@@ -118,8 +118,7 @@ Bad examples:
 When writing scripts, consult these sources in priority order:
 
 1. **QMD slide content (primary)** — the script must match what's on screen
-2. **Source paper (supplementary)** — for deeper technical context on complex slides
-3. **Beamer .tex file (secondary)** — may contain "My Take" commentary or pedagogical framing not fully captured in QMD
+2. **Deck sources (supplementary)** — whatever `<deck>.deck.yml` names under `sources:` or the presenter supplies (a paper, a research note), for deeper technical context on complex slides
 
 Do NOT try to read the entire source paper at once. Read relevant sections only when a specific slide needs deeper context (e.g., architecture details, experimental setup, ablation rationale).
 

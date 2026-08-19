@@ -27,11 +27,10 @@ Review the specified file thoroughly and produce a detailed report of all issues
 - Missing or extra punctuation
 
 ### 3. OVERFLOW
-- **LaTeX (.tex):** Content likely to cause overfull hbox warnings. Look for long equations without `\resizebox`, overly long bullet points, or too many items per slide.
-- **Quarto (.qmd):** Content likely to exceed slide boundaries. Look for: too many bullet points, inline font-size overrides below 0.85em, missing negative margins on dense slides.
+- Content likely to exceed slide boundaries. Look for: too many bullet points, inline font-size overrides below 0.85em, dense slides that should be split.
 
 ### 4. CONSISTENCY
-- Citation format: `\citet` vs `\citep` (LaTeX), `@key` vs `[@key]` (Quarto)
+- Citation format: `@key` vs `[@key]` used consistently
 - Notation: Same symbol used for different things, or different symbols for the same thing
 - Terminology: Consistent use of terms across slides
 - Box usage: `keybox` vs `highlightbox` vs `methodbox` used appropriately
@@ -60,6 +59,4 @@ For each issue found, provide:
 
 ## Save the Report
 
-Save to `quality_reports/[FILENAME_WITHOUT_EXT]_report.md`
-
-For `.qmd` files, append `_qmd` to the name: `quality_reports/[FILENAME]_qmd_report.md`
+Save to `quality_reports/[DECK]_qmd_report.md`

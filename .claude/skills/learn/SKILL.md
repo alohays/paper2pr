@@ -120,42 +120,43 @@ After creating the skill, report:
 
 ## Example: Creating a Skill
 
-User discovers that a specific R package silently drops observations:
+User discovers that a level-1 heading inside a RevealJS deck changes the slide structure:
 
 ```markdown
 ---
-name: fixest-missing-covariate-handling
+name: reveal-level1-heading-vertical-stack
 description: |
-  Handle silent observation dropping in fixest when covariates have missing values.
-  Use when: estimates seem wrong, sample size unexpectedly small, or comparing
-  results between packages.
+  Diagnose a Quarto RevealJS deck whose slides after some point all appear
+  under one horizontal position (vertical stack). Use when: slide count in
+  the browser is far below the `##` count, or the arrow keys suddenly move
+  down instead of right.
 author: Claude Code Academic Workflow
 version: 1.0.0
 ---
 
-# fixest Missing Covariate Handling
+# Level-1 Heading Collapses Slides into a Vertical Stack
 
 ## Problem
-The fixest package silently drops observations when covariates have NA values,
-which can produce unexpected results when comparing to other packages.
+A `#` (level-1) heading anywhere after the title slide makes RevealJS treat
+every following `##` slide as a vertical child of that section, so the
+deck loses its left-to-right flow and the rendered slide count drops.
 
 ## Context / Trigger Conditions
-- Sample size in fixest is smaller than expected
-- Results differ from Stata or other R packages
-- Model has covariates with potential missing values
+- `quality_score.py --summary` slide count differs from what the browser shows
+- Arrow-right stops advancing; arrow-down does
+- The deck recently gained a section divider written as `# Title`
 
 ## Solution
-1. Check for NA patterns before regression:
-   ```r
-   summary(complete.cases(data[, covariates]))
-   ```
-2. Explicitly handle NA values or use `na.action` parameter
-3. Document the expected sample size in comments
+1. `grep -n '^# ' Quarto/<genre>/<deck>.qmd` to find the heading
+2. Rewrite section dividers as `## Title {.divider}` (the `slide-types.lua`
+   filter maps the class to a full-bleed background)
+3. Re-render and walk the deck with `bash scripts/preview.sh <deck>`
 
 ## Verification
-Compare `nobs(model)` with `nrow(data)` — difference indicates dropped obs.
+`bash scripts/preview.sh <deck>` shows one horizontal slide per `##`;
+`quality_score.py` counts agree with the browser.
 
 ## References
-- fixest documentation on missing values
-- [LEARN:r-code] entry in MEMORY.md
+- `Quarto/_filters/slide-types.lua`
+- `.claude/rules/slide-design-principles.md`
 ```

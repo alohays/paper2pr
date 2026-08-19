@@ -52,8 +52,7 @@ may not hold.
 will carry anything not yet public. See `.claude/rules/` on internal content.
 
 **Deck name** — kebab-case, unique across every genre, since the speaker-note
-backups and presenter scripts are keyed on it and `preview.sh <name>` takes a
-bare name. For a course series use `<venue>-<term>-w<NN>`, e.g.
+backups are keyed on it and `preview.sh <name>` takes a bare name. For a course series use `<venue>-<term>-w<NN>`, e.g.
 `dgist-2026f-w02`.
 
 ## 2. Show the answers back
@@ -105,9 +104,9 @@ Non-negotiable while drafting, whatever the genre:
    `.smallest` are worth -5 each at the gate.
 7. **Every citation resolves** against `Bibliography_base.bib`.
 
-Figures: R scripts follow `.claude/rules/r-code-conventions.md`; TikZ diagrams
-go in `Figures/<genre>/<name>/extract_tikz.tex` and export through
-`/extract-tikz`.
+Figures: inline SVG, a matplotlib script, or a generated image, chosen per
+figure by judgment. They live under `Figures/<genre>/<name>/`; browsers cannot
+render PDF inline, so export vector figures as SVG.
 
 ## 5. Verify before calling it done
 
@@ -128,7 +127,7 @@ see a slide that is technically legal and pedagogically empty. Walk it.
 [ ] No .smaller/.smallest anywhere
 [ ] Transition slides between sections
 [ ] Score >= 80 to commit, >= 90 to ship
-[ ] /devils-advocate run
+[ ] /slide-excellence run (visual, pedagogy incl. challenges, proofreading)
 ```
 
 For a lecture, additionally: every acronym expanded on first appearance, and

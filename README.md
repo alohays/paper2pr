@@ -1,115 +1,69 @@
 # Paper2PR
 
-A Claude Code multi-agent workflow that converts AI/ML papers into presentation-ready Beamer + Quarto (RevealJS) slide decks with automated quality control, adversarial review, and deployment.
+Yunsung Lee's presentation framework: Quarto RevealJS decks for paper
+reviews, invited talks, and course lectures, with a quality gate and an
+automated publish path. The name is historical (the repo started as a
+paper-to-presentation generator) and is kept because the published slide
+URLs depend on it.
 
 **Organization:** WoRV / MaumAI
 
 ---
 
-## Papers
+## Published decks
 
-| Paper | Topic | Beamer | Quarto |
-|-------|-------|--------|--------|
-| DreamZero | World Action Models as Zero-shot Policies (NVIDIA) | [`Slides/DreamZero.tex`](Slides/DreamZero.tex) | [`Quarto/papers/DreamZero.qmd`](Quarto/papers/DreamZero.qmd) |
-| DreamDojo | A Generalist Robot World Model from Large-Scale Human Videos (NVIDIA) | [`Slides/DreamDojo.tex`](Slides/DreamDojo.tex) | [`Quarto/papers/DreamDojo.qmd`](Quarto/papers/DreamDojo.qmd) |
-| RoboTTT | Scaling Context Length for Robot Policies with Test-Time Training | none | [`Quarto/papers/RoboTTT.qmd`](Quarto/papers/RoboTTT.qmd) |
+- Landing page: <https://alohays.github.io/paper2pr/>
+- One deck: `https://alohays.github.io/paper2pr/slides/<genre>/<deck>.html`
 
-Each paper gets a ~30-slide deck (~30 min) covering main ideas, technical details, and implementation observations. Target audience: basic deep learning knowledge.
+Decks are published by GitHub Actions on every push to `main`: the decks
+are rendered, speaker notes are stripped, and the site is deployed. What
+is on `main` is public.
 
----
+## Genres
 
-## Quick Start
+| Genre | Profile | Audience | Length |
+|-------|---------|----------|--------|
+| `papers` | `paper-review` | knows deep learning | ~30 min |
+| `talks` | `invited-talk` | varies, declared per deck | varies |
+| `lectures` | `lecture` | no background | ~60 min |
 
-### Prerequisites
+A deck lives at `Quarto/<genre>/<deck>.qmd` and declares its premises
+(audience, length, language) in `Quarto/<genre>/<deck>.deck.yml`. The
+quality gate reads that file to choose the budgets and checks that apply.
 
-- [Claude Code](https://code.claude.com/docs/en/overview)
-- XeLaTeX ([TeX Live](https://tug.org/texlive/) / [MacTeX](https://tug.org/mactex/))
-- [Quarto](https://quarto.org)
-
-### Build
-
-```bash
-# Beamer (3-pass XeLaTeX)
-cd Slides
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode DreamZero.tex
-BIBINPUTS=..:$BIBINPUTS bibtex DreamZero
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode DreamZero.tex
-TEXINPUTS=../Preambles:$TEXINPUTS xelatex -interaction=nonstopmode DreamZero.tex
-
-# Quarto -- decks live at Quarto/<genre>/<name>.qmd; resolve by bare name
-quarto render "$(python3 scripts/deckpath.py DreamZero --field qmd)"
-
-# Deploy to GitHub Pages
-./scripts/sync_to_docs.sh DreamZero
-```
-
-### With Claude Code
+## Making a deck
 
 ```bash
-claude
+quarto render Quarto/<genre>/<deck>.qmd      # render one deck locally
+./scripts/sync_to_docs.sh [<deck>]           # local preview of the published site
 ```
 
-Then use skills like `/new-deck`, `/write-speaker-notes`, `/slide-excellence`, `/deploy`.
+With Claude Code, `/new-deck` interviews for the premises, scaffolds the
+deck, and carries authoring through the quality gate; `/slide-excellence`
+runs the review fan-out. Speaker notes (`::: {.notes}`) stay local: a git
+clean filter keeps them out of commits and CI strips them from the HTML.
 
----
-
-## Project Structure
+## Layout
 
 ```
 paper2pr/
-├── CLAUDE.md                    # Project config for Claude Code
-├── target-papers/               # Source papers (gitignored)
-│   └── YYMM-papername/
-│       ├── paper/               # LaTeX source, figures, bib
-│       └── code/                # Official implementation
-├── Bibliography_base.bib        # Centralized bibliography
-├── Figures/                     # Per-paper subdirectories (PDF + SVG)
-├── Preambles/header.tex         # Shared Beamer preamble
-├── Slides/                      # Beamer .tex + compiled .pdf
-├── Quarto/                      # RevealJS .qmd + theme
-├── docs/                        # GitHub Pages (auto-generated)
-├── scripts/                     # Build & deploy utilities
-├── quality_reports/             # Plans, session logs, audit reports
-├── guide/                       # Workflow guide (from upstream)
-└── .claude/                     # Agents, skills, rules, hooks
+├── AGENTS.md          # Canonical description for agents and contributors
+├── Quarto/            # <genre>/<deck>.qmd, themes, project defaults, filters, fixtures
+├── Figures/           # Per-deck figures, Figures/<genre>/<deck>/
+├── scripts/           # Render, assemble, gate, and test utilities (stdlib Python + bash)
+├── .claude/           # Rules, skills, agents, hooks
+└── quality_reports/   # Plans and session logs (history)
 ```
 
----
-
-## Workflow
-
-This project uses a multi-agent Claude Code workflow:
-
-- **10 specialized agents** — proofreader, slide-auditor, pedagogy-reviewer, domain-reviewer, tikz-reviewer, beamer-translator, quarto-critic, quarto-fixer, verifier, r-reviewer
-- **Adversarial QA** — critic and fixer agents loop until approved (max 5 rounds)
-- **Quality gates** — 80 (commit) / 90 (PR) / 95 (excellence)
-- **Plan-first** — enter plan mode before non-trivial tasks
-- **Context survival** — plans and session logs persist across compression
-
-### Key Skills
-
-| Command | What It Does |
-|---------|-------------|
-| `/new-deck` | Interview, scaffold, and author a new deck |
-| `/translate-to-quarto` | Beamer → Quarto translation |
-| `/slide-excellence` | Combined multi-agent review |
-| `/compile-latex` | 3-pass XeLaTeX + bibtex |
-| `/deploy` | Render Quarto + sync to docs/ |
-| `/qa-quarto` | Adversarial Quarto vs Beamer QA |
-| `/proofread` | Grammar/typo/overflow review |
-| `/visual-audit` | Slide layout audit |
-
-See [CLAUDE.md](CLAUDE.md) for the full skill reference.
-
----
+`docs/` is the local preview output of `scripts/sync_to_docs.sh`; it is
+gitignored and never committed. `AGENTS.md` is the canonical description of
+the framework; start there.
 
 ## Attribution
 
-This project is built on [**claude-code-my-workflow**](https://github.com/pedrohcgs/claude-code-my-workflow) by [Pedro H. C. Sant'Anna](https://github.com/pedrohcgs), originally developed for Econ 730 at Emory University. The multi-agent architecture, quality gates, orchestrator protocol, and infrastructure (agents, skills, rules, hooks) are from that foundation.
-
-Thank you for making it open source.
-
----
+The repository grew out of [claude-code-my-workflow](https://github.com/pedrohcgs/claude-code-my-workflow)
+by Pedro H. C. Sant'Anna; the template layer has since been removed, and the
+shared history is the record.
 
 ## License
 

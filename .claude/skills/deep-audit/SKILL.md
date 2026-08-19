@@ -18,7 +18,7 @@ Run a comprehensive consistency audit across the entire repository, fix all issu
 
 ## When to Use
 
-- After broad changes (new skills, rules, hooks, guide edits)
+- After broad changes (new skills, rules, hooks, scripts, AGENTS.md edits)
 - Before releases or major commits
 - When the user asks to "find inconsistencies", "audit", or "check everything"
 
@@ -28,14 +28,14 @@ Run a comprehensive consistency audit across the entire repository, fix all issu
 
 Launch these 4 agents simultaneously using `Task` with `subagent_type=general-purpose`:
 
-#### Agent 1: Guide Content Accuracy
-Focus: `guide/workflow-guide.qmd`
-- All numeric claims match reality (skill count, agent count, rule count, hook count)
+#### Agent 1: Canonical Docs Accuracy
+Focus: `AGENTS.md` (the single canonical description) and `README.md` (short external intro)
+- All numeric claims match reality (skill count, agent count, rule count, hook count, script count)
 - All file paths mentioned actually exist on disk
-- All skill/agent/rule names match actual directory names
-- Code examples are syntactically correct
-- Cross-references and anchors resolve
-- No stale counts from previous versions
+- All skill/agent/rule/script names match actual directory and file names
+- Code examples and commands are correct (`scripts/deckpath.py`, `scripts/deckprofile.py`, `scripts/new_deck.py` flags exist)
+- Cross-references resolve
+- No stale counts, and no mentions of layers that git history shows as removed
 
 #### Agent 2: Hook Code Quality
 Focus: `.claude/hooks/*.py` and `.claude/hooks/*.sh`
@@ -48,23 +48,25 @@ Focus: `.claude/hooks/*.py` and `.claude/hooks/*.sh`
 - Correct field names from hook input schema (`source` not `type` for SessionStart)
 - PreCompact hooks print to stderr (stdout is ignored)
 
-#### Agent 3: Skills and Rules Consistency
-Focus: `.claude/skills/*/SKILL.md` and `.claude/rules/*.md`
+#### Agent 3: Skills, Agents, and Rules Consistency
+Focus: `.claude/skills/*/SKILL.md`, `.claude/agents/*.md`, `.claude/rules/*.md`, `.claude/rules/slide-profiles/*.yml`
 - Valid YAML frontmatter in all files
 - No stale `disable-model-invocation: true`
 - `allowed-tools` values are sensible
 - Rule `paths:` reference existing directories
-- No contradictions between rules
-- CLAUDE.md skills table matches actual skill directories 1:1
-- All templates referenced in rules/guide exist in `templates/`
+- No contradictions between rules, or between a rule and the profile numbers the gate enforces
+- AGENTS.md skills and agents tables match actual directories 1:1
+- Every agent a skill launches exists in `.claude/agents/`
+- All templates referenced in rules/skills exist in `templates/`
 
-#### Agent 4: Cross-Document Consistency
-Focus: `README.md`, `docs/index.html`, `docs/workflow-guide.html`
-- All feature counts agree across all 3 documents
+#### Agent 4: Scripts and Cross-Document Consistency
+Focus: `scripts/`, `README.md`, `AGENTS.md`, `MEMORY.md`
+- Every script a skill, rule, or doc invokes exists, and its documented flags match its `--help`
+- Feature counts and the directory tree agree between `README.md` and `AGENTS.md`
 - All links point to valid targets
 - License section matches LICENSE file
-- Directory tree matches actual structure
-- No stale counts from previous versions
+- `MEMORY.md` entries do not point at deleted files
+- Test scripts still pass: `python3 scripts/test_profiles.py`, `python3 scripts/test_minyaml.py`, `bash scripts/test_note_filter.sh`, `bash scripts/test_korean_gate.sh`
 
 ### PHASE 2: Triage Findings
 
@@ -84,15 +86,7 @@ Apply fixes in parallel where possible. For each fix:
 2. Apply the fix
 3. Verify the fix (grep for stale values, check syntax)
 
-### PHASE 4: Re-render if Guide Changed
-
-If `guide/workflow-guide.qmd` was modified:
-```bash
-quarto render guide/workflow-guide.qmd
-cp guide/workflow-guide.html docs/workflow-guide.html
-```
-
-### PHASE 5: Loop or Declare Clean
+### PHASE 4: Loop or Declare Clean
 
 After fixing, launch a fresh set of 4 agents to verify.
 - If new issues found → fix and loop again
@@ -106,7 +100,7 @@ These are real bugs found across 7 rounds — check for these specifically:
 
 | Bug Pattern | Where to Check | What Went Wrong |
 |-------------|---------------|-----------------|
-| Stale counts ("19 skills" → "21") | Guide, README, landing page | Added skills but didn't update all mentions |
+| Stale counts ("19 skills" → "21") | AGENTS.md, README | Added skills but didn't update all mentions |
 | Hook exit codes | All Python hooks | Exit 2 in PreCompact silently discards stdout |
 | Hook field names | post-compact-restore.py | SessionStart uses `source`, not `type` |
 | State in /tmp/ | All Python hooks | Should use `~/.claude/sessions/<hash>/` |
@@ -114,7 +108,6 @@ These are real bugs found across 7 rounds — check for these specifically:
 | Missing fail-open | Python hooks `__main__` | Unhandled exception → exit 1 → confusing behavior |
 | Python 3.10+ syntax | Type hints like `dict | None` | Need `from __future__ import annotations` |
 | Missing directories | quality_reports/specs/ | Referenced in rules but never created |
-| Always-on rule listing | Guide + README | meta-governance omitted from listings |
 | macOS-only commands | Skills, rules | `open` without `xdg-open` fallback |
 | Protected file blocking | settings.json edits | protect-files.sh blocks Edit/Write |
 
@@ -135,8 +128,7 @@ After each round, report:
 ### Verification
 - [ ] No stale counts (grep confirms)
 - [ ] All hooks have fail-open + future annotations
-- [ ] Guide renders successfully
-- [ ] docs/ updated
+- [ ] Test scripts pass
 
 ### Result: [CLEAN | N issues remaining]
 ```
