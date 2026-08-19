@@ -44,9 +44,33 @@ speaker-notes budget runs on; a 60-minute lecture with 10 minutes of video
 is a 50-minute script, not a 60-minute one. Omit both when the deck is all
 talk.
 
-**Where it sits in a series** — for a lecture, which session number and what
-the audience has already seen. `series_index: 1` exempts the deck from the
-prior-session callback check; anything else requires it.
+**Where it sits in a series** - for a lecture, which course series and which
+session. Run `python3 scripts/series_assets.py --list` for the series files
+(`Quarto/lectures/_series/<course>.yml`, one per course; `dgist-2026f` is the
+DGIST HSS118 term). When the deck is a session of one:
+
+- ask for the **series** and the **session index** (the week number, W02 = 2)
+  and pass `--series <course> --series-index <NN>`: the scaffold takes the
+  title, the date and the deck name `<course>-w<NN>` from the series file,
+  writes `series:` and `series_index:` into `deck.yml` and `series: <course>`
+  into the qmd front matter (what the series shortcodes read), and puts the
+  four shared slides in the stub (`_series/<course>/semester-map.qmd`,
+  `course-runs.qmd`, `ask-anytime.qmd` near the top, `qa.qmd` last) with a
+  TODO notes block after each include;
+- confirm the title from the series rather than re-asking it; a session
+  whose index is not in the series file is refused, and a deck.yml that
+  names one later fails loudly in `deckprofile.py`;
+- the previous session comes from the series too (holiday and exam weeks
+  are skipped; a guest or DGIST session counts), so the recap slide's TODO
+  already names it and the gate's callback message does as well;
+- if the series file does not exist yet, write it first (schema in the
+  header of `dgist-2026f.yml`), run `python3 scripts/series_assets.py
+  <course>` to build the lock, the QR and the semester maps, and add the
+  shared slides under `Quarto/lectures/_series/<course>/`.
+
+A lecture outside any series keeps the bare `--series-index`; `series_index:
+1` exempts the deck from the prior-session callback check, anything else
+requires it.
 
 **Language** — slides default to English, notes to Korean, for every genre.
 Confirm rather than re-derive. Non-English slides are allowed by declaring
@@ -81,12 +105,17 @@ against — cheaper to correct now than after six decks exist.
 ## 3. Scaffold
 
 ```bash
+# a session of a course series: name, title and date come from the series file
 python3 scripts/new_deck.py \
-  --name dgist-2026f-w02 --genre lectures \
-  --title "The Paradigm Shift Toward Embodied AI" \
+  --series dgist-2026f --series-index 2 \
   --audience none --duration 60 --video-min 10 --qa-min 5 \
-  --series-index 2 --delivery in-person \
+  --delivery in-person \
   --sources ../vault/1-projects/dgist/w02-research.md
+
+# a lecture outside any series, or a talk / paper review
+python3 scripts/new_deck.py \
+  --name some-talk --genre talks \
+  --title "A talk" --audience practitioner --duration 30
 ```
 
 Or pass the whole answer set as JSON on stdin with `--from-answers -`.
@@ -162,8 +191,13 @@ see a slide that is technically legal and pedagogically empty. Walk it.
 
 For a lecture, additionally: an opening slide that names where the previous
 session ended (the gate checks it for decks on the `lecture` profile with
-`series_index` other than 1), and terms spelled out on first appearance by
-judgment, with the Korean gloss in the notes.
+`series_index` other than 1, and names the session the series file expects),
+and terms spelled out on first appearance by judgment, with the Korean gloss
+in the notes. For a session of a series, keep the four shared includes where
+the scaffold put them; the semester map, the QR and the rules come from the
+series lock, so a date or a code is changed in the series yml and
+`series_assets.py` is re-run, never on the slide (the Wooclap URL and code
+are PLACEHOLDER until the event exists).
 
 ## Changing the premises later
 
