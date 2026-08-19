@@ -1,0 +1,14 @@
+# Gate fixture: a lecture deck that trips every WP2 check at least once.
+profile: lecture
+title: "Gate fixture: trip"
+
+audience:
+  assumes: none
+duration_min: 60
+
+language:
+  slides: en
+  notes: ko
+  korean_allowance: 12
+
+series_index: 1

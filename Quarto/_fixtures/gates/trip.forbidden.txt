@@ -1,0 +1,6 @@
+# Forbidden terms for the trip fixture: one per line, # starts a comment,
+# blank lines are ignored, matching is case-insensitive substring on the
+# visible slide text (never on speaker notes).
+
+Project Nightjar
+internal-only number

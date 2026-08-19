@@ -1,0 +1,17 @@
+# Provenance of the figures the gate fixtures show. Same schema as a real
+# deck's Figures/<genre>/<deck>/figures.yml: one entry per file, and every
+# third_party: true entry must be named (its `source`) in a .footnote or a
+# caption on each slide that shows it.
+figures:
+  - file: placeholder-poster.jpg
+    source: Fixture Studio
+    licence: CC BY 4.0
+    third_party: true
+  - file: placeholder-video.mp4
+    source: Fixture Studio
+    licence: CC BY 4.0
+    third_party: true
+  - file: thumb-placeholder.svg
+    source: own work
+    licence: repo
+    third_party: false

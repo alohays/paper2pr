@@ -1,0 +1,80 @@
+---
+title: "Gate fixture: pass"
+subtitle: "Trips none of the WP2 checks"
+author: "Yunsung Lee"
+institute: "WoRV / MaumAI"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+format:
+  revealjs:
+    theme: [default, ../../clean-academic.scss]
+    # _fixtures/ is outside the Quarto project; repeat the _quarto.yml
+    # defaults a real deck inherits.
+    width: 1280
+    height: 720
+    margin: 0
+    center: false
+    auto-stretch: false
+    slide-number: true
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
+    filters:
+      - ../../_filters/slide-types.lua
+    include-in-header:
+      - text: '<link rel="stylesheet" href="../../fonts/pretendard.css">'
+---
+
+## A plain slide
+
+- One idea, written with plain hyphens - like this one
+- A second line that names a model, RT-2, without tripping the acronym check
+
+
+## {.divider}
+
+::: {.divider-number}
+1
+:::
+
+::: {.divider-title}
+Section dividers are level-2 slides
+:::
+
+## A third-party figure, attributed
+
+![A placeholder still](../assets/placeholder-poster.jpg){width="50%"}
+
+- The figure is listed as third_party in figures.yml
+
+::: {.footnote}
+Source: Fixture Studio (CC BY 4.0), placeholder still.
+:::
+
+## Raw HTML: a stylesheet is not text, a source line is
+
+```{=html}
+<figure class="chart-figure">
+<svg class="chart" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="one placeholder bar">
+<style>.chart .bar{fill:var(--chart-muted,#9aa3ad)} .chart text{fill:currentColor}</style>
+<rect class="bar" x="10" y="10" width="200" height="40" rx="3"/>
+<text x="220" y="38" font-size="20">placeholder</text>
+</svg>
+</figure>
+<img src="../assets/placeholder-poster.jpg" alt="" style="width:30%">
+```
+
+- The CSS custom property above carries `--` and is not a dash expression
+- The third-party image inside the raw block is attributed below
+
+::: {.footnote}
+Source: Fixture Studio (CC BY 4.0).
+:::
+
+## Inline math is not a dash expression
+
+$$
+x_{t} - x_{t-1} = -\alpha \nabla L
+$$
+
+- Math keeps its minus signs; the lint reads only the words around it
