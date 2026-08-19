@@ -2,23 +2,7 @@
 # .gitignore for Academic Claude Code Projects
 # ==============================================================================
 
-# LaTeX build artifacts
-*.aux
-*.bbl
-*.blg
-*.fdb_latexmk
-*.fls
-*.log
-*.nav
-*.out
-*.snm
-*.toc
-*.vrb
-*.synctex.gz
-*.run.xml
-*-blx.bib
-
-# Compiled PDFs (not tracked — Quarto HTML is the deployed format)
+# PDFs are never tracked (Quarto HTML is the deployed format; handouts are exported locally)
 *.pdf
 
 # Python
@@ -63,15 +47,15 @@ Quarto/Figures
 # *.rds
 # output/**/*.rds
 
-# Target paper sources (copyrighted content, not for distribution)
-# Track only the top-level folder placeholder; keep all paper contents local-only.
-target-papers/*
-!target-papers/.gitkeep
+# RoboTTT animation sources: copies of the NVIDIA project-page widgets that
+# scripts/build_widgets.py assembles into the committed Quarto/_widgets/*.qmd.
+# Local-only, not for distribution.
+Quarto/papers/robottt-anim/
 
 **/*.quarto_ipynb
 
 # SUNY video assets (hosted via GitHub Release, not tracked in git)
-Figures/SUNY/videos/
+Figures/talks/SUNY/videos/
 
 # RoboTTT task videos. The deck lists NVIDIA's CDN first and these as a local
 # fallback; check_site_assets.py allows videos/*.mp4 to be missing from _site

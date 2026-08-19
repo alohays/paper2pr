@@ -2,8 +2,8 @@
 """
 Verification Reminder Hook
 
-Non-blocking reminder that fires on Write/Edit to academic files (.tex, .qmd, .R)
-to remind about compiling/rendering before marking a task as done.
+Non-blocking reminder that fires on Write/Edit to deck sources (.qmd)
+to remind about rendering before marking a task as done.
 
 Hook Event: PostToolUse (matcher: "Write|Edit")
 Returns: Exit code 0 (non-blocking, reminder visible but doesn't stop work)
@@ -28,11 +28,10 @@ GREEN = "\033[0;32m"
 YELLOW = "\033[0;33m"
 NC = "\033[0m"  # No color
 
-# Files that need verification
+# Files that need verification. Quarto is the only deck source; there is no
+# LaTeX path and no R code in this repo.
 VERIFY_EXTENSIONS = {
-    ".tex": "compile with /compile-latex",
     ".qmd": "render with quarto render",
-    ".R": "run to verify output"
 }
 
 # Files to skip
@@ -41,7 +40,7 @@ SKIP_EXTENSIONS = [
     ".json", ".yaml", ".yml", ".toml", ".ini", ".cfg",
     ".lock", ".env", ".gitignore",
     ".svg", ".png", ".jpg", ".pdf",
-    ".bib", ".cls", ".sty"
+    ".bib"
 ]
 
 # Directories to skip
