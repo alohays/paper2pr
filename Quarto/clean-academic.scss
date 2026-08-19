@@ -9,6 +9,19 @@
 //   3. Filled frame — title fixed at top, main content centered vertically
 //      AND horizontally in the remaining space.
 //
+// Slide types (section "SLIDE TYPES" below): `## {.divider}` chapter block
+// (.divider-number / .divider-title / .divider-sub), `## {.video-full
+// video=".." poster=".."}` full-bleed clip with a .video-caption strip
+// (.video-caption-title / .video-caption-meta), .video-inline for a 16:9 clip
+// inside a content slide, figure.chart-figure + svg.chart for inline SVG
+// charts (CSS vars --accent / --accent2 / --chart-muted), .formula-legend +
+// .gloss under a display formula, .timeline (.tl-item > .tl-thumb / .tl-date /
+// .tl-name, one row up to six items, two rows of four from seven), and
+// .footnote. .divider and .video-full get their full-bleed backgrounds from
+// _filters/slide-types.lua (reveal data-background-* attributes), never from
+// a stretched box; the project's reveal margin is 0 so the 1280x720 section is
+// the viewport at 16:9.
+//
 // Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to
 // clean-academic-legacy.scss and are NOT affected by this file.
 // ==============================================================================
@@ -25,6 +38,10 @@ $primary-blue: #012169;        // Primary institutional color (headings, accents
 $primary-gold: #B9975B;        // Secondary color (emphasis, borders)
 $highlight-yellow: #F2A900;    // Highlight color (markers, alerts)
 $light-bg: #E8EDF5;           // Light background for title/section slides
+// Gold as TEXT on white fails contrast (B9975B on white is about 2.7:1), so
+// text uses this darker shade; rules, dots, the h2 underline and numbers on
+// navy keep $primary-gold.
+$primary-gold-text: #9A7B3F;
 
 // Semantic color mapping (don't change these names)
 $jet: #1a1a1a;
@@ -35,8 +52,11 @@ $right-arrow: "\2192";
 // Fonts - use system sans-serif for reliability
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 
-$font-family-sans-serif: "Source Sans Pro", "Helvetica Neue", sans-serif !default;
-$presentation-heading-font: "Source Sans Pro", "Helvetica Neue", sans-serif !default;
+// Pretendard is the Hangul fallback; the woff2 files and fonts/pretendard.css
+// live in Quarto/fonts/ and decks link the css via include-in-header
+// (_quarto.yml does it for every deck under Quarto/<genre>/).
+$font-family-sans-serif: "Source Sans Pro", "Pretendard", "Helvetica Neue", sans-serif !default;
+$presentation-heading-font: "Source Sans Pro", "Pretendard", "Helvetica Neue", sans-serif !default;
 
 $presentation-heading-color: $primary-blue !default;
 $presentation-heading-font-weight: 600;
@@ -68,11 +88,27 @@ $selection-bg: $primary-gold !default;
   box-sizing: border-box;
 }
 
+// The project renders with reveal `margin: 0`, so the 1280x720 section is the
+// viewport at 16:9 and the visible margin is this padding alone (56px at the
+// 40px root). Absolutely positioned children (.footnote, .video-caption) use
+// the px twins below.
+$slide-pad-y: 0.8em;
+$slide-pad-x: 1.4em;
+$slide-pad-x-px: 56px;
+
 .reveal .slides section {
-  padding: 0.5em 0.7em;
+  padding: $slide-pad-y $slide-pad-x;
   top: 0 !important;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+// A `# Part` heading turns the following `##` slides into a vertical stack;
+// reveal wraps them in a <section class="stack">. The wrapper is not a slide:
+// without this it would add a second padding and push its children out of
+// the 720px frame (the last bullet was clipped, the title sat at 112px).
+.reveal .slides section.stack {
+  padding: 0;
 }
 
 // Content slides (## headings) become a flex column filling the full slide.
@@ -198,7 +234,17 @@ $selection-bg: $primary-gold !default;
   justify-content: center !important;
   align-items: center !important;
   height: 100% !important;
+  // Fallback gradient. Decks make it full-bleed by setting the same gradient
+  // as a reveal background:
+  //   title-slide-attributes:
+  //     data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+  // and then the section must not paint a second, smaller copy over it.
   background: linear-gradient(180deg, white 0%, $light-bg 100%);
+  &[data-background-gradient],
+  &[data-background-color],
+  &[data-background-image] {
+    background: transparent;
+  }
 
   .title {
     color: $primary-blue;
@@ -209,7 +255,7 @@ $selection-bg: $primary-gold !default;
   }
 
   .subtitle {
-    color: $primary-gold;
+    color: $primary-gold-text;
     font-style: italic;
     margin-top: 0.3em;
     margin-bottom: 1.2em;
@@ -236,7 +282,7 @@ $selection-bg: $primary-gold !default;
 
   .date,
   .quarto-title-meta-contents {
-    color: $primary-gold;
+    color: $primary-gold-text;
     font-weight: 600;
     margin-top: 1.5em;
     font-size: 1em;
@@ -279,7 +325,7 @@ $selection-bg: $primary-gold !default;
 }
 
 .reveal h3 {
-  color: $primary-gold;
+  color: $primary-gold-text;
   font-style: italic;
   font-weight: 500;
   font-size: 1em;
@@ -299,10 +345,10 @@ $selection-bg: $primary-gold !default;
 // COLOR UTILITY CLASSES
 // ==============================================================================
 
-.alert { color: $primary-gold; }
+.alert { color: $primary-gold-text; }
 
 .primaryblue { color: $primary-blue; }
-.primarygold { color: $primary-gold; }
+.primarygold { color: $primary-gold-text; }
 .primaryyellow { color: $highlight-yellow; }
 
 // Semantic colors for diagrams and annotations
@@ -322,7 +368,7 @@ $selection-bg: $primary-gold !default;
 
 // Highlight classes
 .hi { font-weight: 600; color: $primary-blue !important; }
-.hi-gold { font-weight: 600; color: $primary-gold !important; }
+.hi-gold { font-weight: 600; color: $primary-gold-text !important; }
 .hi-yellow { font-weight: 600; color: $highlight-yellow !important; }
 .hi-slate { font-weight: 600; color: #314f4f !important; }
 .hi-green { font-weight: 600; color: #2E8B57 !important; }
@@ -556,9 +602,10 @@ $selection-bg: $primary-gold !default;
 // SECTION SLIDES
 // ==============================================================================
 
-.reveal .slide-background-content {
-  background-color: white;
-}
+// NOTE: no `.slide-background-content { background-color: white }` here.
+// Reveal puts data-background-color / -gradient on .slide-background and the
+// content element is its child, so a white content element hides them; the
+// white page comes from .reveal-viewport in the default theme.
 
 .reveal section h1 {
   color: $primary-blue;
@@ -695,14 +742,28 @@ $selection-bg: $primary-gold !default;
 .col-left-wide { float: left; width: 63%; }
 .col-right-narrow { float: right; width: 33%; }
 
-.footnote {
+// Footnote: one muted line at the bottom left, aligned with the section's
+// horizontal padding. The flex layout excludes it from the auto margins, so it
+// never pushes content; keep the content short of the bottom padding instead.
+.reveal .slides section .footnote {
   position: absolute;
-  bottom: 1em;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 0.5em;
-  color: #7f7f7f;
+  bottom: 14px;
+  left: $slide-pad-x-px;
+  right: $slide-pad-x-px;
+  margin: 0;
+  text-align: left;
+  font-size: 0.45em;
+  line-height: 1.3;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  p {
+    margin: 0;
+    text-align: left;
+    font-weight: 400;
+  }
 }
 
 .note { font-style: italic; color: #666666; }
@@ -731,7 +792,10 @@ $selection-bg: $primary-gold !default;
 // definite height, so `max-height: 45%` computes to `none`.
 $slide-height: 720px;
 $img-cap: $slide-height * 0.6;       // 432px -- image is the whole slide
-$img-cap-with-list: $slide-height * 0.45;  // 324px -- text needs the rest
+// 288px -- text needs the rest. Was 0.45 (324px) when the section padding was
+// 0.5em; the 0.8em padding took 24px out of the column and a 3-bullet list
+// under a capped image overflowed by that much.
+$img-cap-with-list: $slide-height * 0.4;
 
 // object-fit keeps the picture undistorted when an author width and the
 // max-height cap disagree about the box's aspect ratio.
@@ -751,6 +815,13 @@ $img-cap-with-list: $slide-height * 0.45;  // 324px -- text needs the rest
   margin: 0.4em auto;
 }
 .reveal p:has(> img) { text-align: center; }
+// A lone image in a paragraph is a block, not an inline box: the inline line
+// box adds a descender gap under the picture that the flex centering counts.
+.reveal .slides section p > img:only-child {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .reveal figcaption {
   font-size: 0.6em;
   color: #666;
@@ -890,4 +961,334 @@ $img-cap-with-list: $slide-height * 0.45;  // 324px -- text needs the rest
   text-align: center;
   color: #666;
   margin-top: 0.2em;
+}
+
+// ==============================================================================
+// SLIDE TYPES
+//
+// Full-bleed backgrounds come from reveal `data-background-*` attributes, which
+// _filters/slide-types.lua derives from the class:
+//   ## {.divider}                                  -> data-background-color
+//   ## {.video-full video="clip.mp4" poster="x.jpg"} -> data-background-video +
+//                                                     data-background-image
+// Reveal paints those on the viewport, outside the slide canvas, so nothing in
+// this section stretches a box to the edge. The project's reveal margin is 0,
+// so at 16:9 the 1280x720 section coincides with the viewport and absolutely
+// positioned children (.video-caption) reach the edge.
+// ==============================================================================
+
+// Palette hooks for inline SVG charts and any raw HTML that wants the palette
+// (fill="var(--accent)", stroke="var(--accent2)", fill="var(--chart-muted)").
+.reveal {
+  --accent: #{$primary-blue};
+  --accent2: #{$primary-gold};
+  --chart-muted: #aab4c8;
+}
+
+// Reveal chrome leaks: the menu button and the slide number are <a>s, so the
+// theme's dotted link underline showed under the hamburger and the "3 / 6".
+.reveal .slide-menu-button a,
+.reveal .slide-menu-button a:hover,
+.reveal .slide-number a,
+.reveal .slide-number a:hover {
+  text-decoration: none;
+  border-bottom: 0;
+}
+
+// ---- .divider: navy chapter block, left-aligned stack (number / title / sub)
+.reveal .slides section.divider {
+  background: $primary-blue;   // fallback for a render without the filter
+  color: #fff;
+
+  // Quarto wraps each div's text in a <p>; neutralize the body p rule.
+  .divider-number,
+  .divider-title,
+  .divider-sub {
+    p { margin: 0; text-align: left; line-height: inherit; }
+  }
+
+  .divider-number {
+    font-size: 6em;
+    line-height: 0.85;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: $primary-gold;
+    p { font-weight: 700; }
+  }
+
+  .divider-title {
+    margin-top: 0.45em;
+    font-size: 1.5em;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+    p { font-weight: 600; }
+  }
+
+  .divider-sub {
+    margin-top: 0.7em;
+    font-size: 0.65em;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: rgba(#fff, 0.7);
+    p { font-weight: 400; }
+  }
+}
+
+// Reveal chrome on a dark slide: light slide number, light hamburger. The
+// selector is `.slides section`, not `.slides > section`: under a `# Part`
+// heading the slide sits inside a stack wrapper. The
+// hamburger is a background-image SVG whose fill is baked to $link-color, so
+// recolouring the <a> alone does nothing; the filter turns the glyph white.
+.reveal:has(.slides section.divider.present) .slide-number {
+  color: rgba(#fff, 0.7) !important;
+}
+.reveal:has(.slides section.divider.present) .slide-menu-button a {
+  color: rgba(#fff, 0.7);
+  .fa-bars::before { filter: brightness(0) invert(1); opacity: 0.7; }
+}
+
+// ---- .video-full: the clip is the slide background; caption strip at the
+// bottom edge. Title left, meta right on one line; stacked when narrow.
+.reveal .slides section.video-full {
+  padding: 0;
+
+  > .video-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 2;
+    padding: 0.35em $slide-pad-x;
+    background: rgba($primary-blue, 0.62);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-top: 2px solid $primary-gold;
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.1em 1em;
+
+    // Quarto puts both spans in one <p>; spread them inside it too.
+    > p {
+      flex: 1 1 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.1em 1em;
+      margin: 0;
+      text-align: left;
+      line-height: 1.3;
+    }
+  }
+
+  .video-caption-title {
+    font-size: 0.6em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .video-caption-meta {
+    font-size: 0.45em;
+    font-weight: 300;
+    color: rgba(#fff, 0.85);
+  }
+}
+
+// Slide number, menu button and progress bar would sit on the clip or the
+// caption strip; hide them while a .video-full slide is present.
+.reveal:has(.slides section.video-full.present) .slide-number,
+.reveal:has(.slides section.video-full.present) .slide-menu-button,
+.reveal:has(.slides section.video-full.present) .progress {
+  display: none !important;
+}
+
+// ---- .video-inline: a 16:9 clip inside a normal content slide.
+.reveal video.video-inline,
+.reveal .video-inline video {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: $img-cap;
+  aspect-ratio: 16 / 9;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.reveal .slides section.level2:has(ul, ol) video.video-inline,
+.reveal .slides section.level2:has(ul, ol) .video-inline video {
+  max-height: $img-cap-with-list;
+}
+
+// ---- figure.chart-figure: inline SVG chart at 64% of the slide width. The
+// SVG carries its own text sizes (24 / 23 / 18 viewBox units on a 900-wide
+// chart in the W02 fixture) so that the numbers read from the back row; no
+// attribute-keyed overrides here.
+.reveal figure.chart-figure {
+  width: 64%;
+  max-width: 64%;
+  margin: 0 auto;
+  color: $jet;
+
+  svg.chart {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+}
+
+// Bullets on a chart slide sit a notch smaller so the chart and three
+// single-line bullets clear the footnote.
+.reveal .slides section:has(figure.chart-figure) ul {
+  font-size: 0.85em;
+  line-height: 1.35;
+  margin-top: 0.25em;
+
+  li {
+    line-height: 1.35;
+    margin-bottom: 0.3em;
+  }
+}
+
+// ---- display formula + .formula-legend + .gloss
+// Hero formula on a legend slide: 2em x KaTeX 1.21 = about 2.4em glyphs.
+.reveal .slides section:has(.formula-legend) > p > .math.display {
+  font-size: 2em;
+
+  .katex-display { margin: 0.2em 0; }
+}
+
+.reveal .formula-legend {
+  text-align: center;
+
+  ul {
+    // reveal makes ul inline-block; center it through the parent's text-align.
+    display: inline-block;
+    list-style: none;
+    padding-left: 0;
+    margin: 0.2em 0 0;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: 300;
+
+    li {
+      margin-bottom: 0.2em;
+      padding-left: 0;
+      line-height: 1.4;
+    }
+
+    .math.inline {
+      color: $primary-blue;
+      font-size: 1em;
+    }
+  }
+}
+
+// Gloss line: pinned to the bottom of the content area by its own auto top
+// margin; the first element after the h2 keeps its auto top margin, so the
+// formula block stays centered between the title and the gloss.
+.reveal .slides section.level2 > p:has(> .gloss) {
+  margin-top: auto;
+  margin-bottom: 0.2em !important;
+  text-align: center;
+}
+
+.reveal .gloss {
+  font-size: 0.5em;
+  font-weight: 400;
+  color: #6b6b6b;
+  letter-spacing: 0.01em;
+}
+
+// ---- .timeline: thumb / gold rail with navy dots / date / name per item.
+// One row by default (auto-flow column gives one equal column per item); from
+// seven items the grid switches to two rows of four, thumbs about 280x158.
+// Items keep gap 0 so the per-item top border joins into one continuous rail;
+// the breathing room between thumbs comes from item padding, and the rail is
+// pulled back out over that padding with negative margins.
+$tl-gutter: 4px;
+
+.reveal .timeline {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.reveal .timeline:has(.tl-item:nth-child(7)) {
+  grid-auto-flow: row;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 0.6em;
+}
+
+.reveal .tl-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 0 $tl-gutter;
+  text-align: center;
+}
+
+.reveal img.tl-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: none;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  border-radius: 4px;
+  border: 1px solid #dfe3ea;
+}
+
+.reveal .tl-date {
+  position: relative;
+  width: calc(100% + #{2 * $tl-gutter});
+  margin: 14px (-$tl-gutter) 0;
+  padding-top: 12px;
+  border-top: 2px solid rgba($primary-gold, 0.7);
+  font-size: 0.5em;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #5a5a5a;
+  letter-spacing: 0.01em;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    border-radius: 50%;
+    background: $primary-blue;
+    box-shadow: 0 0 0 2px #fff;
+  }
+}
+
+.reveal .tl-name {
+  margin-top: 4px;
+  padding: 0 2px;
+  font-size: 0.62em;
+  font-weight: 600;
+  line-height: 1.15;
+  color: $primary-blue;
+  text-wrap: balance;
+
+  sub {
+    font-size: 0.7em;
+    line-height: 0;
+  }
 }
