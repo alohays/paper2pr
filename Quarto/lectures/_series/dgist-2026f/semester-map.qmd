@@ -1,0 +1,14 @@
+<!-- Shared slide of the dgist-2026f series. Included by every lecture deck of
+the series with the include shortcode (_series/dgist-2026f/semester-map.qmd) (the
+path is relative to Quarto/lectures/<deck>.qmd). Per-deck speaker notes go in
+the deck right after the include line: everything before the next ## belongs
+to this slide. The map highlights the session whose deck is the including
+deck; the images come from scripts/series_assets.py dgist-2026f. -->
+
+## The semester in one picture
+
+{{< semester-map >}}
+
+::: {.footnote}
+Dates follow the plan submitted to DGIST on 4 August 2026; the LMS is the authority.
+:::

@@ -34,3 +34,8 @@ format:
     # relative to this project directory, like `filters:`.
     shortcodes:
       - _filters/video-card.lua
+      # {{< semester-map >}} / {{< series-qr >}} / {{< series-field >}} /
+      # {{< series-rules >}} / {{< series-session >}}, reading the course lock
+      # Figures/lectures/_series/<course>/series.json for a deck that declares
+      # `series: <course>` in its front matter (scripts/series_assets.py).
+      - _filters/series.lua

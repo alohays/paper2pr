@@ -43,6 +43,10 @@ def config_files() -> list[Path]:
     found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/*.deck.yml"))
     found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/figures.yml"))
     found += sorted((REPO_ROOT / "Quarto" / "_fixtures").glob("**/videos.yml"))
+    # Course series files: nested mappings, a list of mappings with quoted
+    # dates (quoted so PyYAML and minyaml agree: bare dates become
+    # datetime.date in PyYAML, strings here).
+    found += sorted((REPO_ROOT / "Quarto" / "lectures" / "_series").glob("*.yml"))
     return found
 
 

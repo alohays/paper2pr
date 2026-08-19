@@ -1,0 +1,63 @@
+---
+title: "Series Fixture"
+subtitle: "series yml -> series_assets.py -> series.json -> shortcodes and the four shared slides"
+author: "Yunsung Lee"
+institute: "WoRV / MaumAI"
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+# The course this deck belongs to. Real decks get it from new_deck.py --series;
+# the shortcodes read Figures/lectures/_series/<course>/series.json. This
+# fixture's file name is not a session deck, so wherever a shortcode needs
+# "the current session" it says week=2 (W02) explicitly; a real deck named
+# dgist-2026f-w02 resolves that from the lock by itself.
+series: dgist-2026f
+format:
+  revealjs:
+    theme: [default, ../../clean-academic.scss]
+    # _fixtures/ is underscore-prefixed, so Quarto treats it as OUTSIDE the
+    # project: Quarto/_quarto.yml defaults, the filter, the shortcodes and the
+    # font link do NOT apply here and are repeated below. Real decks under
+    # Quarto/<genre>/ inherit them from _quarto.yml and set none of this.
+    width: 1280
+    height: 720
+    margin: 0
+    center: false
+    auto-stretch: false
+    slide-number: true
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
+    filters:
+      - ../../_filters/slide-types.lua
+    shortcodes:
+      - ../../_filters/video-card.lua
+      - ../../_filters/series.lua
+    include-in-header:
+      - text: '<link rel="stylesheet" href="../../fonts/pretendard.css">'
+---
+
+## Where we left off
+
+- Last week ({{< series-session prior_week week=2 >}}, {{< series-session prior_short_date week=2 >}}): {{< series-session prior_title week=2 >}}
+- Today: {{< series-session title week=2 >}}
+- {{< series-field course >}} ({{< series-field code >}}), {{< series-field institution >}}, {{< series-field term >}}
+- {{< series-field room >}}, {{< series-field time >}}
+
+
+{{< include ../../lectures/_series/dgist-2026f/semester-map.qmd >}}
+
+
+## The W02 view of the same map
+
+{{< semester-map week=2 >}}
+
+::: {.footnote}
+`semester-map week=2`: what the shared slide shows inside dgist-2026f-w02.
+:::
+
+{{< include ../../lectures/_series/dgist-2026f/course-runs.qmd >}}
+
+
+{{< include ../../lectures/_series/dgist-2026f/ask-anytime.qmd >}}
+
+{{< include ../../lectures/_series/dgist-2026f/qa.qmd >}}

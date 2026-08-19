@@ -1,0 +1,9 @@
+<!-- Shared slide of the dgist-2026f series, the last slide of every deck.
+Included with the include shortcode (_series/dgist-2026f/qa.qmd) (the path is
+relative to Quarto/lectures/<deck>.qmd). Per-deck speaker notes go in the
+deck right after the include line: everything before the next ## (or the end
+of the file) belongs to this slide. -->
+
+## Your questions {.qr-slide}
+
+{{< series-qr >}}

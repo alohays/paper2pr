@@ -71,7 +71,7 @@ Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, fo
 | `language.slides`, `language.notes` | Korean gate, notes | `ko` slides are exempt from the gate; notes default to `ko` |
 | `language.korean_allowance` | Korean gate | max Hangul characters an English deck may carry after the notes filter (deck, else profile: lecture 300, others 0) |
 | `sources` | fact-check agent | paths or URLs the slides are compared against |
-| `series_index` | gate | `1` exempts the deck from the prior-session callback |
+| `series`, `series_index` | gate, landing, scaffold | the course series (`Quarto/lectures/_series/<series>.yml`) and the deck's session in it; `deckprofile.py` resolves `session_date`, `session_title` and `prior_session` from the series lock, an index the series does not have is a hard error. `series_index: 1` (with or without a series) exempts the deck from the prior-session callback |
 | `checks.*` | gate | per-deck override of any profile switch (e.g. `level1_heading: off`) |
 | `audience.*`, `delivery` | review agents | context for `/slide-excellence`, not consumed by the gate |
 
@@ -160,6 +160,88 @@ never referenced by URL from a slide. The pipeline, in order:
 The classroom trusts the network (D8): play the deck through once on the classroom
 connection before the session so the browser cache is warm.
 
+## Series
+
+A course is declared once, in `Quarto/lectures/_series/<course>.yml` (underscore
+directory: outside the Quarto project, never rendered as a deck), and every lecture
+of the course reads from it instead of repeating a date, a room or a URL on a
+slide. Same shape as the videos: a hand-written yml, a Python script that writes a
+JSON lock plus images, Lua shortcodes that read the lock.
+
+1. **Series file** `Quarto/lectures/_series/<course>.yml` (schema in its header):
+   `course`, `code`, `term`, `institution`, `room`, `time`, `instructor`,
+   `co_instructor`, `course_page`, `lms_note`, `qa_tool` (`name`, `url`, `code`,
+   `note`), `rules` (the lines of the "How this course runs" slide), `notation`
+   (`policy`, `note`), and `sessions`: one mapping per week with `index` (the week
+   number), `date` (quoted `YYYY-MM-DD`, a Friday), `kind` (`lecture | guest |
+   keynote | dgist | holiday | exam`), `title`, optional `short` (a shorter label for
+   the semester map, two lines of at most 24 characters), `presenter`, `deck` (the
+   deck name, or `""`; a planned name is fine, nothing requires the deck to exist
+   yet), optional `remote` / `tentative`. `dgist-2026f` is the DGIST HSS118 term.
+2. **Build** `python3 scripts/series_assets.py <course>`: validates the yml (one
+   mapping per week with unique indices 1..N, Friday dates in order, kinds from the
+   enum, unique decks) and writes `Figures/lectures/_series/<course>/`: `series.json`
+   (the lock: the yml plus, per session, `week` "W02", `short_date` "Sep 4",
+   `prior_index` = the nearest earlier session that is not a holiday or exam week; a
+   guest or DGIST session counts), `qr-qa.png` and `qr-qa.svg` (qrencode, from
+   `qa_tool.url`), `semester-map.svg` and one `semester-map-wNN.svg` per session
+   with that week ringed in gold as "today". The map is one 1100x300 timeline with a
+   dot per week; titled weeks (lecture / guest / keynote) carry the date above and a
+   two-line title below in up to three tiers with leader lines, placed by a search
+   that refuses overlaps (a label that does not fit says so: set `short:`). Output
+   is byte-deterministic, and a re-run rewrites only files whose bytes change.
+   `--check` verifies every file exists and is byte-identical to a fresh in-memory
+   render from the yml (content, never mtimes: a clone or checkout lands the yml
+   and the figures in any order, and a comment-only edit to the yml changes no
+   output). The Wooclap URL and code are `PLACEHOLDER` until the
+   Message wall event exists: replace both in the yml and re-run the script; the
+   slides pick the new QR up through the lock. Everything in the directory is
+   committed (`assemble_site.sh` copies `Figures/*`, so the QR ships with the site).
+3. **Shortcodes** `Quarto/_filters/series.lua` (wired in `Quarto/_quarto.yml`
+   `format.revealjs.shortcodes`, next to `video-card.lua`; fixtures and includes
+   outside the project repeat it). They find the course from `series: <course>` in
+   the deck's YAML front matter (`new_deck.py --series` writes it) and the deck's own
+   session from its file name (the session whose `deck` equals `<deck>` in
+   `Quarto/<genre>/<deck>.qmd`); `week=NN` forces one.
+   - `{{< semester-map >}}` -- the map with this deck's week ringed, inlined as
+     `<figure class="semester-map"><svg ...>` (inlined, not linked, so the theme font
+     reaches the SVG text); `plain=true` for the unhighlighted one; a deck that is
+     not a session gets the plain map unless `week=NN` is given.
+   - `{{< series-qr >}}` -- `<div class="qr-block">` with the QR (`RELPATH/qr-qa.svg`)
+     and the `.qr-meta` line (tool, **code**, URL without scheme).
+   - `{{< series-field key >}}` -- inline text of a scalar (`course`, `code`,
+     `term`, `room`, `time`, `lms_note`, `qa_tool.name`, `notation.policy` ...).
+   - `{{< series-rules >}}` -- a bullet list of `rules`.
+   - `{{< series-session key >}}` -- `title | date | short_date | presenter | week |
+     kind | prior_title | prior_date | prior_short_date | prior_presenter | prior_week`
+     of this deck's session (or `week=NN`).
+   - No `series:` metadata, no lock, an unknown key or a session without a prior all
+     fail the render with one "(E) series:" line (`assert`, as in
+     `video-manifest.lua`). RELPATH is computed from the input file's directory to
+     `Figures/lectures/_series/<course>/` (`../../Figures/...` from
+     `Quarto/lectures/`, one more `../` from a fixture), which survives deployment
+     because `slides/<genre>/` sits next to `Figures/` there too.
+4. **Shared slides** `Quarto/lectures/_series/<course>/*.qmd`, included by every
+   lecture of the course with `{{< include _series/<course>/<file>.qmd >}}` (path
+   relative to the deck); per-deck speaker notes go in the deck right after the
+   include line (content before the next `##` belongs to the included slide). For
+   `dgist-2026f`: `semester-map.qmd` ("The semester in one picture"),
+   `course-runs.qmd` ("How this course runs": the rules, the LMS line as footnote),
+   `ask-anytime.qmd` and `qa.qmd` (the two `{.qr-slide}`s: a 420px QR, the meta
+   line, one sentence; plan D19 puts the QR on those two slides only and nowhere
+   persistent). `new_deck.py --series` writes the four includes into the stub in
+   that order (map, rules, ask-anytime near the top; Q&A last).
+5. **Consumers**: `deckprofile.py` resolves `series` / `series_index` to
+   `series_course`, `session_date`, `session_title`, `prior_session` (from the lock,
+   or the yml when the lock is absent) and fails on an index the series lacks;
+   `quality_score.py` names that prior session when the callback slide is missing;
+   `new_deck.py --series <course> --series-index <NN>` prefills title, date and the
+   name `<course>-w<NN>`; `build_landing.py` groups the lecture decks of a series
+   under "`<course> (<code>, <institution>, <term>)`" ordered by `series_index`
+   (week, date, title, link), decks without a series stay in the plain table.
+   Fixture: `Quarto/_fixtures/series/series.qmd` (the four includes plus the
+   shortcodes, `week=2` where the fixture pretends to be W02).
+
 ## Folder Structure
 
 ```
@@ -171,18 +253,23 @@ paper2pr/
 │   ├── videos.yml               #   clip manifest (hand-written, committed)
 │   ├── videos.json              #   lock file written by media_prep.py (committed)
 │   └── videos/                  #   trimmed mp4s + posters (gitignored; on the Release)
+├── Figures/lectures/_series/<course>/   # series.json lock, qr-qa.{png,svg}, semester-map*.svg
+│                                #   (written by scripts/series_assets.py, committed)
 ├── Quarto/
 │   ├── _genres.txt              # Which directories publish. Single source of truth
 │   ├── _quarto.yml              # Project defaults for every deck (canvas, filter, shortcodes, fonts)
 │   ├── _filters/slide-types.lua # .divider / .video-full (video="@slug") -> reveal background attributes
 │   ├── _filters/video-card.lua  # {{< video-card >}} / {{< video-caption >}} shortcodes
 │   ├── _filters/video-manifest.lua # the one reader of videos.json, shared by both
+│   ├── _filters/series.lua      # {{< semester-map >}} / {{< series-qr >}} / {{< series-* >}}
+│   ├── lectures/_series/        # <course>.yml (the series file) + <course>/*.qmd shared slides
 │   ├── clean-academic*.scss     # Shared themes (main + legacy)
 │   ├── fonts/                   # Pretendard (Hangul fallback), linked by _quarto.yml
 │   ├── _widgets/ _script/       # Shared includes; presenter scripts (gitignored)
 │   ├── _fixtures/               # design-test.qmd + theme-mockups/ + gates/ + video/ -- not a genre, never published
 │   │   ├── gates/               # pass.qmd / trip.qmd: one deck that trips every gate check, one that passes
-│   │   └── video/               # the video pipeline end to end (manifest -> Release media-fixture-video -> shortcodes)
+│   │   ├── video/               # the video pipeline end to end (manifest -> Release media-fixture-video -> shortcodes)
+│   │   └── series/              # the series object: shared includes + every series shortcode
 │   └── <genre>/                 # <deck>.qmd + <deck>.deck.yml + per-deck assets
 ├── .speaker-notes/<genre>/      # Note backups (gitignored -- notes never enter git)
 ├── pages/index.html             # Landing page, GENERATED by scripts/build_landing.py
@@ -215,6 +302,11 @@ python3 scripts/deckprofile.py <Deck>
 python3 scripts/media_prep.py <Deck> [--only slug] [--dry-run] [--force] [--local]
 bash scripts/media_release.sh <Deck> [--check]
 
+# Series: rebuild a course's lock, QR and semester maps from its yml; --check
+# verifies they exist and match what the yml produces (content, not mtimes)
+python3 scripts/series_assets.py <course> [--check]
+python3 scripts/series_assets.py --list
+
 # Deploy to GitHub Pages (automatic via CI/CD on push to main)
 git push  # GitHub Actions renders Quarto, strips notes, deploys
 
@@ -227,6 +319,7 @@ python3 scripts/test_profiles.py    # the profiles still grade differently; the 
 python3 scripts/test_minyaml.py     # the config parser still agrees with PyYAML
 bash scripts/test_korean_gate.sh    # the Korean gate still blocks, still exempts, still honours korean_allowance
 python3 scripts/test_media.py       # videos.yml validation, media_prep output, shortcode lookup, the local-media gate
+python3 scripts/test_series.py      # series yml validation, the lock and maps, prior-session resolution, deckprofile / new_deck / landing, the fixture render
 
 # Quality score
 python scripts/quality_score.py Quarto/<genre>/<Deck>.qmd
@@ -236,6 +329,8 @@ python scripts/quality_score.py Quarto/<genre>/<Deck>.qmd
 cd Quarto/_fixtures && quarto render design-test.qmd
 # Video fixture: the whole video path, playing from the public Release media-fixture-video
 cd Quarto/_fixtures/video && quarto render video.qmd
+# Series fixture: the four shared slides and every series shortcode, as W02
+cd Quarto/_fixtures/series && quarto render series.qmd
 ```
 
 ---
@@ -296,6 +391,8 @@ cd Quarto/_fixtures/video && quarto render video.qmd
 | `.formula-legend` | Centered symbol list under a 2em display formula | Hero equation slides |
 | `.gloss` | Small gray line pinned to the bottom of the content area | Korean or plain-language gloss of a term |
 | `.timeline` | `.tl-item` grid on a gold rail: one row up to six items, two rows of four from seven | Dated milestones |
+| `{{< semester-map >}}` (`figure.semester-map`) | The course timeline from the series lock, inlined SVG at full content width, this deck's week ringed | The shared "semester in one picture" slide |
+| `## Title {.qr-slide}` + `{{< series-qr >}}` (`.qr-block`) | A 420px QR of the question wall with the tool / code / URL line under it, one sentence below | The orientation and Q&A slides only (D19) |
 
 `.smaller` and `.smallest` still exist in the theme for the legacy decks only; they are forbidden in new decks (quality gate deducts -5 each). `.divider` and `.video-full` get their full-bleed backgrounds from `Quarto/_filters/slide-types.lua`, which turns the class and its `video=` / `poster=` attributes into reveal `data-background-*` attributes (the poster is painted under the background video by a small script the filter includes; it must not become `data-background-image`, which reveal 5.1 loads *instead of* the video); `Quarto/_quarto.yml` wires the filter and the video shortcodes for every deck under a genre directory. Each slide type has a rendered example in `Quarto/_fixtures/design-test.qmd`; the video path end to end is `Quarto/_fixtures/video/video.qmd`.
 
