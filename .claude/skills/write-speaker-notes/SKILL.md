@@ -57,10 +57,13 @@ Search the QMD for `::: {.notes}` blocks.
 
 ### 0D. Locate Source Materials
 1. **QMD file** — primary source (must exist)
-2. **Source paper** — search `target-papers/` for matching paper directory
-3. **Beamer .tex** — search `Slides/` for matching file
+2. **Deck sources** — whatever `<deck>.deck.yml` names under `sources:` (a
+   paper PDF, a vault research note, a reference list) or the presenter
+   supplies in the conversation
 
-Report what sources are available.
+Report what sources are available. Notes live only as inline `::: {.notes}`
+blocks in the QMD; there is no separate presenter-script file to read or
+write.
 
 ---
 

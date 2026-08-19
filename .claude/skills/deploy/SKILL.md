@@ -16,7 +16,7 @@ Deployment is automated via GitHub Actions CI/CD. Pushing to `main` triggers ren
    - Renders every QMD under the genre directories listed in `Quarto/_genres.txt`
      (a folder that is not a listed genre is never published)
    - Strips speaker notes from HTML (safety net)
-   - Assembles site: HTML + RevealJS assets + Beamer PDFs + Figures
+   - Assembles site: HTML + RevealJS assets + Figures
    - Deploys to GitHub Pages
 3. **Verify** at the GitHub Pages URL
 
