@@ -96,6 +96,70 @@ Shared core: `.claude/rules/slide-design-principles.md`. Per-genre budgets and e
 
 New decks use `clean-academic.scss` with `center: false` and `auto-stretch: false`. Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to `clean-academic-legacy.scss` and exempt from the new rules.
 
+## Videos
+
+Every clip a deck shows is declared once in `Figures/<genre>/<deck>/videos.yml` and
+never referenced by URL from a slide. The pipeline, in order:
+
+1. **Manifest** `videos.yml`: a `videos:` list; per entry `slug` (`[a-z0-9-]`), `title`,
+   `publisher`, `source_url`, `published` (YYYY-MM), `autonomy` (`autonomous | claimed |
+   teleop | unknown`) are required; `speed` (default `1x`), `segment` (`S-E` or `S-`
+   seconds in the source), `source` (path to the source file, relative to the deck's
+   `videos/` dir or absolute; absent means `videos/<slug>.mp4` is already final),
+   `keep_audio` (default false), `caption` (`visible | fragment | none`), `licence_note`
+   are optional. `release_url` / `poster_url` do NOT belong here.
+2. **Encode** `python3 scripts/media_prep.py <Deck>`: cuts the segment, re-encodes to
+   1280 wide H.264 (`-crf 23 -maxrate 8M`, audio stripped unless `keep_audio`), extracts
+   the poster at the segment start, and writes `videos.json` (the lock file: every
+   manifest field plus `file`, `poster_file`, `size_mb`, `duration_s`, `autonomy_label`,
+   and the deterministic `release_url` / `poster_url` for the tag `media-<deck>`). A clip is
+   re-encoded when it is missing, older than its source, or its `segment` / `keep_audio` /
+   `source` differ from the `cut` record the lock keeps for it (so nudging a segment and
+   re-running really re-cuts; the reason is printed). `--only <slug>` leaves the other
+   entries' records untouched and `media_release.sh` refuses to upload while any record
+   disagrees with the manifest. A clip
+   over 30 MB is warned about: trim the segment or raise the speed, the cap stays. The
+   mp4s and posters are gitignored (`Figures/**/videos/`); `videos.yml` and `videos.json`
+   are committed. `<Deck>` may also be a path to a `videos.yml` or its directory (the
+   fixture: `Quarto/_fixtures/video`, tag `media-fixture-video`).
+3. **Release** `bash scripts/media_release.sh <Deck>`: creates the public GitHub Release
+   `media-<deck>` if missing, uploads every mp4 and poster (`--clobber`), then polls each
+   URL until it answers 200 (a fresh asset can 404 for a few minutes). `--check` only
+   verifies and exits 1 listing any missing asset. It refuses to run when `videos.json` is
+   older than `videos.yml`. Releases are public as soon as the media is ready; the notes
+   point at the manifest for every third-party clip's publisher.
+4. **Slides** read `videos.json` only, through `Quarto/_filters/video-manifest.lua`:
+   - `{{< video-card slug >}}` -- a `figure.video-card` with the clip (poster first, muted
+     loop, reveal `data-autoplay` + lazy `data-src`: plays on entry, pauses on leave, loads
+     only within reveal's view distance), a print-only poster image, and the caption strip
+     `title | publisher · Mon YYYY · label · speed`. `class="..."` adds classes to the figure.
+     One shortcode per paragraph (blank line between two); two side by side go inside
+     `::: {.two-up}`.
+   - `{{< video-caption slug >}}` -- the caption strip alone, for a full-bleed slide.
+   - `## {.video-full video="@slug"}` -- the clip is the reveal background (the poster
+     travels as `data-background-poster` and is painted under it; a plain path still works).
+   - `caption: fragment` makes the strip a reveal fragment; `caption: none` omits it.
+   - Autonomy labels are plain: `autonomous`, `autonomy claimed`, `teleoperated`,
+     `autonomy not stated`.
+   - A missing `videos.json` or unknown slug fails the render (exit 1, no page written);
+     nothing emits an empty card. Inside a Quarto render the Lua global `error` is a
+     non-throwing logger, so the filters abort with `assert(false, msg)`; `test_media.py`
+     proves it with a real render.
+   - Wiring: `Quarto/_quarto.yml` lists `_filters/video-card.lua` under
+     `format.revealjs.shortcodes` (Quarto 1.8 registers shortcode handlers from that key
+     only; the same file under `filters:` runs as a filter and its handlers are never found)
+     and `_filters/slide-types.lua` under `filters:`. Fixtures under `Quarto/_fixtures/`
+     are outside the project and declare both themselves plus `video-manifest: <path>`.
+5. **Authoring before the Release exists**: `media_prep.py <Deck> --local` writes
+   `videos.json` with `local_only: true`; the shortcodes and `@slug` then point at
+   `../../Figures/<genre>/<deck>/videos/...` so the deck previews offline. Run
+   `media_prep.py` again without `--local` before deploying: `check_site_assets.py` fails
+   any deployed page that references `Figures/**/videos/`, and `assemble_site.sh` prunes
+   those directories from the site.
+
+The classroom trusts the network (D8): play the deck through once on the classroom
+connection before the session so the browser cache is warm.
+
 ## Folder Structure
 
 ```
@@ -103,16 +167,22 @@ paper2pr/
 ├── AGENTS.md                    # Canonical agent instructions for this repo
 ├── .claude/                     # Rules, skills, agents, hooks
 ├── Bibliography_base.bib        # Centralized bibliography (grows per paper)
-├── Figures/<genre>/<deck>/      # Per-deck figures, SVG/PNG only
+├── Figures/<genre>/<deck>/      # Per-deck figures, SVG/PNG only, plus the video home:
+│   ├── videos.yml               #   clip manifest (hand-written, committed)
+│   ├── videos.json              #   lock file written by media_prep.py (committed)
+│   └── videos/                  #   trimmed mp4s + posters (gitignored; on the Release)
 ├── Quarto/
 │   ├── _genres.txt              # Which directories publish. Single source of truth
-│   ├── _quarto.yml              # Project defaults for every deck (canvas, filter, fonts)
-│   ├── _filters/slide-types.lua # .divider / .video-full -> reveal background attributes
+│   ├── _quarto.yml              # Project defaults for every deck (canvas, filter, shortcodes, fonts)
+│   ├── _filters/slide-types.lua # .divider / .video-full (video="@slug") -> reveal background attributes
+│   ├── _filters/video-card.lua  # {{< video-card >}} / {{< video-caption >}} shortcodes
+│   ├── _filters/video-manifest.lua # the one reader of videos.json, shared by both
 │   ├── clean-academic*.scss     # Shared themes (main + legacy)
 │   ├── fonts/                   # Pretendard (Hangul fallback), linked by _quarto.yml
 │   ├── _widgets/ _script/       # Shared includes; presenter scripts (gitignored)
-│   ├── _fixtures/               # design-test.qmd + theme-mockups/ + gates/ -- not a genre, never published
-│   │   └── gates/               # pass.qmd / trip.qmd: one deck that trips every gate check, one that passes
+│   ├── _fixtures/               # design-test.qmd + theme-mockups/ + gates/ + video/ -- not a genre, never published
+│   │   ├── gates/               # pass.qmd / trip.qmd: one deck that trips every gate check, one that passes
+│   │   └── video/               # the video pipeline end to end (manifest -> Release media-fixture-video -> shortcodes)
 │   └── <genre>/                 # <deck>.qmd + <deck>.deck.yml + per-deck assets
 ├── .speaker-notes/<genre>/      # Note backups (gitignored -- notes never enter git)
 ├── pages/index.html             # Landing page, GENERATED by scripts/build_landing.py
@@ -140,6 +210,11 @@ python3 scripts/deckpath.py --list
 # What is this deck graded against?
 python3 scripts/deckprofile.py <Deck>
 
+# Videos: encode the deck's clips from its videos.yml, then publish them on the
+# deck's GitHub Release (media-<deck>) and verify every URL answers 200
+python3 scripts/media_prep.py <Deck> [--only slug] [--dry-run] [--force] [--local]
+bash scripts/media_release.sh <Deck> [--check]
+
 # Deploy to GitHub Pages (automatic via CI/CD on push to main)
 git push  # GitHub Actions renders Quarto, strips notes, deploys
 
@@ -151,6 +226,7 @@ bash scripts/test_note_filter.sh    # the note filter still covers every depth
 python3 scripts/test_profiles.py    # the profiles still grade differently; the gate checks still trip on the fixtures
 python3 scripts/test_minyaml.py     # the config parser still agrees with PyYAML
 bash scripts/test_korean_gate.sh    # the Korean gate still blocks, still exempts, still honours korean_allowance
+python3 scripts/test_media.py       # videos.yml validation, media_prep output, shortcode lookup, the local-media gate
 
 # Quality score
 python scripts/quality_score.py Quarto/<genre>/<Deck>.qmd
@@ -158,6 +234,8 @@ python scripts/quality_score.py Quarto/<genre>/<Deck>.qmd
 # Theme fixture: one slide per layout rule and slide type (outside the Quarto project,
 # so it repeats the _quarto.yml defaults itself)
 cd Quarto/_fixtures && quarto render design-test.qmd
+# Video fixture: the whole video path, playing from the public Release media-fixture-video
+cd Quarto/_fixtures/video && quarto render video.qmd
 ```
 
 ---
@@ -210,14 +288,16 @@ cd Quarto/_fixtures && quarto render design-test.qmd
 | `.highlightbox` | Yellow-bordered div | Notable findings |
 | `.resultbox` | Gold-bordered with shadow | Main results |
 | `## {.divider}` | Navy full-bleed chapter block; `.divider-number` / `.divider-title` / `.divider-sub` stack | Section breaks |
-| `## {.video-full video=".." poster=".."}` + `.video-caption` | Clip as the slide background (looped, muted, cover), slide chrome hidden, caption strip at the bottom | Hook clips, montages |
+| `## {.video-full video=".." poster=".."}` or `video="@slug"` + `.video-caption` / `{{< video-caption slug >}}` | Clip as the slide background (looped, muted, cover), slide chrome hidden, caption strip at the bottom | Hook clips, montages |
 | `.video-inline` | 16:9 clip inside a normal content slide | A demo next to bullets |
+| `{{< video-card slug >}}` (`figure.video-card`) | Clip + caption strip from `videos.json`; poster printed instead of the video | A declared clip next to bullets |
+| `::: {.two-up}` | Two `video-card`s in one flex row, 48 percent each | Side-by-side montage |
 | `figure.chart-figure` | Inline SVG chart at 64% width, bullets a notch smaller | One chart plus takeaways |
 | `.formula-legend` | Centered symbol list under a 2em display formula | Hero equation slides |
 | `.gloss` | Small gray line pinned to the bottom of the content area | Korean or plain-language gloss of a term |
 | `.timeline` | `.tl-item` grid on a gold rail: one row up to six items, two rows of four from seven | Dated milestones |
 
-`.smaller` and `.smallest` still exist in the theme for the legacy decks only; they are forbidden in new decks (quality gate deducts -5 each). `.divider` and `.video-full` get their full-bleed backgrounds from `Quarto/_filters/slide-types.lua`, which turns the class and its `video=` / `poster=` attributes into reveal `data-background-*` attributes; `Quarto/_quarto.yml` wires the filter for every deck under a genre directory. Each slide type has a rendered example in `Quarto/_fixtures/design-test.qmd`.
+`.smaller` and `.smallest` still exist in the theme for the legacy decks only; they are forbidden in new decks (quality gate deducts -5 each). `.divider` and `.video-full` get their full-bleed backgrounds from `Quarto/_filters/slide-types.lua`, which turns the class and its `video=` / `poster=` attributes into reveal `data-background-*` attributes (the poster is painted under the background video by a small script the filter includes; it must not become `data-background-image`, which reveal 5.1 loads *instead of* the video); `Quarto/_quarto.yml` wires the filter and the video shortcodes for every deck under a genre directory. Each slide type has a rendered example in `Quarto/_fixtures/design-test.qmd`; the video path end to end is `Quarto/_fixtures/video/video.qmd`.
 
 ---
 
