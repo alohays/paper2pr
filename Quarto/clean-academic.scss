@@ -1255,9 +1255,9 @@ $img-cap-with-list: $slide-height * 0.4;
 }
 
 // ---- figure.semester-map: the inlined semester timeline ({{< semester-map >}}
-// -> <figure class="semester-map"><svg viewBox="0 0 1100 300">...</svg></figure>).
-// Full content width (1168px at the 56px padding), so the 1100x300 map lands
-// at about 318px tall; the cap is for a shorter slide. The SVG text declares
+// -> <figure class="semester-map"><svg viewBox="0 0 1100 200">...</svg></figure>).
+// Full content width (1168px at the 56px padding), so the 1100x200 map lands
+// at about 212px tall; the cap is for a shorter slide. The SVG text declares
 // font-family: inherit, which is why it is inlined rather than linked: the
 // theme font reaches it. An <img.semester-map> (someone linking the file)
 // gets the same box.
