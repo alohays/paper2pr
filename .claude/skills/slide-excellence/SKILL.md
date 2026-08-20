@@ -1,6 +1,6 @@
 ---
 name: slide-excellence
-description: The one review fan-out for a deck - visual audit, pedagogical review (with the devil's-advocate questions), and proofreading run as parallel subagents, then synthesized. Use for a comprehensive quality check before milestones, or when the user says "review the deck", "proofread", "pedagogy review", or "challenge the slides".
+description: The one review fan-out for a deck - visual audit, pedagogical review (with the devil's-advocate challenges), proofreading, fact check against the deck's declared sources, and a render audit of full-deck screenshots, run as parallel subagents and synthesized. Use for a comprehensive quality check before milestones, or when the user says "review the deck", "proofread", "pedagogy review", "fact check", or "challenge the slides".
 argument-hint: "[DeckName]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Task"]
 context: fork
@@ -8,120 +8,121 @@ context: fork
 
 # Slide Excellence Review
 
-Run a comprehensive multi-dimensional review of a Quarto deck. Three agents
-analyze the deck independently and in parallel, then the results are
-synthesized into one summary. The former standalone proofreading, pedagogy,
-and devil's-advocate skills were folded in here: one invocation, one fan-out.
+Run a comprehensive multi-dimensional review of a Quarto deck. Up to five
+components run independently and in parallel, then the results are
+synthesized into one summary. This is the one fan-out: the former standalone
+proofreading, pedagogy, and devil's-advocate skills were folded in here, and
+the fact check and render audit joined in WP6.
 
-**Read-only.** No agent edits a source file. Fixes are applied separately after
-the presenter reviews the reports.
+**Read-only.** No agent edits a source file. Fixes are applied separately
+after the presenter reviews the reports.
 
 ## Steps
 
-### 1. Resolve the deck
+### 1. Resolve the deck and capture its premises
 
-`$ARGUMENTS` is a deck name (bare name or `genre/name`). Resolve paths through
-the script, never by hand:
-
-```bash
-python3 scripts/deckpath.py <Deck> --field qmd      # the file to review
-python3 scripts/deckpath.py <Deck> --field genre
-python3 scripts/deckpath.py --list                   # if the name is unknown
-```
-
-Then load the deck's resolved profile (audience, duration, language, the
-density budget the gate enforces):
+`$ARGUMENTS` is a deck name (bare name or `genre/name`). Resolve paths
+through the scripts, never by hand, and capture three things every agent
+will receive:
 
 ```bash
-python3 scripts/deckprofile.py <Deck>
+QMD=$(python3 scripts/deckpath.py <Deck> --field qmd)
+PROFILE_JSON=$(python3 scripts/deckprofile.py <Deck>)          # resolved profile, as JSON
+DECK_YML=$(cat "$(python3 scripts/deckpath.py <Deck> --field config)")   # <deck>.deck.yml verbatim
 ```
 
-Every agent receives that profile output as context together with the QMD
-path, so the review is graded against the deck's declared audience and not
-against a default one. (WP6 wires more of `deck.yml` into the agents; for now
-the profile dump is the contract.)
+If the deck predates `/new-deck` and has no `deck.yml`, `DECK_YML` is empty:
+say so, and the agents review against the genre's default profile (the
+profile JSON still resolves).
 
-If the deck predates `/new-deck` and has no `deck.yml`, say so and let the
-agents fall back to the genre's default profile.
+Set `DATE` to today as `YYYY-MM-DD`. All reports for this run go under
+`quality_reports/reviews/` (`mkdir -p` it):
 
-### 2. Launch three review agents in parallel
+| Component | Report |
+|---|---|
+| slide-auditor | `quality_reports/reviews/<Deck>-visual-<DATE>.md` |
+| pedagogy-reviewer | `quality_reports/reviews/<Deck>-pedagogy-<DATE>.md` |
+| proofreader | `quality_reports/reviews/<Deck>-proofread-<DATE>.md` |
+| domain-reviewer (fact check) | `quality_reports/reviews/<Deck>-factcheck-<DATE>.md` |
+| render audit | `quality_reports/reviews/<Deck>-render-<DATE>.md` |
+| synthesis (this skill) | `quality_reports/reviews/<Deck>-<DATE>.md` |
 
-Launch all three in one message. Each gets: the QMD path, the profile output,
-the genre, and its report path.
+### 2. Decide which components run (by profile)
 
-**Agent 1: Visual audit** (`slide-auditor`)
-- Density against the profile budget, overflow, font consistency
-  (`.smaller`/`.smallest`, inline font-size overrides), box fatigue, centering,
-  image and figure paths, Plotly chart quality
-- Legacy decks pinned to `clean-academic-legacy.scss` get the legacy checks
-  only (overflow, spacing), not the main-theme density limits
-- Report: `quality_reports/<Deck>_visual_audit.md`
+Read `profile` and `sources` from `PROFILE_JSON`:
 
-**Agent 2: Pedagogical review** (`pedagogy-reviewer`)
-- The 13 pedagogical patterns, plus deck-level checks: narrative arc, pacing,
-  visual rhythm, notation consistency, pre-empting student concerns
-- Audience taken from the profile output and `<deck>.deck.yml` (`audience`), not assumed
-- Additionally answers the devil's-advocate question list below and appends
-  the answers to its report as a "Challenges" section
-- Report: `quality_reports/<Deck>_pedagogy_report.md`
+- **`lecture`**: all five components run, always. A lecture with an empty
+  `sources` list still gets the fact-check agent - its report saying "no
+  sources declared, these claims are unverifiable" is exactly the warning a
+  lecture needs.
+- **`paper-review`, `invited-talk`, anything else**: slide-auditor,
+  pedagogy-reviewer, proofreader and the render audit run; the fact check
+  runs only when `sources` is non-empty (a paper review's source of record
+  is the paper itself - declare it in `deck.yml: sources:` to opt in).
+- A deck may force a component either way when the presenter asks; say so
+  in the synthesis.
 
-**Agent 3: Proofreading** (`proofreader`)
-- Grammar (agreement, articles, prepositions, tense), typos
-  (misspellings, duplicated words, search-and-replace artefacts), overflow
-  risk (too many bullets, inline font-size overrides below 0.85em),
-  consistency (citation format `@key` vs `[@key]`, notation, terminology,
-  box usage), academic quality (informal language, missing words, claims
-  without citations, citation keys that point at the wrong paper in
-  `Bibliography_base.bib`)
-- Every finding carries: location (line number or slide title), current
-  text, proposed fix, category, severity
-- Report: `quality_reports/<Deck>_qmd_report.md`
+### 3. Launch the review agents in parallel
 
-### 3. Devil's-advocate questions (given to the pedagogy reviewer)
+Launch every selected agent in one message. **Each agent's Task prompt
+contains, verbatim:** the deck name, the qmd path, the full `PROFILE_JSON`,
+the full `DECK_YML` (fenced, labelled "deck.yml"), and its report path from
+the table above. The agents also re-run `deckprofile.py` themselves as their
+own step 0; passing the JSON in the prompt is what lets them start reading
+slides immediately and keeps one source of truth if the two ever disagree
+(the fresh run wins).
 
-Philosophy: the best deck comes out of active dialogue. The pedagogy reviewer
-generates 5-7 specific challenges from these categories, each with a suggested
-resolution, and answers them in its report:
+**slide-auditor** - density against the deck's own budget (it must quote
+`bullets_max` etc. from the profile JSON), overflow, font consistency, box
+fatigue, centering, image and figure paths.
 
-1. **Ordering** - "Could the audience understand this better if X came before Y?"
-2. **Prerequisites** - "Does this audience (per the profile) have the background for this notation at this point?"
-3. **Gaps** - "Should an intuitive example come before this formal statement?"
-4. **Alternative presentation** - "Here are two other ways to visualize or present this concept."
-5. **Notation conflicts** - "This symbol conflicts with earlier usage in the deck or the series."
-6. **Cognitive load** - "This slide introduces too many new symbols. Can it be split?"
-7. **Standalone value** - "If this section were read on its own (handout, course page), does it stand?"
+**pedagogy-reviewer** - the 13 patterns, deck-level arc and pacing, the
+prior-session callback checked against `prior_session` from the profile
+JSON, and the devil's-advocate challenges. The challenge list lives in
+`.claude/agents/pedagogy-reviewer.md` and only there; do not restate it in
+the prompt.
 
-Challenge format, inside the pedagogy report:
+**proofreader** - grammar, typos, overflow against the profile budget,
+consistency (citations against `Bibliography_base.bib`), register for the
+declared audience.
 
-```markdown
-## Challenges
+**domain-reviewer (fact check)** - reads every entry of `sources` (vault
+paths and URLs alike), compares each date, number, name and autonomy label
+on the slides against them, checks `<deck>.forbidden.txt` in spirit, flags
+unsourced claims.
 
-### Challenge 1: [Category] - [Short title]
-**Question:** [the specific pedagogical question]
-**Why it matters:** [what could go wrong]
-**Suggested resolution:** [specific action]
-**Slides affected:** [numbers or titles]
-**Severity:** [High / Medium / Low]
+### 4. Render audit
 
-## Challenge Verdict
-**Strengths:** [2-3 things done well]
-**Critical changes:** [0-2 changes before presenting]
-**Suggested improvements:** [2-3 nice-to-have changes]
+Screenshot the whole deck (this renders the html first when it is stale):
+
+```bash
+python3 scripts/shoot_slides.py <Deck> --out /tmp/<Deck>-shots
 ```
 
-Principles for the challenges: be specific (exact slides and notation), be
-constructive (every challenge has a resolution), be honest (if the deck is
-good, say so), prioritize notation conflicts over missed metaphors, and think
-like the audience the profile describes - where do they get lost?
+Then launch one **general-purpose** agent whose prompt contains: the shot
+directory, `PROFILE_JSON`, `DECK_YML`, and the report path. Its instructions:
+Read every PNG in order and report, per slide (the `-NN` index in the file
+name), anything a human in row 30 would notice:
 
-### 4. Synthesize the combined summary
+- overflow: text or figures clipped at a slide edge
+- missing posters: a video slide showing a black or empty frame
+- illegible text: too small for the room, or low contrast on its background
+- broken layout: overlapping elements, unstyled raw HTML, empty slides,
+  a figure that failed to load
+- wrong theme: a slide that visibly escapes the deck's theme
 
-Write `quality_reports/<Deck>_slide_excellence.md`:
+Same report shape as the auditor (slide, issue, severity, recommendation),
+saved to its report path. Read-only: it never edits and never re-renders.
+
+### 5. Synthesize the combined summary
+
+Write `quality_reports/reviews/<Deck>-<DATE>.md`:
 
 ```markdown
 # Slide Excellence Review: <Deck>
 
-**Profile:** [profile name, audience prior, duration]
+**Date:** <DATE> | **Profile:** [name] | **Audience:** [from deck.yml / the profile]
+**Components run:** [list; name any skipped and why, e.g. "fact check skipped: no sources declared"]
 
 ## Overall Quality Score: [EXCELLENT / GOOD / NEEDS WORK / POOR]
 
@@ -130,6 +131,8 @@ Write `quality_reports/<Deck>_slide_excellence.md`:
 | Visual/Layout | | | |
 | Pedagogical (incl. challenges) | | | |
 | Proofreading | | | |
+| Fact check | | | |
+| Render audit | | | |
 
 ### Critical Issues (Immediate Action Required)
 ### Medium Issues (Next Revision)
@@ -137,7 +140,7 @@ Write `quality_reports/<Deck>_slide_excellence.md`:
 ```
 
 Then present to the user: the score, the per-dimension counts, the top
-critical issues, and the three report paths.
+critical issues, and every report path.
 
 ## Quality Score Rubric
 
@@ -148,9 +151,14 @@ critical issues, and the three report paths.
 | Needs Work | 6-10 | 16-30 | Significant revision |
 | Poor | 11+ | 31+ | Major restructuring |
 
+Any CRITICAL fact-check finding (a wrong fact, an autonomy mismatch, a
+forbidden-term near-miss) caps the score at NEEDS WORK regardless of the
+counts: a beautiful deck that says a teleoperated demo was autonomous is
+not "Good".
+
 ## Notes
 
-- For a layout-only pass, `/visual-audit` is the standalone skill; it renders
-  the deck and walks it in a browser, which this fan-out does not.
-- Substantive fact-checking against the deck's sources is the
-  `domain-reviewer` agent; it is not part of this fan-out yet (WP6).
+- `/visual-audit` remains the standalone layout-only pass; it uses the same
+  `scripts/shoot_slides.py` screenshots.
+- The devil's-advocate question list has one home: the pedagogy agent
+  (`.claude/agents/pedagogy-reviewer.md`).
