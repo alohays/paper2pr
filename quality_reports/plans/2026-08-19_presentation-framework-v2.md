@@ -132,6 +132,8 @@ Delete, in separate commits by nature:
 - Document the speaker view (`S`) and the dual-display leak test in `AGENTS.md`.
 - Accept: a scaffolded lecture deck with two notes passes `strip_qmd_notes.py` (no Hangul in the staged blob) and the deployed HTML has zero `class="notes"`; `backup_notes.py backup|restore` round-trips.
 
+**Record (2026-08-20): done on branch `wp567/notes-agents-pdf`.** `write-speaker-notes` and `script-writer` are genre-aware (profile + deck.yml first; lecture notes open on the prior session from the series, gloss terms in Korean on first use, carry the exact spoken sentences; budget = speaking_min x 280 syllables / 130 words). `backup_notes.py` was rewritten, not patched: the heading-keyed design lost the title-slide `data-notes` block on checkout and clumped include-line notes under the wrong heading; format 2 records positions in the stripped text, restores byte-identically against a sha1 with an anchored fallback, and keeps the v1 path. The note-filter test now covers the title `data-notes` leak. Acceptance ran on a scaffolded throwaway `dgist-2026f-w04`: strip 0 Hangul, CI strip 7 blocks to zero, backup/restore ROUND-TRIP IDENTICAL, then deleted. `Quarto/_script/` stays as unparsed local scratch.
+
 ### WP6 - Review agents for lectures (D23)
 
 - Every reviewing agent (`pedagogy-reviewer`, `proofreader`, `slide-auditor`, `script-writer`) receives the deck's resolved profile and `deck.yml` as context; `pedagogy-reviewer` drops "advanced students".
@@ -140,11 +142,15 @@ Delete, in separate commits by nature:
 - `slide-excellence` becomes the one fan-out: auditor + pedagogy + proofreader + fact-check + render audit, each optional by profile.
 - Accept: running `/slide-excellence` on the WP2 fixture produces one report per agent with the audience stated correctly.
 
+**Record (2026-08-20): done on the same branch.** All four agents start from `deckprofile.py` + deck.yml and state the audience; density findings quote the deck's own budget; `domain-reviewer` is the fact-check agent (sources from deck.yml, autonomy labels cross-checked against the video manifest, forbidden list in spirit); the devil's-advocate questions have one home, the pedagogy agent. `scripts/shoot_slides.py` is the single screenshot engine (deckpath resolution, stale re-render, CDP walk, parallel-safe); the fixture `shoot.py` is a shim. `slide-excellence` = the five-way fan-out with per-profile gating and reports under `quality_reports/reviews/`. Static acceptance verified (frontmatter, context passing, screenshots on the gates fixture and two real decks); the fan-out itself has not been launched end to end - the first `/slide-excellence` on the W02 draft is the live acceptance and each report header must state the audience.
+
 ### WP7 - PDF handout (D10)
 
 - `scripts/export_pdf.sh <deck>`: decktape (`reveal` mode) or headless Chrome on the rendered HTML with `?print-pdf`, output to `exports/<deck>.pdf` (gitignored). Notes must not be in the PDF; assert by grepping the PDF text for a sentinel Korean phrase after `strip`.
 - Theme `@media print`: `<video>` hidden, poster shown, fragments resolved, footnotes kept.
 - Accept: W02 fixture exports 42 pages with posters where videos were; no Hangul in the PDF text layer.
+
+**Record (2026-08-20): done on the same branch.** `scripts/export_pdf.sh` uses decktape reveal mode at 1280x720 (`--pause 1000`): the video fixture's pages show posters, not black frames, verified visually page by page, so the theme's `?print-pdf` selector gap never applies (that mode was rejected). The Hangul assertion is sharper than the plan text: zero Hangul beyond the deck's own note-stripped visible source (design-test's committed two-character gloss is legitimate, D18), and a leaked note fails even when its Hangul also exists in the qmd because the allowed set is built after `strip_qmd_notes.py`. `exports/` is gitignored. design-test exports 21 pages, the video fixture 4; the 42-page W02 export happens when W02 exists.
 
 ### WP8 - Author `dgist-2026f-w02`
 
