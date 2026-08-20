@@ -44,10 +44,19 @@ check_attr "Quarto/papers/DreamZero.qmd"
 check_attr "Quarto/lectures/dgist-2026f-w02.qmd"
 check_attr "Quarto/talks/SUNY.qmd"
 
-echo "3. The filter actually removes a notes block"
+echo "3. The filter removes both note forms: the divs and the title data-notes"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 cat > "$tmp/probe.qmd" <<'QMD'
+---
+title: Probe
+title-slide-attributes:
+  data-notes: |
+    The title notes must never reach git.
+
+    Not even after a blank line inside the block.
+---
+
 ## A slide
 
 Body text.
@@ -56,11 +65,18 @@ Body text.
 This line must never reach git.
 :::
 QMD
-if python3 scripts/strip_qmd_notes.py < "$tmp/probe.qmd" | grep -q "must never reach git"; then
-  echo "  FAIL  strip_qmd_notes.py left the note text in its output"
+stripped="$(python3 scripts/strip_qmd_notes.py < "$tmp/probe.qmd")"
+if printf '%s' "$stripped" | grep -q "must never reach git"; then
+  echo "  FAIL  strip_qmd_notes.py left note text in its output"
   fail=1
 else
-  echo "  ok    note text removed by strip_qmd_notes.py"
+  echo "  ok    note div text removed by strip_qmd_notes.py"
+fi
+if printf '%s' "$stripped" | grep -q "data-notes"; then
+  echo "  FAIL  strip_qmd_notes.py left the title data-notes block in its output"
+  fail=1
+else
+  echo "  ok    title data-notes block removed by strip_qmd_notes.py"
 fi
 
 echo "4. Render output stays ignored under genre directories"

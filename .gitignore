@@ -81,6 +81,9 @@ Quarto/videos/
 # Presenter scripts (local only — the deployed deck must not carry them)
 Quarto/_script/
 
+# PDF handouts written by scripts/export_pdf.sh (uploaded to the LMS by hand)
+exports/
+
 # Quarto project-level build artifacts
 _site/
 /index.html

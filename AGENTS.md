@@ -36,10 +36,10 @@
 
 ## Speaker Notes Policy
 
-Speaker notes (`::: {.notes}` blocks in QMD) are **local-only** and never reach git:
+Speaker notes (`::: {.notes}` blocks in QMD, plus the front matter `title-slide-attributes: data-notes:` block that carries the title slide's notes) are **local-only** and never reach git:
 
 1. **Git clean filter** strips notes from QMD before staging (`.gitattributes` + `scripts/strip_qmd_notes.py`)
-2. **CI/CD pipeline** strips notes from HTML during GitHub Actions deployment (`scripts/strip_speaker_notes.py`)
+2. **CI/CD pipeline** strips notes from HTML during deployment: `scripts/strip_notes.sh` runs `scripts/strip_speaker_notes.py` on every rendered deck (`<aside class="notes">` elements and section `data-notes` attributes)
 3. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [Deck]`; backups land in `.speaker-notes/` (gitignored)
 4. **Setup** (run once after clone): `bash scripts/setup-git-filters.sh`
 
@@ -50,6 +50,12 @@ python3 scripts/backup_notes.py restore DreamZero   # after clone or accidental 
 ```
 
 - **Never maintain separate branches** for notes vs no-notes; the filter and CI strip are the only mechanism
+
+**Presenter view (how the notes are used in the room):**
+
+- Press `S` in the rendered deck: reveal's speaker view opens in its own window with the notes, a timer, and the next slide. The projector keeps the plain deck; the notes exist only on the presenter's screen (plan D9/D13).
+- **Dual-display leak test**, before presenting from a new deploy: open the *deployed* URL, press `S`, and step through a few slides -- the notes panel must show NOTHING, because deployed HTML carries zero notes. Open the *local* rendered file and press `S` -- the same panel shows the notes. If the deployed speaker view shows any note text, the strip pipeline is broken; stop and fix it before class.
+- Per-deck notes for shared include slides (series lectures) go in the deck right after the `{{< include >}}` line: everything before the next `##` belongs to the included slide.
 
 ---
 
@@ -159,6 +165,17 @@ never referenced by URL from a slide. The pipeline, in order:
 
 The classroom trusts the network (D8): play the deck through once on the classroom
 connection before the session so the browser cache is warm.
+
+PDF handouts (`bash scripts/export_pdf.sh <Deck>`, D10) go through decktape's
+screen capture, not reveal's `?print-pdf` mode: a paused clip paints its poster
+attribute and a background clip its `data-background-poster` underlay, so every
+video slide lands in the PDF as its poster with the caption strip intact
+(verified on the video fixture; the theme's `@media print` block only matters
+when someone prints the HTML from a browser). The export needs the network once,
+to fetch the posters from the Release. The script then refuses to ship any PDF
+whose text layer carries Hangul the deck does not visibly show itself -- the qmd
+after the notes strip, entities decoded, is the allowed set -- so a leaked
+speaker note fails the export naming the page while a D18 gloss passes.
 
 ## Series
 
@@ -297,6 +314,10 @@ python3 scripts/deckpath.py --list
 # What is this deck graded against?
 python3 scripts/deckprofile.py <Deck>
 
+# One 1280x720 PNG per slide, in reading order (re-renders a stale html first;
+# also takes a .qmd or .html path). The render audit and /visual-audit read these
+python3 scripts/shoot_slides.py <Deck> [--out DIR] [--max N]
+
 # Videos: encode the deck's clips from its videos.yml, then publish them on the
 # deck's GitHub Release (media-<deck>) and verify every URL answers 200
 python3 scripts/media_prep.py <Deck> [--only slug] [--dry-run] [--force] [--local]
@@ -306,6 +327,11 @@ bash scripts/media_release.sh <Deck> [--check]
 # verifies they exist and match what the yml produces (content, not mtimes)
 python3 scripts/series_assets.py <course> [--check]
 python3 scripts/series_assets.py --list
+
+# PDF handout (D10): decktape export to exports/<deck>.pdf (gitignored), posters
+# stand in for videos; re-renders a stale html; also takes a .qmd or .html path;
+# fails loudly if Hangul beyond the deck's own visible text reaches the PDF
+bash scripts/export_pdf.sh <Deck> [--out FILE]
 
 # Deploy to GitHub Pages (automatic via CI/CD on push to main)
 git push  # GitHub Actions renders Quarto, strips notes, deploys
@@ -351,9 +377,9 @@ cd Quarto/_fixtures/series && quarto render series.qmd
 |---------|-------------|
 | `/new-deck [topic]` | Interview a new deck's premises, scaffold it, and carry authoring through the quality gate (the single entry point) |
 | `/deploy [Deck]` | Render Quarto + deploy (CI/CD on push) |
-| `/slide-excellence [Deck]` | The one review fan-out: slide-auditor + pedagogy-reviewer + proofreader (grammar, overflow, narrative, design challenge), one report per agent |
-| `/visual-audit [Deck]` | Standalone adversarial layout audit (density, overflow, font, box fatigue, centering) |
-| `/write-speaker-notes [Deck] [--lang en\|ko]` | Generate presentation script (speaker notes) for Quarto slides |
+| `/slide-excellence [Deck]` | The one review fan-out: slide-auditor + pedagogy-reviewer (with the devil's-advocate challenges) + proofreader + fact check (`domain-reviewer`, against `deck.yml: sources:`) + render audit of `shoot_slides.py` screenshots. Every agent starts from `deckprofile.py` + `deck.yml` and states the audience; reports land in `quality_reports/reviews/` |
+| `/visual-audit [Deck]` | Standalone adversarial layout audit on full-deck screenshots from `shoot_slides.py` (density against the profile budget, overflow, font, box fatigue, centering) |
+| `/write-speaker-notes [Deck] [--lang en\|ko]` | Generate the presentation script (speaker notes) for a deck, genre-aware via its resolved profile |
 | `/validate-bib` | Cross-reference citations against `Bibliography_base.bib` |
 | `/commit [msg]` | Stage, commit, PR, merge |
 | `/learn [skill-name]` | Extract discovery into persistent skill |
