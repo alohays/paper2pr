@@ -22,20 +22,24 @@ What it writes, all under Figures/lectures/_series/<course>/:
     semester-map.svg     the semester timeline, nothing highlighted
     semester-map-wNN.svg one per session, that session ringed as "today"
 
-The map is one horizontal timeline in a 1100x300 viewBox: a baseline, one dot
-per session, evenly spaced. Lecture/guest/keynote sessions get a filled navy
-dot, the short date above and a two-line title below (guest sessions are
-prefixed "Guest:", keynote "Keynote:"; presenter names are not on the map);
-DGIST-arranged sessions a hollow dot with "DGIST" below; holiday and exam
-weeks a grey dot with a tiny tag ("holiday" / "report" / "essay"). Sixteen
-slots on 1100 units leave about 57 units per slot and a two-line title is
-three slots wide, so titles sit in up to three tiers below the baseline, each
-joined to its dot by a thin leader; map_layout() places them so that no two
-labels in a tier overlap and no leader crosses a label (a backtracking
-search over tier x anchor, deterministic, and a loud error when a series
-cannot be laid out -- shorten `short:` in the yml). Text is 20 px dates, 16 px
-titles, 14 px tags, fill #1a1a1a, font-family inherit; the SVG is inlined
-into the slide by the semester-map shortcode, so the theme font applies.
+The map is one horizontal timeline in a 1100x200 viewBox: a baseline, one dot
+per session, evenly spaced. It shows only dates and short kind tags, in large
+type; no session titles (they are said aloud, never memorised) and no
+presenter names. Above each dot sits the short date ("Sep 4") at 26 px, bold
+for lecture/guest/keynote sessions, regular and muted for the rest; below the
+line one kind tag: "Lecture" (navy bold), "Guest" / "Keynote" (navy),
+"DGIST" (muted) at 20 px, and "holiday" / "report" / "essay" muted at 18 px.
+Sixteen slots on 1100 units leave about 64 units of pitch and a 26 px
+"Sep 11" is about 78 units wide, so the dates (and the tags below, for the
+same reason) alternate two rows by index parity; map_layout() checks with a
+width estimate that no two texts of one row come closer than ROW_GAP and
+raises a loud SeriesError otherwise. Dots are filled navy for
+lecture/guest/keynote, hollow navy for DGIST-arranged sessions, grey for
+holiday and exam weeks; the highlighted session adds a gold ring and, at the
+very top of its column, a bold "today" tag in the theme's text gold (the
+colour binds the tag to the ring). Text is fill #1a1a1a (muted #5a5a5a for
+the quiet weeks), font-family inherit; the SVG is inlined into the slide by
+the semester-map shortcode, so the theme font applies.
 Nothing in the output depends on the clock, so a re-run on an unchanged yml
 writes byte-identical files, and --check compares the tree against a fresh
 in-memory render (never mtimes: a clone or checkout lands the yml and the
@@ -71,10 +75,10 @@ SERIES_DIR = REPO_ROOT / "Quarto" / "lectures" / "_series"
 FIGURE_ROOT = REPO_ROOT / "Figures" / "lectures" / "_series"
 
 KINDS = ("lecture", "guest", "keynote", "dgist", "holiday", "exam")
-TITLED = ("lecture", "guest", "keynote")        # filled dot, date, title
+TITLED = ("lecture", "guest", "keynote")        # filled dot, bold date, navy tag
 SKIPPED_FOR_PRIOR = ("holiday", "exam")          # never "the previous session"
-PREFIX = {"guest": "Guest: ", "keynote": "Keynote: "}
-TINY_TAG = {"holiday": "holiday"}
+KIND_TAG = {"lecture": "Lecture", "guest": "Guest", "keynote": "Keynote",
+            "dgist": "DGIST", "holiday": "holiday"}
 EXAM_TAG = {8: "report", 16: "essay"}            # fallback is "exam"
 WEEKDAY = 4                                      # Friday (Monday = 0)
 
@@ -84,34 +88,31 @@ MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 # ---- map geometry (viewBox units) -------------------------------------------
-MAP_W, MAP_H = 1100, 300
-MAP_MARGIN = 110            # x of the first dot; the last sits at MAP_W - MAP_MARGIN
-# Two date rows: a 20 px bold "Sep 11" is as wide as a slot, so two titled
-# sessions in consecutive weeks alternate rows (low, high, low ...); the
-# "today" tag sits TAG_LIFT above whichever row its date is in.
-Y_DATE_ROWS = (62, 36)      # date baselines: row 0 (low, next to the line), row 1 (high)
-TAG_LIFT = 21
-Y_LINE = 92                 # the timeline
-Y_TINY = 118                # "DGIST" / "holiday" / "report" / "essay" baseline (14 px)
-TIER_Y = (152, 206, 260)    # first-line baselines of the three title tiers (16 px)
-LINE_H = 20                 # second title line sits this far under the first
+MAP_W, MAP_H = 1100, 200
+MAP_MARGIN = 70             # x of the first dot; the last sits at MAP_W - MAP_MARGIN
+# Sixteen slots on 1100 leave about 64 units of pitch and a 26 px "Sep 11" is
+# about 78 units wide, so a single date row would touch everywhere: dates
+# alternate two rows by index parity (odd low, even high), which puts
+# same-row neighbours two slots (about 128 units) apart. The 20 px kind tags
+# below the line collide the same way ("Lecture" next to "holiday"), so they
+# alternate the same two rows.
+Y_TODAY = 26                # "today" baseline, above everything else
+Y_DATE_ROWS = (96, 60)      # date baselines: row 0 (low, odd indices), row 1 (high)
+Y_LINE = 126                # the timeline
+Y_TAG_ROWS = (158, 186)     # tag baselines: row 0 (near the line, odd), row 1 (low)
 DOT_R = 7
 RING_R = 13
 RING_W = 4
-FONT_DATE, FONT_TITLE, FONT_TAG = 20, 16, 14
-NAVY, GOLD, GREY, INK, LEADER = "#012169", "#B9975B", "#aab4c8", "#1a1a1a", "#c5ccd8"
+FONT_DATE, FONT_TAG, FONT_TAG_SMALL, FONT_TODAY = 26, 20, 18, 20
+NAVY, GOLD, GREY, INK, MUTED = "#012169", "#B9975B", "#aab4c8", "#1a1a1a", "#5a5a5a"
+GOLD_TEXT = "#9A7B3F"       # the theme's text gold: #B9975B on white fails contrast
 
-# Layout arithmetic. Source Sans Pro measures 7.2 px per character at 16 px on
-# the titles this series uses; 7.4 keeps a little slack for the fallback
-# fonts. A label's x range is its longest line at that width.
-CHAR_W = 7.4
-MAX_LINE_CHARS = 24         # two lines of this many: the map refuses longer labels
-ANCHOR_INSET = 14           # start/end anchored labels begin this far past the dot
-TIER_GAP = 12               # minimum free space between two labels in one tier
-LEADER_PAD = 6              # a leader must clear a label's x range by this much
-EDGE_PAD = 2                # labels stay inside [EDGE_PAD, MAP_W - EDGE_PAD]
-TINY_HALF = 26              # half-width reserved for a tiny tag
-SEARCH_BUDGET = 100_000     # DFS nodes before giving up (a real series uses < 50)
+# Width estimate for the overlap assertion: half the font size per character
+# (Source Sans Pro measures about 0.45 em on these short strings; 0.5 keeps
+# slack for the fallback fonts). map_layout() fails loudly when two texts of
+# one row would come closer than ROW_GAP under this estimate.
+CHAR_EM = 0.5
+ROW_GAP = 8
 
 
 class SeriesError(Exception):
@@ -204,7 +205,7 @@ def validate(data: dict, name: str = "<series>") -> dict:
         where = f"{name}: sessions[{n}]"
         if not isinstance(s, dict):
             raise SeriesError(f"{where}: each session is a mapping")
-        unknown = sorted(set(s) - {"index", "date", "kind", "title", "short",
+        unknown = sorted(set(s) - {"index", "date", "kind", "title",
                                    "presenter", "deck", "remote", "tentative"})
         if unknown:
             raise SeriesError(f"{where}: unknown key(s) {', '.join(unknown)}")
@@ -223,7 +224,6 @@ def validate(data: dict, name: str = "<series>") -> dict:
         if kind not in KINDS:
             raise SeriesError(f"{where}: kind must be one of {', '.join(KINDS)}, got {kind!r}")
         title = _text(s.get("title"), where, "title")
-        short = _text(s.get("short"), where, "short", required=False)
         presenter = _text(s.get("presenter"), where, "presenter", required=False)
         deck = _text(s.get("deck"), where, "deck", required=False)
         if deck:
@@ -242,7 +242,6 @@ def validate(data: dict, name: str = "<series>") -> dict:
             "date": date.isoformat(),
             "kind": kind,
             "title": title,
-            "short": short,
             "presenter": presenter,
             "deck": deck,
             "remote": bool(s.get("remote") or False),
@@ -305,7 +304,6 @@ def derive(series: dict) -> dict:
         s["week"] = week_label(s["index"])
         s["short_date"] = short_date(s["date"])
         s["prior_index"] = prior_index(out["sessions"], s["index"])
-        s["map_label"] = map_label(s)
     return out
 
 
@@ -336,139 +334,66 @@ def load_lock_or_yml(course: str) -> dict:
 
 # ---- semester map -----------------------------------------------------------
 
-def map_label(session: dict) -> str:
-    """What the map prints under a titled session's dot (before wrapping)."""
-    if session["kind"] not in TITLED:
-        return ""
-    base = session.get("short") or session["title"]
-    return PREFIX.get(session["kind"], "") + base
-
-
-def split_lines(text: str, max_chars: int = MAX_LINE_CHARS) -> list[str]:
-    """One line if it fits, else the two-line word-safe split whose longer
-    line is shortest. A line over max_chars is an error: set `short:`."""
-    text = " ".join(text.split())
-    if len(text) <= max_chars:
-        return [text]
-    words = text.split(" ")
-    best = None
-    for k in range(1, len(words)):
-        a, b = " ".join(words[:k]), " ".join(words[k:])
-        # shortest longer line wins; on a tie the top line is the longer one
-        score = (max(len(a), len(b)), -len(a))
-        if best is None or score < best[0]:
-            best = (score, [a, b])
-    if best is None or best[0][0] > max_chars:
-        raise SeriesError(
-            f"semester map: {text!r} does not fit two lines of {max_chars} "
-            f"characters; set `short:` on that session in the series yml")
-    return best[1]
-
-
-def est_width(lines: list[str]) -> float:
-    return max(len(l) for l in lines) * CHAR_W
-
-
 def dot_x(n_sessions: int, index: int) -> float:
     step = (MAP_W - 2 * MAP_MARGIN) / max(n_sessions - 1, 1)
     return MAP_MARGIN + (index - 1) * step
 
 
-def tiny_tag(session: dict) -> str:
+def kind_tag(session: dict) -> str:
+    """The one short tag printed under a session's dot."""
     kind = session["kind"]
-    if kind == "dgist":
-        return "DGIST"
-    if kind == "holiday":
-        return TINY_TAG["holiday"]
     if kind == "exam":
         return EXAM_TAG.get(session["index"], "exam")
-    return ""
+    return KIND_TAG[kind]
+
+
+def text_width(text: str, font_size: float) -> float:
+    """Estimated width of a map text in viewBox units (CHAR_EM per char)."""
+    return len(text) * font_size * CHAR_EM
+
+
+def _assert_row_clear(row_name: str, entries: list[tuple[float, float, str]]):
+    """entries = (x, estimated width, what) of every text on one row, any
+    order. A pair closer than ROW_GAP is a loud error, never a silent
+    overlap on the slide."""
+    placed = sorted(entries)
+    for (xa, wa, a), (xb, wb, b) in zip(placed, placed[1:]):
+        gap = (xb - wb / 2) - (xa + wa / 2)
+        if gap < ROW_GAP:
+            raise SeriesError(
+                f"semester map: {a} and {b} overlap on the {row_name} row "
+                f"(estimated gap {gap:.0f} < {ROW_GAP} viewBox units)")
 
 
 def map_layout(series: dict) -> dict:
-    """Where every session's marks go. Returns {index: item}; a titled item
-    has lines, date_row (0 low, 1 high: consecutive titled weeks alternate
-    so their 20 px dates never touch), tier (0-based), anchor
-    (middle|start|end), x0/x1 (the label's estimated x range) and leader
-    (True when the label is not in tier 0 or not centred on its dot). Raises SeriesError when no arrangement clears
-    the overlap and leader rules."""
+    """Where every session's marks go. Returns {index: item}; an item has x,
+    date ("Sep 4"), tag ("Lecture" / "DGIST" / "holiday" ...), titled (bold
+    date, navy tag), tag_size, and date_row / tag_row (0 low-near, 1 high-far:
+    both alternate by index parity, because a 26 px date is wider than the
+    slot pitch). Raises SeriesError when two texts of one row would overlap
+    under the width estimate."""
     sessions = sorted(series["sessions"], key=lambda s: s["index"])
     n = len(sessions)
     items: dict[int, dict] = {}
     for s in sessions:
-        x = dot_x(n, s["index"])
-        item = {"index": s["index"], "kind": s["kind"], "x": x,
-                "date": short_date(s["date"]), "tag": tiny_tag(s),
-                "date_row": None, "lines": [], "tier": None, "anchor": None,
-                "x0": None, "x1": None, "leader": False}
-        if s["kind"] in TITLED:
-            item["lines"] = split_lines(map_label(s))
-            prev = items.get(s["index"] - 1)
-            item["date_row"] = 1 if (prev and prev["lines"] and prev["date_row"] == 0) else 0
-        items[s["index"]] = item
-
-    # Tiny tags sit right under the baseline and are never crossed by a
-    # leader (they are narrower than a slot), but they are occupants all the
-    # same: pseudo-tier -1 in the crossing check below.
-    occupied: dict[int, list[tuple[float, float]]] = {-1: [], 0: [], 1: [], 2: []}
-    for it in items.values():
-        if it["tag"]:
-            occupied[-1].append((it["x"] - TINY_HALF, it["x"] + TINY_HALF))
-    leaders: list[tuple[float, int]] = []      # (x, tier) of placed titled labels
-    titled = [it for it in items.values() if it["lines"]]
-    nodes = 0
-
-    def candidates(it):
-        x, w = it["x"], est_width(it["lines"])
-        for tier in range(len(TIER_Y)):
-            yield tier, "middle", x - w / 2, x + w / 2
-            yield tier, "start", x - ANCHOR_INSET, x - ANCHOR_INSET + w
-            yield tier, "end", x + ANCHOR_INSET - w, x + ANCHOR_INSET
-
-    def fits(x, tier, x0, x1):
-        if x0 < EDGE_PAD or x1 > MAP_W - EDGE_PAD:
-            return False
-        for a0, a1 in occupied[tier]:
-            if x0 < a1 + TIER_GAP and a0 < x1 + TIER_GAP:
-                return False
-        # my leader passes through every shallower tier on its way down
-        for t in range(-1, tier):
-            for a0, a1 in occupied[t]:
-                if a0 - LEADER_PAD <= x <= a1 + LEADER_PAD:
-                    return False
-        # and the leaders already placed deeper than me must miss my label
-        for lx, lt in leaders:
-            if lt > tier and x0 - LEADER_PAD <= lx <= x1 + LEADER_PAD:
-                return False
-        return True
-
-    def search(k):
-        nonlocal nodes
-        nodes += 1
-        if nodes > SEARCH_BUDGET:
-            raise SeriesError("semester map: label placement exceeded its search "
-                              "budget; shorten some `short:` labels in the series yml")
-        if k == len(titled):
-            return True
-        it = titled[k]
-        for tier, anchor, x0, x1 in candidates(it):
-            if not fits(it["x"], tier, x0, x1):
-                continue
-            occupied[tier].append((x0, x1))
-            leaders.append((it["x"], tier))
-            it.update(tier=tier, anchor=anchor, x0=x0, x1=x1)
-            if search(k + 1):
-                return True
-            occupied[tier].pop()
-            leaders.pop()
-            it.update(tier=None, anchor=None, x0=None, x1=None)
-        return False
-
-    if not search(0):
-        raise SeriesError("semester map: no arrangement of the titles clears the "
-                          "overlap rules; shorten some `short:` labels in the series yml")
-    for it in titled:
-        it["leader"] = it["tier"] > 0 or it["anchor"] != "middle"
+        idx = s["index"]
+        titled = s["kind"] in TITLED
+        items[idx] = {
+            "index": idx, "kind": s["kind"], "x": dot_x(n, idx),
+            "date": short_date(s["date"]), "tag": kind_tag(s),
+            "date_row": (idx + 1) % 2, "tag_row": (idx + 1) % 2,
+            "titled": titled,
+            "tag_size": FONT_TAG if titled or s["kind"] == "dgist" else FONT_TAG_SMALL,
+        }
+    for row in (0, 1):
+        _assert_row_clear(
+            f"date {row}",
+            [(it["x"], text_width(it["date"], FONT_DATE), f"date {it['date']!r}")
+             for it in items.values() if it["date_row"] == row])
+        _assert_row_clear(
+            f"tag {row}",
+            [(it["x"], text_width(it["tag"], it["tag_size"]), f"tag {it['tag']!r}")
+             for it in items.values() if it["tag_row"] == row])
     return items
 
 
@@ -496,13 +421,8 @@ def semester_map_svg(series: dict, highlight: int | None = None,
     ]
     for idx in sorted(layout):
         it = layout[idx]
-        x, kind = it["x"], it["kind"]
-        xs = f"{x:.1f}"
-        # leader first, so the dot paints over its top end
-        if it["lines"] and it["leader"]:
-            y_top = TIER_Y[it["tier"]] - FONT_TITLE
-            out.append(f'<line x1="{xs}" y1="{Y_LINE + DOT_R + 1}" x2="{xs}" '
-                       f'y2="{y_top}" stroke="{LEADER}" stroke-width="1.5"/>')
+        kind = it["kind"]
+        xs = f"{it['x']:.1f}"
         if kind in TITLED:
             out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{DOT_R}" fill="{NAVY}"/>')
         elif kind == "dgist":
@@ -510,34 +430,28 @@ def semester_map_svg(series: dict, highlight: int | None = None,
                        f'stroke="{NAVY}" stroke-width="2"/>')
         else:
             out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{DOT_R - 1}" fill="{GREY}"/>')
-        date_y = Y_DATE_ROWS[it["date_row"] or 0]
         if highlight == idx:
             out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{RING_R}" fill="none" '
                        f'stroke="{GOLD}" stroke-width="{RING_W}" class="today-ring"/>')
-            out.append(f'<text x="{xs}" y="{date_y - TAG_LIFT}" font-size="{FONT_TAG}" '
-                       f'font-weight="600" text-anchor="middle" fill="{INK}" '
+            out.append(f'<text x="{xs}" y="{Y_TODAY}" font-size="{FONT_TODAY}" '
+                       f'font-weight="700" text-anchor="middle" fill="{GOLD_TEXT}" '
                        f'class="today-tag">today</text>')
-        if kind in TITLED:
-            out.append(f'<text x="{xs}" y="{date_y}" font-size="{FONT_DATE}" '
-                       f'font-weight="700" text-anchor="middle" fill="{INK}" '
-                       f'class="date">{_esc(it["date"])}</text>')
-            anchor = it["anchor"]
-            if anchor == "middle":
-                tx = x
-            elif anchor == "start":
-                tx = x - ANCHOR_INSET
-            else:
-                tx = x + ANCHOR_INSET
-            y = TIER_Y[it["tier"]]
-            for j, line in enumerate(it["lines"]):
-                out.append(f'<text x="{tx:.1f}" y="{y + j * LINE_H}" '
-                           f'font-size="{FONT_TITLE}" text-anchor="{anchor}" '
-                           f'fill="{INK}" class="label">{_esc(line)}</text>')
-        elif it["tag"]:
-            weight = ' font-weight="600"' if kind == "dgist" else ""
-            out.append(f'<text x="{xs}" y="{Y_TINY}" font-size="{FONT_TAG}"{weight} '
-                       f'text-anchor="middle" fill="{INK}" class="tag">'
-                       f'{_esc(it["tag"])}</text>')
+        date_weight = "700" if it["titled"] else "400"
+        date_fill = INK if it["titled"] else MUTED
+        out.append(f'<text x="{xs}" y="{Y_DATE_ROWS[it["date_row"]]}" '
+                   f'font-size="{FONT_DATE}" font-weight="{date_weight}" '
+                   f'text-anchor="middle" fill="{date_fill}" '
+                   f'class="date">{_esc(it["date"])}</text>')
+        if it["titled"]:
+            tag_fill = NAVY
+            tag_weight = ' font-weight="700"' if kind == "lecture" else ""
+        else:
+            tag_fill = MUTED
+            tag_weight = ""
+        out.append(f'<text x="{xs}" y="{Y_TAG_ROWS[it["tag_row"]]}" '
+                   f'font-size="{it["tag_size"]}"{tag_weight} '
+                   f'text-anchor="middle" fill="{tag_fill}" class="tag">'
+                   f'{_esc(it["tag"])}</text>')
     out.append("</svg>")
     return "\n".join(out) + "\n"
 

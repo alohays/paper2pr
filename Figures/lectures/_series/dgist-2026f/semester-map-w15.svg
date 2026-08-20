@@ -1,60 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 300" class="semester-map-svg" role="img" aria-label="Semester timeline, week 15 highlighted" style="font-family:inherit">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 200" class="semester-map-svg" role="img" aria-label="Semester timeline, week 15 highlighted" style="font-family:inherit">
 <title>Semester timeline, week 15 highlighted</title>
-<line x1="110.0" y1="92" x2="990.0" y2="92" stroke="#aab4c8" stroke-width="2"/>
-<circle cx="110.0" cy="92" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="110.0" y="118" font-size="14" font-weight="600" text-anchor="middle" fill="#1a1a1a" class="tag">DGIST</text>
-<line x1="168.7" y1="100" x2="168.7" y2="136" stroke="#c5ccd8" stroke-width="1.5"/>
-<circle cx="168.7" cy="92" r="7" fill="#012169"/>
-<text x="168.7" y="62" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 4</text>
-<text x="182.7" y="152" font-size="16" text-anchor="end" fill="#1a1a1a" class="label">The Paradigm Shift</text>
-<text x="182.7" y="172" font-size="16" text-anchor="end" fill="#1a1a1a" class="label">Toward Embodied AI</text>
-<line x1="227.3" y1="100" x2="227.3" y2="190" stroke="#c5ccd8" stroke-width="1.5"/>
-<circle cx="227.3" cy="92" r="7" fill="#012169"/>
-<text x="227.3" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 11</text>
-<text x="241.3" y="206" font-size="16" text-anchor="end" fill="#1a1a1a" class="label">Guest: Video and Robot</text>
-<text x="241.3" y="226" font-size="16" text-anchor="end" fill="#1a1a1a" class="label">Foundation Models</text>
-<line x1="286.0" y1="100" x2="286.0" y2="190" stroke="#c5ccd8" stroke-width="1.5"/>
-<circle cx="286.0" cy="92" r="7" fill="#012169"/>
-<text x="286.0" y="62" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 18</text>
-<text x="272.0" y="206" font-size="16" text-anchor="start" fill="#1a1a1a" class="label">Robot Hardware,</text>
-<text x="272.0" y="226" font-size="16" text-anchor="start" fill="#1a1a1a" class="label">Control, and Platforms</text>
-<circle cx="344.7" cy="92" r="6" fill="#aab4c8"/>
-<text x="344.7" y="118" font-size="14" text-anchor="middle" fill="#1a1a1a" class="tag">holiday</text>
-<circle cx="403.3" cy="92" r="7" fill="#012169"/>
-<text x="403.3" y="62" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Oct 2</text>
-<text x="403.3" y="152" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">Action as a Modality</text>
-<text x="403.3" y="172" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">and Robot Learning Data</text>
-<circle cx="462.0" cy="92" r="6" fill="#aab4c8"/>
-<text x="462.0" y="118" font-size="14" text-anchor="middle" fill="#1a1a1a" class="tag">holiday</text>
-<circle cx="520.7" cy="92" r="6" fill="#aab4c8"/>
-<text x="520.7" y="118" font-size="14" text-anchor="middle" fill="#1a1a1a" class="tag">report</text>
-<line x1="579.3" y1="100" x2="579.3" y2="190" stroke="#c5ccd8" stroke-width="1.5"/>
-<circle cx="579.3" cy="92" r="7" fill="#012169"/>
-<text x="579.3" y="62" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Oct 23</text>
-<text x="579.3" y="206" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">Learning Action:</text>
-<text x="579.3" y="226" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">Imitation, RL, Diffusion</text>
-<circle cx="638.0" cy="92" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="638.0" y="118" font-size="14" font-weight="600" text-anchor="middle" fill="#1a1a1a" class="tag">DGIST</text>
-<circle cx="696.7" cy="92" r="7" fill="#012169"/>
-<text x="696.7" y="62" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 6</text>
-<text x="696.7" y="152" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">Guest: Spatial AI</text>
-<text x="696.7" y="172" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">to Physical AI</text>
-<circle cx="755.3" cy="92" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="755.3" y="118" font-size="14" font-weight="600" text-anchor="middle" fill="#1a1a1a" class="tag">DGIST</text>
-<circle cx="814.0" cy="92" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="814.0" y="118" font-size="14" font-weight="600" text-anchor="middle" fill="#1a1a1a" class="tag">DGIST</text>
-<line x1="872.7" y1="100" x2="872.7" y2="190" stroke="#c5ccd8" stroke-width="1.5"/>
-<circle cx="872.7" cy="92" r="7" fill="#012169"/>
-<text x="872.7" y="62" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 27</text>
-<text x="872.7" y="206" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">Ethics, Safety, and</text>
-<text x="872.7" y="226" font-size="16" text-anchor="middle" fill="#1a1a1a" class="label">Social Responsibility</text>
-<line x1="931.3" y1="100" x2="931.3" y2="136" stroke="#c5ccd8" stroke-width="1.5"/>
-<circle cx="931.3" cy="92" r="7" fill="#012169"/>
-<circle cx="931.3" cy="92" r="13" fill="none" stroke="#B9975B" stroke-width="4" class="today-ring"/>
-<text x="931.3" y="15" font-size="14" font-weight="600" text-anchor="middle" fill="#1a1a1a" class="today-tag">today</text>
-<text x="931.3" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Dec 4</text>
-<text x="917.3" y="152" font-size="16" text-anchor="start" fill="#1a1a1a" class="label">Keynote: The Physical</text>
-<text x="917.3" y="172" font-size="16" text-anchor="start" fill="#1a1a1a" class="label">AI Megatrend</text>
-<circle cx="990.0" cy="92" r="6" fill="#aab4c8"/>
-<text x="990.0" y="118" font-size="14" text-anchor="middle" fill="#1a1a1a" class="tag">essay</text>
+<line x1="70.0" y1="126" x2="1030.0" y2="126" stroke="#aab4c8" stroke-width="2"/>
+<circle cx="70.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
+<text x="70.0" y="96" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Aug 28</text>
+<text x="70.0" y="158" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
+<circle cx="134.0" cy="126" r="7" fill="#012169"/>
+<text x="134.0" y="60" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 4</text>
+<text x="134.0" y="186" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
+<circle cx="198.0" cy="126" r="7" fill="#012169"/>
+<text x="198.0" y="96" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 11</text>
+<text x="198.0" y="158" font-size="20" text-anchor="middle" fill="#012169" class="tag">Guest</text>
+<circle cx="262.0" cy="126" r="7" fill="#012169"/>
+<text x="262.0" y="60" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 18</text>
+<text x="262.0" y="186" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
+<circle cx="326.0" cy="126" r="6" fill="#aab4c8"/>
+<text x="326.0" y="96" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Sep 25</text>
+<text x="326.0" y="158" font-size="18" text-anchor="middle" fill="#5a5a5a" class="tag">holiday</text>
+<circle cx="390.0" cy="126" r="7" fill="#012169"/>
+<text x="390.0" y="60" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Oct 2</text>
+<text x="390.0" y="186" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
+<circle cx="454.0" cy="126" r="6" fill="#aab4c8"/>
+<text x="454.0" y="96" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Oct 9</text>
+<text x="454.0" y="158" font-size="18" text-anchor="middle" fill="#5a5a5a" class="tag">holiday</text>
+<circle cx="518.0" cy="126" r="6" fill="#aab4c8"/>
+<text x="518.0" y="60" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Oct 16</text>
+<text x="518.0" y="186" font-size="18" text-anchor="middle" fill="#5a5a5a" class="tag">report</text>
+<circle cx="582.0" cy="126" r="7" fill="#012169"/>
+<text x="582.0" y="96" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Oct 23</text>
+<text x="582.0" y="158" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
+<circle cx="646.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
+<text x="646.0" y="60" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Oct 30</text>
+<text x="646.0" y="186" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
+<circle cx="710.0" cy="126" r="7" fill="#012169"/>
+<text x="710.0" y="96" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 6</text>
+<text x="710.0" y="158" font-size="20" text-anchor="middle" fill="#012169" class="tag">Guest</text>
+<circle cx="774.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
+<text x="774.0" y="60" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Nov 13</text>
+<text x="774.0" y="186" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
+<circle cx="838.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
+<text x="838.0" y="96" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Nov 20</text>
+<text x="838.0" y="158" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
+<circle cx="902.0" cy="126" r="7" fill="#012169"/>
+<text x="902.0" y="60" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 27</text>
+<text x="902.0" y="186" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
+<circle cx="966.0" cy="126" r="7" fill="#012169"/>
+<circle cx="966.0" cy="126" r="13" fill="none" stroke="#B9975B" stroke-width="4" class="today-ring"/>
+<text x="966.0" y="26" font-size="20" font-weight="700" text-anchor="middle" fill="#9A7B3F" class="today-tag">today</text>
+<text x="966.0" y="96" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Dec 4</text>
+<text x="966.0" y="158" font-size="20" text-anchor="middle" fill="#012169" class="tag">Keynote</text>
+<circle cx="1030.0" cy="126" r="6" fill="#aab4c8"/>
+<text x="1030.0" y="60" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Dec 11</text>
+<text x="1030.0" y="186" font-size="18" text-anchor="middle" fill="#5a5a5a" class="tag">essay</text>
 </svg>

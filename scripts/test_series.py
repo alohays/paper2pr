@@ -15,10 +15,10 @@ What is pinned here, and why it is worth a test:
   4. week label and short date formatting.
   5. the semester map: every SVG exists; the highlighted file carries the
      gold ring and the "today" tag exactly once and the plain one not at all;
-     the layout arithmetic holds (no two labels in a tier overlap, no leader
-     crosses a shallower label or a tiny tag, every label is inside the
-     viewBox, consecutive titled weeks put their dates on different rows);
-     a label that does not fit two lines is refused with the `short:` hint.
+     the map prints only dates and kind tags (no session-title words, no
+     presenter names, no leader lines); dates and tags alternate their two
+     rows by index parity and nothing on one row overlaps under the width
+     estimate; an overlap is a loud SeriesError, never a silent collision.
   6. the QR files exist, the SVG is the scalable one.
   7. deckprofile resolves series / series_index to the session fields and the
      prior session, and fails loudly (ConfigError) on an unknown index or an
@@ -98,6 +98,10 @@ expect_error("missing scalar field", GOOD.replace("room: E7-233\n", ""), "room i
 expect_error("gap in the indices", GOOD.replace("  - index: 16\n", "  - index: 17\n"), "no gap")
 expect_error("unknown session key", GOOD.replace("    remote: true\n", "    remote: true\n    venue: x\n", 1),
              "unknown key")
+expect_error("short: is no longer a session key",
+             GOOD.replace("    deck: dgist-2026f-w02\n",
+                          "    deck: dgist-2026f-w02\n    short: x\n", 1),
+             "unknown key")
 expect_error("qa_tool url must be http(s)", GOOD.replace("url: https://app.wooclap.com/PLACEHOLDER",
                                                         "url: app.wooclap.com/PLACEHOLDER"),
              "http(s) URL")
@@ -166,51 +170,51 @@ check("svg has no xml prolog (inlined as is) and inherits the font",
       w02.startswith("<svg ") and 'font-family:inherit' in w02)
 check("16 dots on the line", len(re.findall(r"<circle [^>]*cy=\"%d\"" % sa.Y_LINE, plain)) == 16)
 check("presenter names are not on the map", "Hyeongmin" not in plain and "Yunsung" not in plain)
-check("guest and keynote prefixes", "Guest: " in plain and "Keynote: " in plain)
-check("tiny tags", all(t in plain for t in (">DGIST<", ">holiday<", ">report<", ">essay<")))
-check("titles at most two lines",
-      all(len(sa.split_lines(sa.map_label(s))) <= 2 for s in S if s["kind"] in sa.TITLED))
+check("no session titles on the map",
+      all(w not in plain for w in ("Paradigm", "Embodied", "Hardware", "Imitation",
+                                   "Ethics", "Megatrend", "Foundation", "Spatial",
+                                   "Leadership", "Guest:", "Keynote:")))
+check("no leader lines, no title labels (the baseline is the only <line>)",
+      'class="label"' not in plain and plain.count("<line ") == 1)
+check("every kind tag appears",
+      all(t in plain for t in (">Lecture<", ">Guest<", ">Keynote<", ">DGIST<",
+                               ">holiday<", ">report<", ">essay<")))
+check("all 16 dates at 26 px", plain.count(f'font-size="{sa.FONT_DATE}"') == 16)
+bold_plain = plain.count('font-weight="700"')
+bold_w02 = w02.count('font-weight="700"')
+check("bold dates for the 8 lecture/guest/keynote sessions plus 5 bold Lecture tags",
+      bold_plain == 13 and bold_w02 == 14, f"plain={bold_plain} w02={bold_w02}")
+check("quiet weeks are muted", plain.count(f'fill="{sa.MUTED}"') == 16)
 
 layout = sa.map_layout(series)
-titled = [it for it in layout.values() if it["lines"]]
-ok_overlap = True
-for a in titled:
-    for b in titled:
-        if a is b or a["tier"] != b["tier"]:
-            continue
-        if a["x0"] < b["x1"] + sa.TIER_GAP and b["x0"] < a["x1"] + sa.TIER_GAP:
-            ok_overlap = False
-check("no two labels in one tier overlap (with the gap)", ok_overlap)
-ok_leader = True
-for a in titled:
-    for b in titled:
-        if a is b or b["tier"] >= a["tier"]:
-            continue
-        # a's leader passes through b's tier on the way down
-        if b["x0"] - sa.LEADER_PAD <= a["x"] <= b["x1"] + sa.LEADER_PAD:
-            ok_leader = False
-    for t in layout.values():
-        if t["tag"] and abs(t["x"] - a["x"]) < sa.TINY_HALF + sa.LEADER_PAD:
-            ok_leader = False
-check("no leader crosses a shallower label or a tiny tag", ok_leader)
-check("every label is inside the viewBox",
-      all(it["x0"] >= sa.EDGE_PAD and it["x1"] <= sa.MAP_W - sa.EDGE_PAD for it in titled))
-check("consecutive titled weeks alternate date rows",
-      all(layout[i]["date_row"] != layout[i + 1]["date_row"]
-          for i in layout if layout[i]["lines"] and (i + 1) in layout and layout[i + 1]["lines"]))
-check("at most three tiers used", max(it["tier"] for it in titled) <= 2)
+
+
+def row_clear(entries):
+    placed = sorted(entries)
+    return all((xb - wb / 2) - (xa + wa / 2) >= sa.ROW_GAP
+               for (xa, wa), (xb, wb) in zip(placed, placed[1:]))
+
+
+check("no two dates on one row overlap (width estimate + gap)",
+      all(row_clear([(it["x"], sa.text_width(it["date"], sa.FONT_DATE))
+                     for it in layout.values() if it["date_row"] == r]) for r in (0, 1)))
+check("no two tags on one row overlap (width estimate + gap)",
+      all(row_clear([(it["x"], sa.text_width(it["tag"], it["tag_size"]))
+                     for it in layout.values() if it["tag_row"] == r]) for r in (0, 1)))
+check("consecutive sessions alternate date rows",
+      all(layout[i]["date_row"] != layout[i + 1]["date_row"] for i in range(1, len(layout))))
+check("consecutive sessions alternate tag rows",
+      all(layout[i]["tag_row"] != layout[i + 1]["tag_row"] for i in range(1, len(layout))))
 check("every session has a dot x in order",
       [layout[i]["x"] for i in sorted(layout)] == sorted(layout[i]["x"] for i in layout))
 
-# one label too long for two lines -> refused with the short: hint
+# two texts forced onto the same spot -> refused loudly, never drawn overlapping
 try:
-    sa.split_lines("Methods for Learning Action: Imitation, Reinforcement Learning, and Diffusion Policies")
-    check("a long label is refused", False, "no error")
+    sa._assert_row_clear("date 0", [(100.0, 78.0, "date 'Sep 4'"),
+                                    (150.0, 78.0, "date 'Sep 11'")])
+    check("overlapping texts on one row are refused", False, "no error")
 except sa.SeriesError as e:
-    check("a long label is refused with the short: hint", "short:" in str(e), str(e))
-check("split balances two lines",
-      sa.split_lines("The Paradigm Shift Toward Embodied AI") == ["The Paradigm Shift", "Toward Embodied AI"])
-check("split keeps a short label on one line", sa.split_lines("Leadership talk") == ["Leadership talk"])
+    check("overlapping texts on one row are refused", "overlap" in str(e), str(e))
 try:
     sa.semester_map_svg(series, 99)
     check("highlighting an unknown session fails", False)
@@ -332,7 +336,8 @@ else:
           html.count('src="../../../Figures/lectures/_series/dgist-2026f/qr-qa.svg"') == 2
           and 'class="qr-code">code PLACEHOLDER<' in html)
     check("the rules and the LMS footnote come from the lock",
-          "Attendance is taken every session" in html
+          "Attendance: every session" in html
+          and "answers in the last 10 minutes" in html
           and "live on the DGIST LMS" in html)
     check("series-session prior_title resolves", "Special lecture on AI" in html)
 

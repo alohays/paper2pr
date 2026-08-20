@@ -31,9 +31,8 @@
 #     index       1..N, unique, the week number (W02 = index 2)
 #     date        YYYY-MM-DD, quoted, must be the course weekday (a Friday)
 #     kind        lecture | guest | keynote | dgist | holiday | exam
-#     title       full session title
-#     short       optional shorter title for the semester map (two lines of
-#                 at most 24 characters; the map refuses a longer label)
+#     title       full session title (said aloud; the semester map prints
+#                 only dates and kind tags, never titles)
 #     presenter   name, or "" when DGIST arranges the session
 #     deck        deck name for a session that has one, else "" (a planned
 #                 name is fine: the resolver tolerates a deck that does not
@@ -62,10 +61,10 @@ qa_tool:
   note: "replace url and code once the Message wall event exists; re-run scripts/series_assets.py"
 
 rules:
-  - Attendance is taken every session
-  - A short reflection report replaces the midterm exam; a synthesis essay replaces the final
-  - "Official notices, deadlines and grades: the LMS, not this deck"
-  - "Questions: scan the QR any time; we answer them in the last ten minutes"
+  - "Attendance: every session"
+  - "Midterm: a reflection report. Final: a synthesis essay"
+  - "Notices, deadlines, grades: the LMS"
+  - "Questions: scan the QR any time; answers in the last 10 minutes"
 
 notation:
   policy: "pi(a | o, l)"
@@ -95,7 +94,6 @@ sessions:
     date: "2026-09-18"
     kind: lecture
     title: Foundations of Robot Hardware, Control, and Modern Platforms
-    short: Robot Hardware, Control, and Platforms
     presenter: Yunsung Lee
     deck: dgist-2026f-w04
   - index: 5
@@ -108,7 +106,6 @@ sessions:
     date: "2026-10-02"
     kind: lecture
     title: Action as a New Modality and the Scaling of Robot Learning Data
-    short: Action as a Modality and Robot Learning Data
     presenter: Yunsung Lee
     deck: dgist-2026f-w06
   - index: 7
@@ -127,7 +124,6 @@ sessions:
     date: "2026-10-23"
     kind: lecture
     title: "Methods for Learning Action: Imitation, Reinforcement Learning, and Diffusion Policies"
-    short: "Learning Action: Imitation, RL, Diffusion"
     presenter: Yunsung Lee
     deck: dgist-2026f-w09
   - index: 10
@@ -159,14 +155,12 @@ sessions:
     date: "2026-11-27"
     kind: lecture
     title: Ethics, Safety, and Social Responsibility in the Age of Embodied AI
-    short: Ethics, Safety, and Social Responsibility
     presenter: Yunsung Lee
     deck: dgist-2026f-w14
   - index: 15
     date: "2026-12-04"
     kind: keynote
     title: The Physical AI Megatrend and the Coming Industrial Revolution
-    short: The Physical AI Megatrend
     presenter: Chris (Hongseop) Choi
     deck: ""
   - index: 16
