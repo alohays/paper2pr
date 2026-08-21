@@ -75,8 +75,8 @@ plays video.
 written in a different language from what the deck will normally use. Say so
 explicitly when you override, so the mismatch with the config is visible.
 
-If the deck has no config (the decks that predate `/new-deck`), fall back to
-asking the user.
+If the deck has no config (no tracked deck is in that state today), fall
+back to asking the user.
 
 ### 0C. Check for Existing Notes
 Search the QMD for `::: {.notes}` blocks and a front matter `data-notes:`.
@@ -288,25 +288,17 @@ states it in a single sentence a listener could repeat afterwards.
 ## Privacy: The Three Layers
 
 Notes are local-only, presenter-screen-only, and never reach git or the
-deployed page (plan D13). Three independent layers enforce it:
+deployed page (plan D13). Three independent layers enforce it: a git clean
+filter strips them before staging, a CI strip removes them from every
+rendered deck HTML at deploy, and `backup_notes.py` keeps a gitignored copy
+as insurance against a `git checkout` smudging the note-free blob over the
+working file. Mechanism, file names and the one-time setup command are in
+AGENTS.md, Speaker Notes Policy.
 
-1. **Git clean filter** - `.gitattributes` (`Quarto/**/*.qmd`) runs
-   `scripts/strip_qmd_notes.py` before staging: `::: {.notes}` divs and the
-   front matter `data-notes:` block never enter a blob. Installed once per
-   clone by `bash scripts/setup-git-filters.sh`.
-2. **CI strip** - deployment runs `scripts/strip_notes.sh`, which applies
-   `scripts/strip_speaker_notes.py` to every rendered deck HTML:
-   `<aside class="notes">` elements and section `data-notes` attributes are
-   removed. The committed qmd has no notes, so this normally finds nothing;
-   finding nothing is the point.
-3. **Backup** - `python3 scripts/backup_notes.py backup|restore [Deck]`
-   saves both note forms to `.speaker-notes/<genre>/<deck>.json`
-   (gitignored): insurance against a `git checkout` smudging the note-free
-   blob over the working file. Back up after every writing session.
-
-**Never maintain separate branches** for notes vs no-notes. The filter and
-the CI strip are the only mechanism; a notes branch would leak on the first
-merge.
+Two rules this workflow owns: **back up after every writing session**
+(`python3 scripts/backup_notes.py backup [Deck]`), and **never maintain
+separate branches** for notes vs no-notes - a notes branch leaks on the
+first merge.
 
 ---
 

@@ -2,7 +2,7 @@
 name: slide-excellence
 description: The one review fan-out for a deck - visual audit, pedagogical review (with the devil's-advocate challenges), proofreading, fact check against the deck's declared sources, and a render audit of full-deck screenshots, run as parallel subagents and synthesized. Use for a comprehensive quality check before milestones, or when the user says "review the deck", "proofread", "pedagogy review", "fact check", or "challenge the slides".
 argument-hint: "[DeckName]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Task"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Agent"]
 context: fork
 ---
 
@@ -64,7 +64,7 @@ Read `profile` and `sources` from `PROFILE_JSON`:
 
 ### 3. Launch the review agents in parallel
 
-Launch every selected agent in one message. **Each agent's Task prompt
+Launch every selected agent in one message. **Each agent's prompt
 contains, verbatim:** the deck name, the qmd path, the full `PROFILE_JSON`,
 the full `DECK_YML` (fenced, labelled "deck.yml"), and its report path from
 the table above. The agents also re-run `deckprofile.py` themselves as their

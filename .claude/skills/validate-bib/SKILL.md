@@ -35,7 +35,8 @@ Cross-reference all citations in lecture files against bibliography entries.
 
 ## Files to scan:
 ```
-Quarto/*/*.qmd      # decks are one level down, under their genre
+Quarto/*/*.qmd                    # decks are one level down, under their genre
+Quarto/lectures/_series/*/*.qmd   # shared include slides, rendered into series decks
 ```
 (`python3 scripts/deckpath.py --list` names every deck.)
 

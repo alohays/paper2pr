@@ -159,6 +159,13 @@ render PDF inline, so export vector figures as SVG. Keep
 name its `source` in a `.footnote` or caption on the slide that shows it, or
 the gate deducts.
 
+Videos: declare every clip once in `Figures/<genre>/<name>/videos.yml`, then
+run `python3 scripts/media_prep.py <name>` to cut and lock them and `bash
+scripts/media_release.sh <name>` to publish them on the deck's GitHub Release.
+Slides place a clip with `{{< video-card slug >}}` or
+`## {.video-full video="@slug"}`, never by URL. The manifest schema and the
+rest of the pipeline are in AGENTS.md, Videos.
+
 Write a plain hyphen, never `---` or `--` (Quarto renders them as em and en
 dashes; the gate deducts), and never a level-1 `#` heading after the title
 (Quarto stacks every following slide under it; the gate blocks). Section
@@ -184,9 +191,11 @@ see a slide that is technically legal and pedagogically empty. Walk it.
 [ ] Transition slides are ## {.divider} slides, no level-1 heading anywhere
 [ ] No ---, --, or literal em/en dash in slide text
 [ ] Third-party figures name their source on the slide (figures.yml)
+[ ] Every clip declared in videos.yml, encoded, and live on the deck's Release
 [ ] No term from <name>.forbidden.txt in slide text
 [ ] Score >= 80 to commit, >= 90 to ship
-[ ] /slide-excellence run (visual, pedagogy incl. challenges, proofreading)
+[ ] /slide-excellence run (visual, pedagogy incl. challenges, proofreading,
+    fact check, render audit)
 ```
 
 For a lecture, additionally: an opening slide that names where the previous
