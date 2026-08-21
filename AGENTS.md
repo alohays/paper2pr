@@ -63,6 +63,10 @@ python3 scripts/backup_notes.py restore DreamZero   # after clone or accidental 
 
 **Every presentation Yunsung gives is built here** -- paper reviews, invited talks, and course lectures. The name is historical; the repo is a framework, and it keeps the name because published slide URLs depend on it.
 
+![Deck lifecycle: video and series manifests plus the project defaults feed quarto render; the quality gate, a push to main and CI publish the deck to GitHub Pages; clips live on a GitHub Release, while speaker notes and the PDF handout never leave the presenter's machine](assets/pipeline.svg)
+
+Left to right: `quarto render` builds `<deck>.qmd` under the `Quarto/_quarto.yml` defaults and the `Quarto/_filters/*.lua` shortcodes, `scripts/quality_score.py` grades the result, and a push to `main` hands it to `.github/workflows/deploy.yml`, which re-runs `render_decks.sh`, `strip_notes.sh`, `assemble_site.sh` and `check_site_assets.py`. Off the main line: `scripts/media_prep.py` and `scripts/series_assets.py` turn the two manifests into the `videos.json` and `series.json` locks the shortcodes read, `scripts/media_release.sh` puts the clips on the deck's Release, the clean filter `scripts/strip_qmd_notes.py` keeps speaker notes out of git, and `scripts/export_pdf.sh` writes the local-only handout. The source is `assets/pipeline.svg`.
+
 Decks live at `Quarto/<genre>/<name>.qmd`, where genre is one of the lines in `Quarto/_genres.txt`. A deck's figures, speaker-note backups, and presenter scripts are scoped the same way, so one rule finds everything a deck owns.
 
 Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, for how long, what they have already seen, which language the slides and notes are in. Those are not documentation. `quality_score.py` reads them to pick a bullet budget and decide which checks apply, the Korean gate reads them to decide how much Hangul this deck may carry, and `/write-speaker-notes` reads them for the script budget. Start a deck with `/new-deck`, which interviews for exactly those answers. Merging to `main` publishes; there is no publish field.
@@ -100,7 +104,7 @@ Shared core: `.claude/rules/slide-design-principles.md`. Per-genre budgets and e
 3. **Filled frame** -- title pinned at top, content centered vertically and horizontally (theme does this; escape hatches: `{.top-align}`, `{.left}`, `{.statement}`)
 4. **Slide types** -- dividers, full-bleed video, inline video, charts, formula legends, timelines are theme classes, not hand-built layouts; see the Quarto CSS Classes table below and `Quarto/_fixtures/design-test.qmd` for a rendered example of each
 
-New decks use `clean-academic.scss` with `center: false` and `auto-stretch: false`. Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to `clean-academic-legacy.scss` and exempt from the new rules.
+New decks use `clean-academic.scss`; `center: false` and `auto-stretch: false` reach them from the `Quarto/_quarto.yml` project defaults, not from the deck's own front matter. Legacy decks (DreamZero, DreamDojo, RoboTTT) are pinned to `clean-academic-legacy.scss` and exempt from the new rules.
 
 ## Videos
 
@@ -191,8 +195,7 @@ JSON lock plus images, Lua shortcodes that read the lock.
    `note`), `rules` (the lines of the "How this course runs" slide), `notation`
    (`policy`, `note`), and `sessions`: one mapping per week with `index` (the week
    number), `date` (quoted `YYYY-MM-DD`, a Friday), `kind` (`lecture | guest |
-   keynote | dgist | holiday | exam`), `title`, optional `short` (a shorter label for
-   the semester map, two lines of at most 24 characters), `presenter`, `deck` (the
+   keynote | dgist | holiday | exam`), `title`, `presenter`, `deck` (the
    deck name, or `""`; a planned name is fine, nothing requires the deck to exist
    yet), optional `remote` / `tentative`. `dgist-2026f` is the DGIST HSS118 term.
 2. **Build** `python3 scripts/series_assets.py <course>`: validates the yml (one
@@ -202,10 +205,13 @@ JSON lock plus images, Lua shortcodes that read the lock.
    `prior_index` = the nearest earlier session that is not a holiday or exam week; a
    guest or DGIST session counts), `qr-qa.png` and `qr-qa.svg` (qrencode, from
    `qa_tool.url`), `semester-map.svg` and one `semester-map-wNN.svg` per session
-   with that week ringed in gold as "today". The map is one 1100x300 timeline with a
-   dot per week; titled weeks (lecture / guest / keynote) carry the date above and a
-   two-line title below in up to three tiers with leader lines, placed by a search
-   that refuses overlaps (a label that does not fit says so: set `short:`). Output
+   with that week ringed in gold as "today". The map is one 1100x200 timeline with a
+   dot per session, showing only dates and short kind tags, never session titles:
+   the short date above each dot (bold for lecture / guest / keynote, muted
+   otherwise) and a kind tag below ("Lecture", "Guest", "Keynote", "DGIST";
+   "holiday" for holiday weeks, "report" / "essay" for the exam weeks). Dates and
+   tags alternate two rows by index parity, and a layout whose texts would
+   overlap fails loudly (SeriesError) instead of rendering. Output
    is byte-deterministic, and a re-run rewrites only files whose bytes change.
    `--check` verifies every file exists and is byte-identical to a fresh in-memory
    render from the yml (content, never mtimes: a clone or checkout lands the yml
@@ -230,8 +236,8 @@ JSON lock plus images, Lua shortcodes that read the lock.
      `term`, `room`, `time`, `lms_note`, `qa_tool.name`, `notation.policy` ...).
    - `{{< series-rules >}}` -- a bullet list of `rules`.
    - `{{< series-session key >}}` -- `title | date | short_date | presenter | week |
-     kind | prior_title | prior_date | prior_short_date | prior_presenter | prior_week`
-     of this deck's session (or `week=NN`).
+     kind | index | prior_title | prior_date | prior_short_date | prior_presenter |
+     prior_week | prior_kind | prior_index` of this deck's session (or `week=NN`).
    - No `series:` metadata, no lock, an unknown key or a session without a prior all
      fail the render with one "(E) series:" line (`assert`, as in
      `video-manifest.lua`). RELPATH is computed from the input file's directory to
@@ -265,6 +271,7 @@ JSON lock plus images, Lua shortcodes that read the lock.
 paper2pr/
 ├── AGENTS.md                    # Canonical agent instructions for this repo
 ├── .claude/                     # Rules, skills, agents, hooks
+├── assets/                      # Images used by README.md and AGENTS.md (repo-only, not deployed)
 ├── Bibliography_base.bib        # Centralized bibliography (grows per paper)
 ├── Figures/<genre>/<deck>/      # Per-deck figures, SVG/PNG only, plus the video home:
 │   ├── videos.yml               #   clip manifest (hand-written, committed)
@@ -283,12 +290,15 @@ paper2pr/
 │   ├── clean-academic*.scss     # Shared themes (main + legacy)
 │   ├── fonts/                   # Pretendard (Hangul fallback), linked by _quarto.yml
 │   ├── _widgets/ _script/       # Shared includes; presenter scripts (gitignored)
-│   ├── _fixtures/               # design-test.qmd + theme-mockups/ + gates/ + video/ -- not a genre, never published
+│   ├── _fixtures/               # design-test.qmd + theme-mockups/ + gates/ + video/ + series/ -- not a genre, never published
 │   │   ├── gates/               # pass.qmd / trip.qmd: one deck that trips every gate check, one that passes
 │   │   ├── video/               # the video pipeline end to end (manifest -> Release media-fixture-video -> shortcodes)
 │   │   └── series/              # the series object: shared includes + every series shortcode
 │   └── <genre>/                 # <deck>.qmd + <deck>.deck.yml + per-deck assets
 ├── .speaker-notes/<genre>/      # Note backups (gitignored -- notes never enter git)
+├── exports/                     # PDF handouts from scripts/export_pdf.sh (gitignored)
+├── docs/                        # Local deploy preview from scripts/sync_to_docs.sh
+│                                #   (gitignored; CI publishes from _site)
 ├── pages/index.html             # Landing page, GENERATED by scripts/build_landing.py
 ├── scripts/                     # Utility scripts. Python here is stdlib-only
 │                                #   on purpose -- see scripts/minyaml.py
