@@ -10,4 +10,4 @@ after replacing the PLACEHOLDER). -->
 
 {{< series-qr >}}
 
-Questions go on the wall any time; we answer them in the last ten minutes.
+Questions go on the wall any time; we answer them in the last 10 minutes.

@@ -71,7 +71,9 @@ demand the new density limits from them.
   or manual top margins (use `{.top-align}` instead)
 - `{.top-align}` used without a reason (full-bleed figure, widget)
 - Lists wrapped in `{.left}` without a reason
-- Missing `auto-stretch: false` in a new deck's YAML
+- `auto-stretch` re-enabled by the deck, overriding the `Quarto/_quarto.yml`
+  project default of false (or a `_fixtures/` qmd that fails to repeat it -
+  fixtures sit outside the project defaults)
 
 ### BOX FATIGUE
 - More colored boxes on a slide than `box_density` allows
@@ -93,11 +95,11 @@ demand the new density limits from them.
 - Images without explicit width/alignment settings
 - **PDF images in Quarto** - browsers cannot render PDFs inline; must be SVG
 
-### PLOTLY CHART QUALITY (Quarto only)
-- Missing height override CSS
-- Charts appear squished or too small
-- Missing hover tooltips
-- Color mapping mismatch (blank traces)
+### CHART FIGURES
+- `svg.chart` lettering too small to read from the back row
+- Chart colors hardcoded instead of the theme vars (`--accent`, `--accent2`,
+  `--chart-muted`)
+- `figure.chart-figure` sized past the slide, or crowding the bullets beside it
 
 ## Split-First Fix Principle
 

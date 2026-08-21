@@ -16,7 +16,8 @@ paths:
 2. **Typos** -- misspellings, search-and-replace corruption, duplicated words
 3. **Overflow** -- content exceeding the 1280x720 slide canvas
 4. **Consistency** -- notation, citation style (`@key` vs `[@key]`), terminology
-5. **Academic quality** -- informal abbreviations, missing words, awkward phrasing
+5. **Register** -- informal abbreviations, missing words, phrasing that the
+   declared audience would trip over
 
 ## Three-Phase Workflow
 
@@ -28,8 +29,9 @@ Each agent:
    - Location (line number or slide title)
    - Current text
    - Proposed fix
-   - Category (grammar / typo / overflow / consistency)
-3. Saves report to `quality_reports/` (e.g., `quality_reports/DeckName_report.md`)
+   - Category (grammar / typo / overflow / consistency / register)
+3. Saves report to `quality_reports/reviews/<Deck>-proofread-<YYYY-MM-DD>.md`
+   (create the directory if it does not exist)
 4. **Does NOT modify any source files**
 
 ### Phase 2: Review & Approve

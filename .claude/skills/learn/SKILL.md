@@ -142,7 +142,7 @@ every following `##` slide as a vertical child of that section, so the
 deck loses its left-to-right flow and the rendered slide count drops.
 
 ## Context / Trigger Conditions
-- `quality_score.py --summary` slide count differs from what the browser shows
+- `quality_score.py` reports BLOCKER `[level1_heading]` and forces the score to 0
 - Arrow-right stops advancing; arrow-down does
 - The deck recently gained a section divider written as `# Title`
 
@@ -153,8 +153,8 @@ deck loses its left-to-right flow and the rendered slide count drops.
 3. Re-render and walk the deck with `bash scripts/preview.sh <deck>`
 
 ## Verification
-`bash scripts/preview.sh <deck>` shows one horizontal slide per `##`;
-`quality_score.py` counts agree with the browser.
+`bash scripts/preview.sh <deck>` shows one horizontal slide per `##`; the PNG
+count from `python3 scripts/shoot_slides.py <deck>` matches the `##` count.
 
 ## References
 - `Quarto/_filters/slide-types.lua`

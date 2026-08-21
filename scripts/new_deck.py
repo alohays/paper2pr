@@ -307,7 +307,7 @@ def series_includes(series: str) -> tuple[str, str]:
                 "\n")
     top = (inc("semester-map", "where today sits in the semester, in one breath")
            + inc("course-runs", "the rules, once; point at the LMS")
-           + inc("ask-anytime", "show the wall; say questions are answered in the last ten minutes"))
+           + inc("ask-anytime", "show the wall; say questions are answered in the last 10 minutes"))
     bottom = inc("qa", "work through the wall; close")
     return top, bottom
 

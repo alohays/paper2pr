@@ -9,7 +9,7 @@ description: |
   "audit", "find inconsistencies", "check everything".
 author: Claude Code Academic Workflow
 version: 1.0.0
-allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "Task"]
+allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "Agent"]
 ---
 
 # /deep-audit — Repository Infrastructure Audit
@@ -26,7 +26,7 @@ Run a comprehensive consistency audit across the entire repository, fix all issu
 
 ### PHASE 1: Launch 4 Parallel Audit Agents
 
-Launch these 4 agents simultaneously using `Task` with `subagent_type=general-purpose`:
+Launch these 4 agents simultaneously using `Agent` with `subagent_type=general-purpose`:
 
 #### Agent 1: Canonical Docs Accuracy
 Focus: `AGENTS.md` (the single canonical description) and `README.md` (short external intro)
@@ -66,7 +66,7 @@ Focus: `scripts/`, `README.md`, `AGENTS.md`, `MEMORY.md`
 - All links point to valid targets
 - License section matches LICENSE file
 - `MEMORY.md` entries do not point at deleted files
-- Test scripts still pass: `python3 scripts/test_profiles.py`, `python3 scripts/test_minyaml.py`, `bash scripts/test_note_filter.sh`, `bash scripts/test_korean_gate.sh`
+- Test scripts still pass: `python3 scripts/test_profiles.py`, `python3 scripts/test_minyaml.py`, `python3 scripts/test_media.py`, `python3 scripts/test_series.py`, `bash scripts/test_note_filter.sh`, `bash scripts/test_korean_gate.sh`
 
 ### PHASE 2: Triage Findings
 
@@ -107,7 +107,7 @@ These are real bugs found across 7 rounds — check for these specifically:
 | Hash length mismatch | All Python hooks | Some used `[:12]`, others `[:8]` |
 | Missing fail-open | Python hooks `__main__` | Unhandled exception → exit 1 → confusing behavior |
 | Python 3.10+ syntax | Type hints like `dict | None` | Need `from __future__ import annotations` |
-| Missing directories | quality_reports/specs/ | Referenced in rules but never created |
+| Missing directories | paths named in rules and skills | A destination path was documented but nothing ever created it |
 | macOS-only commands | Skills, rules | `open` without `xdg-open` fallback |
 | Protected file blocking | settings.json edits | protect-files.sh blocks Edit/Write |
 

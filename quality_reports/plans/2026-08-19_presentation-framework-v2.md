@@ -171,6 +171,7 @@ Delete, in separate commits by nature:
 - Third-party clips on a public page (D6). Mitigation: `videos.yml` records publisher, source URL, and date for every clip; a takedown means deleting one Release asset, and the slide degrades to its poster.
 - First real exercise of the main theme and the lecture profile. Mitigation: WP0-WP3 fixtures before any W02 slide exists; keep the audit's 14-slide probe as a regression fixture.
 - The Korean pre-commit gate rejects any Hangul outside notes; `korean_allowance` (WP2) must land before W02's glossed slides, or the first W02 commit fails.
+- `assets/semester-map.svg` is a hand-copied snapshot of the generated `Figures/lectures/_series/dgist-2026f/semester-map-w02.svg`, kept so README.md has a map to show. `series_assets.py --check` walks only the files it generates under `Figures/lectures/_series/<course>/`, so a later change to the map generator drifts the snapshot silently while README keeps rendering the old map. Mitigation: the refresh command is in an XML comment at the top of the snapshot; re-copy it whenever `scripts/series_assets.py` changes.
 
 ## 7. Verification (repeat at the end of every WP)
 

@@ -1,8 +1,8 @@
-# Speaker Notes Report: [PaperName]
+# Speaker Notes Report: [Deck]
 
 **Date:** YYYY-MM-DD
 **Language:** [English / Korean]
-**Target Duration:** 30 min
+**Target Duration:** [speaking_min] min speaking (of a [duration_min] min slot)
 
 ---
 

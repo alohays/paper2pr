@@ -50,7 +50,7 @@ issues found. **Do NOT edit any files.** Only produce the report.
 - More wrapped (two-line) bullets than `bullets_max_two_line`; any bullet
   likely to run to three rendered lines (at 1280x720 a bullet holds one line
   up to roughly 70 rendered characters)
-- Inline font-size overrides below 0.85em used to make content fit
+- Inline font-size overrides below 1em used to make content fit
 - Dense slides that should be split
 
 ### 4. CONSISTENCY

@@ -34,9 +34,11 @@ paths:
 
 ## Paper Review Progression
 
-| # | Paper | Key Topic | Key Architecture | Status |
-|---|-------|-----------|-----------------|--------|
-| 1 | DreamZero (NVIDIA, 2025) | WAM as zero-shot robot policy | Joint video-action diffusion | In progress |
+| # | Paper | Key Topic | Key Architecture |
+|---|-------|-----------|-----------------|
+| 1 | DreamZero (NVIDIA, 2026) | WAM as zero-shot robot policy | Autoregressive DiT with flow matching, Wan2.1 backbone |
+| 2 | DreamDojo (NVIDIA, 2026) | Generalist world model trained on human video | Latent Action Model + Cosmos-Predict2.5 backbone |
+| 3 | RoboTTT (NVIDIA GEAR / Stanford / UT Austin, 2026) | Context scaling for robot policies | Gated test-time-training memory inside a GR00T N1.7 DiT |
 
 ## Key Acronyms
 

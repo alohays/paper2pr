@@ -41,7 +41,6 @@ profile's budgets, not this table, when they differ.
 | Major | Dash expression in visible text: `---`, `--`, a literal em/en dash, or an `&mdash;`/`&ndash;` entity (`dash_lint`) | -2 each, cap 10 |
 | Major | Third-party figure shown without its source on the slide (`attribution`) | -5 each, cap 20 |
 | Minor | List nesting deeper than 1 sub-level | -1 per slide |
-| Minor | Long lines (>100 chars) | -1 (EXCEPT documented math formulas) |
 
 ### Visible text
 
@@ -146,6 +145,4 @@ Hangul character count, after the notes filter, exceeds it.
 
 ## Quality Reports
 
-Generated **only at merge time**. Reports are free-form markdown saved under
-`quality_reports/merges/YYYY-MM-DD_[branch-name].md` (score, blocking issues,
-recommendations, what was verified).
+Merge-time quality reports: see `.claude/rules/session-logging.md`.

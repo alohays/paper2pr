@@ -2,7 +2,7 @@
 name: visual-audit
 description: Perform adversarial visual audit of Quarto RevealJS slides checking for density violations, overflow, font consistency, box fatigue, and centering issues, on full-deck screenshots from scripts/shoot_slides.py.
 argument-hint: "[DeckName]"
-allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Task"]
+allowed-tools: ["Read", "Grep", "Glob", "Write", "Bash", "Agent"]
 ---
 
 # Visual Audit of Slide Deck
@@ -54,7 +54,10 @@ the rendered pixels.
    **FONT CONSISTENCY:** Any `.smaller`/`.smallest` in a new deck (forbidden),
    inline font-size overrides below 1em
    **CENTERING (new decks):** ad-hoc positioning fighting the theme,
-   unjustified `{.top-align}` or `{.left}`, missing `auto-stretch: false`
+   unjustified `{.top-align}` or `{.left}`, a deck that re-enables
+   `auto-stretch` over the `Quarto/_quarto.yml` project default of false
+   (or a `_fixtures/` qmd that fails to repeat it - fixtures sit outside
+   the project defaults)
    **BOX FATIGUE:** more boxes on one slide than the budget, wrong box types
    **LAYOUT:** Missing transitions, missing framing sentences, semantic colors
 

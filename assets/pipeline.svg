@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="480" viewBox="0 0 980 480" role="img" aria-label="Deck lifecycle: manifests and project defaults feed quarto render; the rendered deck passes the quality gate, is pushed to main, rebuilt by CI and published to GitHub Pages; media lives on a GitHub Release, speaker notes and the PDF handout stay local.">
+<title>paper2pr deck lifecycle</title>
+<rect width="980" height="480" fill="#ffffff"/>
+<rect x="0.5" y="0.5" width="979" height="479" fill="none" stroke="#c9d2e0" stroke-width="1"/>
+<rect x="20" y="16" width="4" height="13" fill="#B9975B"/>
+<text x="32" y="27" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="start" letter-spacing="0.9">MANIFESTS AND PROJECT DEFAULTS</text>
+<rect x="20" y="38" width="216" height="48" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="30" y="60" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="start">Figures/&lt;genre&gt;/&lt;deck&gt;/</text>
+<text x="30" y="78" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="start">videos.yml</text>
+<rect x="20" y="96" width="216" height="48" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="30" y="118" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="start">Quarto/lectures/_series/</text>
+<text x="30" y="136" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="start">&lt;course&gt;.yml</text>
+<line x1="236" y1="62" x2="251" y2="62" stroke="#012169" stroke-width="1.8"/>
+<path d="M 258 62 L 250 57.4 L 250 66.6 Z" fill="#012169"/>
+<line x1="236" y1="120" x2="251" y2="120" stroke="#012169" stroke-width="1.8"/>
+<path d="M 258 120 L 250 115.4 L 250 124.6 Z" fill="#012169"/>
+<rect x="258" y="38" width="152" height="48" rx="5" fill="#F2F5FA" stroke="#012169" stroke-width="1.6"/>
+<text x="334" y="60" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">media_prep.py</text>
+<text x="334" y="78" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">trim + poster</text>
+<rect x="258" y="96" width="152" height="48" rx="5" fill="#F2F5FA" stroke="#012169" stroke-width="1.6"/>
+<text x="334" y="118" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">series_assets.py</text>
+<text x="334" y="136" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">dates, map, QR</text>
+<line x1="410" y1="62" x2="425" y2="62" stroke="#012169" stroke-width="1.8"/>
+<path d="M 432 62 L 424 57.4 L 424 66.6 Z" fill="#012169"/>
+<line x1="410" y1="120" x2="425" y2="120" stroke="#012169" stroke-width="1.8"/>
+<path d="M 432 120 L 424 115.4 L 424 124.6 Z" fill="#012169"/>
+<rect x="432" y="38" width="190" height="48" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="527" y="60" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">videos.json</text>
+<text x="527" y="78" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">lock: Release URLs</text>
+<rect x="432" y="96" width="190" height="48" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="527" y="118" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">series.json</text>
+<text x="527" y="136" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">lock: map, QR images</text>
+<line x1="527" y1="86" x2="527" y2="96" stroke="#012169" stroke-width="1.6"/>
+<rect x="664" y="38" width="212" height="106" rx="5" fill="#F2F5FA" stroke="#012169" stroke-width="1.6"/>
+<text x="770" y="62" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">project defaults</text>
+<text x="770" y="88" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">Quarto/_quarto.yml</text>
+<text x="770" y="110" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">Quarto/_filters/*.lua</text>
+<text x="770" y="132" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">theme + shortcodes</text>
+<polyline points="527,144 527,172 276,172 276,192" fill="none" stroke="#012169" stroke-width="1.8"/>
+<polyline points="770,144 770,172 527,172" fill="none" stroke="#012169" stroke-width="1.8"/>
+<path d="M 276 200 L 271.4 192 L 280.6 192 Z" fill="#012169"/>
+<rect x="20" y="178" width="4" height="13" fill="#B9975B"/>
+<text x="32" y="189" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="start" letter-spacing="0.9">AUTHOR AND PUBLISH</text>
+<text x="300" y="188" font-family="sans-serif" font-size="13" fill="#5a5a5a">the shortcodes read the locks: <tspan font-family="monospace" fill="#012169">video-card</tspan><tspan>, </tspan><tspan font-family="monospace" fill="#012169">semester-map</tspan><tspan>, </tspan><tspan font-family="monospace" fill="#012169">series-qr</tspan></text>
+<rect x="20" y="200" width="156" height="70" rx="5" fill="#F2F5FA" stroke="#012169" stroke-width="1.6"/>
+<text x="30" y="222" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="start">Quarto/&lt;genre&gt;/</text>
+<text x="30" y="241" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="start">&lt;deck&gt;.qmd</text>
+<text x="30" y="260" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="start">&lt;deck&gt;.deck.yml</text>
+<line x1="176" y1="235" x2="193" y2="235" stroke="#012169" stroke-width="1.8"/>
+<path d="M 200 235 L 192 230.4 L 192 239.6 Z" fill="#012169"/>
+<rect x="200" y="200" width="152" height="70" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="276" y="228" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">quarto render</text>
+<text x="276" y="250" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">RevealJS HTML</text>
+<line x1="352" y1="235" x2="369" y2="235" stroke="#012169" stroke-width="1.8"/>
+<path d="M 376 235 L 368 230.4 L 368 239.6 Z" fill="#012169"/>
+<rect x="376" y="200" width="168" height="70" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="460" y="228" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">quality_score.py</text>
+<text x="460" y="250" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">gate: 80 commit, 90 PR</text>
+<line x1="544" y1="235" x2="603" y2="235" stroke="#012169" stroke-width="1.8"/>
+<path d="M 610 235 L 602 230.4 L 602 239.6 Z" fill="#012169"/>
+<text x="577" y="224" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">git push</text>
+<text x="577" y="254" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">main</text>
+<rect x="610" y="200" width="170" height="70" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="695" y="222" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">GitHub Actions</text>
+<text x="695" y="242" font-family="sans-serif" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">render, strip notes,</text>
+<text x="695" y="260" font-family="sans-serif" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">assemble, check assets</text>
+<line x1="780" y1="235" x2="797" y2="235" stroke="#012169" stroke-width="1.8"/>
+<path d="M 804 235 L 796 230.4 L 796 239.6 Z" fill="#012169"/>
+<rect x="804" y="200" width="156" height="70" rx="5" fill="#F2F5FA" stroke="#012169" stroke-width="1.6"/>
+<text x="882" y="222" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">GitHub Pages</text>
+<text x="882" y="243" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">/slides/&lt;genre&gt;/</text>
+<text x="882" y="262" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">&lt;deck&gt;.html</text>
+<rect x="20" y="286" width="4" height="13" fill="#B9975B"/>
+<text x="32" y="297" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="start" letter-spacing="0.9">SIDE PATHS</text>
+<rect x="20" y="306" width="140" height="66" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="90" y="336" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">::: {.notes}</text>
+<text x="90" y="356" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">speaker notes</text>
+<line x1="160" y1="339" x2="177" y2="339" stroke="#012169" stroke-width="1.8"/>
+<path d="M 184 339 L 176 334.4 L 176 343.6 Z" fill="#012169"/>
+<rect x="184" y="306" width="188" height="66" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="278" y="336" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">git clean filter</text>
+<text x="278" y="356" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">strip_qmd_notes.py</text>
+<line x1="372" y1="339" x2="389" y2="339" stroke="#012169" stroke-width="1.8"/>
+<path d="M 396 339 L 388 334.4 L 388 343.6 Z" fill="#012169"/>
+<rect x="396" y="306" width="176" height="66" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="484" y="336" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">CI safety net</text>
+<text x="484" y="356" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">strip_notes.sh</text>
+<polyline points="140,270 140,298" fill="none" stroke="#012169" stroke-width="1.8" stroke-dasharray="5 4"/>
+<path d="M 140 306 L 135.4 298 L 144.6 298 Z" fill="#012169"/>
+<rect x="606" y="306" width="164" height="66" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="688" y="334" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">media_release.sh</text>
+<text x="688" y="356" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">mp4 + posters</text>
+<line x1="770" y1="339" x2="783" y2="339" stroke="#012169" stroke-width="1.8"/>
+<path d="M 790 339 L 782 334.4 L 782 343.6 Z" fill="#012169"/>
+<rect x="790" y="306" width="170" height="66" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6"/>
+<text x="875" y="336" font-family="sans-serif" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">GitHub Release</text>
+<text x="875" y="356" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">media-&lt;deck&gt;</text>
+<polyline points="875,306 875,278" fill="none" stroke="#012169" stroke-width="1.8"/>
+<path d="M 875 270 L 870.4 278 L 879.6 278 Z" fill="#012169"/>
+<text x="862" y="292" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="end">served to the page, never in git</text>
+<polyline points="276,270 276,286 589,286 589,388" fill="none" stroke="#012169" stroke-width="1.8" stroke-dasharray="5 4"/>
+<path d="M 589 396 L 584.4 388 L 593.6 388 Z" fill="#012169"/>
+<rect x="520" y="396" width="150" height="54" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="595" y="418" font-family="monospace" font-size="13" font-weight="700" fill="#012169" text-anchor="middle">export_pdf.sh</text>
+<text x="595" y="438" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">local only</text>
+<line x1="670" y1="423" x2="687" y2="423" stroke="#012169" stroke-width="1.8"/>
+<path d="M 694 423 L 686 418.4 L 686 427.6 Z" fill="#012169"/>
+<rect x="694" y="396" width="180" height="54" rx="5" fill="#ffffff" stroke="#012169" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="784" y="418" font-family="monospace" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="middle">exports/&lt;deck&gt;.pdf</text>
+<text x="784" y="438" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="middle">LMS handout</text>
+<rect x="20" y="404" width="3" height="46" fill="#B9975B"/>
+<text x="34" y="420" font-family="sans-serif" font-size="13" font-weight="400" fill="#1a1a1a" text-anchor="start">Speaker notes never leave the presenter's machine:</text>
+<text x="34" y="440" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="start">the clean filter keeps them out of every commit.</text>
+<text x="20" y="468" font-family="sans-serif" font-size="13" font-weight="400" fill="#5a5a5a" text-anchor="start">Dashed: local only. Nothing on a dashed path enters git or the deployed site.</text>
+</svg>
