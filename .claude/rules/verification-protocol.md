@@ -21,8 +21,9 @@ paths:
 
 ## For Scripts and Hooks:
 1. Run the repo tests: `python3 scripts/test_profiles.py`, `python3 scripts/test_minyaml.py`,
+   `python3 scripts/test_media.py`, `python3 scripts/test_series.py`,
    `bash scripts/test_note_filter.sh`, `bash scripts/test_korean_gate.sh`
-2. All four must pass before the task is reported done
+2. All six must pass before the task is reported done
 
 ## Common Pitfalls:
 - **PDF images in HTML**: Browsers don't render PDFs inline -> export figures as SVG (or PNG for photos)

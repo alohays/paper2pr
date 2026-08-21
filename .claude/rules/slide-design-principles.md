@@ -101,17 +101,21 @@ Decks live at `Quarto/<genre>/<name>.qmd`, so the shared theme is one level
 up. `/new-deck` writes this for you.
 
 ```yaml
+# Full-bleed title gradient as a reveal background.
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
 format:
   revealjs:
     theme: [default, ../clean-academic.scss]
-    width: 1280
-    height: 720
-    center: false          # theme handles centering; keep titles pinned
-    auto-stretch: false    # r-stretch fights the centered flex layout
-    html-math-method:
-      method: katex
 bibliography: ../../Bibliography_base.bib
 ```
+
+That is the whole of it. The 1280x720 canvas, `margin: 0`, `center: false`,
+`auto-stretch: false`, slide numbers, the pinned KaTeX, the slide-types
+filter, the video and series shortcodes and the Pretendard link are project
+defaults in `Quarto/_quarto.yml`; a deck must not repeat them. Fixtures under
+`Quarto/_fixtures/` are the exception - Quarto treats an underscore directory
+as outside the project, so each fixture qmd carries what it needs.
 
 ## Review priority (split-first, replaces spacing-first)
 
