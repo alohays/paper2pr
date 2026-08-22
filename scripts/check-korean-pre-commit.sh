@@ -28,8 +28,9 @@
 # Speaker notes are Korean by default and never reach this hook: the clean
 # filter strips them out of the staged content before the diff is read.
 #
-# Install: cp scripts/check-korean-pre-commit.sh .git/hooks/pre-commit
-# Or run: bash scripts/setup-git-filters.sh (installs everything)
+# Install: bash scripts/setup-git-filters.sh, which puts scripts/pre-commit.sh
+# in .git/hooks/ to run this gate after the speaker-note one
+# (scripts/check-notes-pre-commit.sh). Runnable on its own at any time.
 
 EXEMPT_PATTERNS=(
     ".claude/skills/"

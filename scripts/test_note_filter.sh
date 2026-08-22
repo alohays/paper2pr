@@ -29,12 +29,33 @@ check_attr() {
   fi
 }
 
-echo "1. Clean filter is configured in this clone"
+echo "1. Clean filter is configured in this clone, and a gate says so if it is not"
 if [ -n "$(git config --get filter.strip-speaker-notes.clean || true)" ]; then
   echo "  ok    filter.strip-speaker-notes.clean is set"
 else
   echo "  FAIL  filter is not configured -- run scripts/setup-git-filters.sh"
   echo "        Until you do, committing a deck writes its speaker notes to git."
+  fail=1
+fi
+# The config is per clone, so "it is set here" proves nothing about the next
+# clone. What has to hold is that a clone without it cannot commit. The
+# GIT_CONFIG_* environment override blanks the value for the child processes
+# only, so this never touches the config file on disk.
+if GIT_CONFIG_COUNT=1 \
+   GIT_CONFIG_KEY_0=filter.strip-speaker-notes.clean \
+   GIT_CONFIG_VALUE_0= \
+   bash scripts/check-notes-pre-commit.sh >/dev/null 2>&1; then
+  echo "  FAIL  check-notes-pre-commit.sh passed with no clean filter configured"
+  fail=1
+else
+  echo "  ok    a clone without the filter cannot commit"
+fi
+if [ -x "$REPO_ROOT/.git/hooks/pre-commit" ] \
+   && grep -q "check-notes-pre-commit" "$REPO_ROOT/.git/hooks/pre-commit"; then
+  echo "  ok    the installed hook runs the speaker-note gate"
+else
+  echo "  FAIL  .git/hooks/pre-commit does not run check-notes-pre-commit.sh"
+  echo "        Run scripts/setup-git-filters.sh."
   fail=1
 fi
 
