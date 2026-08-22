@@ -29,8 +29,9 @@
 --   {{< series-rules >}}            a bullet list of `rules`
 --   {{< series-session key >}}      this deck's session (or week=NN): key is
 --                                   title | date | short_date | presenter | week |
---                                   kind | prior_title | prior_date |
---                                   prior_short_date | prior_presenter | prior_week
+--                                   kind | tag | index | prior_title | prior_date |
+--                                   prior_short_date | prior_presenter | prior_week |
+--                                   prior_kind | prior_index | prior_tag
 --
 -- Failures are render failures, never empty output: no `series:` in the
 -- metadata, no lock file, an unknown key, a session that has no prior, all
@@ -263,9 +264,10 @@ end
 
 local SESSION_KEYS = {
   title = true, date = true, short_date = true, presenter = true, week = true,
-  kind = true, index = true,
+  kind = true, index = true, tag = true,
   prior_title = true, prior_date = true, prior_short_date = true,
-  prior_presenter = true, prior_week = true, prior_kind = true, prior_index = true,
+  prior_presenter = true, prior_week = true, prior_kind = true,
+  prior_index = true, prior_tag = true,
 }
 
 -- {{< series-session key [week=NN] >}}

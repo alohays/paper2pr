@@ -18,6 +18,9 @@
 #   term          term                                     string
 #   institution   institution                              string
 #   room, time    where and when the class meets           strings
+#   meets_on      weekday name, or a list of them, that every session must
+#                 fall on. Optional: omit it for a block course that runs on
+#                 whatever days the room was free, and no weekday is checked
 #   instructor    the presenter                            string
 #   co_instructor co-instructor, with role                 string
 #   course_page   public course page URL                   string
@@ -30,10 +33,12 @@
 #   notation      policy (the one symbol reused every week), note
 #   sessions      exactly one mapping per week, in order:
 #     index       1..N, unique, the week number (W02 = index 2)
-#     date        YYYY-MM-DD, quoted, must be the course weekday (a Friday)
+#     date        YYYY-MM-DD, quoted, on one of the `meets_on` days
 #     kind        lecture | guest | keynote | dgist | holiday | exam
 #     title       full session title (said aloud; the semester map prints
 #                 only dates and kind tags, never titles)
+#     tag         optional override for the short tag the map prints under
+#                 the dot (<= 12 characters); the default comes from `kind`
 #     presenter   name, or "" when DGIST arranges the session
 #     deck        deck name for a session that has one, else "" (a planned
 #                 name is fine: the resolver tolerates a deck that does not
@@ -50,6 +55,7 @@ term: 2026 Fall
 institution: DGIST
 room: E7-233
 time: "Fridays 13:00-14:00"
+meets_on: friday
 instructor: Yunsung Lee
 co_instructor: "Chris (Hongseop) Choi, CEO, Maum AI"
 course_page: https://alohays.github.io/teaching/dgist-hss118-2026f/
@@ -118,6 +124,7 @@ sessions:
   - index: 8
     date: "2026-10-16"
     kind: exam
+    tag: report
     title: "Midterm week: a reflection report replaces the exam"
     presenter: ""
     deck: ""
@@ -167,6 +174,7 @@ sessions:
   - index: 16
     date: "2026-12-11"
     kind: exam
+    tag: essay
     title: "Final week: a synthesis essay replaces the exam"
     presenter: ""
     deck: ""

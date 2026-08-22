@@ -86,10 +86,52 @@ def expect_error(label, text, fragment):
         check(label, False, "no error raised")
 
 
+def expect_ok(label, text):
+    """The opposite: a series file that must load."""
+    loaded = None
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "x.yml"
+        p.write_text(text, encoding="utf-8")
+        try:
+            loaded = sa.load_series(p)
+        except sa.SeriesError as e:
+            check(label, False, f"raised: {e}")
+            return None
+    check(label, True)
+    return loaded
+
+
 print("1. series yml validation")
 check("the committed series file loads", bool(sa.load_series(sa.series_yml(COURSE))))
 expect_error("bad date", GOOD.replace('date: "2026-09-04"', 'date: "2026-9-4"'), "YYYY-MM-DD")
-expect_error("not a Friday", GOOD.replace('date: "2026-09-04"', 'date: "2026-09-03"'), "Friday")
+expect_error("a date that is not one of the meets_on days",
+             GOOD.replace('date: "2026-09-04"', 'date: "2026-09-03"'),
+             "is a Thursday, and meets_on says friday")
+expect_error("a weekday name that is not one", GOOD.replace("meets_on: friday", "meets_on: fryday"),
+             "is not a weekday")
+expect_error("an unknown top-level key", GOOD.replace("meets_on: friday", "meets_of: friday"),
+             "unknown top-level key")
+expect_error("a tag too long for the map",
+             GOOD.replace("tag: report", "tag: reflection report"), "too long for the map")
+# The weekday check belongs to the course, not to the tool. A block course
+# that runs Saturday to Friday could not be declared at all while the day was
+# a module-level constant.
+_no_day = expect_ok("a course with no meets_on takes any weekday",
+                    GOOD.replace("meets_on: friday\n", "")
+                        .replace('date: "2026-09-04"', 'date: "2026-09-03"'))
+check("... and records no weekday", _no_day is not None and _no_day["meets_on"] == [])
+_two_days = expect_ok("a course may meet on more than one weekday",
+                      GOOD.replace("meets_on: friday", "meets_on: [friday, thursday]")
+                          .replace('date: "2026-09-04"', 'date: "2026-09-03"'))
+check("... and records both", _two_days is not None
+      and _two_days["meets_on"] == ["friday", "thursday"])
+# The exam-week wording used to be {8: "report", 16: "essay"} in the tool.
+_tagged = sa.load_series(sa.series_yml(COURSE))
+check("a session's own tag is what the map prints",
+      sa.kind_tag(sa.session_by_index({"sessions": _tagged["sessions"]}, 8)) == "report")
+check("a kind with no tag falls back to its own word",
+      sa.kind_tag({"kind": "exam", "index": 99, "tag": ""}) == "exam"
+      and sa.kind_tag({"kind": "lecture", "index": 1, "tag": ""}) == "Lecture")
 expect_error("duplicate index", GOOD.replace("  - index: 3\n", "  - index: 2\n"), "duplicate index")
 expect_error("bad kind", GOOD.replace("kind: keynote", "kind: party"), "kind must be one of")
 expect_error("duplicate deck", GOOD.replace("deck: dgist-2026f-w04", "deck: dgist-2026f-w02"),
