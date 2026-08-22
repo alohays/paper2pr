@@ -210,6 +210,7 @@ class IssueDetector:
         Matches \\cite{}, \\citep{}, \\citet{}, \\citeauthor{}, \\citeyear{}, etc.
         """
         cite_pattern = r'\\cite[a-z]*\{([^}]+)\}'
+        content = IssueDetector.citation_source(content, drop_attrs=False)
         cited_keys = set()
         for match in re.finditer(cite_pattern, content):
             keys = match.group(1).split(',')
@@ -1026,12 +1027,43 @@ class IssueDetector:
 
         return actual_count, (actual_count >= expected)
 
+    # Contexts an `@` sits in that are never a citation, blanked before the
+    # citation scan (line count irrelevant here, only the keys are returned):
+    # a shortcode call, an attribute block, and a code fence.
+    #
+    # `## {.video-full video="@hook"}` was read as a citation to `hook` and
+    # billed -15 as a broken one, on every deck that used the WP4 media
+    # pipeline as documented (measured 2026-08-22 on a scaffolded lecture
+    # deck: 85/100, one phantom critical). Pandoc resolves no citation inside
+    # a header attribute block, a `{{< >}}` call or a fence, so neither does
+    # this. Speaker notes stay in: pandoc does resolve citations there, so a
+    # broken key in a note is a real one.
+    FENCE_BLOCK_RE = re.compile(r'^`{3,}.*?^`{3,}[^\n]*$',
+                                re.DOTALL | re.MULTILINE)
+    SHORTCODE_RE = re.compile(r'\{\{<.*?>\}\}', re.DOTALL)
+    ATTR_BLOCK_RE = re.compile(r'(?<!\$)\{[^{}\n]*\}')
+
+    @staticmethod
+    def citation_source(content: str, drop_attrs: bool = True) -> str:
+        """`content` with every context that cannot hold a citation removed.
+
+        `drop_attrs` is off for the LaTeX scan, whose own `\cite{key}` is a
+        brace block: blanking those would drop every key it looks for.
+        """
+        out = IssueDetector.blank_html_comments(content)
+        out = IssueDetector.FENCE_BLOCK_RE.sub(' ', out)
+        out = IssueDetector.SHORTCODE_RE.sub(' ', out)
+        if drop_attrs:
+            out = IssueDetector.ATTR_BLOCK_RE.sub(' ', out)
+        return out
+
     @staticmethod
     def check_quarto_citations(content: str, bib_file: Path) -> List[str]:
         """Check Quarto-style citation keys against bibliography.
 
         Supports patterns: @key, [@key], [@key1; @key2]
         """
+        content = IssueDetector.citation_source(content)
         cited_keys = set()
 
         # Pattern 1: [@key] or [@key1; @key2; ...]
