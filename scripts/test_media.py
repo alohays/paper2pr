@@ -156,6 +156,15 @@ check("release_url(tag, file)",
 check("hand-edited URL detection",
       not media_prep.is_ours("https://cdn.example.org/x.mp4")
       and media_prep.is_ours(media_prep.release_url("media-w02", "a.jpg")))
+# The base comes from the repo's own remote, so a fork or a rename mints its
+# own URLs; and any GitHub Release download URL counts as ours, so URLs
+# minted before a rename are regenerated rather than frozen as "hand-edited".
+check("release base is derived from the remote, not written down",
+      media_prep.RELEASE_BASE.startswith("https://github.com/")
+      and media_prep.RELEASE_BASE.endswith("/releases/download"))
+check("a Release URL under another owner is still ours",
+      media_prep.is_ours(
+          "https://github.com/someone/elsewhere/releases/download/media-x/a.mp4"))
 qmd_dir = REPO_ROOT / "Quarto" / "lectures"
 videos_dir = REPO_ROOT / "Figures" / "lectures" / "dgist-2026f-w02" / "videos"
 check("local path from Quarto/<genre>/ to Figures/<genre>/<deck>/videos/",
