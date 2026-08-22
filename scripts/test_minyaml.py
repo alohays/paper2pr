@@ -107,6 +107,14 @@ cases = [
     ("a URL item is a scalar, not a mapping",
      'urls:\n  - https://example.org/a\n',
      {"urls": ["https://example.org/a"]}),
+    # `inf`/`nan` are words to YAML (it spells the floats `.inf`/`.nan`) but
+    # floats to Python's float(). PyYAML's answer is the string.
+    ("inf and nan stay words",
+     'a: inf\nb: nan\n',
+     {"a": "inf", "b": "nan"}),
+    ("a quoted identifier keeps its padding",
+     'code: "0123"\n',
+     {"code": "0123"}),
 ]
 for label, text, expected in cases:
     try:
@@ -126,6 +134,13 @@ bad = [
     ("document marker", '---\nprofile: lecture\n'),
     ("unterminated quote", 'title: "unclosed\n'),
     ("duplicate key", 'profile: a\nprofile: b\n'),
+    # A leading zero is octal 83 to YAML 1.1, a string to YAML 1.2 and an
+    # identifier to whoever typed it. int() would answer 123 silently, which
+    # is none of the three -- a Wooclap code printed next to the QR on a
+    # lecture slide is exactly this field. Same for the digit separator.
+    ("leading-zero number", 'code: 0123\n'),
+    ("negative leading-zero number", 'n: -007\n'),
+    ("digit separator", 'n: 1_000\n'),
 ]
 for label, text in bad:
     try:

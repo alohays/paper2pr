@@ -23,7 +23,8 @@
 #   course_page   public course page URL                   string
 #   lms_note      one line telling students where the official record lives
 #   qa_tool       name, url, code, note: the question wall the QR points at.
-#                 url/code are PLACEHOLDER until the event exists; replace
+#                 url/code are PLACEHOLDER until the event exists (code is
+#                 always quoted: it is an identifier, not a number); replace
 #                 them and re-run scripts/series_assets.py <course>
 #   rules         short lines for the "How this course runs" slide
 #   notation      policy (the one symbol reused every week), note

@@ -173,6 +173,14 @@ def validate(data: dict, name: str = "<series>") -> dict:
     qa = data.get("qa_tool")
     if not isinstance(qa, dict):
         raise SeriesError(f"{name}: qa_tool must be a mapping (name, url, code, note)")
+    # The code is an opaque identifier the QR slide prints verbatim, so it is
+    # written as a string even when it happens to be digits. minyaml already
+    # refuses `0123`; this catches `code: 1234`, which would round-trip
+    # through int() looking fine and then lose any padding it ever gains.
+    if qa.get("code") is not None and not isinstance(qa["code"], str):
+        raise SeriesError(
+            f"{name}: qa_tool.code must be quoted -- it is an identifier the "
+            f"slide prints as written, not a number (got {qa['code']!r})")
     out["qa_tool"] = {
         "name": _text(qa.get("name"), name, "qa_tool.name"),
         "url": _text(qa.get("url"), name, "qa_tool.url"),
