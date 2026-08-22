@@ -15,9 +15,11 @@ sequences, block sequences, block sequences of mappings (`- file: x` with
 the item's remaining keys indented under it), and block scalars (| and >).
 
 Everything else -- anchors, aliases, tags, multiple documents, flow mappings,
-tab indentation -- raises MinYamlError naming the file and line. Refusing to
-read a file is a fine outcome. Reading it wrong is not, which is the whole
-reason this exists.
+tab indentation -- raises MinYamlError naming the file and line. So does a
+bare number whose value depends on the YAML version (`0123`, `1_000`):
+quoting it is one character, guessing at it is a Wooclap code printed wrong
+on a slide. Refusing to read a file is a fine outcome. Reading it wrong is
+not, which is the whole reason this exists.
 
 Verified against PyYAML on every config file in the repo by
 scripts/test_minyaml.py, which is what keeps "small subset" honest.
@@ -35,6 +37,10 @@ _BOOLS = {"true": True, "false": False, "yes": True, "no": False,
 # value nested below). The key must look like a plain YAML key so that
 # `- https://example.org` and `- 12:30` stay scalars.
 _MAPPING_ITEM_RE = re.compile(r"^[A-Za-z0-9_][\w.-]*:(\s|$)")
+
+# A bare scalar that Python's int()/float() would read one way and YAML
+# another: a leading zero, or a digit separator. See _scalar().
+_AMBIGUOUS_NUMBER_RE = re.compile(r"^[+-]?(?:0\d+|\d[\d_]*_[\d_]*)$")
 
 
 class MinYamlError(ValueError):
@@ -129,6 +135,25 @@ def _scalar(token: str, where: str):
     low = token.lower()
     if low in _BOOLS:
         return _BOOLS[low]
+
+    # Numbers whose meaning depends on which YAML version you ask. `0123` is
+    # octal 83 in YAML 1.1 (PyYAML), an invalid int and therefore a string in
+    # YAML 1.2, and an identifier to whoever typed it -- a Wooclap code, a
+    # room number, a zero-padded index. Python's int() would silently return
+    # 123, which is none of the three. Underscores are the same story
+    # (`1_000` is 1000 in YAML 1.1, a string in 1.2). Refuse both and say so:
+    # quoting is one character and removes the question.
+    if _AMBIGUOUS_NUMBER_RE.match(token):
+        raise MinYamlError(
+            f"{where}: {token!r} reads as a different number in different YAML "
+            f"versions (leading zero or underscore). Quote it to keep it a "
+            f"string, or write it without the padding to mean the number")
+
+    # `inf` / `nan` are plain words to YAML (it spells them `.inf` / `.nan`)
+    # but floats to Python. Keep PyYAML's answer.
+    if low.lstrip("+-") in ("inf", "infinity", "nan"):
+        return token
+
     try:
         return int(token)
     except ValueError:

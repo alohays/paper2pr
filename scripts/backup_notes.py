@@ -43,10 +43,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 QUARTO_DIR = REPO_ROOT / "Quarto"
 NOTES_DIR = REPO_ROOT / ".speaker-notes"
 
-# The exact block the clean filter removes (strip_qmd_notes.strip_note_divs
-# replaces each match with a single newline). Group 1 is the note text.
-BLOCK_RE = re.compile(r'\n::: \{\.notes\}\n(.*?)\n:::\n', re.DOTALL)
+# Which lines the clean filter removes is decided by
+# strip_qmd_notes.find_note_divs, not by a second copy of the pattern here:
+# the two disagreeing is exactly how five of pandoc's six notes spellings
+# reached git. A backup records the block's lines verbatim, opening and
+# closing fence included, so a restore reproduces whatever the author wrote.
 DATA_NOTES_RE = re.compile(r'^(\s*)data-notes:')
+BACKUP_FORMAT = 3
 
 
 def _sha1(text: str) -> str:
@@ -69,15 +72,14 @@ def find_qmd(name: str) -> Path:
     return path
 
 
-def _anchor(content: str, start: int) -> tuple[str, int]:
-    """The nearest non-blank line before offset `start`, and which
+def _anchor(lines: list, start: int) -> tuple[str, int]:
+    """The nearest non-blank line before line index `start`, and which
     occurrence of that exact line it is (1-based, from the top). The
     fallback restore re-finds the note's place by this pair, which works
     for include-slide notes exactly as well as for headed slides."""
-    before = content[:start].split("\n")
-    for i in range(len(before) - 1, -1, -1):
-        if before[i].strip():
-            return before[i], before[: i + 1].count(before[i])
+    for i in range(start - 1, -1, -1):
+        if lines[i].strip():
+            return lines[i], lines[: i + 1].count(lines[i])
     return "", 1
 
 
@@ -87,19 +89,24 @@ def extract(content: str) -> tuple[str, list[dict], list[dict]]:
     div_notes offsets index into the div-stripped text (title notes still
     in place); title_notes line indices index into the fully stripped
     text's line list. Restore inverts in the opposite order."""
+    lines_in = content.split("\n")
     div_notes = []
     removed = 0
-    for m in BLOCK_RE.finditer(content):
-        line, ordinal = _anchor(content, m.start())
+    for start, end in strip_qmd_notes.find_note_divs(content):
+        anchor, ordinal = _anchor(lines_in, start)
         div_notes.append({
-            "anchor": line,
+            "anchor": anchor,
             "anchor_ordinal": ordinal,
-            # The single "\n" the filter leaves behind sits at this offset.
-            "stripped_offset": m.start() - removed,
-            "content": m.group(1),
+            # Index into the div-stripped line list where the block sat.
+            "at_line": start - removed,
+            # The block verbatim, both fences included: restoring these
+            # reproduces the file byte for byte whichever spelling was used.
+            "lines": lines_in[start:end + 1],
+            # The note text alone, for anything that reads a backup by eye.
+            "content": "\n".join(lines_in[start + 1:end]),
         })
-        removed += len(m.group(0)) - 1
-    stripped1 = BLOCK_RE.sub("\n", content)
+        removed += end - start + 1
+    stripped1 = strip_qmd_notes.strip_note_divs(content)
 
     # Mirror strip_qmd_notes.strip_title_slide_notes line by line, keeping
     # what it drops and where (index into the output line list).
@@ -145,7 +152,7 @@ def backup(name: str) -> None:
     out_path = resolve(name).notes_json
     out_path.parent.mkdir(parents=True, exist_ok=True)
     data = {
-        "format": 2,
+        "format": BACKUP_FORMAT,
         "qmd": str(qmd_path.relative_to(REPO_ROOT)),
         "stripped_sha1": _sha1(stripped),
         "original_sha1": _sha1(content),
@@ -160,6 +167,15 @@ def backup(name: str) -> None:
     print(f"Backed up {len(div_notes)} notes{extra} to {out_path}")
 
 
+def _note_lines(note: dict) -> list:
+    """The block a backup entry restores. Format 3 carries it verbatim;
+    an older entry only has the note text, so the canonical fences are put
+    back around it."""
+    if note.get("lines"):
+        return list(note["lines"])
+    return ["::: {.notes}"] + note["content"].split("\n") + [":::"]
+
+
 def _reinsert_exact(stripped: str, data: dict) -> str:
     """Invert extract() on a byte-identical stripped file."""
     lines = stripped.split("\n")
@@ -168,13 +184,21 @@ def _reinsert_exact(stripped: str, data: dict) -> str:
         at = block["at_line"] + added
         lines[at:at] = block["lines"]
         added += len(block["lines"])
-    text = "\n".join(lines)
-    for note in sorted(data["notes"], key=lambda n: n["stripped_offset"],
-                       reverse=True):
-        off = note["stripped_offset"]
-        text = (text[:off] + "\n::: {.notes}\n" + note["content"] + "\n:::\n"
-                + text[off + 1:])
-    return text
+    notes = data["notes"]
+    if notes and "at_line" not in notes[0]:
+        # Format 2: offsets into the stripped text, one "\n" per block.
+        text = "\n".join(lines)
+        for note in sorted(notes, key=lambda n: n["stripped_offset"],
+                           reverse=True):
+            off = note["stripped_offset"]
+            text = (text[:off] + "\n::: {.notes}\n" + note["content"]
+                    + "\n:::\n" + text[off + 1:])
+        return text
+    # Bottom-up, so an insertion cannot shift the line index of the next.
+    for note in sorted(notes, key=lambda n: n["at_line"], reverse=True):
+        at = note["at_line"]
+        lines[at:at] = _note_lines(note)
+    return "\n".join(lines)
 
 
 def _find_anchor(lines: list, anchor: str, ordinal: int):
@@ -204,8 +228,7 @@ def _restore_by_anchor(qmd_path: Path, content: str, data: dict) -> None:
                   f"{note['anchor'][:50]!r}")
             skipped += 1
             continue
-        lines[idx + 1:idx + 1] = (
-            ["", "::: {.notes}"] + note["content"].split("\n") + [":::"])
+        lines[idx + 1:idx + 1] = [""] + _note_lines(note)
         restored += 1
     for block in data.get("title_notes") or []:
         at = None
@@ -273,8 +296,8 @@ def restore(name: str, missing_ok: bool = False) -> None:
     content = qmd_path.read_text(encoding="utf-8")
 
     # Check if notes already exist
-    if "::: {.notes}" in content or re.search(r'^\s*data-notes:', content,
-                                              re.MULTILINE):
+    if strip_qmd_notes.find_note_divs(content) or re.search(
+            r'^\s*data-notes:', content, re.MULTILINE):
         print(f"{qmd_path.name} already has notes. Skipping restore.")
         return
 

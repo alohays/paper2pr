@@ -31,6 +31,8 @@ then the profile, then the built-in default):
     bullets.*, checks.*          the quality-gate budget and which checks run
                                  (checks: dash_lint, attribution, forbidden_terms,
                                  level1_heading, expand_acronyms, ...)
+    citations.ignore             citation keys the gate must not call broken
+                                 (a list; deck only, [])
     language.slides, .notes      which language the slides / the notes are in
     language.korean_allowance    max Hangul characters the slides may carry
                                  after the notes filter, when slides are not
@@ -96,11 +98,14 @@ PROFILE_DIR = REPO_ROOT / ".claude" / "rules" / "slide-profiles"
 # Which profile a genre implies when a deck does not say. Genres and profiles
 # are deliberately not the same axis -- a deck can sit in lectures/ and still
 # be scored as a talk if that is what it is.
-GENRE_DEFAULT_PROFILE = {
-    "papers": "paper-review",
-    "talks": "invited-talk",
-    "lectures": "lecture",
-}
+#
+# The mapping is not written here. Every profile yml already declares the
+# genre it is the default for (`genre_default:`), and a copy of that in code
+# is a copy that drifts: Quarto/_genres.txt says adding a genre takes a line
+# there and a profile file, and with a hardcoded dict that was untrue --
+# a deck in the new genre resolved to no profile at all and was graded on
+# the built-in defaults (dash lint off, attribution off, korean_allowance 0)
+# without a word on stderr. Read it from the profiles instead.
 
 DEFAULTS = {
     "bullets": {"max_per_slide": 5, "max_with_figure": 3, "max_two_line": 1},
@@ -120,6 +125,12 @@ DEFAULTS = {
         "level1_heading": "fail",
     },
     "language": {"slides": "en", "notes": "ko", "korean_allowance": 0},
+    # Citation keys the gate must not report as broken. The scan reads a
+    # deck's whole visible source, and `@` is not only a citation marker:
+    # a handle, a path fragment or a syntax this repo has not met yet reads
+    # as a key and costs 15 points, with the bibliography as the only place
+    # to answer. This is the deck's own answer instead.
+    "citations": {"ignore": []},
 }
 
 # Top-level keys, which follow the same deck-then-profile-then-default order.
@@ -269,6 +280,20 @@ class DeckConfig:
         """"fail" (blocker) or "off". Anything else is read as "fail"."""
         value = str(self._get("checks", "level1_heading")).strip().lower()
         return "off" if value in ("off", "false", "no", "none") else "fail"
+
+    @property
+    def citation_ignore(self) -> list:
+        """Keys the broken-citation check skips for this deck."""
+        value = self._get("citations", "ignore")
+        if value is None:
+            return []
+        if isinstance(value, str):
+            return [value]
+        if not isinstance(value, list):
+            raise ConfigError(
+                f"{self.deck.config}: citations.ignore must be a list of "
+                f"citation keys, got {value!r}")
+        return [str(v) for v in value]
 
     @property
     def slide_language(self) -> str:
@@ -466,6 +491,7 @@ class DeckConfig:
             "slide_language": self.slide_language,
             "notes_language": self.notes_language,
             "korean_allowance": self.korean_allowance,
+            "citation_ignore": self.citation_ignore,
             "sources": self.sources,
             "forbidden_file": _rel(self.forbidden_file),
             "figures_manifest": _rel(self.figures_manifest),
@@ -491,13 +517,41 @@ def profiles() -> list[str]:
     return sorted(p.stem for p in PROFILE_DIR.glob("*.yml"))
 
 
+def genre_defaults() -> dict:
+    """genre -> profile, from each profile yml's own `genre_default:`.
+
+    Two profiles claiming one genre is a contradiction with no safe answer,
+    so it raises rather than picking the one that sorts first.
+    """
+    out: dict = {}
+    for name in profiles():
+        genre = _load_yaml(PROFILE_DIR / f"{name}.yml").get("genre_default")
+        if not genre:
+            continue
+        genre = str(genre)
+        if genre in out:
+            raise ConfigError(
+                f"{PROFILE_DIR}: both {out[genre]!r} and {name!r} declare "
+                f"genre_default: {genre}; a genre has one default profile")
+        out[genre] = name
+    return out
+
+
 def load(deck: "deckpath.Deck") -> DeckConfig:
     raw = _load_yaml(deck.config)
-    name = raw.get("profile") or GENRE_DEFAULT_PROFILE.get(deck.genre)
+    name = raw.get("profile") or genre_defaults().get(deck.genre)
     if name not in profiles():
         if name:
             print(f"warning: unknown profile {name!r} for {deck.slug}, "
                   f"using built-in defaults", file=sys.stderr)
+        else:
+            # Silence here is how a whole genre gets graded on defaults
+            # nobody chose for it.
+            print(f"warning: no profile for genre {deck.genre!r} ({deck.slug}); "
+                  f"add `genre_default: {deck.genre}` to one of "
+                  f"{', '.join(profiles()) or '(no profiles found)'}, or set "
+                  f"`profile:` in the deck config. Using built-in defaults",
+                  file=sys.stderr)
         return DeckConfig(deck=deck, profile=name or "unknown", raw=raw)
     return DeckConfig(deck=deck, profile=name, raw=raw,
                       profile_raw=_load_yaml(PROFILE_DIR / f"{name}.yml"))

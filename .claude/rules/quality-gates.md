@@ -42,6 +42,23 @@ profile's budgets, not this table, when they differ.
 | Major | Third-party figure shown without its source on the slide (`attribution`) | -5 each, cap 20 |
 | Minor | List nesting deeper than 1 sub-level | -1 per slide |
 
+### Citations
+
+Both citation scans (`\cite{key}` and Quarto's `@key`) read the deck source
+with the contexts that cannot hold a citation removed: fenced and raw blocks,
+`{{< >}}` shortcode calls and, for the Quarto scan, attribute blocks. That is
+what keeps `## {.video-full video="@hook"}` from being read as a citation to
+`hook` and billed -15 -- which it was, on every deck using the media pipeline
+as documented. Speaker notes stay in scope: pandoc resolves citations there.
+
+A deck may list keys the scan must skip anyway:
+
+```yaml
+citations:
+  ignore:
+    - some-at-form-this-repo-has-not-met
+```
+
 ### Visible text
 
 Every text check reads the same thing: the slide body outside fenced code
@@ -133,8 +150,18 @@ may override any key in its own `deck.yml`):
 | `language.korean_allowance` | 0 | 0 | 300 |
 
 `korean_allowance` is not a scorer check: the Korean pre-commit gate reads it
-(`scripts/check-korean-pre-commit.sh`) and blocks a staged deck qmd whose
+(`scripts/check-korean-pre-commit.sh`, run from `scripts/pre-commit.sh` after
+the speaker-note gate) and blocks a staged deck qmd whose
 Hangul character count, after the notes filter, exceeds it.
+
+## Running it
+
+Scoring renders the deck (that is the compile check), so it writes
+`<deck>.html` and `<deck>_files` next to the qmd. `--no-render` skips both.
+A render that does not finish inside `QUALITY_RENDER_TIMEOUT` seconds
+(default 300) is reported as `INCONCLUSIVE`, not as a compilation failure:
+the clock ran out, which says nothing about the deck. Exit stays 2, because
+no score was produced.
 
 ## Enforcement
 

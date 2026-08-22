@@ -29,12 +29,33 @@ check_attr() {
   fi
 }
 
-echo "1. Clean filter is configured in this clone"
+echo "1. Clean filter is configured in this clone, and a gate says so if it is not"
 if [ -n "$(git config --get filter.strip-speaker-notes.clean || true)" ]; then
   echo "  ok    filter.strip-speaker-notes.clean is set"
 else
   echo "  FAIL  filter is not configured -- run scripts/setup-git-filters.sh"
   echo "        Until you do, committing a deck writes its speaker notes to git."
+  fail=1
+fi
+# The config is per clone, so "it is set here" proves nothing about the next
+# clone. What has to hold is that a clone without it cannot commit. The
+# GIT_CONFIG_* environment override blanks the value for the child processes
+# only, so this never touches the config file on disk.
+if GIT_CONFIG_COUNT=1 \
+   GIT_CONFIG_KEY_0=filter.strip-speaker-notes.clean \
+   GIT_CONFIG_VALUE_0= \
+   bash scripts/check-notes-pre-commit.sh >/dev/null 2>&1; then
+  echo "  FAIL  check-notes-pre-commit.sh passed with no clean filter configured"
+  fail=1
+else
+  echo "  ok    a clone without the filter cannot commit"
+fi
+if [ -x "$REPO_ROOT/.git/hooks/pre-commit" ] \
+   && grep -q "check-notes-pre-commit" "$REPO_ROOT/.git/hooks/pre-commit"; then
+  echo "  ok    the installed hook runs the speaker-note gate"
+else
+  echo "  FAIL  .git/hooks/pre-commit does not run check-notes-pre-commit.sh"
+  echo "        Run scripts/setup-git-filters.sh."
   fail=1
 fi
 
@@ -77,6 +98,108 @@ if printf '%s' "$stripped" | grep -q "data-notes"; then
   fail=1
 else
   echo "  ok    title data-notes block removed by strip_qmd_notes.py"
+fi
+
+echo "3b. Every notes spelling pandoc accepts is removed, and only those"
+cat > "$tmp/forms.qmd" <<'QMD'
+---
+title: Forms
+---
+
+## A
+
+::: {.notes}
+LEAK-canonical
+:::
+
+## B
+
+:::{.notes}
+LEAK-nospace
+:::
+
+## C
+
+::: notes
+LEAK-bareclass
+:::
+
+## D
+
+::: {.notes .fragment}
+LEAK-twoclasses
+:::
+
+## E
+
+::::: {.notes}
+LEAK-fivecolons
+:::::
+
+## F
+
+::: {.notes}
+before
+
+::: {.callout-note}
+inner div
+:::
+
+LEAK-afternested
+:::
+
+## G
+
+::: {.callout-note}
+KEEP-this-is-not-a-note
+:::
+
+```
+::: {.notes}
+KEEP-inside-a-code-fence
+```
+QMD
+forms="$(python3 scripts/strip_qmd_notes.py < "$tmp/forms.qmd")"
+if printf '%s' "$forms" | grep -q "LEAK-"; then
+  echo "  FAIL  a notes spelling survived the filter:"
+  printf '%s' "$forms" | grep -n "LEAK-" | sed 's/^/        /'
+  fail=1
+else
+  echo "  ok    all six notes spellings removed"
+fi
+for keep in KEEP-this-is-not-a-note KEEP-inside-a-code-fence; do
+  if printf '%s' "$forms" | grep -q "$keep"; then
+    echo "  ok    kept: $keep"
+  else
+    echo "  FAIL  the filter removed content that is not a speaker note: $keep"
+    fail=1
+  fi
+done
+
+echo "3c. An unbalanced notes fence stops the commit instead of half-stripping"
+printf -- '---\ntitle: T\n---\n\n## A\n\n::: {.notes}\nunclosed\n' > "$tmp/unbalanced.qmd"
+if python3 scripts/strip_qmd_notes.py < "$tmp/unbalanced.qmd" >/dev/null 2>&1; then
+  echo "  FAIL  strip_qmd_notes.py exited 0 on an unclosed notes div"
+  fail=1
+else
+  echo "  ok    non-zero exit, so git aborts the add"
+fi
+
+echo "3d. A backup restores whatever spelling the author used, byte for byte"
+cat > "$tmp/roundtrip.py" <<'PY'
+import sys
+sys.path.insert(0, "scripts")
+import backup_notes as B
+content = open(sys.argv[1], encoding="utf-8").read()
+stripped, title_notes, div_notes = B.extract(content)
+back = B._reinsert_exact(stripped, {"title_notes": title_notes, "notes": div_notes})
+sys.exit(0 if back == content else 1)
+PY
+if python3 "$tmp/roundtrip.py" "$tmp/forms.qmd"; then
+  echo "  ok    extract + _reinsert_exact round-trip is byte-exact"
+else
+  echo "  FAIL  a restore would not reproduce the file it backed up"
+  fail=1
 fi
 
 echo "4. Render output stays ignored under genre directories"

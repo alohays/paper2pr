@@ -4,7 +4,10 @@
 # here, so a stray folder cannot ship a deck by accident. scripts/deckpath.py
 # and .github/workflows/deploy.yml both read this file; /new-deck validates
 # against it. Adding a genre means adding a line here and a profile in
-# .claude/rules/slide-profiles/.
+# .claude/rules/slide-profiles/ that names it: the profile declares
+# `genre_default: <genre>`, and deckprofile.py reads the genre-to-profile
+# mapping from the profiles themselves, so those two edits are the whole job.
+# scripts/test_profiles.py fails when a genre here has no profile claiming it.
 papers
 talks
 lectures

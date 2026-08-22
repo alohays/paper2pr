@@ -39,6 +39,7 @@ HTML is literal text, not a heading, and makes no stack. Deductions
 
 import sys
 import argparse
+import os
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -107,9 +108,20 @@ THRESHOLDS = {
 class IssueDetector:
     """Detect common issues for quality scoring."""
 
+    # How long a render may take before the run is called inconclusive.
+    # Two minutes was a deck's whole render budget: a lecture with a dozen
+    # clips and several inline charts is slower than a paper review, and a
+    # timeout was reported as "Quarto compilation failed", score 0 -- a
+    # verdict on the deck rather than on the clock.
+    RENDER_TIMEOUT_S = float(os.environ.get('QUALITY_RENDER_TIMEOUT', '300'))
+
     @staticmethod
     def check_quarto_compilation(filepath: Path) -> Tuple[bool, str]:
         """Check if Quarto file compiles successfully.
+
+        -> (ok, error). `error` starts with "TIMEOUT" when the render did not
+        finish, which the caller reports as an inconclusive run rather than
+        as a broken deck.
 
         `--to html` used to be passed here. It overrode the deck's declared
         `format: revealjs` and wrote the result to the same <Name>.html, so
@@ -125,16 +137,69 @@ class IssueDetector:
                 ['quarto', 'render', str(filepath.name)],
                 capture_output=True,
                 text=True,
-                timeout=120,
+                timeout=IssueDetector.RENDER_TIMEOUT_S,
                 cwd=filepath.parent
             )
             if result.returncode != 0:
                 return False, result.stderr
             return True, ""
         except subprocess.TimeoutExpired:
-            return False, "Compilation timeout (>2min)"
+            return False, (f"TIMEOUT: quarto render did not finish in "
+                           f"{IssueDetector.RENDER_TIMEOUT_S:g}s. Raise "
+                           f"QUALITY_RENDER_TIMEOUT or render it by hand; "
+                           f"nothing here says the deck is broken")
         except FileNotFoundError:
             return False, "Quarto not installed"
+
+    @staticmethod
+    def blank_fences_and_notes(content: str) -> str:
+        """`content` with fenced blocks and `::: {.notes}` divs blanked out,
+        line for line, so a caller keeps its line numbers.
+
+        The math scanner below toggles on any `$$` it sees. A single `$$` in
+        a shell snippet (`echo "pid $$"`) therefore opened a math block that
+        never closed, and every line over 120 characters after it -- speaker
+        notes included -- was billed -20 as an equation overflow (measured
+        2026-08-22). Neither a fence nor a note holds a display equation the
+        audience can see, so neither is read.
+        """
+        out = []
+        in_yaml = False
+        in_fence = False
+        notes_depth = 0
+        div_stack = []
+        for i, line in enumerate(content.split('\n'), 1):
+            stripped = line.strip()
+            blank = ''
+            if i == 1 and stripped == '---':
+                in_yaml = True
+                out.append(blank)
+                continue
+            if in_yaml:
+                if stripped == '---':
+                    in_yaml = False
+                out.append(blank)
+                continue
+            if stripped.startswith('```'):
+                in_fence = not in_fence
+                out.append(blank)
+                continue
+            if in_fence:
+                out.append(blank)
+                continue
+            if stripped.startswith(':::'):
+                bare = stripped.lstrip(':').strip()
+                if bare:
+                    is_notes = '.notes' in bare or bare == 'notes'
+                    div_stack.append(is_notes)
+                    if is_notes:
+                        notes_depth += 1
+                elif div_stack and div_stack.pop():
+                    notes_depth -= 1
+                out.append(blank)
+                continue
+            out.append(blank if notes_depth > 0 else line)
+        return '\n'.join(out)
 
     @staticmethod
     def check_equation_overflow(content: str) -> List[int]:
@@ -151,13 +216,21 @@ class IssueDetector:
         - \\begin{gather} ... \\end{gather} blocks
         """
         overflows = []
-        lines = content.split('\n')
+        lines = IssueDetector.blank_fences_and_notes(content).split('\n')
         in_math = False
         math_start = 0
         math_delim = None  # Track which delimiter opened the block
 
         for i, line in enumerate(lines, 1):
             stripped = line.strip()
+
+            # A `$$` that is never closed used to run to the end of the file.
+            # A slide boundary ends any block that is still open: no display
+            # equation spans two slides.
+            if stripped.startswith('##'):
+                in_math = False
+                math_delim = None
+                continue
 
             # Check for $$ delimiter (toggle)
             if '$$' in stripped and math_delim != 'env':
@@ -210,6 +283,7 @@ class IssueDetector:
         Matches \\cite{}, \\citep{}, \\citet{}, \\citeauthor{}, \\citeyear{}, etc.
         """
         cite_pattern = r'\\cite[a-z]*\{([^}]+)\}'
+        content = IssueDetector.citation_source(content, drop_attrs=False)
         cited_keys = set()
         for match in re.finditer(cite_pattern, content):
             keys = match.group(1).split(',')
@@ -1026,12 +1100,43 @@ class IssueDetector:
 
         return actual_count, (actual_count >= expected)
 
+    # Contexts an `@` sits in that are never a citation, blanked before the
+    # citation scan (line count irrelevant here, only the keys are returned):
+    # a shortcode call, an attribute block, and a code fence.
+    #
+    # `## {.video-full video="@hook"}` was read as a citation to `hook` and
+    # billed -15 as a broken one, on every deck that used the WP4 media
+    # pipeline as documented (measured 2026-08-22 on a scaffolded lecture
+    # deck: 85/100, one phantom critical). Pandoc resolves no citation inside
+    # a header attribute block, a `{{< >}}` call or a fence, so neither does
+    # this. Speaker notes stay in: pandoc does resolve citations there, so a
+    # broken key in a note is a real one.
+    FENCE_BLOCK_RE = re.compile(r'^`{3,}.*?^`{3,}[^\n]*$',
+                                re.DOTALL | re.MULTILINE)
+    SHORTCODE_RE = re.compile(r'\{\{<.*?>\}\}', re.DOTALL)
+    ATTR_BLOCK_RE = re.compile(r'(?<!\$)\{[^{}\n]*\}')
+
+    @staticmethod
+    def citation_source(content: str, drop_attrs: bool = True) -> str:
+        """`content` with every context that cannot hold a citation removed.
+
+        `drop_attrs` is off for the LaTeX scan, whose own `\cite{key}` is a
+        brace block: blanking those would drop every key it looks for.
+        """
+        out = IssueDetector.blank_html_comments(content)
+        out = IssueDetector.FENCE_BLOCK_RE.sub(' ', out)
+        out = IssueDetector.SHORTCODE_RE.sub(' ', out)
+        if drop_attrs:
+            out = IssueDetector.ATTR_BLOCK_RE.sub(' ', out)
+        return out
+
     @staticmethod
     def check_quarto_citations(content: str, bib_file: Path) -> List[str]:
         """Check Quarto-style citation keys against bibliography.
 
         Supports patterns: @key, [@key], [@key1; @key2]
         """
+        content = IssueDetector.citation_source(content)
         cited_keys = set()
 
         # Pattern 1: [@key] or [@key1; @key2; ...]
@@ -1072,9 +1177,15 @@ class IssueDetector:
 class QualityScorer:
     """Calculate quality scores for course materials."""
 
-    def __init__(self, filepath: Path, verbose: bool = False):
+    def __init__(self, filepath: Path, verbose: bool = False,
+                 render: bool = True):
         self.filepath = filepath
         self.verbose = verbose
+        # Scoring renders the deck, which writes <deck>.html and <deck>_files
+        # next to it. --no-render skips that (and with it the compile check),
+        # for a read-only pass over a tree you do not want to touch.
+        self.render = render
+        self.inconclusive = None
         self.score = 100
         self.issues = {
             'critical': [],
@@ -1096,17 +1207,31 @@ class QualityScorer:
         profile = deckprofile.load_for_path(self.filepath)
 
         # Check compilation
-        compiles, error = IssueDetector.check_quarto_compilation(self.filepath)
-        if not compiles:
-            self.auto_fail = True
-            self.issues['critical'].append({
-                'type': 'compilation_failure',
-                'description': 'Quarto compilation failed',
-                'details': error[:200],
-                'points': 100
-            })
-            self.score = 0
-            return self._generate_report()
+        if self.render:
+            compiles, error = IssueDetector.check_quarto_compilation(self.filepath)
+            if not compiles and error.startswith('TIMEOUT'):
+                # Not a verdict on the deck: the run could not finish. Say so
+                # and stop, rather than printing 0/100 next to a deck that may
+                # be perfect.
+                self.inconclusive = error
+                self.auto_fail = True
+                self.issues['critical'].append({
+                    'type': 'render_timeout',
+                    'description': 'Score not computed: the render timed out',
+                    'details': error,
+                    'points': 0
+                })
+                return self._generate_report()
+            if not compiles:
+                self.auto_fail = True
+                self.issues['critical'].append({
+                    'type': 'compilation_failure',
+                    'description': 'Quarto compilation failed',
+                    'details': error[:200],
+                    'points': 100
+                })
+                self.score = 0
+                return self._generate_report()
 
         # Check equation overflow (heuristic)
         equation_overflows = IssueDetector.check_equation_overflow(content)
@@ -1125,9 +1250,12 @@ class QualityScorer:
 
         # Also check Quarto-style @key citations
         quarto_broken = IssueDetector.check_quarto_citations(content, bib_file)
-        # Merge both sets, avoiding duplicates
+        # Merge both sets, avoiding duplicates, minus the keys this deck
+        # declares are not citations (deck.yml citations.ignore).
         all_broken = set(broken_citations) | set(quarto_broken)
-        for key in all_broken:
+        if profile:
+            all_broken -= set(profile.citation_ignore)
+        for key in sorted(all_broken):
             self.issues['critical'].append({
                 'type': 'broken_citation',
                 'description': f'Citation key not in bibliography: {key}',
@@ -1271,7 +1399,10 @@ class QualityScorer:
 
     def _generate_report(self) -> Dict:
         """Generate quality score report."""
-        if self.auto_fail:
+        if self.inconclusive:
+            status = 'INCONCLUSIVE'
+            threshold = 'None (the run did not finish)'
+        elif self.auto_fail:
             status = 'FAIL'
             threshold = 'None (auto-fail)'
         elif self.blockers:
@@ -1329,8 +1460,14 @@ class QualityScorer:
             'PR_READY': '[PASS]',
             'COMMIT_READY': '[PASS]',
             'BLOCKED': '[BLOCKED]',
-            'FAIL': '[FAIL]'
+            'FAIL': '[FAIL]',
+            'INCONCLUSIVE': '[NOT SCORED]',
         }
+
+        if report['status'] == 'INCONCLUSIVE':
+            print(f"## Not scored {status_emoji['INCONCLUSIVE']}")
+            print(f"\n{self.inconclusive}\n")
+            return
 
         print(f"## Overall Score: {report['score']}/100 {status_emoji.get(report['status'], '')}")
 
@@ -1362,6 +1499,8 @@ class QualityScorer:
             print(f"\n**Status:** Excellence achieved! (score >= {THRESHOLDS['excellence']})")
         elif report['status'] == 'FAIL':
             print(f"\n**Status:** Auto-fail (compilation/syntax error)")
+        elif report['status'] == 'INCONCLUSIVE':
+            print(f"\n**Status:** Not scored -- {self.inconclusive}")
 
         if summary_only:
             print(f"\n**Total issues:** {report['issues']['counts']['total']} "
@@ -1449,6 +1588,9 @@ Exit Codes:
     parser.add_argument('--summary', action='store_true', help='Show summary only')
     parser.add_argument('--verbose', action='store_true', help='Show all issues including minor')
     parser.add_argument('--json', action='store_true', help='Output as JSON')
+    parser.add_argument('--no-render', action='store_true',
+                        help='do not run quarto render (skips the compile '
+                             'check; leaves the tree untouched)')
 
     args = parser.parse_args()
 
@@ -1462,7 +1604,8 @@ Exit Codes:
             continue
 
         try:
-            scorer = QualityScorer(filepath, verbose=args.verbose)
+            scorer = QualityScorer(filepath, verbose=args.verbose,
+                                   render=not args.no_render)
 
             if filepath.suffix == '.qmd':
                 report = scorer.score_quarto()

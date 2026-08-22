@@ -88,9 +88,35 @@ import minyaml  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# The host every release_url / poster_url is built on. A URL in an existing
-# videos.json that does not start with this is treated as hand-edited and kept.
-RELEASE_BASE = "https://github.com/alohays/paper2pr/releases/download"
+# The host every release_url / poster_url is built on. Derived from the
+# repository's own remote rather than written down: a fork or a rename kept
+# minting URLs for alohays/paper2pr, and because a URL that is not on this
+# host counts as hand-edited, the wrong ones were then preserved forever.
+DEFAULT_RELEASE_BASE = "https://github.com/alohays/paper2pr/releases/download"
+GITHUB_REMOTE_RE = re.compile(r"github\.com[:/]+([^/]+?)/(.+?)(?:\.git)?/?$")
+
+
+def _release_base() -> str:
+    try:
+        url = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "remote", "get-url", "origin"],
+            capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return DEFAULT_RELEASE_BASE
+    m = GITHUB_REMOTE_RE.search(url)
+    if not m:
+        return DEFAULT_RELEASE_BASE
+    return f"https://github.com/{m.group(1)}/{m.group(2)}/releases/download"
+
+
+RELEASE_BASE = _release_base()
+
+# What counts as a URL this pipeline owns and may regenerate. Any GitHub
+# Release download URL does, not only one on RELEASE_BASE: after a rename the
+# old URLs are still ours, and treating them as someone else's would freeze
+# them in the lock. A hand-edited URL is by definition somewhere else -- a
+# publisher's CDN, a mirror -- which is what the rule is protecting.
+RELEASE_URL_RE = re.compile(r"^https://github\.com/[^/]+/[^/]+/releases/download/")
 
 SIZE_WARN_MB = 30.0
 
@@ -240,7 +266,7 @@ def local_rel_path(qmd_dir: Path, videos_dir: Path, filename: str) -> str:
 
 
 def is_ours(url) -> bool:
-    return isinstance(url, str) and url.startswith(RELEASE_BASE + "/")
+    return isinstance(url, str) and bool(RELEASE_URL_RE.match(url))
 
 
 # ----------------------------------------------------------------------------

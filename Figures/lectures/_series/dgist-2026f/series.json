@@ -6,6 +6,9 @@
   "institution": "DGIST",
   "instructor": "Yunsung Lee",
   "lms_note": "Official notices, assignments, deadlines and grades live on the DGIST LMS.",
+  "meets_on": [
+    "friday"
+  ],
   "notation": {
     "note": "the one symbol reused every week",
     "policy": "pi(a | o, l)"
@@ -33,6 +36,7 @@
       "prior_index": null,
       "remote": false,
       "short_date": "Aug 28",
+      "tag": "",
       "tentative": false,
       "title": "Special lecture on AI",
       "week": "W01"
@@ -46,6 +50,7 @@
       "prior_index": 1,
       "remote": false,
       "short_date": "Sep 4",
+      "tag": "",
       "tentative": false,
       "title": "The Paradigm Shift Toward Embodied AI",
       "week": "W02"
@@ -59,6 +64,7 @@
       "prior_index": 2,
       "remote": true,
       "short_date": "Sep 11",
+      "tag": "",
       "tentative": false,
       "title": "Video and Robot Foundation Models",
       "week": "W03"
@@ -72,6 +78,7 @@
       "prior_index": 3,
       "remote": false,
       "short_date": "Sep 18",
+      "tag": "",
       "tentative": false,
       "title": "Foundations of Robot Hardware, Control, and Modern Platforms",
       "week": "W04"
@@ -85,6 +92,7 @@
       "prior_index": null,
       "remote": false,
       "short_date": "Sep 25",
+      "tag": "",
       "tentative": false,
       "title": "No class: Chuseok holiday",
       "week": "W05"
@@ -98,6 +106,7 @@
       "prior_index": 4,
       "remote": false,
       "short_date": "Oct 2",
+      "tag": "",
       "tentative": false,
       "title": "Action as a New Modality and the Scaling of Robot Learning Data",
       "week": "W06"
@@ -111,6 +120,7 @@
       "prior_index": null,
       "remote": false,
       "short_date": "Oct 9",
+      "tag": "",
       "tentative": false,
       "title": "No class: Hangul Day",
       "week": "W07"
@@ -124,6 +134,7 @@
       "prior_index": null,
       "remote": false,
       "short_date": "Oct 16",
+      "tag": "report",
       "tentative": false,
       "title": "Midterm week: a reflection report replaces the exam",
       "week": "W08"
@@ -137,6 +148,7 @@
       "prior_index": 6,
       "remote": false,
       "short_date": "Oct 23",
+      "tag": "",
       "tentative": false,
       "title": "Methods for Learning Action: Imitation, Reinforcement Learning, and Diffusion Policies",
       "week": "W09"
@@ -150,6 +162,7 @@
       "prior_index": 9,
       "remote": false,
       "short_date": "Oct 30",
+      "tag": "",
       "tentative": false,
       "title": "Leadership talk on entrepreneurship",
       "week": "W10"
@@ -163,6 +176,7 @@
       "prior_index": 10,
       "remote": true,
       "short_date": "Nov 6",
+      "tag": "",
       "tentative": false,
       "title": "Spatial AI to Physical AI",
       "week": "W11"
@@ -176,6 +190,7 @@
       "prior_index": 11,
       "remote": false,
       "short_date": "Nov 13",
+      "tag": "",
       "tentative": false,
       "title": "Leadership talk",
       "week": "W12"
@@ -189,6 +204,7 @@
       "prior_index": 12,
       "remote": false,
       "short_date": "Nov 20",
+      "tag": "",
       "tentative": false,
       "title": "Leadership talk",
       "week": "W13"
@@ -202,6 +218,7 @@
       "prior_index": 13,
       "remote": false,
       "short_date": "Nov 27",
+      "tag": "",
       "tentative": false,
       "title": "Ethics, Safety, and Social Responsibility in the Age of Embodied AI",
       "week": "W14"
@@ -215,6 +232,7 @@
       "prior_index": 14,
       "remote": false,
       "short_date": "Dec 4",
+      "tag": "",
       "tentative": false,
       "title": "The Physical AI Megatrend and the Coming Industrial Revolution",
       "week": "W15"
@@ -228,6 +246,7 @@
       "prior_index": null,
       "remote": false,
       "short_date": "Dec 11",
+      "tag": "essay",
       "tentative": false,
       "title": "Final week: a synthesis essay replaces the exam",
       "week": "W16"

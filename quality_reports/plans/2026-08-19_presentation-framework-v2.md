@@ -1,7 +1,7 @@
 # Presentation framework v2: finish the pivot before the first lecture deck lands
 
 **Date:** 2026-08-19
-**Status:** implementation in progress on the `framework-v2` stack (gh-stack, one branch per WP). WP0 decided and landed; see each WP section for its record.
+**Status:** WP0-WP7 landed on `main`; audited and repaired on 2026-08-22 (see the audit record at the end of section 4). WP8 (author `dgist-2026f-w02`) is what is left.
 **Trigger:** the first course lecture, `dgist-2026f-w02` (DGIST HSS118, 2026-09-04, 42 slides, 8-10 videos, 100+ non-major first-years), is the first deck that will be graded by the main theme and the `lecture` profile at the same time. Neither has ever met a real deck.
 **Decided by:** the presenter, in a 28-question interview on 2026-08-18/19. The Korean record of that interview lives in the vault (`1-projects/maum/dgist-future-literacy-2026fall/lectures/paper2pr-readiness.md`); this file is the English source of truth for the work.
 **Evidence:** two read-only audits, both code-verified (scaffold dry-run, brief slides scored by `quality_score.py`, a probe deck rendered against `clean-academic.scss`, the asset-gate regex executed). Copies: vault `lectures/paper2pr-audit/01-w02-readiness-audit.md` and `02-framework-inventory.md`. Line numbers below refer to HEAD `6530b84`.
@@ -155,6 +155,58 @@ Delete, in separate commits by nature:
 ### WP8 - Author `dgist-2026f-w02`
 
 - `/new-deck` with the series set; author in batches of 5-10 slides from the vault content brief; videos through the shortcode; figures per D21; notes inline; `/slide-excellence`; `export_pdf.sh`; merge to `main` when the presenter says so (D11).
+
+### Post-implementation audit (2026-08-22)
+
+A read-the-code-and-run-it pass over everything WP0-WP7 landed, at
+`83fcb24`, with the six test suites green the whole time. Four defects
+reproduced, all fixed on `fix/v2-audit`:
+
+- **A video slug was read as a citation.** `check_quarto_citations` matched
+  `video="@hook"` and billed -15 as a broken citation, so a deck using the
+  WP4 media form as documented lost 15 points per clip; three clips put a
+  clean deck under the commit gate. Measured on a scaffolded lecture deck:
+  85/100 with one phantom critical, 100/100 after. Both scans now blank the
+  contexts that cannot hold a citation.
+- **The notes clean filter matched one of pandoc's six notes spellings.**
+  `:::{.notes}`, `::: notes`, trailing whitespace, more colons and a note
+  containing a nested div all passed through into a public git history whose
+  notes are a Korean lecture script. Replaced with a scanner; output is
+  byte-identical on every qmd in the repo. `check-notes-pre-commit.sh` now
+  refuses a commit when the filter is not configured, when the
+  `.gitattributes` pattern stopped matching, or when a note survived anyway
+  -- the two silent failure modes this defence has.
+- **One `$$` in a code fence turned the equation scanner on for the rest of
+  the file.** `echo "pid $$"` made every following line over 120 characters,
+  speaker notes included, an -20 "equation overflow".
+- **`code: 0123` parsed as 123.** The QR slide prints `qa_tool.code`
+  verbatim in front of the room. minyaml refuses a number two YAML versions
+  read differently, and the series validator requires the code to be quoted.
+
+Three structural findings, also fixed:
+
+- `WEEKDAY = 4` made "the course meets on Fridays" a property of the repo.
+  The aSSIST block course (Sat 11/28 to Fri 12/11) could not be declared at
+  all. A series now says `meets_on:` (a day, a list of days, or nothing);
+  `EXAM_TAG = {8: "report", 16: "essay"}` became a per-session `tag:`. Every
+  DGIST map SVG is unchanged, byte for byte.
+- The genre-to-profile mapping was a hardcoded dict beside the
+  `genre_default:` every profile already declares, so adding a genre the
+  documented way produced a deck graded on defaults nobody chose, silently.
+- Nothing verified the Release media existed before publishing:
+  `check_site_assets.py` skips external URLs by design and
+  `media_release.sh --check` was wired into nothing.
+  `check_release_media.py` runs in CI after the local-asset check.
+
+Also: `RELEASE_BASE` comes from the repo's own remote; a render timeout
+reports INCONCLUSIVE instead of a 0; `--no-render` makes scoring read-only;
+`citations.ignore` gives a deck an answer other than editing the
+bibliography; `setup-git-filters.sh` no longer overwrites an existing hook.
+
+Left alone on purpose: the semester map does not adapt its width to a longer
+course (it raises `SeriesError` rather than overlapping, which is the right
+failure); `font_shrink` stays uncapped, unlike `dash_lint` and
+`attribution`; `source:` in `videos.yml` stays relative to `videos/`.
 
 ## 5. Non-goals
 

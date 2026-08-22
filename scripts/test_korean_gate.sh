@@ -90,17 +90,23 @@ expect() {
 }
 
 echo "0. The hook git actually runs is the script this repo maintains"
-# git runs .git/hooks/pre-commit, a copy. Editing the script under scripts/
+# git runs .git/hooks/pre-commit, a copy. Editing a script under scripts/
 # changes nothing until setup-git-filters.sh copies it over, so every test
-# below could pass against a stale hook. Ask this first.
+# below could pass against a stale hook. Ask this first. The installed hook
+# is the wrapper (scripts/pre-commit.sh), which runs the speaker-note gate
+# and then this one.
 if [ ! -x .git/hooks/pre-commit ]; then
   echo "  FAIL  no pre-commit hook installed -- run scripts/setup-git-filters.sh"
   fail=1
-elif cmp -s .git/hooks/pre-commit scripts/check-korean-pre-commit.sh; then
-  echo "  ok    installed hook matches scripts/check-korean-pre-commit.sh"
-else
+elif ! cmp -s .git/hooks/pre-commit scripts/pre-commit.sh; then
   echo "  FAIL  installed hook is stale -- run scripts/setup-git-filters.sh"
   echo "        Until you do, your edits to the gate are not in effect."
+  fail=1
+elif grep -q "check-korean-pre-commit" scripts/pre-commit.sh; then
+  echo "  ok    installed hook is scripts/pre-commit.sh and runs this gate"
+else
+  echo "  FAIL  scripts/pre-commit.sh does not run check-korean-pre-commit.sh"
+  echo "        The installed hook would never reach this gate."
   fail=1
 fi
 

@@ -79,11 +79,22 @@ TITLED = ("lecture", "guest", "keynote")        # filled dot, bold date, navy ta
 SKIPPED_FOR_PRIOR = ("holiday", "exam")          # never "the previous session"
 KIND_TAG = {"lecture": "Lecture", "guest": "Guest", "keynote": "Keynote",
             "dgist": "DGIST", "holiday": "holiday"}
-EXAM_TAG = {8: "report", 16: "essay"}            # fallback is "exam"
-WEEKDAY = 4                                      # Friday (Monday = 0)
+EXAM_TAG_DEFAULT = "exam"                        # overridden per session by `tag:`
+# Monday = 0, as datetime.date.weekday() counts. `meets_on:` in the series yml
+# names the day (or days) the course meets; the constant here only turns the
+# names into numbers. It used to be a single module-level WEEKDAY = 4, which
+# made "the course meets on Fridays" a property of the repo rather than of a
+# course: a second course could not be declared at all (aSSIST runs Sat 11/28
+# to Fri 12/11, and validate() rejected its first session outright).
+WEEKDAYS = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
+            "friday": 4, "saturday": 5, "sunday": 6}
 
 SCALAR_FIELDS = ("course", "code", "term", "institution", "room", "time",
                  "instructor", "co_instructor", "course_page", "lms_note")
+# Everything else a series yml may say at the top level. A key outside both
+# sets is a typo, and a silently ignored `meets_of:` is a weekday check that
+# quietly never runs.
+STRUCTURED_FIELDS = ("qa_tool", "rules", "notation", "sessions", "meets_on")
 MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
@@ -166,6 +177,10 @@ def validate(data: dict, name: str = "<series>") -> dict:
     """Check the yml's shape and values; return a normalised copy."""
     if not isinstance(data, dict):
         raise SeriesError(f"{name}: expected a mapping at the top level")
+    unknown_top = sorted(set(data) - set(SCALAR_FIELDS) - set(STRUCTURED_FIELDS))
+    if unknown_top:
+        raise SeriesError(f"{name}: unknown top-level key(s): "
+                          f"{', '.join(unknown_top)}")
     out: dict = {}
     for key in SCALAR_FIELDS:
         out[key] = _text(data.get(key), name, key)
@@ -173,6 +188,14 @@ def validate(data: dict, name: str = "<series>") -> dict:
     qa = data.get("qa_tool")
     if not isinstance(qa, dict):
         raise SeriesError(f"{name}: qa_tool must be a mapping (name, url, code, note)")
+    # The code is an opaque identifier the QR slide prints verbatim, so it is
+    # written as a string even when it happens to be digits. minyaml already
+    # refuses `0123`; this catches `code: 1234`, which would round-trip
+    # through int() looking fine and then lose any padding it ever gains.
+    if qa.get("code") is not None and not isinstance(qa["code"], str):
+        raise SeriesError(
+            f"{name}: qa_tool.code must be quoted -- it is an identifier the "
+            f"slide prints as written, not a number (got {qa['code']!r})")
     out["qa_tool"] = {
         "name": _text(qa.get("name"), name, "qa_tool.name"),
         "url": _text(qa.get("url"), name, "qa_tool.url"),
@@ -195,6 +218,30 @@ def validate(data: dict, name: str = "<series>") -> dict:
         "note": _text(notation.get("note"), name, "notation.note", required=False),
     }
 
+    # Which weekday(s) the course meets on. Optional: a weekly course names
+    # its day and gets a typo check for free ("2026-09-05 is a Saturday"); an
+    # intensive block that runs on whatever days the room was free omits it
+    # and is only held to unique, increasing dates.
+    meets_raw = data.get("meets_on")
+    if meets_raw is None or meets_raw == "":
+        meets_on: list[str] = []
+    elif isinstance(meets_raw, str):
+        meets_on = [meets_raw]
+    elif isinstance(meets_raw, list):
+        meets_on = [_text(d, name, "meets_on[]") for d in meets_raw]
+    else:
+        raise SeriesError(
+            f"{name}: meets_on must be a weekday name or a list of them, "
+            f"got {meets_raw!r}")
+    meets_on = [d.strip().lower() for d in meets_on]
+    unknown_days = [d for d in meets_on if d not in WEEKDAYS]
+    if unknown_days:
+        raise SeriesError(
+            f"{name}: meets_on: {', '.join(unknown_days)} is not a weekday "
+            f"({', '.join(WEEKDAYS)})")
+    out["meets_on"] = meets_on
+    allowed_weekdays = {WEEKDAYS[d] for d in meets_on}
+
     sessions = data.get("sessions")
     if not isinstance(sessions, list) or not sessions:
         raise SeriesError(f"{name}: sessions must be a non-empty list")
@@ -205,7 +252,7 @@ def validate(data: dict, name: str = "<series>") -> dict:
         where = f"{name}: sessions[{n}]"
         if not isinstance(s, dict):
             raise SeriesError(f"{where}: each session is a mapping")
-        unknown = sorted(set(s) - {"index", "date", "kind", "title",
+        unknown = sorted(set(s) - {"index", "date", "kind", "title", "tag",
                                    "presenter", "deck", "remote", "tentative"})
         if unknown:
             raise SeriesError(f"{where}: unknown key(s) {', '.join(unknown)}")
@@ -216,16 +263,21 @@ def validate(data: dict, name: str = "<series>") -> dict:
             raise SeriesError(f"{where}: duplicate index {idx}")
         seen_idx.add(idx)
         date = parse_date(s.get("date"), where)
-        if date.weekday() != WEEKDAY:
+        if allowed_weekdays and date.weekday() not in allowed_weekdays:
             raise SeriesError(
                 f"{where}: {date.isoformat()} is a {date.strftime('%A')}, "
-                f"the course meets on Fridays")
+                f"and meets_on says {', '.join(meets_on)}")
         kind = _text(s.get("kind"), where, "kind")
         if kind not in KINDS:
             raise SeriesError(f"{where}: kind must be one of {', '.join(KINDS)}, got {kind!r}")
         title = _text(s.get("title"), where, "title")
         presenter = _text(s.get("presenter"), where, "presenter", required=False)
         deck = _text(s.get("deck"), where, "deck", required=False)
+        tag = _text(s.get("tag"), where, "tag", required=False)
+        if tag and len(tag) > 12:
+            raise SeriesError(
+                f"{where}: tag {tag!r} is too long for the map "
+                f"(12 characters; it sits under a dot)")
         if deck:
             if deck in seen_deck:
                 raise SeriesError(
@@ -242,6 +294,7 @@ def validate(data: dict, name: str = "<series>") -> dict:
             "date": date.isoformat(),
             "kind": kind,
             "title": title,
+            "tag": tag,
             "presenter": presenter,
             "deck": deck,
             "remote": bool(s.get("remote") or False),
@@ -340,10 +393,18 @@ def dot_x(n_sessions: int, index: int) -> float:
 
 
 def kind_tag(session: dict) -> str:
-    """The one short tag printed under a session's dot."""
+    """The one short tag printed under a session's dot.
+
+    A session may override it with `tag:` in the yml. That is how the DGIST
+    course prints "report" in its midterm week and "essay" in its final one;
+    the mapping used to be `{8: "report", 16: "essay"}` in this file, which
+    is one course's academic calendar written into the tool.
+    """
+    if session.get("tag"):
+        return str(session["tag"])
     kind = session["kind"]
     if kind == "exam":
-        return EXAM_TAG.get(session["index"], "exam")
+        return EXAM_TAG_DEFAULT
     return KIND_TAG[kind]
 
 
