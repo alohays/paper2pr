@@ -47,6 +47,13 @@ jobs:
       - name: Check every referenced local asset made it into the site
         run: python3 scripts/check_site_assets.py _site
 
+      # The asset check above skips external URLs by design, so the one state
+      # it cannot see is a page whose Release URLs are well-formed and answer
+      # 404 because media_release.sh was never run. Merging is publishing
+      # here, and that reaches the room as a black slide.
+      - name: Check the Release media the pages point at actually exists
+        run: python3 scripts/check_release_media.py _site
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
