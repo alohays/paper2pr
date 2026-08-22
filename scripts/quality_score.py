@@ -137,6 +137,56 @@ class IssueDetector:
             return False, "Quarto not installed"
 
     @staticmethod
+    def blank_fences_and_notes(content: str) -> str:
+        """`content` with fenced blocks and `::: {.notes}` divs blanked out,
+        line for line, so a caller keeps its line numbers.
+
+        The math scanner below toggles on any `$$` it sees. A single `$$` in
+        a shell snippet (`echo "pid $$"`) therefore opened a math block that
+        never closed, and every line over 120 characters after it -- speaker
+        notes included -- was billed -20 as an equation overflow (measured
+        2026-08-22). Neither a fence nor a note holds a display equation the
+        audience can see, so neither is read.
+        """
+        out = []
+        in_yaml = False
+        in_fence = False
+        notes_depth = 0
+        div_stack = []
+        for i, line in enumerate(content.split('\n'), 1):
+            stripped = line.strip()
+            blank = ''
+            if i == 1 and stripped == '---':
+                in_yaml = True
+                out.append(blank)
+                continue
+            if in_yaml:
+                if stripped == '---':
+                    in_yaml = False
+                out.append(blank)
+                continue
+            if stripped.startswith('```'):
+                in_fence = not in_fence
+                out.append(blank)
+                continue
+            if in_fence:
+                out.append(blank)
+                continue
+            if stripped.startswith(':::'):
+                bare = stripped.lstrip(':').strip()
+                if bare:
+                    is_notes = '.notes' in bare or bare == 'notes'
+                    div_stack.append(is_notes)
+                    if is_notes:
+                        notes_depth += 1
+                elif div_stack and div_stack.pop():
+                    notes_depth -= 1
+                out.append(blank)
+                continue
+            out.append(blank if notes_depth > 0 else line)
+        return '\n'.join(out)
+
+    @staticmethod
     def check_equation_overflow(content: str) -> List[int]:
         """Detect displayed equations with single lines likely to overflow.
 
@@ -151,13 +201,21 @@ class IssueDetector:
         - \\begin{gather} ... \\end{gather} blocks
         """
         overflows = []
-        lines = content.split('\n')
+        lines = IssueDetector.blank_fences_and_notes(content).split('\n')
         in_math = False
         math_start = 0
         math_delim = None  # Track which delimiter opened the block
 
         for i, line in enumerate(lines, 1):
             stripped = line.strip()
+
+            # A `$$` that is never closed used to run to the end of the file.
+            # A slide boundary ends any block that is still open: no display
+            # equation spans two slides.
+            if stripped.startswith('##'):
+                in_math = False
+                math_delim = None
+                continue
 
             # Check for $$ delimiter (toggle)
             if '$$' in stripped and math_delim != 'env':
