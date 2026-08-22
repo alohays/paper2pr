@@ -32,16 +32,17 @@
 **Enforcement:**
 - Pre-commit hook (`scripts/check-korean-pre-commit.sh`) blocks Korean text in staged files
 - Exempt paths: `.claude/skills/`, `.claude/agents/`
-- git runs a *copy* at `.git/hooks/pre-commit`. Editing the script does nothing until `bash scripts/setup-git-filters.sh` reinstalls it -- `scripts/test_korean_gate.sh` checks the two match before checking anything else
+- git runs a *copy* at `.git/hooks/pre-commit`, and that copy is the wrapper `scripts/pre-commit.sh`: the speaker-note gate first, then this one. Editing either script does nothing until `bash scripts/setup-git-filters.sh` reinstalls it -- `scripts/test_korean_gate.sh` checks the installed hook matches before checking anything else
 
 ## Speaker Notes Policy
 
-Speaker notes (`::: {.notes}` blocks in QMD, plus the front matter `title-slide-attributes: data-notes:` block that carries the title slide's notes) are **local-only** and never reach git:
+Speaker notes (a fenced div in the `notes` class, plus the front matter `title-slide-attributes: data-notes:` block that carries the title slide's notes) are **local-only** and never reach git:
 
-1. **Git clean filter** strips notes from QMD before staging (`.gitattributes` + `scripts/strip_qmd_notes.py`)
-2. **CI/CD pipeline** strips notes from HTML during deployment: `scripts/strip_notes.sh` runs `scripts/strip_speaker_notes.py` on every rendered deck (`<aside class="notes">` elements and section `data-notes` attributes)
-3. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [Deck]`; backups land in `.speaker-notes/` (gitignored)
-4. **Setup** (run once after clone): `bash scripts/setup-git-filters.sh`
+1. **Git clean filter** strips notes from QMD before staging (`.gitattributes` + `scripts/strip_qmd_notes.py`). Every spelling pandoc reads as a notes div is removed, not only `::: {.notes}`: `:::{.notes}`, `::: notes`, `::: {.notes .fragment}`, more colons, and a note with another div nested inside it. An unbalanced notes fence exits non-zero so git aborts the add.
+2. **Commit gate** `scripts/check-notes-pre-commit.sh` (part of the installed pre-commit hook) refuses the commit when the clean filter is not configured in this clone, when a staged deck qmd is not covered by the `.gitattributes` pattern, or when the staged blob still carries a notes div or a `data-notes:` line. The first two are how this defence fails silently.
+3. **CI/CD pipeline** strips notes from HTML during deployment: `scripts/strip_notes.sh` runs `scripts/strip_speaker_notes.py` on every rendered deck (`<aside class="notes">` elements and section `data-notes` attributes)
+4. **Backup/restore** via `python3 scripts/backup_notes.py backup|restore [Deck]`; backups land in `.speaker-notes/` (gitignored). A backup records each block's lines verbatim, both fences included, so a restore reproduces whatever spelling the author used.
+5. **Setup** (run once after clone): `bash scripts/setup-git-filters.sh`
 
 ```bash
 ./scripts/setup-git-filters.sh                 # one-time, after clone
@@ -65,9 +66,9 @@ python3 scripts/backup_notes.py restore DreamZero   # after clone or accidental 
 
 ![Deck lifecycle: video and series manifests plus the project defaults feed quarto render; the quality gate, a push to main and CI publish the deck to GitHub Pages; clips live on a GitHub Release, while speaker notes and the PDF handout never leave the presenter's machine](assets/pipeline.svg)
 
-Left to right: `quarto render` builds `<deck>.qmd` under the `Quarto/_quarto.yml` defaults and the `Quarto/_filters/*.lua` shortcodes, `scripts/quality_score.py` grades the result, and a push to `main` hands it to `.github/workflows/deploy.yml`, which re-runs `render_decks.sh`, `strip_notes.sh`, `assemble_site.sh` and `check_site_assets.py`. Off the main line: `scripts/media_prep.py` and `scripts/series_assets.py` turn the two manifests into the `videos.json` and `series.json` locks the shortcodes read, `scripts/media_release.sh` puts the clips on the deck's Release, the clean filter `scripts/strip_qmd_notes.py` keeps speaker notes out of git, and `scripts/export_pdf.sh` writes the local-only handout. The source is `assets/pipeline.svg`.
+Left to right: `quarto render` builds `<deck>.qmd` under the `Quarto/_quarto.yml` defaults and the `Quarto/_filters/*.lua` shortcodes, `scripts/quality_score.py` grades the result, and a push to `main` hands it to `.github/workflows/deploy.yml`, which re-runs `render_decks.sh`, `strip_notes.sh`, `assemble_site.sh`, `check_site_assets.py` and `check_release_media.py` (the local references resolve, and the Release URLs the pages point at answer 200). Off the main line: `scripts/media_prep.py` and `scripts/series_assets.py` turn the two manifests into the `videos.json` and `series.json` locks the shortcodes read, `scripts/media_release.sh` puts the clips on the deck's Release, the clean filter `scripts/strip_qmd_notes.py` keeps speaker notes out of git, and `scripts/export_pdf.sh` writes the local-only handout. The source is `assets/pipeline.svg`.
 
-Decks live at `Quarto/<genre>/<name>.qmd`, where genre is one of the lines in `Quarto/_genres.txt`. A deck's figures, speaker-note backups, and presenter scripts are scoped the same way, so one rule finds everything a deck owns.
+Decks live at `Quarto/<genre>/<name>.qmd`, where genre is one of the lines in `Quarto/_genres.txt`. A deck's figures, speaker-note backups, and presenter scripts are scoped the same way, so one rule finds everything a deck owns. Adding a genre is two edits and no code: a line in `_genres.txt`, and `genre_default: <genre>` in the profile that should grade it. `deckprofile.py` reads the genre-to-profile mapping from the profiles themselves, and `test_profiles.py` fails when a genre has no profile claiming it.
 
 Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, for how long, what they have already seen, which language the slides and notes are in. Those are not documentation. `quality_score.py` reads them to pick a bullet budget and decide which checks apply, the Korean gate reads them to decide how much Hangul this deck may carry, and `/write-speaker-notes` reads them for the script budget. Start a deck with `/new-deck`, which interviews for exactly those answers. Merging to `main` publishes; there is no publish field.
 
@@ -83,6 +84,7 @@ Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, fo
 | `sources` | fact-check agent | paths or URLs the slides are compared against |
 | `series`, `series_index` | gate, landing, scaffold | the course series (`Quarto/lectures/_series/<series>.yml`) and the deck's session in it; `deckprofile.py` resolves `session_date`, `session_title` and `prior_session` from the series lock, an index the series does not have is a hard error. `series_index: 1` (with or without a series) exempts the deck from the prior-session callback |
 | `checks.*` | gate | per-deck override of any profile switch (e.g. `level1_heading: off`) |
+| `citations.ignore` | gate | citation keys the broken-citation check must skip, for the `@` forms the scan misreads |
 | `audience.*`, `delivery` | review agents | context for `/slide-excellence`, not consumed by the gate |
 
 Two optional files next to a deck are read when they exist: `Quarto/<genre>/<deck>.forbidden.txt` (one term per line, `#` comments; any hit in visible slide text is a BLOCKER) and `Figures/<genre>/<deck>/figures.yml` (`file`, `source`, `licence`, `third_party` per figure; a third-party figure needs its source on the slide). Both are documented in `.claude/rules/quality-gates.md`.
@@ -192,15 +194,21 @@ JSON lock plus images, Lua shortcodes that read the lock.
 1. **Series file** `Quarto/lectures/_series/<course>.yml` (schema in its header):
    `course`, `code`, `term`, `institution`, `room`, `time`, `instructor`,
    `co_instructor`, `course_page`, `lms_note`, `qa_tool` (`name`, `url`, `code`,
-   `note`), `rules` (the lines of the "How this course runs" slide), `notation`
-   (`policy`, `note`), and `sessions`: one mapping per week with `index` (the week
-   number), `date` (quoted `YYYY-MM-DD`, a Friday), `kind` (`lecture | guest |
-   keynote | dgist | holiday | exam`), `title`, `presenter`, `deck` (the
-   deck name, or `""`; a planned name is fine, nothing requires the deck to exist
-   yet), optional `remote` / `tentative`. `dgist-2026f` is the DGIST HSS118 term.
+   `note` -- `code` is always quoted, it is an identifier the slide prints as
+   written), `rules` (the lines of the "How this course runs" slide), `notation`
+   (`policy`, `note`), optional `meets_on` (a weekday name or a list of them that
+   every session must fall on; omit it for a block course that runs on whatever
+   days the room was free), and `sessions`: one mapping per week with `index` (the
+   week number), `date` (quoted `YYYY-MM-DD`, on a `meets_on` day), `kind`
+   (`lecture | guest | keynote | dgist | holiday | exam`), `title`, `presenter`,
+   `deck` (the deck name, or `""`; a planned name is fine, nothing requires the
+   deck to exist yet), optional `tag` (overrides the short word the map prints
+   under the dot, at most 12 characters -- this is how the DGIST midterm week
+   prints "report"), optional `remote` / `tentative`. An unknown top-level key is
+   an error. `dgist-2026f` is the DGIST HSS118 term.
 2. **Build** `python3 scripts/series_assets.py <course>`: validates the yml (one
-   mapping per week with unique indices 1..N, Friday dates in order, kinds from the
-   enum, unique decks) and writes `Figures/lectures/_series/<course>/`: `series.json`
+   mapping per week with unique indices 1..N, increasing dates on the `meets_on`
+   days, kinds from the enum, unique decks) and writes `Figures/lectures/_series/<course>/`: `series.json`
    (the lock: the yml plus, per session, `week` "W02", `short_date` "Sep 4",
    `prior_index` = the nearest earlier session that is not a holiday or exam week; a
    guest or DGIST session counts), `qr-qa.png` and `qr-qa.svg` (qrencode, from
@@ -350,7 +358,7 @@ git push  # GitHub Actions renders Quarto, strips notes, deploys
 ./scripts/sync_to_docs.sh [Deck]
 
 # Regression tests
-bash scripts/test_note_filter.sh    # the note filter still covers every depth
+bash scripts/test_note_filter.sh    # the note filter still covers every depth and every notes spelling; the commit gate still refuses
 python3 scripts/test_profiles.py    # the profiles still grade differently; the gate checks still trip on the fixtures
 python3 scripts/test_minyaml.py     # the config parser still agrees with PyYAML
 bash scripts/test_korean_gate.sh    # the Korean gate still blocks, still exempts, still honours korean_allowance
