@@ -39,6 +39,7 @@ HTML is literal text, not a heading, and makes no stack. Deductions
 
 import sys
 import argparse
+import os
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -107,9 +108,20 @@ THRESHOLDS = {
 class IssueDetector:
     """Detect common issues for quality scoring."""
 
+    # How long a render may take before the run is called inconclusive.
+    # Two minutes was a deck's whole render budget: a lecture with a dozen
+    # clips and several inline charts is slower than a paper review, and a
+    # timeout was reported as "Quarto compilation failed", score 0 -- a
+    # verdict on the deck rather than on the clock.
+    RENDER_TIMEOUT_S = float(os.environ.get('QUALITY_RENDER_TIMEOUT', '300'))
+
     @staticmethod
     def check_quarto_compilation(filepath: Path) -> Tuple[bool, str]:
         """Check if Quarto file compiles successfully.
+
+        -> (ok, error). `error` starts with "TIMEOUT" when the render did not
+        finish, which the caller reports as an inconclusive run rather than
+        as a broken deck.
 
         `--to html` used to be passed here. It overrode the deck's declared
         `format: revealjs` and wrote the result to the same <Name>.html, so
@@ -125,14 +137,17 @@ class IssueDetector:
                 ['quarto', 'render', str(filepath.name)],
                 capture_output=True,
                 text=True,
-                timeout=120,
+                timeout=IssueDetector.RENDER_TIMEOUT_S,
                 cwd=filepath.parent
             )
             if result.returncode != 0:
                 return False, result.stderr
             return True, ""
         except subprocess.TimeoutExpired:
-            return False, "Compilation timeout (>2min)"
+            return False, (f"TIMEOUT: quarto render did not finish in "
+                           f"{IssueDetector.RENDER_TIMEOUT_S:g}s. Raise "
+                           f"QUALITY_RENDER_TIMEOUT or render it by hand; "
+                           f"nothing here says the deck is broken")
         except FileNotFoundError:
             return False, "Quarto not installed"
 
@@ -1162,9 +1177,15 @@ class IssueDetector:
 class QualityScorer:
     """Calculate quality scores for course materials."""
 
-    def __init__(self, filepath: Path, verbose: bool = False):
+    def __init__(self, filepath: Path, verbose: bool = False,
+                 render: bool = True):
         self.filepath = filepath
         self.verbose = verbose
+        # Scoring renders the deck, which writes <deck>.html and <deck>_files
+        # next to it. --no-render skips that (and with it the compile check),
+        # for a read-only pass over a tree you do not want to touch.
+        self.render = render
+        self.inconclusive = None
         self.score = 100
         self.issues = {
             'critical': [],
@@ -1186,17 +1207,31 @@ class QualityScorer:
         profile = deckprofile.load_for_path(self.filepath)
 
         # Check compilation
-        compiles, error = IssueDetector.check_quarto_compilation(self.filepath)
-        if not compiles:
-            self.auto_fail = True
-            self.issues['critical'].append({
-                'type': 'compilation_failure',
-                'description': 'Quarto compilation failed',
-                'details': error[:200],
-                'points': 100
-            })
-            self.score = 0
-            return self._generate_report()
+        if self.render:
+            compiles, error = IssueDetector.check_quarto_compilation(self.filepath)
+            if not compiles and error.startswith('TIMEOUT'):
+                # Not a verdict on the deck: the run could not finish. Say so
+                # and stop, rather than printing 0/100 next to a deck that may
+                # be perfect.
+                self.inconclusive = error
+                self.auto_fail = True
+                self.issues['critical'].append({
+                    'type': 'render_timeout',
+                    'description': 'Score not computed: the render timed out',
+                    'details': error,
+                    'points': 0
+                })
+                return self._generate_report()
+            if not compiles:
+                self.auto_fail = True
+                self.issues['critical'].append({
+                    'type': 'compilation_failure',
+                    'description': 'Quarto compilation failed',
+                    'details': error[:200],
+                    'points': 100
+                })
+                self.score = 0
+                return self._generate_report()
 
         # Check equation overflow (heuristic)
         equation_overflows = IssueDetector.check_equation_overflow(content)
@@ -1215,9 +1250,12 @@ class QualityScorer:
 
         # Also check Quarto-style @key citations
         quarto_broken = IssueDetector.check_quarto_citations(content, bib_file)
-        # Merge both sets, avoiding duplicates
+        # Merge both sets, avoiding duplicates, minus the keys this deck
+        # declares are not citations (deck.yml citations.ignore).
         all_broken = set(broken_citations) | set(quarto_broken)
-        for key in all_broken:
+        if profile:
+            all_broken -= set(profile.citation_ignore)
+        for key in sorted(all_broken):
             self.issues['critical'].append({
                 'type': 'broken_citation',
                 'description': f'Citation key not in bibliography: {key}',
@@ -1361,7 +1399,10 @@ class QualityScorer:
 
     def _generate_report(self) -> Dict:
         """Generate quality score report."""
-        if self.auto_fail:
+        if self.inconclusive:
+            status = 'INCONCLUSIVE'
+            threshold = 'None (the run did not finish)'
+        elif self.auto_fail:
             status = 'FAIL'
             threshold = 'None (auto-fail)'
         elif self.blockers:
@@ -1419,8 +1460,14 @@ class QualityScorer:
             'PR_READY': '[PASS]',
             'COMMIT_READY': '[PASS]',
             'BLOCKED': '[BLOCKED]',
-            'FAIL': '[FAIL]'
+            'FAIL': '[FAIL]',
+            'INCONCLUSIVE': '[NOT SCORED]',
         }
+
+        if report['status'] == 'INCONCLUSIVE':
+            print(f"## Not scored {status_emoji['INCONCLUSIVE']}")
+            print(f"\n{self.inconclusive}\n")
+            return
 
         print(f"## Overall Score: {report['score']}/100 {status_emoji.get(report['status'], '')}")
 
@@ -1452,6 +1499,8 @@ class QualityScorer:
             print(f"\n**Status:** Excellence achieved! (score >= {THRESHOLDS['excellence']})")
         elif report['status'] == 'FAIL':
             print(f"\n**Status:** Auto-fail (compilation/syntax error)")
+        elif report['status'] == 'INCONCLUSIVE':
+            print(f"\n**Status:** Not scored -- {self.inconclusive}")
 
         if summary_only:
             print(f"\n**Total issues:** {report['issues']['counts']['total']} "
@@ -1539,6 +1588,9 @@ Exit Codes:
     parser.add_argument('--summary', action='store_true', help='Show summary only')
     parser.add_argument('--verbose', action='store_true', help='Show all issues including minor')
     parser.add_argument('--json', action='store_true', help='Output as JSON')
+    parser.add_argument('--no-render', action='store_true',
+                        help='do not run quarto render (skips the compile '
+                             'check; leaves the tree untouched)')
 
     args = parser.parse_args()
 
@@ -1552,7 +1604,8 @@ Exit Codes:
             continue
 
         try:
-            scorer = QualityScorer(filepath, verbose=args.verbose)
+            scorer = QualityScorer(filepath, verbose=args.verbose,
+                                   render=not args.no_render)
 
             if filepath.suffix == '.qmd':
                 report = scorer.score_quarto()

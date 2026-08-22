@@ -31,6 +31,8 @@ then the profile, then the built-in default):
     bullets.*, checks.*          the quality-gate budget and which checks run
                                  (checks: dash_lint, attribution, forbidden_terms,
                                  level1_heading, expand_acronyms, ...)
+    citations.ignore             citation keys the gate must not call broken
+                                 (a list; deck only, [])
     language.slides, .notes      which language the slides / the notes are in
     language.korean_allowance    max Hangul characters the slides may carry
                                  after the notes filter, when slides are not
@@ -123,6 +125,12 @@ DEFAULTS = {
         "level1_heading": "fail",
     },
     "language": {"slides": "en", "notes": "ko", "korean_allowance": 0},
+    # Citation keys the gate must not report as broken. The scan reads a
+    # deck's whole visible source, and `@` is not only a citation marker:
+    # a handle, a path fragment or a syntax this repo has not met yet reads
+    # as a key and costs 15 points, with the bibliography as the only place
+    # to answer. This is the deck's own answer instead.
+    "citations": {"ignore": []},
 }
 
 # Top-level keys, which follow the same deck-then-profile-then-default order.
@@ -272,6 +280,20 @@ class DeckConfig:
         """"fail" (blocker) or "off". Anything else is read as "fail"."""
         value = str(self._get("checks", "level1_heading")).strip().lower()
         return "off" if value in ("off", "false", "no", "none") else "fail"
+
+    @property
+    def citation_ignore(self) -> list:
+        """Keys the broken-citation check skips for this deck."""
+        value = self._get("citations", "ignore")
+        if value is None:
+            return []
+        if isinstance(value, str):
+            return [value]
+        if not isinstance(value, list):
+            raise ConfigError(
+                f"{self.deck.config}: citations.ignore must be a list of "
+                f"citation keys, got {value!r}")
+        return [str(v) for v in value]
 
     @property
     def slide_language(self) -> str:
@@ -469,6 +491,7 @@ class DeckConfig:
             "slide_language": self.slide_language,
             "notes_language": self.notes_language,
             "korean_allowance": self.korean_allowance,
+            "citation_ignore": self.citation_ignore,
             "sources": self.sources,
             "forbidden_file": _rel(self.forbidden_file),
             "figures_manifest": _rel(self.figures_manifest),
