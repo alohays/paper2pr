@@ -161,18 +161,18 @@ check("a deck that calls back is not",
       not IssueDetector.check_prior_session_callback(WITH_CALLBACK))
 
 print("5. Genre defaults resolve without a deck config")
-check("papers -> paper-review",
-      deckprofile.GENRE_DEFAULT_PROFILE["papers"] == "paper-review")
-check("lectures -> lecture",
-      deckprofile.GENRE_DEFAULT_PROFILE["lectures"] == "lecture")
-check("talks -> invited-talk",
-      deckprofile.GENRE_DEFAULT_PROFILE["talks"] == "invited-talk")
+_defaults = deckprofile.genre_defaults()
+check("papers -> paper-review", _defaults["papers"] == "paper-review")
+check("lectures -> lecture", _defaults["lectures"] == "lecture")
+check("talks -> invited-talk", _defaults["talks"] == "invited-talk")
+# The mapping is read from the profiles' own `genre_default:`, so a genre
+# added to _genres.txt without a profile claiming it shows up here rather
+# than as a deck silently graded on built-in defaults.
 check("every genre in _genres.txt has a default profile",
-      all(g in deckprofile.GENRE_DEFAULT_PROFILE
-          for g in __import__("deckpath").genres()))
+      all(g in _defaults for g in __import__("deckpath").genres()),
+      f"unclaimed: {[g for g in __import__('deckpath').genres() if g not in _defaults]}")
 check("every default profile has a file on disk",
-      all(p in deckprofile.profiles()
-          for p in deckprofile.GENRE_DEFAULT_PROFILE.values()))
+      all(p in deckprofile.profiles() for p in _defaults.values()))
 
 
 # ---------------------------------------------------------------------------

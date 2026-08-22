@@ -96,11 +96,14 @@ PROFILE_DIR = REPO_ROOT / ".claude" / "rules" / "slide-profiles"
 # Which profile a genre implies when a deck does not say. Genres and profiles
 # are deliberately not the same axis -- a deck can sit in lectures/ and still
 # be scored as a talk if that is what it is.
-GENRE_DEFAULT_PROFILE = {
-    "papers": "paper-review",
-    "talks": "invited-talk",
-    "lectures": "lecture",
-}
+#
+# The mapping is not written here. Every profile yml already declares the
+# genre it is the default for (`genre_default:`), and a copy of that in code
+# is a copy that drifts: Quarto/_genres.txt says adding a genre takes a line
+# there and a profile file, and with a hardcoded dict that was untrue --
+# a deck in the new genre resolved to no profile at all and was graded on
+# the built-in defaults (dash lint off, attribution off, korean_allowance 0)
+# without a word on stderr. Read it from the profiles instead.
 
 DEFAULTS = {
     "bullets": {"max_per_slide": 5, "max_with_figure": 3, "max_two_line": 1},
@@ -491,13 +494,41 @@ def profiles() -> list[str]:
     return sorted(p.stem for p in PROFILE_DIR.glob("*.yml"))
 
 
+def genre_defaults() -> dict:
+    """genre -> profile, from each profile yml's own `genre_default:`.
+
+    Two profiles claiming one genre is a contradiction with no safe answer,
+    so it raises rather than picking the one that sorts first.
+    """
+    out: dict = {}
+    for name in profiles():
+        genre = _load_yaml(PROFILE_DIR / f"{name}.yml").get("genre_default")
+        if not genre:
+            continue
+        genre = str(genre)
+        if genre in out:
+            raise ConfigError(
+                f"{PROFILE_DIR}: both {out[genre]!r} and {name!r} declare "
+                f"genre_default: {genre}; a genre has one default profile")
+        out[genre] = name
+    return out
+
+
 def load(deck: "deckpath.Deck") -> DeckConfig:
     raw = _load_yaml(deck.config)
-    name = raw.get("profile") or GENRE_DEFAULT_PROFILE.get(deck.genre)
+    name = raw.get("profile") or genre_defaults().get(deck.genre)
     if name not in profiles():
         if name:
             print(f"warning: unknown profile {name!r} for {deck.slug}, "
                   f"using built-in defaults", file=sys.stderr)
+        else:
+            # Silence here is how a whole genre gets graded on defaults
+            # nobody chose for it.
+            print(f"warning: no profile for genre {deck.genre!r} ({deck.slug}); "
+                  f"add `genre_default: {deck.genre}` to one of "
+                  f"{', '.join(profiles()) or '(no profiles found)'}, or set "
+                  f"`profile:` in the deck config. Using built-in defaults",
+                  file=sys.stderr)
         return DeckConfig(deck=deck, profile=name or "unknown", raw=raw)
     return DeckConfig(deck=deck, profile=name, raw=raw,
                       profile_raw=_load_yaml(PROFILE_DIR / f"{name}.yml"))

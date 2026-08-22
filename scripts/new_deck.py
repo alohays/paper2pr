@@ -129,10 +129,12 @@ def validate(a: dict) -> dict:
             f"Add a line to Quarto/_genres.txt to introduce one.")
 
     profile = str(a.get("profile") or
-                  deckprofile.GENRE_DEFAULT_PROFILE.get(genre, ""))
+                  deckprofile.genre_defaults().get(genre, ""))
     if profile not in deckprofile.profiles():
-        die(f"unknown profile {profile!r}. Known: "
-            f"{', '.join(deckprofile.profiles())}")
+        die(f"no profile for genre {genre!r}. Either pass --profile, or add "
+            f"`genre_default: {genre}` to one of "
+            f"{', '.join(deckprofile.profiles())} "
+            f"(.claude/rules/slide-profiles/)")
 
     # Names key the speaker-note backups and presenter scripts, which are flat
     # within a genre but addressed by bare name everywhere else. A duplicate
