@@ -40,6 +40,7 @@ HTML is literal text, not a heading, and makes no stack. Deductions
 import sys
 import argparse
 import os
+import signal
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -116,6 +117,46 @@ class IssueDetector:
     RENDER_TIMEOUT_S = float(os.environ.get('QUALITY_RENDER_TIMEOUT', '300'))
 
     @staticmethod
+    def run_with_group_timeout(cmd, cwd, timeout: float) -> Tuple[int, str, str]:
+        """Run `cmd`, and on timeout kill the whole process group.
+
+        `quarto` on the command line is a shell wrapper that execs a deno
+        process. `subprocess.run(timeout=...)` kills only the direct child, so
+        the wrapper died and deno kept going -- measured 2026-08-24: the gate
+        returned "not scored" and a deno process was still alive afterwards,
+        inside the deck's directory, free to write over the deck the gate had
+        just declined to judge. The render is being abandoned, so the group
+        gets SIGKILL rather than a graceful stop: a renderer given time to
+        finish writing is the thing being prevented.
+
+        Raises subprocess.TimeoutExpired after the group is gone, so callers
+        keep their existing except clause.
+        """
+        kwargs = {}
+        if hasattr(os, 'killpg'):
+            # POSIX: give the child its own process group so one signal
+            # reaches every process the render spawned.
+            kwargs['start_new_session'] = True
+        proc = subprocess.Popen(
+            cmd, cwd=cwd, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+        try:
+            out, err = proc.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            killed = False
+            if hasattr(os, 'killpg'):
+                try:
+                    os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+                    killed = True
+                except (ProcessLookupError, PermissionError, OSError):
+                    killed = False
+            if not killed:
+                proc.kill()
+            proc.communicate()     # reap, so no zombie is left behind
+            raise
+        return proc.returncode, out, err
+
+    @staticmethod
     def check_quarto_compilation(filepath: Path) -> Tuple[bool, str]:
         """Check if Quarto file compiles successfully.
 
@@ -133,15 +174,13 @@ class IssueDetector:
         refresh instead of a destruction.
         """
         try:
-            result = subprocess.run(
+            returncode, _out, err = IssueDetector.run_with_group_timeout(
                 ['quarto', 'render', str(filepath.name)],
-                capture_output=True,
-                text=True,
+                cwd=filepath.parent,
                 timeout=IssueDetector.RENDER_TIMEOUT_S,
-                cwd=filepath.parent
             )
-            if result.returncode != 0:
-                return False, result.stderr
+            if returncode != 0:
+                return False, err
             return True, ""
         except subprocess.TimeoutExpired:
             return False, (f"TIMEOUT: quarto render did not finish in "
