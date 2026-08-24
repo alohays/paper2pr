@@ -208,6 +208,42 @@ course (it raises `SeriesError` rather than overlapping, which is the right
 failure); `font_shrink` stays uncapped, unlike `dash_lint` and
 `attribution`; `source:` in `videos.yml` stays relative to `videos/`.
 
+### Abandoned branch `ys/vigorous-engelbart-b600e8`, adjudicated (2026-08-24)
+
+One unmerged commit, `07aabe3` "stop the quality gate from destroying
+rendered revealjs decks" (2026-07-27), forked 103 commits back. No PR was
+ever opened for it; four days later `9cb9ffb` fixed the same bug on main by
+deleting `--to html`, in one line, reasoning that letting the deck's own
+format win "keeps the render a refresh instead of a destruction". So the
+branch is a duplicate that lost the race, not a rejected proposal.
+
+Four independent investigations, including one assigned to argue for
+adopting it, returned drop-entirely at high confidence. The evidence:
+
+- Its premise no longer holds. Rendering a deck and then scoring it leaves
+  the html byte-identical on main (same md5, 16 `libs/revealjs` references).
+- Its format-detection half is not merely redundant, it is wrong for this
+  layout: `_target_format` looks for `_quarto.yml` in the deck's own
+  directory, and v2 put the project file one level up at
+  `Quarto/_quarto.yml`. A deck that inherits `format: revealjs` from the
+  project defaults resolves to `html`, which is the original bug. It also
+  reintroduces the fail-soft `import yaml` that WP2 removed.
+- Its output-preservation half is net-negative on main. With no fault at all
+  it discards the fresh render and restores the stale html while reporting
+  that the deck compiles. Under SIGTERM it loses the deck where main keeps
+  it, hiding the only copy in a gitignored `.quality-score-stash-*`. Its
+  flock defends against a hazard the stash itself creates: main survives
+  concurrent gate runs without either, because re-rendering is idempotent
+  and moving files is not.
+- Two of the commit message's supporting claims have expired outright:
+  `guide/workflow-guide.html` was deleted by `e4cc348`, and a failed render
+  does not destroy existing output.
+
+One live defect surfaced during the adjudication, present in main and in the
+branch alike, and fixed separately: the render timeout killed only the
+`quarto` shell wrapper, leaving the deno renderer alive and free to write
+into the deck directory after the gate had returned.
+
 ## 5. Non-goals
 
 - Two build targets, offline mode, or a local-first `<source>` (D8).
