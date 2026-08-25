@@ -401,6 +401,32 @@ check("paper-review leaves attribution off; lecture and invited-talk turn it on"
       and all(deckprofile._load_yaml(deckprofile.PROFILE_DIR / f"{n}.yml")["checks"]["attribution"]
               for n in ("lecture", "invited-talk")))
 
+print("13. A render that times out takes every process it spawned with it")
+# `quarto` is a shell wrapper that execs deno. subprocess.run(timeout=) kills
+# only the wrapper, so the renderer outlived the gate and was still free to
+# write into the deck's directory after the gate had declined to judge it
+# (measured 2026-08-24 on a real render: gate returned "not scored", a deno
+# process was still alive). The probe below has the same shape: a wrapper
+# whose grandchild would touch a file well after the timeout.
+import subprocess as _sp  # noqa: E402
+import tempfile as _tf  # noqa: E402
+
+with _tf.TemporaryDirectory() as _td:
+    _wrote = Path(_td) / "grandchild-wrote"
+    _probe = ["/bin/sh", "-c",
+              f"sh -c 'sleep 20; touch {_wrote}' & sleep 20"]
+    _timed_out = False
+    try:
+        IssueDetector.run_with_group_timeout(_probe, cwd=_td, timeout=1.0)
+    except _sp.TimeoutExpired:
+        _timed_out = True
+    check("the timeout still raises TimeoutExpired for the caller", _timed_out)
+    _alive = _sp.run(["pgrep", "-f", str(_wrote)],
+                     capture_output=True, text=True).stdout.split()
+    check("no descendant of the render survives it", not _alive,
+          f"still running: {_alive}")
+    check("and nothing it would have written appears", not _wrote.exists())
+
 print()
 print("PASS" if not fail else "FAIL")
 sys.exit(fail)
