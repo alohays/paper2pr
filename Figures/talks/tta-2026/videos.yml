@@ -25,11 +25,11 @@ videos:
     source: src/dyna2-chopping-dark.mp4
     segment: 15-45
   - slug: dyna2-fig16-case0
-    title: Deployment rollout
+    title: Fig. 16 rollout (egocentric)
     publisher: Dyna Robotics
     source_url: https://www.dyna.co/dyna-2
     published: 2026-08
-    autonomy: autonomous
+    autonomy: unknown
 
   # --- GEN-1.5 (Generalist AI, 2026-08) ---
   - slug: gen15-h2r-icl
@@ -66,6 +66,7 @@ videos:
     source_url: https://www.skild.ai/blogs/s1
     published: 2026-08
     autonomy: autonomous
+    speed: 4x
     source: src/skild-s1-coffee.mp4
     segment: 78-103
   - slug: skild-s1-pancakes-prompt
@@ -82,6 +83,7 @@ videos:
     source_url: https://www.skild.ai/blogs/s1
     published: 2026-08
     autonomy: autonomous
+    speed: 2x
     source: src/skild-s1-pancake-recovery.mp4
     segment: 12-42
 

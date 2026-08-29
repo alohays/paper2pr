@@ -270,11 +270,7 @@ The 2026 tutorial line: imagination is training-time scaffolding; at inference, 
 
 ## Dyna-2 is deployed, not demoed
 
-::: {.two-up}
-{{< video-card dyna2-fig16-case0 >}}
-
 {{< video-card dyna2-chopping-dark >}}
-:::
 
 ```{=html}
 <div class="chips">
@@ -414,6 +410,8 @@ NVIDIA, Jun 2026: WAM to frontier took 9 ZFLOPs vs 50+ for the VLA path; inferen
 | Learns | behavior | dynamics | both, jointly |
 | Scales on | teleop hours | video | human egocentric video |
 | The 2026 turn | absorbing world models | converging on robot training | one-shot via in-context learning |
+
+: {tbl-colwidths="[16,24,30,30]"}
 
 ## {.video-full video="@worv-rfm-demo"}
 
