@@ -1,0 +1,516 @@
+---
+title: "World Models and World-Action Models"
+subtitle: "From VLAs to WAMs: what changed by August 2026"
+author: Yunsung Lee
+institute: WoRV / MaumAI
+date: "2026-08-31"
+# Full-bleed title gradient as a reveal background (fills the viewport at any
+# aspect ratio; the theme drops its own section gradient when this is set).
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+format:
+  revealjs:
+    theme: [default, ../clean-academic.scss]
+bibliography: ../../Bibliography_base.bib
+---
+
+## Yunsung Lee
+
+```{=html}
+<style>
+.vf-panel { position: absolute; left: 56px; top: 48px; z-index: 2; max-width: 74%; text-align: left; }
+.vf-head { font-size: 1.02em; font-weight: 650; line-height: 1.22; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,0.65), 0 0 4px rgba(0,0,0,0.4); letter-spacing: -0.01em; }
+.vf-head p { margin: 0; text-align: left; }
+.vf-chips { position: absolute; left: 56px; bottom: 68px; z-index: 2; display: flex; gap: 0.5em; text-align: left; }
+.vf-chips p { margin: 0; display: flex; gap: 0.5em; }
+.chip { background: rgba(1,33,105,0.78); border-left: 3px solid #FFD960; color: #fff; padding: 0.32em 0.72em; font-size: 0.42em; font-weight: 300; text-align: left; line-height: 1.3; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.chip b { display: block; font-size: 1.75em; font-weight: 700; letter-spacing: -0.02em; }
+.chips { display: flex; gap: 0.55em; justify-content: center; margin-top: 0.55em; }
+.chips p { margin: 0; display: flex; gap: 0.55em; justify-content: center; }
+.chip-light { background: #F2F5FA; border-left: 3px solid #012169; color: #1a1a1a; padding: 0.32em 0.72em; font-size: 0.42em; font-weight: 300; text-align: left; line-height: 1.3; }
+.chip-light b { display: block; font-size: 1.75em; font-weight: 700; color: #012169; letter-spacing: -0.02em; }
+</style>
+```
+
+- Team Lead, WoRV at MaumAI: robot foundation models for wheeled platforms
+- Research: world models, robot learning, embodied AI
+- Adjunct professor, DGIST (Physical AI lecture, Fall 2026)
+- Incoming member, TTA PG1004
+
+## {.divider}
+
+::: {.divider-number}
+01
+:::
+::: {.divider-title}
+Robot Foundation Models Today
+:::
+::: {.divider-sub}
+The VLA recipe, and where it strains
+:::
+
+## A VLA is a vision-language model that outputs robot actions
+
+- One network: pixels and language in, motor commands out
+- Trained by imitation on human teleoperation demonstrations
+- The de facto recipe for robot foundation models since 2023
+
+## Three years of the same recipe, scaled
+
+```{=html}
+<div class="timeline">
+  <div class="tl-item"><div class="tl-date">Apr 2023</div><div class="tl-name">ALOHA</div></div>
+  <div class="tl-item"><div class="tl-date">Jul 2023</div><div class="tl-name">RT-2</div></div>
+  <div class="tl-item"><div class="tl-date">Jun 2024</div><div class="tl-name">OpenVLA</div></div>
+  <div class="tl-item"><div class="tl-date">Oct 2024</div><div class="tl-name">LAPA</div></div>
+  <div class="tl-item"><div class="tl-date">Oct 2024</div><div class="tl-name">&pi;<sub>0</sub></div></div>
+  <div class="tl-item"><div class="tl-date">Feb 2025</div><div class="tl-name">Helix</div></div>
+  <div class="tl-item"><div class="tl-date">Apr 2025</div><div class="tl-name">&pi;<sub>0.5</sub></div></div>
+  <div class="tl-item"><div class="tl-date">Apr 2026</div><div class="tl-name">&pi;<sub>0.7</sub></div></div>
+</div>
+```
+
+::: {.footnote}
+Bigger backbones, more teleop hours, broader embodiments: the axis of progress stayed the same.
+:::
+
+## Dual-system: a slow VLM thinks, a fast policy acts
+
+{{< video-card helix-hero-mobile >}}
+
+```{=html}
+<div class="chips">
+<div class="chip-light"><b>7 to 9 Hz</b>System 2: VLM reasoning</div>
+<div class="chip-light"><b>200 Hz</b>System 1: visuomotor control</div>
+</div>
+```
+
+## Every VLA stands on human demonstration
+
+::: {.two-up}
+{{< video-card aloha-teleop-hero >}}
+
+{{< video-card umi-in-the-wild >}}
+:::
+
+::: {.footnote}
+Teleoperation rigs and handheld grippers: the data engine behind every VLA.
+:::
+
+## {.video-full video="@pi07-shirt-folding"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">2026: VLAs began absorbing world models</div></div>
+<div class="vf-chips">
+<div class="chip"><b>&pi;0.7</b>visual subgoals from a lightweight world model, at inference</div>
+<div class="chip"><b>zero-shot</b>expert-level folding on an unseen UR5e</div>
+<div class="chip"><b>GR 2</b>whole-body humanoid, adapts with under 200 demos</div>
+</div>
+```
+
+{{< video-caption pi07-shirt-folding >}}
+
+## {.divider}
+
+::: {.divider-number}
+02
+:::
+::: {.divider-title}
+World Models
+:::
+::: {.divider-sub}
+Learning the environment itself
+:::
+
+## A world model learns what happens next
+
+- Predict the future, given the present and an action
+- Act by imagining rollouts before moving: the Dreamer lineage, 2019 onward
+- The complement of a policy: it learns dynamics, not behavior
+
+## Three families of world models
+
+| Family | Exemplars | What it gives you |
+|--------|-----------|-------------------|
+| Latent dynamics | Dreamer | imagination for planning and RL |
+| Video generation | Genie, Cosmos | promptable, general visual worlds |
+| Neural simulators | DreamDojo, GE-Sim | action-conditioned rollouts for robots |
+
+## {.video-full video="@genie-3-environmental-consistency"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">Generated worlds became persistent, promptable places</div></div>
+<div class="vf-chips">
+<div class="chip"><b>Genie 3</b>real-time interactive generation</div>
+<div class="chip"><b>minutes</b>of environmental consistency</div>
+</div>
+```
+
+{{< video-caption genie-3-environmental-consistency >}}
+
+## From video models to robot simulators
+
+{{< video-card cosmos-predict-banner >}}
+
+- World models entered robot stacks as data engines and evaluators
+- NVIDIA Cosmos: open world foundation models built for physical AI
+
+## Cosmos 3: one omnimodal world model
+
+- Vision reasoning, world generation, action: one open-weight model
+- Claims the top of generation and policy leaderboards, at once
+- Adopters named: Agile Robots, Doosan, LG Electronics, Samsung Electronics, Skild AI
+
+::: {.footnote}
+Plus a 20+ company Cosmos coalition in Japan. Source: NVIDIA Cosmos 3, May 2026.
+:::
+
+## Everyone is pointing world models at robot training
+
+| Who | May to Jul 2026 | The move |
+|-----|-----------------|----------|
+| Google DeepMind | Project Genie + Street View | 280B images of real places; physics gaps self-stated |
+| World Labs | SceniX, real to sim to real | scanned scenes into Isaac-ready simulation |
+| GE-Sim 2.0 | one world model, three jobs | evaluation, RL, and teleop inside the model |
+
+## {.video-full video="@dreamdojo-real-time"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">Interactive world models hit real time</div></div>
+<div class="vf-chips">
+<div class="chip"><b>44,000 h</b>of human video pretraining</div>
+<div class="chip"><b>real time</b>action-conditioned rollout</div>
+<div class="chip"><b>DreamDojo</b>same team as DreamZero</div>
+</div>
+```
+
+{{< video-caption dreamdojo-real-time >}}
+
+## Two paradigms, one team
+
+|  | DreamZero | DreamDojo |
+|--|-----------|-----------|
+| Direction | inverse: video to action | forward: action to video |
+| The product | a zero-shot policy | a neural simulator |
+| Training data | 500 h of robot data | 44,000 h of human video |
+| Its job | acts | imagines |
+
+::: {.footnote}
+Both NVIDIA GEAR, February 2026. The two halves of one loop.
+:::
+
+## {.divider}
+
+::: {.divider-number}
+03
+:::
+::: {.divider-title}
+World-Action Models
+:::
+::: {.divider-sub}
+One model that imagines and acts
+:::
+
+## A WAM denoises video and action together
+
+- One diffusion process over future frames and future actions
+- Human video is no longer pretraining: it is action supervision
+- DreamZero named the category: "World Action Models are Zero-shot Policies"
+
+## {.video-full video="@dreamzero-overview"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">DreamZero: the policy is a world model</div></div>
+<div class="vf-chips">
+<div class="chip"><b>Elo 1750</b>RoboArena, vs 1622 for &pi;0.5</div>
+<div class="chip"><b>zero-shot</b>on unseen tasks and embodiments</div>
+<div class="chip"><b>500 h</b>robot data, video-first training</div>
+</div>
+```
+
+{{< video-caption dreamzero-overview >}}
+
+## Where does action supervision come from?
+
+{{< video-card lapa-teaser >}}
+
+- Inverse dynamics models label raw video with pseudo-actions
+- LAPA (2024): learn latent actions from human video, no robot labels at all
+
+## From two stages to one joint model
+
+- 2024: a video model plus a separate action decoder, trained apart
+- 2026: one transformer denoises frames and actions jointly
+- Imagination becomes optional at inference: run the action pathway alone
+
+## The architecture consolidated in 2026
+
+| Style | Idea | Exemplar |
+|-------|------|----------|
+| Joint denoising | one flow over video and action | DreamZero |
+| Interleaved mixture | mixture-of-transformers over frames and actions | Dyna-2 |
+| Latent world + decoder | imagine in latent space, decode actions | LAPA lineage |
+
+::: {.footnote}
+The 2026 tutorial line: imagination is training-time scaffolding; at inference, recent WAMs skip video generation and act at VLA-class latency.
+:::
+
+## {.video-full video="@dyna2-hero"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">Dyna-2: a million hours of human video, zero robot episodes</div></div>
+<div class="vf-chips">
+<div class="chip"><b>1,000,000 h</b>egocentric video, 43M episodes</div>
+<div class="chip"><b>first</b>human-to-robot scaling law</div>
+<div class="chip"><b>1.55x</b>success of its own VLA twin, same data</div>
+</div>
+```
+
+{{< video-caption dyna2-hero >}}
+
+## Dyna-2 is deployed, not demoed
+
+::: {.two-up}
+{{< video-card dyna2-fig16-case0 >}}
+
+{{< video-card dyna2-chopping-dark >}}
+:::
+
+```{=html}
+<div class="chips">
+<div class="chip-light"><b>95 vs 35</b>napkins per hour, vs its VLA</div>
+<div class="chip-light"><b>93% vs 75%</b>fold quality</div>
+<div class="chip-light"><b>3 days</b>to ROI at a new site</div>
+</div>
+```
+
+::: {.footnote}
+Named customer: Din Tai Fung. The fleet collects about 1 TB per day.
+:::
+
+## The race is for hours, not parameters
+
+| Who | Hours | What |
+|-----|-------|------|
+| Dyna Robotics | 1,000,000 h | human egocentric video, zero robot data |
+| Generalist AI | 500,000+ h | real-robot manipulation, about 9,000 end-effectors |
+| Lightwheel EgoSuite | 100,000 h, open | egocentric human video, commercial use allowed |
+| Amazon ABC-130K | 3,553 h, open | 134,806 bimanual teleoperation episodes |
+| China, WRC 2026 | "90 data factories" | and, per the same panel, still not enough |
+
+::: {.footnote}
+The counterweight, Jul 2026: $\log N \propto 1/(P-c)$. Precision is the one axis data volume does not buy.
+:::
+
+## {.divider}
+
+::: {.divider-title}
+What does a million hours buy?
+:::
+::: {.divider-sub}
+Six weeks in summer 2026: the in-context learning wave
+:::
+
+## Four one-shot announcements in six weeks
+
+| Date | Who | Claim |
+|------|-----|-------|
+| Jul 16 | RoboTTT, NVIDIA | context length as a new scaling axis; one-shot 6/10 from a human video |
+| Aug 19 | GEN-1.5, Generalist AI | physical prompting: one-shot 59%, no gradient updates |
+| Aug 25 | Skild S1 | one human video runs an unseen 10-minute task; 66% vs 9% |
+| Aug 26 | Zero-WAM, Robbyant | in-context WAM: +29.5 pp over the best baseline |
+
+## RoboTTT: context became a scaling axis
+
+![](../../Figures/talks/tta-2026/robottt-ctx-scaling.svg){.r-stretch}
+
+```{=html}
+<div class="chips">
+<div class="chip-light"><b>+62%</b>pretraining at 8K vs 1K context</div>
+<div class="chip-light"><b>8K steps</b>about 5 minutes at 30 Hz</div>
+<div class="chip-light"><b>constant</b>latency via TTT fast weights</div>
+</div>
+```
+
+::: {.footnote}
+Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
+:::
+
+## {.video-full video="@gen15-h2r-icl"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">GEN-1.5: the demo is the program</div></div>
+<div class="vf-chips">
+<div class="chip"><b>59%</b>one-shot on unseen tasks, weights frozen</div>
+<div class="chip"><b>83%</b>few-shot after just 10 gradient steps</div>
+<div class="chip"><b>emergent</b>no meta-learning, 8+ months of pretraining</div>
+</div>
+```
+
+{{< video-caption gen15-h2r-icl >}}
+
+## One human video vs 380 teleop episodes
+
+::: {.two-up}
+{{< video-card skild-s1-coffee-prompt >}}
+
+{{< video-card skild-s1-coffee >}}
+:::
+
+```{=html}
+<div class="chips">
+<div class="chip-light"><b>66% vs 9%</b>video prompt vs language-prompted VLA</div>
+<div class="chip-light"><b>1 demo</b>worth about 380 post-training episodes</div>
+<div class="chip-light"><b>frozen</b>no weight updates at deployment</div>
+</div>
+```
+
+## Zero-WAM: the two storylines converge
+
+::: {.two-up}
+{{< video-card zerowam-insert-human >}}
+
+{{< video-card zerowam-insert-robot-2x >}}
+:::
+
+```{=html}
+<div class="chips">
+<div class="chip-light"><b>in context</b>a human video is the task spec</div>
+<div class="chip-light"><b>47.0%</b>held-out tasks, +29.5 pp over the best baseline</div>
+<div class="chip-light"><b>Aug 26</b>published five days before this talk</div>
+</div>
+```
+
+## {.divider}
+
+::: {.divider-number}
+04
+:::
+::: {.divider-title}
+So What Changed?
+:::
+::: {.divider-sub}
+VLA, world model, WAM, side by side
+:::
+
+## Five architectures, one scoreboard
+
+| Architecture | Scales on | Actions come from | August 2026 signal |
+|--------------|-----------|-------------------|--------------------|
+| VLA | teleop demos | imitation head | &pi;0.5: RoboArena Elo 1622 |
+| VLA + WM | demos + video | imitation, WM-guided | &pi;0.7 visual subgoals |
+| World model | video | none: it imagines | real-time neural simulators |
+| WAM | human ego video | joint denoising | DreamZero: Elo 1750 |
+| Hybrid | everything | both pathways | the predicted winner |
+
+::: {.footnote}
+NVIDIA, Jun 2026: WAM to frontier took 9 ZFLOPs vs 50+ for the VLA path; inference 3 to 4x slower, closing fast; "hybrid will dominate."
+:::
+
+## If you remember one slide
+
+|  | VLA | World model | WAM |
+|--|-----|-------------|-----|
+| Learns | behavior | dynamics | both, jointly |
+| Scales on | teleop hours | video | human egocentric video |
+| The 2026 turn | absorbing world models | converging on robot training | one-shot via in-context learning |
+
+## {.video-full video="@worv-rfm-demo"}
+
+```{=html}
+<div class="vf-panel"><div class="vf-head">WoRV at MaumAI: robot foundation models for wheeled platforms</div></div>
+<div class="vf-chips">
+<div class="chip"><b>RFM</b>plus a world-model research track</div>
+<div class="chip"><b>teleop</b>to autonomy, one data engine</div>
+<div class="chip"><b>hiring</b>research scientists and interns</div>
+</div>
+```
+
+{{< video-caption worv-rfm-demo >}}
+
+## CostNav: navigation as unit economics
+
+{{< video-card worv-costnav-teaser >}}
+
+- Delivery robots evaluated on cost per delivery, not success rate alone
+- Public research from the WoRV team
+
+## {.qr-slide}
+
+```{=html}
+<div class="qr-block">
+<img class="qr" src="../../Figures/talks/tta-2026/deck-qr.svg" alt="QR code linking to these slides">
+<div class="qr-meta"><span class="qr-url">alohays.github.io/paper2pr/slides/talks/tta-2026.html</span></div>
+</div>
+```
+
+Thank you. Questions welcome: sung@maum.ai
+
+## {.divider}
+
+::: {.divider-title}
+Appendix
+:::
+::: {.divider-sub}
+Backup detail for Q&A
+:::
+
+## A1. Dyna-2: the scaling law in detail
+
+- 1k to 1M hours in nested subsets: a power law over 4 orders
+- 14-task average success: 20%, 28%, 45%, 53%
+- Cross-embodiment transfer emerges between 10k and 100k hours
+- Distilled sampler: 10,203 ms to 110 ms, about 90x, one H100
+
+## A2. Dyna-2: deployment and infrastructure
+
+- Head-to-head vs DYNA-1, its VLA twin, same data: 65% win rate
+- New-site zero-shot deployment: 87% vs 46%
+- Bottle caps: 13 minutes of robot data lifts 10% to 50%
+- Ingestion 31x faster, 1M hours in under 3 weeks; roadmap 10M
+
+## A3. RoboTTT: the mechanism
+
+- TTT fast-weight layers in GR00T N1.7: 538M to 690M params
+- 8K-timestep context at constant per-step latency
+- Assembly: 89% vs 42%; one-shot human video: 6/10 vs 0/10
+- Bimanual YAM arms; egocentric human video in the mix
+
+## A4. GEN-1.5: lineage and evidence
+
+- GEN-0 (270k h) to GEN-1 (500k+ h) to GEN-1.5, in nine months
+- One-shot 59% (±10); few-shot 83% (±9) after 10 gradient steps
+- Composed prompts interpolate: regrasping and recovery emerge
+- About 9,000 end-effectors; updates touch 2.5 to 11.4% of weights
+
+## A5. Skild S1: ground-up in-context learning
+
+::: {.two-up}
+{{< video-card skild-s1-pancakes-prompt >}}
+
+{{< video-card skild-s1-pancake-recovery >}}
+:::
+
+- Pretraining scaled 1k to 100k hours; at maximum perturbation, degradation one third of a VLA's
+- Long-horizon: a single egocentric video drives a 10-minute unseen task
+
+## A6. Zero-WAM and the academic lineage
+
+- HumanGen: 74.2K human-robot pairs across 8.6K tasks
+- RoboTwin 2.0 held-out suite: 47.0%, +29.5 pp over LingBot-VA
+- BPP (Stanford): task diversity, not hours, drives ICL ability
+- MimicDroid (UT Austin, ICRA 2026): the earlier academic thread
+
+## A7. The data race: sources and fine print
+
+- EgoSuite-Open100K: 90k + 10k h, LeRobot v3, about 27x Ego4D
+- ABC-130K: 3,553 h, 134,806 episodes, bimanual YAM, fully open
+- UBTech: a 566M CNY order reported at WRC 2026
+- Curse of Precision: $\log N \propto 1/(P-c)$, resists data scale
+
+## A8. Reading list
+
+- DreamZero (2602.15922) and DreamDojo (2602.06949)
+- WAM tutorial 2607.00836, survey 2606.00113, Fast-WAM 2603.16666
+- Cosmos 3 (2606.02800); NVIDIA Rise of World-Action Models, Jun 2026
+- RoboTTT 2607.15275, Zero-WAM 2608.26103, BPP 2606.30457
