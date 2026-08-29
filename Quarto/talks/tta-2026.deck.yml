@@ -1,0 +1,81 @@
+# Written by /new-deck. These are the premises the deck was built on;
+# every downstream tool reads them from here rather than guessing.
+#   quality_score.py  -> bullet budget and the profile's extra checks
+#   the Korean gate   -> whether non-English slides are allowed here,
+#                        and how much Hangul an English deck may carry
+#   write-speaker-notes -> which language the notes are in, and the
+#                        speaking minutes the script is budgeted on
+#   slide-excellence  -> audience, delivery, sources (review context)
+# Changing a value here changes how the deck is graded, so change it
+# when the premise changes, not to make a warning go away.
+profile: invited-talk
+title: "World Models and World-Action Models"
+
+# audience.assumes, audience.size, audience.prior and delivery are
+# context for the review agents (slide-excellence reads them), not
+# consumed by the gate; the gate's budget and checks come from the
+# profile above.
+audience:
+  assumes: practitioner    # none | practitioner | expert
+delivery: in-person    # in-person | remote | hybrid
+
+# Wall-clock minutes. video_min (clips playing without narration) and
+# qa_min (questions) are subtracted: the speaker-notes budget runs on
+# speaking_min = duration_min - video_min - qa_min.
+duration_min: 40
+video_min: 8
+qa_min: 10
+
+language:
+  slides: en
+  notes: ko
+  # korean_allowance: <n>  -- max Hangul characters on English slides
+  # (term glosses, Wooclap instructions). Omit to take the profile's
+  # default (lecture 300, others 0). Slides declared ko are not counted.
+
+# Two optional files next to this deck are read when they exist:
+#   Quarto/talks/tta-2026.forbidden.txt  (one term per line;
+#     any hit in visible slide text is a BLOCKER at the gate)
+#   Figures/talks/tta-2026/figures.yml  (file, source, licence,
+#     third_party per figure; third-party figures need their source on
+#     the slide)
+
+# Public URLs the fact-check agent (slide-excellence) compares slide claims
+# against. Public sources only; every number on a slide should trace here.
+sources:
+  - https://www.dyna.co/dyna-2
+  - https://generalistai.com/blog/gen-1.5
+  - https://www.skild.ai/blogs/s1
+  - https://arxiv.org/abs/2607.15275
+  - https://arxiv.org/abs/2608.26103
+  - https://arxiv.org/abs/2606.30457
+  - https://arxiv.org/abs/2606.27375
+  - https://arxiv.org/abs/2607.23108
+  - https://developer.nvidia.com/blog/pretrained-to-imagine-fine-tuned-to-act-the-rise-of-world-action-models/
+  - https://research.nvidia.com/labs/cosmos-lab/cosmos3/
+  - https://lightwheel.ai/egosuite
+  - https://dreamzero0.github.io/
+  - https://dreamdojo-world.github.io/
+  - https://research.nvidia.com/labs/gear/robottt/
+  - https://www.pi.website/blog/pi07
+  - https://www.pi.website/blog/pi05
+  - https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/
+  - https://www.worldlabs.ai/blog/scenix
+  - https://arxiv.org/abs/2605.27491
+  - https://blog.google/innovation-and-ai/models-and-research/google-deepmind/project-genie-expands/
+  - https://robbyant-research.github.io/Zero-WAM/
+  - https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/
+  - https://arxiv.org/abs/2602.15922
+  - https://arxiv.org/abs/2602.06949
+  - https://arxiv.org/abs/2607.00836
+  - https://arxiv.org/abs/2606.00113
+  - https://arxiv.org/abs/2603.16666
+  - https://arxiv.org/abs/2606.02800
+  - https://robotics-transformer2.github.io/
+  - https://tonyzhaozh.github.io/aloha/
+  - https://umi-gripper.github.io/
+  - https://latentactionpretraining.github.io/
+  - https://www.figure.ai/news/helix
+  - https://www.nvidia.com/en-us/ai/cosmos/
+  - https://www.worldlabs.ai/blog/real-to-sim-to-real
+  - https://www.maum.ai/
