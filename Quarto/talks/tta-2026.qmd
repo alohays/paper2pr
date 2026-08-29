@@ -18,7 +18,7 @@ bibliography: ../../Bibliography_base.bib
 
 ```{=html}
 <style>
-.vf-panel { position: absolute; left: 56px; top: 48px; z-index: 2; max-width: 74%; text-align: left; }
+.vf-panel { position: absolute; left: 56px; top: 48px; z-index: 2; max-width: 74%; text-align: left; background: rgba(1,33,105,0.62); border-left: 3px solid #FFD960; padding: 0.28em 0.6em; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .vf-head { font-size: 1.02em; font-weight: 650; line-height: 1.22; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,0.65), 0 0 4px rgba(0,0,0,0.4); letter-spacing: -0.01em; }
 .vf-head p { margin: 0; text-align: left; }
 .vf-chips { position: absolute; left: 56px; bottom: 68px; z-index: 2; display: flex; gap: 0.5em; text-align: left; }
@@ -94,7 +94,7 @@ Bigger backbones, more teleop hours, broader embodiments: the axis of progress s
 :::
 
 ::: {.footnote}
-Teleoperation rigs and handheld grippers: the data engine behind every VLA.
+Teleoperation rigs and handheld grippers feed every VLA. The strain: an hour of robot time buys one hour of one embodiment's data.
 :::
 
 ## {.video-full video="@pi07-shirt-folding"}
@@ -104,7 +104,7 @@ Teleoperation rigs and handheld grippers: the data engine behind every VLA.
 <div class="vf-chips">
 <div class="chip"><b>&pi;0.7</b>visual subgoals from a lightweight world model, at inference</div>
 <div class="chip"><b>zero-shot</b>expert-level folding on an unseen UR5e</div>
-<div class="chip"><b>GR 2</b>whole-body humanoid, adapts with under 200 demos</div>
+<div class="chip"><b>&lt;200 demos</b>Gemini Robotics 2 On-Device adapts to new bi-arm robots</div>
 </div>
 ```
 
@@ -158,20 +158,20 @@ Learning the environment itself
 ## Cosmos 3: one omnimodal world model
 
 - Vision reasoning, world generation, action: one open-weight model
-- Claims the top of generation and policy leaderboards, at once
-- Adopters named: Agile Robots, Doosan, LG Electronics, Samsung Electronics, Skild AI
+- First among open models for generation and robot policy, at once
+- Scored across R-Bench, Artificial Analysis, RoboLab, RoboArena
 
 ::: {.footnote}
-Plus a 20+ company Cosmos coalition in Japan. Source: NVIDIA Cosmos 3, May 2026.
+Source: NVIDIA Cosmos 3, Jun 2026.
 :::
 
 ## Everyone is pointing world models at robot training
 
 | Who | May to Jul 2026 | The move |
 |-----|-----------------|----------|
-| Google DeepMind | Project Genie + Street View | 280B images of real places; physics gaps self-stated |
-| World Labs | SceniX, real to sim to real | scanned scenes into Isaac-ready simulation |
-| GE-Sim 2.0 | one world model, three jobs | evaluation, RL, and teleop inside the model |
+| Google DeepMind | Project Genie + Street View | two decades of Street View imagery become worlds |
+| World Labs | SceniX, real to sim to real | scanned scenes into policy-training simulation |
+| GE-Sim 2.0 | one world model, three jobs | scores rollouts, yields rewards, accelerates them |
 
 ## {.video-full video="@dreamdojo-real-time"}
 
@@ -180,7 +180,7 @@ Plus a 20+ company Cosmos coalition in Japan. Source: NVIDIA Cosmos 3, May 2026.
 <div class="vf-chips">
 <div class="chip"><b>44,000 h</b>of human video pretraining</div>
 <div class="chip"><b>real time</b>action-conditioned rollout</div>
-<div class="chip"><b>DreamDojo</b>same team as DreamZero</div>
+<div class="chip"><b>open code</b>github.com/NVIDIA/DreamDojo</div>
 </div>
 ```
 
@@ -196,7 +196,7 @@ Plus a 20+ company Cosmos coalition in Japan. Source: NVIDIA Cosmos 3, May 2026.
 | Its job | acts | imagines |
 
 ::: {.footnote}
-Both NVIDIA GEAR, February 2026. The two halves of one loop.
+Both NVIDIA, February 2026. The two halves of one loop.
 :::
 
 ## {.divider}
@@ -260,9 +260,9 @@ The 2026 tutorial line: imagination is training-time scaffolding; at inference, 
 ```{=html}
 <div class="vf-panel"><div class="vf-head">Dyna-2: a million hours of human video, zero robot episodes</div></div>
 <div class="vf-chips">
-<div class="chip"><b>1,000,000 h</b>egocentric video, 43M episodes</div>
+<div class="chip"><b>1,000,000 h</b>of egocentric human video</div>
 <div class="chip"><b>first</b>human-to-robot scaling law</div>
-<div class="chip"><b>1.55x</b>success of its own VLA twin, same data</div>
+<div class="chip"><b>1.55x</b>the success of its VLA twin, same data</div>
 </div>
 ```
 
@@ -300,6 +300,9 @@ The counterweight, Jul 2026: $\log N \propto 1/(P-c)$. Precision is the one axis
 
 ## {.divider}
 
+::: {.divider-number}
+1M
+:::
 ::: {.divider-title}
 What does a million hours buy?
 :::
@@ -322,7 +325,7 @@ Six weeks in summer 2026: the in-context learning wave
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>+62%</b>pretraining at 8K vs 1K context</div>
+<div class="chip-light"><b>+62%</b>task completion, 8K vs 1K pretraining context</div>
 <div class="chip-light"><b>8K steps</b>about 5 minutes at 30 Hz</div>
 <div class="chip-light"><b>constant</b>latency via TTT fast weights</div>
 </div>
@@ -396,11 +399,11 @@ VLA, world model, WAM, side by side
 | VLA | teleop demos | imitation head | &pi;0.5: RoboArena Elo 1622 |
 | VLA + WM | demos + video | imitation, WM-guided | &pi;0.7 visual subgoals |
 | World model | video | none: it imagines | real-time neural simulators |
-| WAM | human ego video | joint denoising | DreamZero: Elo 1750 |
+| WAM | egocentric video | joint denoising | DreamZero: Elo 1750 |
 | Hybrid | everything | both pathways | the predicted winner |
 
 ::: {.footnote}
-NVIDIA, Jun 2026: WAM to frontier took 9 ZFLOPs vs 50+ for the VLA path; inference 3 to 4x slower, closing fast; "hybrid will dominate."
+NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, small VLA paths 7 to 10; inference 3 to 4x slower, closing. Their call: a hybrid wins.
 :::
 
 ## If you remember one slide
@@ -455,7 +458,7 @@ Backup detail for Q&A
 
 ## A1. Dyna-2: the scaling law in detail
 
-- 1k to 1M hours in nested subsets: a power law over 4 orders
+- 1k to 1M hours in nested subsets: one power law, four scales
 - 14-task average success: 20%, 28%, 45%, 53%
 - Cross-embodiment transfer emerges between 10k and 100k hours
 - Distilled sampler: 10,203 ms to 110 ms, about 90x, one H100
@@ -464,22 +467,22 @@ Backup detail for Q&A
 
 - Head-to-head vs DYNA-1, its VLA twin, same data: 65% win rate
 - New-site zero-shot deployment: 87% vs 46%
-- Bottle caps: 13 minutes of robot data lifts 10% to 50%
+- Bottle caps: about 10 minutes of data, success from 10% to 50%
 - Ingestion 31x faster, 1M hours in under 3 weeks; roadmap 10M
 
 ## A3. RoboTTT: the mechanism
 
 - TTT fast-weight layers in GR00T N1.7: 538M to 690M params
 - 8K-timestep context at constant per-step latency
-- Assembly: 89% vs 42%; one-shot human video: 6/10 vs 0/10
+- Assembly: 79% vs 42%; one-shot human video: 6/10 vs 0/10
 - Bimanual YAM arms; egocentric human video in the mix
 
 ## A4. GEN-1.5: lineage and evidence
 
-- GEN-0 (270k h) to GEN-1 (500k+ h) to GEN-1.5, in nine months
+- GEN-0 to GEN-1 to GEN-1.5, three releases in nine months
 - One-shot 59% (±10); few-shot 83% (±9) after 10 gradient steps
+- Those ten steps move the weights by less than 0.15%
 - Composed prompts interpolate: regrasping and recovery emerge
-- About 9,000 end-effectors; updates touch 2.5 to 11.4% of weights
 
 ## A5. Skild S1: ground-up in-context learning
 
@@ -489,8 +492,7 @@ Backup detail for Q&A
 {{< video-card skild-s1-pancake-recovery >}}
 :::
 
-- Pretraining scaled 1k to 100k hours; at maximum perturbation, degradation one third of a VLA's
-- Long-horizon: a single egocentric video drives a 10-minute unseen task
+- Pretraining scaled 1k to 100k h; the VLA degrades up to 3x more at L5
 
 ## A6. Zero-WAM and the academic lineage
 
