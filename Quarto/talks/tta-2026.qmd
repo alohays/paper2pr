@@ -425,7 +425,6 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 <div class="vf-chips">
 <div class="chip"><b>RFM</b>plus a world-model research track</div>
 <div class="chip"><b>teleop</b>to autonomy, one data engine</div>
-<div class="chip"><b>hiring</b>research scientists and interns</div>
 </div>
 ```
 
