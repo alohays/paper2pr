@@ -159,10 +159,10 @@ Learning the environment itself
 
 - Vision reasoning, world generation, action: one open-weight model
 - First among open models for generation and robot policy, at once
-- Scored across R-Bench, Artificial Analysis, RoboLab, RoboArena
+- Adopters: Agile Robots, Doosan Robotics, LG Electronics, Samsung Electronics, Skild AI
 
 ::: {.footnote}
-Source: NVIDIA Cosmos 3, Jun 2026.
+Launched at Computex, Jun 2026; seventeen Japanese robotics and manufacturing leaders joined on Cosmos in July.
 :::
 
 ## Everyone is pointing world models at robot training
@@ -222,7 +222,7 @@ One model that imagines and acts
 ```{=html}
 <div class="vf-panel"><div class="vf-head">DreamZero: the policy is a world model</div></div>
 <div class="vf-chips">
-<div class="chip"><b>Elo 1750</b>RoboArena, vs 1622 for &pi;0.5</div>
+<div class="chip"><b>Elo 1736</b>RoboArena rank 1, vs 1609 for &pi;0.5 (Aug 29)</div>
 <div class="chip"><b>zero-shot</b>on unseen tasks and embodiments</div>
 <div class="chip"><b>500 h</b>robot data, video-first training</div>
 </div>
@@ -288,14 +288,16 @@ Named customer: Din Tai Fung. The fleet collects about 1 TB per day.
 
 | Who | Hours | What |
 |-----|-------|------|
-| Dyna Robotics | 1,000,000 h | human egocentric video, zero robot data |
-| Generalist AI | 500,000+ h | real-robot manipulation, about 9,000 end-effectors |
-| Lightwheel EgoSuite | 100,000 h, open | egocentric human video, commercial use allowed |
-| Amazon ABC-130K | 3,553 h, open | 134,806 bimanual teleoperation episodes |
-| China, WRC 2026 | "90 data factories" | and, per the same panel, still not enough |
+| Dyna Robotics | 1,000,000 h | egocentric human video, zero robot |
+| Generalist AI | 500,000+ h | manipulation data, about 9,000 end-effectors |
+| Lightwheel EgoSuite | 100,000 h, open | egocentric video, commercial training allowed |
+| Amazon ABC-130K | 3,553 h, open | 134,806 bimanual teleop episodes |
+| China | 90+ data factories | operating or under construction |
+
+: {tbl-colwidths="[26,24,50]"}
 
 ::: {.footnote}
-The counterweight, Jul 2026: $\log N \propto 1/(P-c)$. Precision is the one axis data volume does not buy.
+China count: Interact Analysis, Aug 2026. The counterweight, Jul 2026: $\log N \propto 1/(P-c)$; precision is the one axis data volume does not buy.
 :::
 
 ## {.divider}
@@ -315,8 +317,8 @@ Six weeks in summer 2026: the in-context learning wave
 | Date | Who | Claim |
 |------|-----|-------|
 | Jul 16 | RoboTTT, NVIDIA | context length as a new scaling axis; one-shot 6/10 from a human video |
+| Aug 18 | Skild S1 | one human video runs an unseen 10-minute task; 66% vs 9% |
 | Aug 19 | GEN-1.5, Generalist AI | physical prompting: one-shot 59%, no gradient updates |
-| Aug 25 | Skild S1 | one human video runs an unseen 10-minute task; 66% vs 9% |
 | Aug 26 | Zero-WAM, Robbyant | in-context WAM: +29.5 pp over the best baseline |
 
 ## RoboTTT: context became a scaling axis
@@ -396,10 +398,10 @@ VLA, world model, WAM, side by side
 
 | Architecture | Scales on | Actions come from | August 2026 signal |
 |--------------|-----------|-------------------|--------------------|
-| VLA | teleop demos | imitation head | &pi;0.5: RoboArena Elo 1622 |
+| VLA | teleop demos | imitation head | &pi;0.5: RoboArena Elo 1609 |
 | VLA + WM | demos + video | imitation, WM-guided | &pi;0.7 visual subgoals |
 | World model | video | none: it imagines | real-time neural simulators |
-| WAM | egocentric video | joint denoising | DreamZero: Elo 1750 |
+| WAM | egocentric video | joint denoising | DreamZero: Elo 1736 |
 | Hybrid | everything | both pathways | the predicted winner |
 
 ::: {.footnote}
@@ -434,7 +436,7 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 {{< video-card worv-costnav-teaser >}}
 
 - Delivery robots evaluated on cost per delivery, not success rate alone
-- Public research from the WoRV team
+- Public research from the WoRV team: arXiv 2511.20216
 
 ## {.qr-slide}
 
@@ -479,7 +481,7 @@ Backup detail for Q&A
 
 ## A4. GEN-1.5: lineage and evidence
 
-- GEN-0 to GEN-1 to GEN-1.5, three releases in nine months
+- Three releases: GEN-0 270k h, GEN-1 500k+ h, then GEN-1.5
 - One-shot 59% (±10); few-shot 83% (±9) after 10 gradient steps
 - Those ten steps move the weights by less than 0.15%
 - Composed prompts interpolate: regrasping and recovery emerge
@@ -503,9 +505,9 @@ Backup detail for Q&A
 
 ## A7. The data race: sources and fine print
 
-- EgoSuite-Open100K: 90k + 10k h, LeRobot v3, about 27x Ego4D
+- EgoSuite-Open100K: 90k head-view + 10k wrist h, LeRobot format
 - ABC-130K: 3,553 h, 134,806 episodes, bimanual YAM, fully open
-- UBTech: a 566M CNY order reported at WRC 2026
+- UBTech: 566M CNY of humanoid orders across three cities, 2025
 - Curse of Precision: $\log N \propto 1/(P-c)$, resists data scale
 
 ## A8. Reading list
