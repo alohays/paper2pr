@@ -23,7 +23,7 @@ videos:
     published: 2026-08
     autonomy: claimed
     source: src/dyna2-chopping-dark.mp4
-    segment: 15-45
+    segment: 16-46
   - slug: dyna2-fig16-case0
     title: Fig. 16 rollout (egocentric)
     publisher: Dyna Robotics
