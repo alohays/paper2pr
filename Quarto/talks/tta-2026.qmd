@@ -37,6 +37,7 @@ bibliography: ../../Bibliography_base.bib
 - Adjunct professor, DGIST (Physical AI lecture, Fall 2026)
 - Incoming member, TTA PG1004
 
+
 ## {.divider}
 
 ::: {.divider-number}
@@ -49,11 +50,13 @@ Robot Foundation Models Today
 The VLA recipe, and where it strains
 :::
 
+
 ## A VLA is a vision-language model that outputs robot actions
 
 - One network: pixels and language in, motor commands out
 - Trained by imitation on human teleoperation demonstrations
 - The de facto recipe for robot foundation models since 2023
+
 
 ## Three years of the same recipe, scaled
 
@@ -74,6 +77,7 @@ The VLA recipe, and where it strains
 Bigger backbones, more teleop hours, broader embodiments: the axis of progress stayed the same.
 :::
 
+
 ## Dual-system: a slow VLM thinks, a fast policy acts
 
 {{< video-card helix-hero-mobile >}}
@@ -84,6 +88,7 @@ Bigger backbones, more teleop hours, broader embodiments: the axis of progress s
 <div class="chip-light"><b>200 Hz</b>System 1: visuomotor control</div>
 </div>
 ```
+
 
 ## Every VLA stands on human demonstration
 
@@ -96,6 +101,7 @@ Bigger backbones, more teleop hours, broader embodiments: the axis of progress s
 ::: {.footnote}
 Teleoperation rigs and handheld grippers feed every VLA. The strain: an hour of robot time buys one hour of one embodiment's data.
 :::
+
 
 ## {.video-full video="@pi07-shirt-folding"}
 
@@ -110,6 +116,7 @@ Teleoperation rigs and handheld grippers feed every VLA. The strain: an hour of 
 
 {{< video-caption pi07-shirt-folding >}}
 
+
 ## {.divider}
 
 ::: {.divider-number}
@@ -122,11 +129,13 @@ World Models
 Learning the environment itself
 :::
 
+
 ## A world model learns what happens next
 
 - Predict the future, given the present and an action
 - Act by imagining rollouts before moving: the Dreamer lineage, 2019 onward
 - The complement of a policy: it learns dynamics, not behavior
+
 
 ## Three families of world models
 
@@ -135,6 +144,7 @@ Learning the environment itself
 | Latent dynamics | Dreamer | imagination for planning and RL |
 | Video generation | Genie, Cosmos | promptable, general visual worlds |
 | Neural simulators | DreamDojo, GE-Sim | action-conditioned rollouts for robots |
+
 
 ## {.video-full video="@genie-3-environmental-consistency"}
 
@@ -148,12 +158,14 @@ Learning the environment itself
 
 {{< video-caption genie-3-environmental-consistency >}}
 
+
 ## From video models to robot simulators
 
 {{< video-card cosmos-predict-banner >}}
 
 - World models entered robot stacks as data engines and evaluators
 - NVIDIA Cosmos: open world foundation models built for physical AI
+
 
 ## Cosmos 3: one omnimodal world model
 
@@ -165,6 +177,7 @@ Learning the environment itself
 Launched at Computex, Jun 2026; seventeen Japanese robotics and manufacturing leaders joined on Cosmos in July.
 :::
 
+
 ## Everyone is pointing world models at robot training
 
 | Who | May to Jul 2026 | The move |
@@ -172,6 +185,7 @@ Launched at Computex, Jun 2026; seventeen Japanese robotics and manufacturing le
 | Google DeepMind | Project Genie + Street View | two decades of Street View imagery become worlds |
 | World Labs | SceniX, real to sim to real | scanned scenes into policy-training simulation |
 | GE-Sim 2.0 | one world model, three jobs | scores rollouts, yields rewards, accelerates them |
+
 
 ## {.video-full video="@dreamdojo-real-time"}
 
@@ -186,6 +200,7 @@ Launched at Computex, Jun 2026; seventeen Japanese robotics and manufacturing le
 
 {{< video-caption dreamdojo-real-time >}}
 
+
 ## Two paradigms, one team
 
 |  | DreamZero | DreamDojo |
@@ -199,6 +214,7 @@ Launched at Computex, Jun 2026; seventeen Japanese robotics and manufacturing le
 Both NVIDIA, February 2026. The two halves of one loop.
 :::
 
+
 ## {.divider}
 
 ::: {.divider-number}
@@ -211,11 +227,13 @@ World-Action Models
 One model that imagines and acts
 :::
 
+
 ## A WAM denoises video and action together
 
 - One diffusion process over future frames and future actions
 - Human video is no longer pretraining: it is action supervision
 - DreamZero named the category: "World Action Models are Zero-shot Policies"
+
 
 ## {.video-full video="@dreamzero-overview"}
 
@@ -230,6 +248,7 @@ One model that imagines and acts
 
 {{< video-caption dreamzero-overview >}}
 
+
 ## Where does action supervision come from?
 
 {{< video-card lapa-teaser >}}
@@ -237,11 +256,13 @@ One model that imagines and acts
 - Inverse dynamics models label raw video with pseudo-actions
 - LAPA (2024): learn latent actions from human video, no robot labels at all
 
+
 ## From two stages to one joint model
 
 - 2024: a video model plus a separate action decoder, trained apart
 - 2026: one transformer denoises frames and actions jointly
 - Imagination becomes optional at inference: run the action pathway alone
+
 
 ## The architecture consolidated in 2026
 
@@ -255,6 +276,7 @@ One model that imagines and acts
 The 2026 tutorial line: imagination is training-time scaffolding; at inference, recent WAMs skip video generation and act at VLA-class latency.
 :::
 
+
 ## {.video-full video="@dyna2-hero"}
 
 ```{=html}
@@ -267,6 +289,7 @@ The 2026 tutorial line: imagination is training-time scaffolding; at inference, 
 ```
 
 {{< video-caption dyna2-hero >}}
+
 
 ## Dyna-2 is deployed, not demoed
 
@@ -284,6 +307,7 @@ The 2026 tutorial line: imagination is training-time scaffolding; at inference, 
 Named customer: Din Tai Fung. The fleet collects about 1 TB per day.
 :::
 
+
 ## The race is for hours, not parameters
 
 | Who | Hours | What |
@@ -300,6 +324,7 @@ Named customer: Din Tai Fung. The fleet collects about 1 TB per day.
 China count: Interact Analysis, Aug 2026. The counterweight, Jul 2026: $\log N \propto 1/(P-c)$; precision is the one axis data volume does not buy.
 :::
 
+
 ## {.divider}
 
 ::: {.divider-number}
@@ -312,6 +337,7 @@ What does a million hours buy?
 Six weeks in summer 2026: the in-context learning wave
 :::
 
+
 ## Four one-shot announcements in six weeks
 
 | Date | Who | Claim |
@@ -320,6 +346,7 @@ Six weeks in summer 2026: the in-context learning wave
 | Aug 18 | Skild S1 | one human video runs an unseen 10-minute task; 66% vs 9% |
 | Aug 19 | GEN-1.5, Generalist AI | physical prompting: one-shot 59%, no gradient updates |
 | Aug 26 | Zero-WAM, Robbyant | in-context WAM: +29.5 pp over the best baseline |
+
 
 ## RoboTTT: context became a scaling axis
 
@@ -337,6 +364,7 @@ Six weeks in summer 2026: the in-context learning wave
 Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
 :::
 
+
 ## {.video-full video="@gen15-h2r-icl"}
 
 ```{=html}
@@ -349,6 +377,7 @@ Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
 ```
 
 {{< video-caption gen15-h2r-icl >}}
+
 
 ## One human video vs 380 teleop episodes
 
@@ -366,6 +395,7 @@ Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
 </div>
 ```
 
+
 ## Zero-WAM: the two storylines converge
 
 ::: {.two-up}
@@ -382,6 +412,7 @@ Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
 </div>
 ```
 
+
 ## {.divider}
 
 ::: {.divider-number}
@@ -393,6 +424,7 @@ So What Changed?
 ::: {.divider-sub}
 VLA, world model, WAM, side by side
 :::
+
 
 ## Five architectures, one scoreboard
 
@@ -408,6 +440,7 @@ VLA, world model, WAM, side by side
 NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, small VLA paths 7 to 10; inference 3 to 4x slower, closing. Their call: a hybrid wins.
 :::
 
+
 ## If you remember one slide
 
 |  | VLA | World model | WAM |
@@ -417,6 +450,7 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 | The 2026 turn | absorbing world models | converging on robot training | one-shot via in-context learning |
 
 : {tbl-colwidths="[16,24,30,30]"}
+
 
 ## {.video-full video="@worv-rfm-demo"}
 
@@ -430,12 +464,14 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 
 {{< video-caption worv-rfm-demo >}}
 
+
 ## CostNav: navigation as unit economics
 
 {{< video-card worv-costnav-teaser >}}
 
 - Delivery robots evaluated on cost per delivery, not success rate alone
 - Public research from the WoRV team: arXiv 2511.20216
+
 
 ## {.qr-slide}
 
@@ -447,6 +483,7 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 ```
 
 Thank you. Questions welcome: sung@maum.ai
+
 
 ## {.divider}
 
