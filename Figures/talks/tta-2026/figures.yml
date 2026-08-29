@@ -1,0 +1,11 @@
+# Figure provenance manifest. The invited-talk profile's attribution gate
+# reads this; every third_party figure must carry its source on the slide.
+figures:
+  - file: robottt-ctx-scaling.svg
+    source: NVIDIA GEAR, RoboTTT, arXiv:2607.15275
+    licence: publisher figure, shown with attribution
+    third_party: true
+  - file: deck-qr.svg
+    source: generated for this deck with qrencode
+    licence: repo-owned
+    third_party: false

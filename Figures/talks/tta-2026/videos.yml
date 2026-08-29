@@ -1,0 +1,241 @@
+# Video manifest for the tta-2026 invited talk (TTA Physical AI seminar,
+# 2026-08-31). Release tag: media-tta-2026 (inherits the pre-existing tag).
+#
+# Two source conventions (media_prep.py writes videos/<slug>.mp4, so a source
+# placed there directly would be overwritten in place):
+#   - clips that need trimming keep their raw file in videos/src/ and declare
+#     source: src/<file>.mp4 + segment
+#   - clips used whole are placed at videos/<slug>.mp4 with no source
+# Human-demonstration prompt clips carry autonomy: unknown ("autonomy not
+# stated") because no robot is acting in them.
+videos:
+  # --- Dyna-2 (Dyna Robotics, 2026-08) ---
+  - slug: dyna2-hero
+    title: Dyna-2 hero reel
+    publisher: Dyna Robotics
+    source_url: https://www.dyna.co/dyna-2
+    published: 2026-08
+    autonomy: autonomous
+  - slug: dyna2-chopping-dark
+    title: Chopping through a blackout
+    publisher: Dyna Robotics
+    source_url: https://www.dyna.co/dyna-2
+    published: 2026-08
+    autonomy: autonomous
+    source: src/dyna2-chopping-dark.mp4
+    segment: 15-45
+  - slug: dyna2-fig16-case0
+    title: Deployment rollout
+    publisher: Dyna Robotics
+    source_url: https://www.dyna.co/dyna-2
+    published: 2026-08
+    autonomy: autonomous
+
+  # --- GEN-1.5 (Generalist AI, 2026-08) ---
+  - slug: gen15-h2r-icl
+    title: Human demo to robot, in context
+    publisher: Generalist AI
+    source_url: https://generalistai.com/blog/gen-1.5
+    published: 2026-08
+    autonomy: autonomous
+  - slug: gen15-compose-prompt
+    title: Composing two prompts
+    publisher: Generalist AI
+    source_url: https://generalistai.com/blog/gen-1.5
+    published: 2026-08
+    autonomy: autonomous
+  - slug: gen15-twist-lid-improv
+    title: Improvised recovery
+    publisher: Generalist AI
+    source_url: https://generalistai.com/blog/gen-1.5
+    published: 2026-08
+    autonomy: autonomous
+
+  # --- Skild S1 (Skild AI, 2026-08) ---
+  - slug: skild-s1-coffee-prompt
+    title: "Prompt: a human makes pour-over"
+    publisher: Skild AI
+    source_url: https://www.skild.ai/blogs/s1
+    published: 2026-08
+    autonomy: unknown
+    source: src/skild-s1-coffee-prompt.mp4
+    segment: 58-83
+  - slug: skild-s1-coffee
+    title: "Execution: the robot follows"
+    publisher: Skild AI
+    source_url: https://www.skild.ai/blogs/s1
+    published: 2026-08
+    autonomy: autonomous
+    source: src/skild-s1-coffee.mp4
+    segment: 78-103
+  - slug: skild-s1-pancakes-prompt
+    title: "Prompt: a human makes a pancake"
+    publisher: Skild AI
+    source_url: https://www.skild.ai/blogs/s1
+    published: 2026-08
+    autonomy: unknown
+    source: src/skild-s1-pancakes-prompt.mp4
+    segment: 36-62
+  - slug: skild-s1-pancake-recovery
+    title: Execution under perturbation
+    publisher: Skild AI
+    source_url: https://www.skild.ai/blogs/s1
+    published: 2026-08
+    autonomy: autonomous
+    source: src/skild-s1-pancake-recovery.mp4
+    segment: 12-42
+
+  # --- RoboTTT (NVIDIA GEAR, 2026-07) ---
+  - slug: robottt-pup-go-car-1x
+    title: One-shot from a human video
+    publisher: NVIDIA GEAR
+    source_url: https://research.nvidia.com/labs/gear/robottt/
+    published: 2026-07
+    autonomy: autonomous
+    speed: 1x
+  - slug: robottt-on-the-fly-roof
+    title: Adapting on the fly
+    publisher: NVIDIA GEAR
+    source_url: https://research.nvidia.com/labs/gear/robottt/
+    published: 2026-07
+    autonomy: autonomous
+  - slug: robottt-perturbation-roof
+    title: Perturbation recovery
+    publisher: NVIDIA GEAR
+    source_url: https://research.nvidia.com/labs/gear/robottt/
+    published: 2026-07
+    autonomy: autonomous
+  - slug: robottt-circuit-1x
+    title: Long-horizon assembly
+    publisher: NVIDIA GEAR
+    source_url: https://research.nvidia.com/labs/gear/robottt/
+    published: 2026-07
+    autonomy: autonomous
+    speed: 1x
+
+  # --- Zero-WAM (Robbyant Research, 2026-08) ---
+  - slug: zerowam-insert-human
+    title: "Prompt: human video"
+    publisher: Robbyant Research
+    source_url: https://robbyant-research.github.io/Zero-WAM/
+    published: 2026-08
+    autonomy: unknown
+  - slug: zerowam-insert-robot-2x
+    title: "Execution: unseen task"
+    publisher: Robbyant Research
+    source_url: https://robbyant-research.github.io/Zero-WAM/
+    published: 2026-08
+    autonomy: autonomous
+    speed: 2x
+  - slug: zerowam-icl-montage-human
+    title: Human prompts
+    publisher: Robbyant Research
+    source_url: https://robbyant-research.github.io/Zero-WAM/
+    published: 2026-08
+    autonomy: unknown
+    caption: none
+  - slug: zerowam-dataset-montage-robot
+    title: HumanGen robot pairs
+    publisher: Robbyant Research
+    source_url: https://robbyant-research.github.io/Zero-WAM/
+    published: 2026-08
+    autonomy: teleop
+    caption: none
+
+  # --- Section 1-2 refresh clips ---
+  - slug: pi07-shirt-folding
+    title: Shirt folding on an unseen UR5e
+    publisher: Physical Intelligence
+    source_url: https://www.pi.website/blog/pi07
+    published: 2026-04
+    autonomy: autonomous
+    source: src/pi07-shirt-folding.mp4
+    segment: 60-88
+  - slug: lightwheel-egosuite
+    title: EgoSuite-Open100K
+    publisher: Lightwheel
+    source_url: https://lightwheel.ai/egosuite
+    published: 2026-08
+    autonomy: unknown
+  - slug: dreamdojo-real-time
+    title: Real-time interactive world model
+    publisher: NVIDIA GEAR
+    source_url: https://dreamdojo-world.github.io/
+    published: 2026-02
+    autonomy: unknown
+    source: src/dreamdojo-real-time.mp4
+    segment: 15-45
+
+  # --- Carried over from the HUFS deck (R2 backup, pre-encoded) ---
+  - slug: rt2-teaser
+    title: RT-2
+    publisher: Google DeepMind
+    source_url: https://robotics-transformer2.github.io/
+    published: 2023-07
+    autonomy: autonomous
+  - slug: pi05-bedroom-cleaning
+    title: Cleaning an unseen bedroom
+    publisher: Physical Intelligence
+    source_url: https://www.pi.website/blog/pi05
+    published: 2025-04
+    autonomy: autonomous
+  - slug: helix-hero-mobile
+    title: "Helix: System 1 / System 2"
+    publisher: Figure AI
+    source_url: https://www.figure.ai/news/helix
+    published: 2025-02
+    autonomy: autonomous
+  - slug: aloha-teleop-hero
+    title: ALOHA teleoperation
+    publisher: Stanford
+    source_url: https://tonyzhaozh.github.io/aloha/
+    published: 2023-04
+    autonomy: teleop
+  - slug: umi-in-the-wild
+    title: UMI in-the-wild collection
+    publisher: Stanford and Columbia
+    source_url: https://umi-gripper.github.io/
+    published: 2024-02
+    autonomy: teleop
+  - slug: genie-3-environmental-consistency
+    title: "Genie 3: persistent worlds"
+    publisher: Google DeepMind
+    source_url: https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/
+    published: 2025-08
+    autonomy: unknown
+  - slug: cosmos-predict-banner
+    title: Cosmos world generation
+    publisher: NVIDIA
+    source_url: https://www.nvidia.com/en-us/ai/cosmos/
+    published: 2025-01
+    autonomy: unknown
+  - slug: dreamzero-overview
+    title: DreamZero
+    publisher: NVIDIA GEAR
+    source_url: https://dreamzero0.github.io/
+    published: 2026-02
+    autonomy: autonomous
+  - slug: dreamzero-yam-teddy
+    title: Zero-shot on YAM
+    publisher: NVIDIA GEAR
+    source_url: https://dreamzero0.github.io/
+    published: 2026-02
+    autonomy: autonomous
+  - slug: lapa-teaser
+    title: Latent action pretraining
+    publisher: KAIST and Microsoft
+    source_url: https://latentactionpretraining.github.io/
+    published: 2024-10
+    autonomy: autonomous
+  - slug: worv-rfm-demo
+    title: WoRV manipulation
+    publisher: MaumAI WoRV
+    source_url: https://www.maum.ai/
+    published: 2026-05
+    autonomy: autonomous
+  - slug: worv-costnav-teaser
+    title: CostNav
+    publisher: MaumAI WoRV
+    source_url: https://www.maum.ai/
+    published: 2026-05
+    autonomy: unknown
