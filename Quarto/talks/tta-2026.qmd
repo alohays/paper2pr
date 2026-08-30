@@ -106,6 +106,8 @@ The VLA recipe, and where it strains
 </div>
 ```
 
+
+
 ::: {.footnote}
 Bigger backbones, more teleop hours, broader embodiments: the axis of progress stayed the same.
 :::
@@ -287,6 +289,7 @@ Both NVIDIA, February 2026. The two halves of one loop.
 ::: {.divider-number}
 03
 :::
+
 ::: {.divider-title}
 World-Action Models
 :::
@@ -379,6 +382,7 @@ One model that imagines and acts
 </div>
 ```
 
+
 - Imagination becomes optional at inference: run the [action pathway]{.k} alone
 
 
@@ -405,6 +409,7 @@ The 2026 tutorial line: imagination is training-time scaffolding; at inference, 
 <div class="chip"><b>1.55x</b>the success of its VLA twin, same data</div>
 </div>
 ```
+
 
 {{< video-caption dyna2-hero >}}
 
@@ -536,6 +541,7 @@ Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
 ::: {.divider-number}
 04
 :::
+
 ::: {.divider-title}
 So What Changed?
 :::
@@ -610,6 +616,7 @@ Thank you. Questions welcome: sung@maum.ai
 ::: {.divider-title}
 Appendix
 :::
+
 ::: {.divider-sub}
 Backup detail for Q&A
 :::
