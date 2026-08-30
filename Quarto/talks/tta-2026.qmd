@@ -125,7 +125,7 @@ Bigger backbones, more teleop hours, broader embodiments: the axis of progress s
 ```
 
 
-## Every VLA stands on human demonstration
+## Every VLA stands on human demonstration data
 
 ::: {.two-up}
 {{< video-card aloha-teleop-hero >}}
@@ -143,7 +143,7 @@ Teleoperation rigs and handheld grippers feed every VLA. The strain: an hour of 
 ```{=html}
 <div class="vf-panel"><div class="vf-head">2026: VLAs began absorbing world models</div></div>
 <div class="vf-chips">
-<div class="chip"><b>&pi;0.7</b>visual subgoals from a lightweight world model, at inference</div>
+<div class="chip"><b>&pi;<sub>0.7</sub></b>visual subgoals from a lightweight world model at inference</div>
 <div class="chip"><b>zero-shot</b>expert-level folding on an unseen UR5e</div>
 <div class="chip"><b>&lt;200 demos</b>Gemini Robotics 2 On-Device adapts to new bi-arm robots</div>
 </div>
@@ -187,13 +187,13 @@ Learning the environment itself
   <rect x="598" y="60" width="182" height="46" rx="6" fill="#F2F5FA" stroke="#012169" stroke-width="1.4"/>
   <text x="689" y="88" text-anchor="middle" font-size="17" fill="#1a1a1a">what happens next</text>
   <path d="M 689 110 C 689 190, 200 200, 108 144" fill="none" stroke="#9A7B3F" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arG2)"/>
-  <text x="400" y="205" text-anchor="middle" font-size="13.5" fill="#9A7B3F">imagine rollouts, pick the action, before moving at all</text>
+  <text x="400" y="205" text-anchor="middle" font-size="13.5" fill="#9A7B3F">imagine rollouts, then pick an action before moving</text>
 </svg>
 </div>
 ```
 
 - Act by imagining futures before moving: the [Dreamer]{.k} lineage, 2019 onward
-- The complement of a policy: it learns [dynamics]{.k}, not behavior
+- World models complement policies: [dynamics]{.k}, not behavior
 
 
 ## Three families of world models
@@ -232,16 +232,16 @@ Learning the environment itself
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>open weight</b>vision reasoning, generation, action in one</div>
-<div class="chip-light"><b>rank 1</b>among open models, generation and policy at once</div>
-<div class="chip-light"><b>17</b>Japanese industry leaders joined in July</div>
+<div class="chip-light"><b>fully open</b>reasoning, generation, and action in one model</div>
+<div class="chip-light"><b>ranked #1</b>among open models in world generation and action policy</div>
+<div class="chip-light"><b>Japan</b>prospective members and physical-AI stack builders</div>
 </div>
 ```
 
 - Adopters: Agile Robots, [Doosan Robotics]{.k}, [LG Electronics]{.k}, [Samsung Electronics]{.k}, Skild AI
 
 ::: {.footnote}
-Launched at Computex, Jun 2026; rankings per the NVIDIA launch announcement.
+Announced at NVIDIA GTC Taipei, May 31, 2026; rankings per NVIDIA's launch announcement.
 :::
 
 
@@ -249,7 +249,7 @@ Launched at Computex, Jun 2026; rankings per the NVIDIA launch announcement.
 
 | Who | May to Jul 2026 | The move |
 |:----|:---------------:|:---------|
-| Google DeepMind | Project Genie + Street View | [two decades]{.k} of Street View imagery become worlds |
+| Google DeepMind | Project Genie + Street View | Street View imagery grounds [interactive worlds]{.k} |
 | World Labs | SceniX, real to sim to real | scanned scenes into policy-training simulation |
 | GE-Sim 2.0 | one world model, three jobs | scores rollouts, yields rewards, accelerates them |
 
@@ -272,7 +272,7 @@ Launched at Computex, Jun 2026; rankings per the NVIDIA launch announcement.
 
 |  | DreamZero | DreamDojo |
 |:--|:---------:|:---------:|
-| Direction | inverse: video to action | forward: action to video |
+| Direction | joint: video + action | forward: action to video |
 | The product | a zero-shot policy | a neural simulator |
 | Training data | 500 h of robot data | [44,000 h of human video]{.mark} |
 | Its job | [acts]{.k} | [imagines]{.k} |
@@ -280,7 +280,7 @@ Launched at Computex, Jun 2026; rankings per the NVIDIA launch announcement.
 : {tbl-colwidths="[20,40,40]"}
 
 ::: {.footnote}
-Both NVIDIA, February 2026. The two halves of one loop.
+Both were released by NVIDIA in February 2026: two halves of one loop.
 :::
 
 
@@ -298,7 +298,7 @@ One model that imagines and acts
 :::
 
 
-## A WAM denoises video and action together
+## A joint-prediction WAM denoises video and action together
 
 ```{=html}
 <div class="diagram">
@@ -311,8 +311,8 @@ One model that imagines and acts
   <text x="101" y="88" text-anchor="middle" font-size="17" fill="#1a1a1a">noise</text>
   <line x1="196" y1="83" x2="272" y2="83" stroke="#012169" stroke-width="1.6" marker-end="url(#arN3)"/>
   <rect x="280" y="45" width="228" height="76" rx="8" fill="#012169"/>
-  <text x="394" y="78" text-anchor="middle" font-size="19" font-weight="600" fill="#ffffff">one diffusion</text>
-  <text x="394" y="103" text-anchor="middle" font-size="15" fill="#FFD960">the WAM</text>
+  <text x="394" y="78" text-anchor="middle" font-size="19" font-weight="600" fill="#ffffff">one joint model</text>
+  <text x="394" y="103" text-anchor="middle" font-size="15" fill="#FFD960">DreamZero-style WAM</text>
   <line x1="514" y1="70" x2="590" y2="52" stroke="#012169" stroke-width="1.6" marker-end="url(#arN3)"/>
   <line x1="514" y1="96" x2="590" y2="114" stroke="#012169" stroke-width="1.6" marker-end="url(#arN3)"/>
   <rect x="598" y="28" width="182" height="46" rx="6" fill="#F2F5FA" stroke="#012169" stroke-width="1.4"/>
@@ -322,13 +322,14 @@ One model that imagines and acts
   <rect x="280" y="176" width="228" height="42" rx="6" fill="none" stroke="#9A7B3F" stroke-width="1.4" stroke-dasharray="5 4"/>
   <text x="394" y="202" text-anchor="middle" font-size="15" fill="#9A7B3F">human egocentric video</text>
   <line x1="394" y1="174" x2="394" y2="129" stroke="#9A7B3F" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arG3)"/>
-  <text x="404" y="156" font-size="13.5" fill="#9A7B3F">video prediction = action supervision</text>
+  <text x="404" y="156" font-size="13.5" fill="#9A7B3F">video prediction = world-dynamics supervision</text>
 </svg>
 </div>
 ```
 
-- Human video is no longer pretraining: it is [action supervision]{.k}
-- DreamZero named the category: "World Action Models are Zero-shot Policies"
+- Human video supplies [world-dynamics supervision]{.k}
+- Executable actions still need pseudo-labels or robot trajectories
+- DreamZero coined the category: "World Action Model"
 
 
 ## {.video-full video="@dreamzero-overview"}
@@ -336,9 +337,9 @@ One model that imagines and acts
 ```{=html}
 <div class="vf-panel"><div class="vf-head">DreamZero: the policy is a world model</div></div>
 <div class="vf-chips">
-<div class="chip"><b>Elo 1736</b>RoboArena rank 1, vs 1609 for &pi;0.5 (Aug 29)</div>
+<div class="chip"><b>Elo 1736</b>vs 1609 for &pi;<sub>0.5</sub> on RoboArena (Aug 29 snapshot)</div>
 <div class="chip"><b>zero-shot</b>on unseen tasks and embodiments</div>
-<div class="chip"><b>500 h</b>robot data, video-first training</div>
+<div class="chip"><b>500 h</b>of robot data; video-first training</div>
 </div>
 ```
 
@@ -350,7 +351,7 @@ One model that imagines and acts
 {{< video-card lapa-teaser >}}
 
 - Inverse dynamics models label raw video with [pseudo-actions]{.k}
-- LAPA (2024): learn [latent actions]{.k} from human video, no robot labels at all
+- LAPA (2024) learns [latent actions]{.k} from human video, with no robot labels at all
 
 
 ## From two stages to one joint model
@@ -367,7 +368,7 @@ One model that imagines and acts
   <line x1="185" y1="102" x2="185" y2="132" stroke="#012169" stroke-width="1.6" marker-end="url(#arN4)"/>
   <rect x="60" y="138" width="250" height="52" rx="6" fill="#F2F5FA" stroke="#012169" stroke-width="1.4" stroke-dasharray="6 4"/>
   <text x="185" y="170" text-anchor="middle" font-size="17" fill="#1a1a1a">separate action decoder</text>
-  <text x="185" y="220" text-anchor="middle" font-size="14" fill="#777777">two models, two trainings</text>
+  <text x="185" y="220" text-anchor="middle" font-size="14" fill="#777777">two models, two training runs</text>
   <line x1="385" y1="120" x2="445" y2="120" stroke="#012169" stroke-width="2" marker-end="url(#arN4)"/>
   <text x="635" y="26" text-anchor="middle" font-size="16" font-weight="600" fill="#012169">2026: one joint model</text>
   <rect x="510" y="48" width="250" height="76" rx="8" fill="#012169"/>
@@ -395,14 +396,14 @@ One model that imagines and acts
 | Latent world + decoder | imagine in latent space, decode actions | LAPA lineage |
 
 ::: {.footnote}
-The 2026 tutorial line: imagination is training-time scaffolding; at inference, recent WAMs skip video generation and act at VLA-class latency.
+Representation-only Fast-WAM skips video generation at inference and delivers VLA-class latency at about 190 ms.
 :::
 
 
 ## {.video-full video="@dyna2-hero"}
 
 ```{=html}
-<div class="vf-panel"><div class="vf-head">Dyna-2: a million hours of human video, zero robot episodes</div></div>
+<div class="vf-panel"><div class="vf-head">Dyna-2: 1M hours of human video, zero robot data in pretraining</div></div>
 <div class="vf-chips">
 <div class="chip"><b>1,000,000 h</b>of egocentric human video</div>
 <div class="chip"><b>first</b>human-to-robot scaling law</div>
@@ -420,9 +421,9 @@ The 2026 tutorial line: imagination is training-time scaffolding; at inference, 
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>95 vs 35</b>napkins per hour, vs its VLA</div>
+<div class="chip-light"><b>95 vs 35</b>napkins per hour (Dyna-2 vs its VLA twin)</div>
 <div class="chip-light"><b>93% vs 75%</b>fold quality</div>
-<div class="chip-light"><b>3 days</b>to ROI at a new site</div>
+<div class="chip-light"><b>3 days</b>from setup to meeting the production ROI bar</div>
 </div>
 ```
 
@@ -433,9 +434,9 @@ Named customer: Din Tai Fung. The fleet collects about 1 TB per day.
 
 ## The race is for hours, not parameters
 
-| Who | Hours | What |
+| Who | Scale | What |
 |:----|:-----:|:-----|
-| Dyna Robotics | [1,000,000 h]{.mark} | egocentric human video, zero robot |
+| Dyna Robotics | [1,000,000 h]{.mark} | egocentric human video, no robot data in pretraining |
 | Generalist AI | 500,000+ h | manipulation data, about 9,000 end-effectors |
 | Lightwheel EgoSuite | 100,000 h, open | egocentric video, commercial training allowed |
 | Amazon ABC-130K | 3,553 h, open | 134,806 bimanual teleop episodes |
@@ -444,7 +445,7 @@ Named customer: Din Tai Fung. The fleet collects about 1 TB per day.
 : {tbl-colwidths="[26,24,50]"}
 
 ::: {.footnote}
-China count: Interact Analysis, Aug 2026. The counterweight, Jul 2026: $\log N \propto 1/(P-c)$; precision is the one axis data volume does not buy.
+China: Interact Analysis, Aug 2026. Curse of Precision, Jul 2026: data needs grow super-exponentially near the system limit.
 :::
 
 
@@ -473,7 +474,7 @@ Six weeks in summer 2026: the in-context learning wave
 
 ## RoboTTT: context became a scaling axis
 
-![](../../Figures/talks/tta-2026/robottt-ctx-scaling.svg){.r-stretch}
+![](../../Figures/talks/tta-2026/robottt-ctx-scaling.svg){width="55%"}
 
 ```{=html}
 <div class="chips">
@@ -512,7 +513,7 @@ Figure: NVIDIA GEAR, RoboTTT, arXiv:2607.15275.
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>66% vs 9%</b>video prompt vs language-prompted VLA</div>
+<div class="chip-light"><b>66% vs 9%</b>video-prompted S1 vs language-prompted VLA</div>
 <div class="chip-light"><b>1 demo</b>worth about 380 post-training episodes</div>
 <div class="chip-light"><b>frozen</b>no weight updates at deployment</div>
 </div>
@@ -554,16 +555,16 @@ VLA, world model, WAM, side by side
 
 | Architecture | Scales on | Actions come from | August 2026 signal |
 |:-------------|:---------:|:-----------------:|:-------------------|
-| VLA | teleop demos | imitation head | &pi;0.5: RoboArena Elo [1609]{.k} |
-| VLA + WM | demos + video | imitation, WM-guided | &pi;0.7 visual subgoals |
+| VLA | teleop demos | imitation head | &pi;<sub>0.5</sub>: RoboArena Elo [1609]{.k} |
+| VLA + WM | demos + video | imitation, WM-guided | &pi;<sub>0.7</sub> visual subgoals |
 | World model | video | none: it imagines | real-time neural simulators |
-| [WAM]{.k} | egocentric video | joint denoising | DreamZero: Elo [1736]{.mark} |
+| [WAM]{.k} | egocentric video | joint or video-conditioned action pathway | DreamZero: Elo [1736]{.mark} |
 | Hybrid | everything | both pathways | the predicted winner |
 
 : {tbl-colwidths="[15,20,27,38]"}
 
 ::: {.footnote}
-NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, small VLA paths 7 to 10; inference 3 to 4x slower and closing.
+NVIDIA, Jun 2026: action tuning uses 9 ZFLOPs; full video pretraining uses 50+ ZFLOPs; generative WAM inference takes 3 to 4 times as long as &pi;<sub>0.5</sub>.
 :::
 
 
@@ -571,8 +572,8 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 
 |  | VLA | World model | WAM |
 |:--|:---:|:-----------:|:---:|
-| Learns | behavior | dynamics | [both, jointly]{.k} |
-| Scales on | teleop hours | video | [human egocentric video]{.mark} |
+| Learns | behavior | dynamics | [dynamics + action coupling]{.k} |
+| Scales on | teleop hours | video | [video priors + robot trajectories]{.mark} |
 | The 2026 turn | absorbing world models | converging on robot training | one-shot via [in-context learning]{.k} |
 
 : {tbl-colwidths="[16,24,30,30]"}
@@ -582,10 +583,6 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 
 ```{=html}
 <div class="vf-panel"><div class="vf-head">WoRV at MaumAI: robot foundation models for wheeled platforms</div></div>
-<div class="vf-chips">
-<div class="chip"><b>RFM</b>plus a world-model research track</div>
-<div class="chip"><b>teleop</b>to autonomy, one data engine</div>
-</div>
 ```
 
 {{< video-caption worv-rfm-demo >}}
@@ -596,7 +593,7 @@ NVIDIA, Jun 2026: WAM action tuning about 9 ZFLOPs, full video pretraining 50+, 
 {{< video-card worv-costnav-teaser >}}
 
 - Delivery robots evaluated on [cost per delivery]{.k}, not success rate alone
-- Public research from the WoRV team: arXiv 2511.20216
+- Public research from the WoRV team: arXiv:2511.20216
 
 
 ## {.qr-slide}
@@ -625,55 +622,55 @@ Backup detail for Q&A
 
 ```{=html}
 <div class="diagram">
-<svg width="780" height="270" viewBox="0 0 780 270" xmlns="http://www.w3.org/2000/svg">
+<svg width="900" height="312" viewBox="0 0 780 270" xmlns="http://www.w3.org/2000/svg">
   <rect x="300" y="30" width="200" height="190" fill="rgba(185,151,91,0.10)"/>
-  <text x="400" y="24" text-anchor="middle" font-size="13" fill="#9A7B3F">cross-embodiment transfer emerges</text>
+  <text x="400" y="24" text-anchor="middle" font-size="15" fill="#9A7B3F">cross-embodiment transfer emerges</text>
   <line x1="80" y1="220" x2="740" y2="220" stroke="#999999" stroke-width="1.2"/>
   <line x1="80" y1="220" x2="80" y2="26" stroke="#999999" stroke-width="1.2"/>
   <line x1="80" y1="160" x2="740" y2="160" stroke="#e5e5e5" stroke-width="1"/>
   <line x1="80" y1="100" x2="740" y2="100" stroke="#e5e5e5" stroke-width="1"/>
   <line x1="80" y1="40" x2="740" y2="40" stroke="#e5e5e5" stroke-width="1"/>
-  <text x="70" y="224" text-anchor="end" font-size="13" fill="#777777">0</text>
-  <text x="70" y="164" text-anchor="end" font-size="13" fill="#777777">20</text>
-  <text x="70" y="104" text-anchor="end" font-size="13" fill="#777777">40</text>
-  <text x="70" y="44" text-anchor="end" font-size="13" fill="#777777">60</text>
-  <text x="36" y="130" text-anchor="middle" font-size="13.5" fill="#555555" transform="rotate(-90 36 130)">14-task avg success, %</text>
+  <text x="70" y="224" text-anchor="end" font-size="15" fill="#777777">0</text>
+  <text x="70" y="164" text-anchor="end" font-size="15" fill="#777777">20</text>
+  <text x="70" y="104" text-anchor="end" font-size="15" fill="#777777">40</text>
+  <text x="70" y="44" text-anchor="end" font-size="15" fill="#777777">60</text>
+  <text x="36" y="130" text-anchor="middle" font-size="15" fill="#555555" transform="rotate(-90 36 130)">14-task mean normalized score, %</text>
   <polyline points="140,160 340,136 540,85 720,61" fill="none" stroke="#012169" stroke-width="2.4"/>
   <circle cx="140" cy="160" r="5" fill="#012169"/><circle cx="340" cy="136" r="5" fill="#012169"/>
   <circle cx="540" cy="85" r="5" fill="#012169"/><circle cx="720" cy="61" r="5" fill="#012169"/>
-  <text x="140" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="#012169">20%</text>
-  <text x="340" y="122" text-anchor="middle" font-size="14" font-weight="600" fill="#012169">28%</text>
-  <text x="540" y="71" text-anchor="middle" font-size="14" font-weight="600" fill="#012169">45%</text>
-  <text x="720" y="47" text-anchor="middle" font-size="14" font-weight="600" fill="#012169">53%</text>
-  <text x="140" y="242" text-anchor="middle" font-size="13.5" fill="#555555">1k h</text>
-  <text x="340" y="242" text-anchor="middle" font-size="13.5" fill="#555555">10k h</text>
-  <text x="540" y="242" text-anchor="middle" font-size="13.5" fill="#555555">100k h</text>
-  <text x="720" y="242" text-anchor="middle" font-size="13.5" fill="#555555">1M h</text>
-  <text x="410" y="266" text-anchor="middle" font-size="13.5" fill="#555555">human video hours, log scale, nested subsets</text>
+  <text x="140" y="146" text-anchor="middle" font-size="16" font-weight="600" fill="#012169">20%</text>
+  <text x="340" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="#012169">28%</text>
+  <text x="540" y="71" text-anchor="middle" font-size="16" font-weight="600" fill="#012169">45%</text>
+  <text x="720" y="47" text-anchor="middle" font-size="16" font-weight="600" fill="#012169">53%</text>
+  <text x="140" y="242" text-anchor="middle" font-size="15" fill="#555555">1k h</text>
+  <text x="340" y="242" text-anchor="middle" font-size="15" fill="#555555">10k h</text>
+  <text x="540" y="242" text-anchor="middle" font-size="15" fill="#555555">100k h</text>
+  <text x="720" y="242" text-anchor="middle" font-size="15" fill="#555555">1M h</text>
+  <text x="410" y="266" text-anchor="middle" font-size="15" fill="#555555">human video hours, log scale, nested subsets</text>
 </svg>
 </div>
 ```
 
-- One power law across four scales, [1k to 1M hours]{.k}
+- Monotonic on-robot scaling across four rungs, [1k to 1M hours]{.k}
 - Distilled sampler: 10,203 ms to [110 ms]{.k}, about 90x, one H100
 
 ## A2. Dyna-2: deployment and infrastructure
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>65%</b>win rate vs DYNA-1, its VLA twin, same data</div>
-<div class="chip-light"><b>87% vs 46%</b>new-site zero-shot deployment</div>
-<div class="chip-light"><b>10% to 50%</b>bottle caps, about 10 minutes of data</div>
+<div class="chip-light"><b>65%</b>win rate vs Dyna-1, its VLA twin, same data</div>
+<div class="chip-light"><b>87% vs 46%</b>new-site zero-shot success</div>
+<div class="chip-light"><b>10% to 50%</b>bottle-cap success after about 10 minutes of data</div>
 </div>
 ```
 
-- Ingestion [31x faster]{.k}: 1M hours in under 3 weeks; roadmap 10M
+- Ingestion [31x faster]{.k}: 1M hours in under 3 weeks
 
 ## A3. RoboTTT: the mechanism
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>538M to 690M</b>TTT fast-weight layers in GR00T N1.7</div>
+<div class="chip-light"><b>538M to 690M</b>action-head parameters before and after TTT</div>
 <div class="chip-light"><b>8K steps</b>context at constant per-step latency</div>
 <div class="chip-light"><b>79% vs 42%</b>assembly, with vs without TTT</div>
 </div>
@@ -686,8 +683,8 @@ Backup detail for Q&A
 
 ```{=html}
 <div class="chips">
-<div class="chip-light"><b>59% &plusmn;10</b>one-shot on unseen tasks</div>
-<div class="chip-light"><b>83% &plusmn;9</b>few-shot after 10 gradient steps</div>
+<div class="chip-light"><b>59% &plusmn; 10% SD</b>one-shot on unseen tasks</div>
+<div class="chip-light"><b>83% &plusmn; 9% SD</b>few-shot after 10 gradient steps</div>
 <div class="chip-light"><b>&lt;0.15%</b>weight movement in those ten steps</div>
 </div>
 ```
@@ -706,7 +703,7 @@ Backup detail for Q&A
 ```{=html}
 <div class="chips">
 <div class="chip-light"><b>1k to 100k h</b>pretraining scale sweep</div>
-<div class="chip-light"><b>up to 3x</b>more VLA degradation at L5 perturbation</div>
+<div class="chip-light"><b>up to 3x</b>as much degradation: VLA vs S1 at L5</div>
 </div>
 ```
 
@@ -725,8 +722,8 @@ Backup detail for Q&A
 |:-------|:---------------|
 | EgoSuite-Open100K | [90k]{.k} head-view + [10k]{.k} wrist hours, LeRobot format |
 | ABC-130K | 3,553 h, [134,806 episodes]{.k}, bimanual YAM, fully open |
-| UBTech | 566M CNY of humanoid orders across three cities, 2025 |
-| Curse of Precision | $\log N \propto 1/(P-c)$: resists data scale |
+| UBTECH | 566M CNY of humanoid orders across three cities, 2025 |
+| Curse of Precision | $\log N \propto 1/(P-c)$: required demos grow super-exponentially as precision $P$ nears limit $c$ |
 
 ## A8. Reading list
 
