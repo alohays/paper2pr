@@ -627,6 +627,27 @@
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-tta-2026/cosmos-predict-banner-poster.jpg"
     },
     {
+      "slug": "cosmos3-reason2gen",
+      "title": "Cosmos 3: reasoning to generation",
+      "publisher": "NVIDIA",
+      "source_url": "https://research.nvidia.com/labs/cosmos-lab/cosmos3/",
+      "published": "2026-06",
+      "autonomy": "unknown",
+      "speed": "1x",
+      "segment": null,
+      "source": null,
+      "keep_audio": false,
+      "caption": "visible",
+      "licence_note": "Official Cosmos 3 research-page asset, preserved without trimming.",
+      "file": "cosmos3-reason2gen.mp4",
+      "poster_file": "cosmos3-reason2gen-poster.jpg",
+      "size_mb": 4.3,
+      "duration_s": 7.9,
+      "autonomy_label": "autonomy not stated",
+      "release_url": "https://github.com/alohays/paper2pr/releases/download/media-tta-2026/cosmos3-reason2gen.mp4",
+      "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-tta-2026/cosmos3-reason2gen-poster.jpg"
+    },
+    {
       "slug": "dreamzero-overview",
       "title": "DreamZero",
       "publisher": "NVIDIA",
