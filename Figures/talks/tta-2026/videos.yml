@@ -211,6 +211,13 @@ videos:
     source_url: https://www.nvidia.com/en-us/ai/cosmos/
     published: 2025-01
     autonomy: unknown
+  - slug: cosmos3-reason2gen
+    title: "Cosmos 3: reasoning to generation"
+    publisher: NVIDIA
+    source_url: https://research.nvidia.com/labs/cosmos-lab/cosmos3/
+    published: 2026-06
+    autonomy: unknown
+    licence_note: Official Cosmos 3 research-page asset, preserved without trimming.
   - slug: dreamzero-overview
     title: DreamZero
     publisher: NVIDIA
