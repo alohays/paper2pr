@@ -1,10 +1,10 @@
 # DGIST W13 Research and Instructor Study Plan
 
-**Lecture:** Foundations of Robot Hardware, Control, and Modern Platforms  
-**Session:** DGIST HSS118 W13, November 20, 2026, 13:00-14:00  
-**Planning date:** August 31, 2026  
-**Status:** APPROVED FOR EXECUTION  
-**Clarity:** CLEAR  
+**Lecture:** Foundations of Robot Hardware, Control, and Modern Platforms<br>
+**Session:** DGIST HSS118 W13, November 20, 2026, 13:00-14:00<br>
+**Planning date:** August 31, 2026<br>
+**Status:** APPROVED FOR EXECUTION<br>
+**Clarity:** CLEAR<br>
 **Scope of this turn:** research and instructor-study planning only; no research execution, study-site implementation, deck outline, or slide authoring
 
 This is the detailed execution source of truth for the W13 research, instructor
