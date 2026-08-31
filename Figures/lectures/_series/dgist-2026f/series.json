@@ -71,16 +71,16 @@
     },
     {
       "date": "2026-09-18",
-      "deck": "dgist-2026f-w04",
+      "deck": "",
       "index": 4,
-      "kind": "lecture",
-      "presenter": "Yunsung Lee",
+      "kind": "dgist",
+      "presenter": "",
       "prior_index": 3,
       "remote": false,
       "short_date": "Sep 18",
       "tag": "",
       "tentative": false,
-      "title": "Foundations of Robot Hardware, Control, and Modern Platforms",
+      "title": "Leadership talk",
       "week": "W04"
     },
     {
@@ -197,16 +197,16 @@
     },
     {
       "date": "2026-11-20",
-      "deck": "",
+      "deck": "dgist-2026f-w13",
       "index": 13,
-      "kind": "dgist",
-      "presenter": "",
+      "kind": "lecture",
+      "presenter": "Yunsung Lee",
       "prior_index": 12,
       "remote": false,
       "short_date": "Nov 20",
       "tag": "",
       "tentative": false,
-      "title": "Leadership talk",
+      "title": "Foundations of Robot Hardware, Control, and Modern Platforms",
       "week": "W13"
     },
     {

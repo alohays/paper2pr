@@ -70,3 +70,7 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:meta] (Historical; the guide/ this pointed at was removed in 2026-08 - the kernel stands: we follow our own rules.) Dogfooding principles must be enforced: plan-first, spec-then-plan, quality gates, session logs.
 
 [LEARN:meta] (Historical framing; the fork-me rationale went with the template in 2026-08, but the rule itself stands.) Infrastructure and docs work doesn't create session logs in quality_reports/ → those are for deck work (slides, analysis), not meta-work.
+
+## Course Architecture
+
+[LEARN:course-architecture] Put hardware foundations early as the bridge into robot learning → teach the robot-learning sequence first, then use hardware, control, and mechanical engineering as a late special module that synthesizes the physical stack.

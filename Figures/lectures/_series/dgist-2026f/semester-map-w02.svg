@@ -12,9 +12,9 @@
 <circle cx="198.0" cy="126" r="7" fill="#012169"/>
 <text x="198.0" y="96" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 11</text>
 <text x="198.0" y="158" font-size="20" text-anchor="middle" fill="#012169" class="tag">Guest</text>
-<circle cx="262.0" cy="126" r="7" fill="#012169"/>
-<text x="262.0" y="60" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 18</text>
-<text x="262.0" y="186" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
+<circle cx="262.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
+<text x="262.0" y="60" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Sep 18</text>
+<text x="262.0" y="186" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
 <circle cx="326.0" cy="126" r="6" fill="#aab4c8"/>
 <text x="326.0" y="96" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Sep 25</text>
 <text x="326.0" y="158" font-size="18" text-anchor="middle" fill="#5a5a5a" class="tag">holiday</text>
@@ -39,9 +39,9 @@
 <circle cx="774.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
 <text x="774.0" y="60" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Nov 13</text>
 <text x="774.0" y="186" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
-<circle cx="838.0" cy="126" r="6" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="838.0" y="96" font-size="26" font-weight="400" text-anchor="middle" fill="#5a5a5a" class="date">Nov 20</text>
-<text x="838.0" y="158" font-size="20" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
+<circle cx="838.0" cy="126" r="7" fill="#012169"/>
+<text x="838.0" y="96" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 20</text>
+<text x="838.0" y="158" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>
 <circle cx="902.0" cy="126" r="7" fill="#012169"/>
 <text x="902.0" y="60" font-size="26" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 27</text>
 <text x="902.0" y="186" font-size="20" font-weight="700" text-anchor="middle" fill="#012169" class="tag">Lecture</text>

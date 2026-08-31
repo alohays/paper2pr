@@ -132,9 +132,18 @@ check("a session's own tag is what the map prints",
 check("a kind with no tag falls back to its own word",
       sa.kind_tag({"kind": "exam", "index": 99, "tag": ""}) == "exam"
       and sa.kind_tag({"kind": "lecture", "index": 1, "tag": ""}) == "Lecture")
+_schedule = {s["index"]: s for s in _tagged["sessions"]}
+check("the hardware lecture moved from W04 to W13 while W12 stays leadership",
+      _schedule[4]["kind"] == "dgist" and _schedule[4]["title"] == "Leadership talk"
+      and _schedule[4]["presenter"] == "" and _schedule[4]["deck"] == ""
+      and _schedule[12]["kind"] == "dgist" and _schedule[12]["title"] == "Leadership talk"
+      and _schedule[13]["kind"] == "lecture"
+      and _schedule[13]["title"] == "Foundations of Robot Hardware, Control, and Modern Platforms"
+      and _schedule[13]["presenter"] == "Yunsung Lee"
+      and _schedule[13]["deck"] == "dgist-2026f-w13")
 expect_error("duplicate index", GOOD.replace("  - index: 3\n", "  - index: 2\n"), "duplicate index")
 expect_error("bad kind", GOOD.replace("kind: keynote", "kind: party"), "kind must be one of")
-expect_error("duplicate deck", GOOD.replace("deck: dgist-2026f-w04", "deck: dgist-2026f-w02"),
+expect_error("duplicate deck", GOOD.replace("deck: dgist-2026f-w13", "deck: dgist-2026f-w02"),
              "already session")
 expect_error("missing scalar field", GOOD.replace("room: E7-233\n", ""), "room is required")
 expect_error("gap in the indices", GOOD.replace("  - index: 16\n", "  - index: 17\n"), "no gap")
@@ -338,9 +347,9 @@ with tempfile.TemporaryDirectory() as td:
     root = Path(td)
     (root / "Quarto" / "lectures").mkdir(parents=True)
     (root / "Quarto" / "_genres.txt").write_text("lectures\n", encoding="utf-8")
-    (root / "Quarto" / "lectures" / "dgist-2026f-w04.qmd").write_text("---\ntitle: x\n---\n")
-    (root / "Quarto" / "lectures" / "dgist-2026f-w04.deck.yml").write_text(
-        f"profile: lecture\ntitle: \"W04 probe\"\nseries: {COURSE}\nseries_index: 4\n")
+    (root / "Quarto" / "lectures" / "dgist-2026f-w13.qmd").write_text("---\ntitle: x\n---\n")
+    (root / "Quarto" / "lectures" / "dgist-2026f-w13.deck.yml").write_text(
+        f"profile: lecture\ntitle: \"W13 probe\"\nseries: {COURSE}\nseries_index: 13\n")
     (root / "Quarto" / "lectures" / "dgist-2026f-w02.qmd").write_text("---\ntitle: y\n---\n")
     (root / "Quarto" / "lectures" / "dgist-2026f-w02.deck.yml").write_text(
         f"profile: lecture\ntitle: \"W02 probe\"\nseries: {COURSE}\nseries_index: 2\n")
@@ -354,12 +363,12 @@ with tempfile.TemporaryDirectory() as td:
     finally:
         deckpath.QUARTO_DIR, deckpath.GENRES_FILE = saved
     check("course heading", "Future Literacy (HSS118, DGIST, 2026 Fall)" in page)
-    i2, i4 = page.find(">W02<"), page.find(">W04<")
-    check("rows in series order with week labels", 0 < i2 < i4)
+    i2, i13 = page.find(">W02<"), page.find(">W13<")
+    check("rows in series order with week labels", 0 < i2 < i13)
     check("rows show the date and a link",
-          ">2026-09-04<" in page and 'href="slides/lectures/dgist-2026f-w04.html"' in page)
+          ">2026-09-04<" in page and 'href="slides/lectures/dgist-2026f-w13.html"' in page)
     check("a deck without a series stays in the plain table",
-          ">Loose<" in page and page.find(">Loose<") > i4)
+          ">Loose<" in page and page.find(">Loose<") > i13)
     check("the live landing page keeps the SUNY row",
           "SUNY" in build_landing.build() or "Career" in build_landing.build())
 
@@ -388,9 +397,9 @@ else:
         root = Path(td)
         shutil.copytree(sa.figure_dir(COURSE), root / "Figures" / "lectures" / "_series" / COURSE)
         (root / "Quarto" / "lectures").mkdir(parents=True)
-        qmd = root / "Quarto" / "lectures" / "dgist-2026f-w04.qmd"
+        qmd = root / "Quarto" / "lectures" / "dgist-2026f-w13.qmd"
         qmd.write_text(f"""---
-title: w04 probe
+title: w13 probe
 series: {COURSE}
 format:
   revealjs:
@@ -412,10 +421,10 @@ Last time: {{{{< series-session prior_title >}}}} ({{{{< series-session prior_we
         h = qmd.with_suffix(".html").read_text(encoding="utf-8") if out.returncode == 0 else ""
         check("a deck named after a session renders", out.returncode == 0,
               (out.stdout + out.stderr)[-400:])
-        check("its map is the W04 one", 'data-map="semester-map-w04.svg"' in h
+        check("its map is the W13 one", 'data-map="semester-map-w13.svg"' in h
               and h.count('class="today-ring"') == 1)
-        check("its prior session is the guest (W03)",
-              "Last time: Video and Robot Foundation Models (W03, W04)" in h)
+        check("its prior session is the DGIST leadership talk (W12)",
+              "Last time: Leadership talk (W12, W13)" in h)
         check("RELPATH from Quarto/lectures/ is ../../Figures/...",
               'src="../../Figures/lectures/_series/dgist-2026f/qr-qa.svg"' in h)
 

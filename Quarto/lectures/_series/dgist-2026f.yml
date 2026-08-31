@@ -99,10 +99,10 @@ sessions:
     remote: true
   - index: 4
     date: "2026-09-18"
-    kind: lecture
-    title: Foundations of Robot Hardware, Control, and Modern Platforms
-    presenter: Yunsung Lee
-    deck: dgist-2026f-w04
+    kind: dgist
+    title: Leadership talk
+    presenter: ""
+    deck: ""
   - index: 5
     date: "2026-09-25"
     kind: holiday
@@ -155,10 +155,10 @@ sessions:
     deck: ""
   - index: 13
     date: "2026-11-20"
-    kind: dgist
-    title: Leadership talk
-    presenter: ""
-    deck: ""
+    kind: lecture
+    title: Foundations of Robot Hardware, Control, and Modern Platforms
+    presenter: Yunsung Lee
+    deck: dgist-2026f-w13
   - index: 14
     date: "2026-11-27"
     kind: lecture
