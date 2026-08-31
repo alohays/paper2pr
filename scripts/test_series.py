@@ -298,9 +298,14 @@ prior = cfg.prior_session
 check("prior_session for w02 is the DGIST session",
       prior and prior["index"] == 1 and prior["kind"] == "dgist" and prior["week"] == "W01"
       and prior["short_date"] == "Aug 28" and prior["title"] == "Special lecture on AI", str(prior))
-cfg4 = cfg_for({"series": COURSE, "series_index": 4})
-check("prior_session for w04 is the guest session (a guest counts)",
-      cfg4.prior_session["index"] == 3 and cfg4.prior_session["presenter"] == "Hyeongmin Lee (SeoulTech)")
+cfg13 = cfg_for({"series": COURSE, "series_index": 13})
+check("w13 resolves the hardware special on Nov 20",
+      cfg13.session_date == "2026-11-20"
+      and cfg13.session_title == "Foundations of Robot Hardware, Control, and Modern Platforms")
+check("prior_session for w13 is the W12 DGIST leadership talk",
+      cfg13.prior_session["index"] == 12
+      and cfg13.prior_session["title"] == "Leadership talk"
+      and cfg13.prior_session["presenter"] == "")
 check("a deck without a series resolves to None everywhere",
       cfg_for({}).series is None and cfg_for({}).prior_session is None
       and cfg_for({}).session_date is None)
@@ -322,21 +327,21 @@ except deckprofile.ConfigError as e:
 
 print("8. new_deck.py --dry-run with --series")
 out = subprocess.run([sys.executable, str(REPO_ROOT / "scripts" / "new_deck.py"),
-                      "--series", COURSE, "--series-index", "2", "--audience", "none",
+                      "--series", COURSE, "--series-index", "13", "--audience", "none",
                       "--duration", "60", "--dry-run"], capture_output=True, text=True)
 check("dry run exits 0", out.returncode == 0, out.stderr[-300:])
-check("prints the session title", 'title: "The Paradigm Shift Toward Embodied AI"' in out.stdout)
-check("prints the session date", 'date: "2026-09-04"' in out.stdout)
-check("names the deck <series>-w<NN>", "Quarto/lectures/dgist-2026f-w02.qmd" in out.stdout)
+check("prints the session title", 'title: "Foundations of Robot Hardware, Control, and Modern Platforms"' in out.stdout)
+check("prints the session date", 'date: "2026-11-20"' in out.stdout)
+check("names the deck <series>-w<NN>", "Quarto/lectures/dgist-2026f-w13.qmd" in out.stdout)
 check("deck.yml gets series: and series_index:",
-      "series: dgist-2026f\nseries_index: 2" in out.stdout)
+      "series: dgist-2026f\nseries_index: 13" in out.stdout)
 check("qmd front matter gets series: <course>", "\nseries: dgist-2026f\n# Full-bleed" in out.stdout)
 inc = [l for l in out.stdout.splitlines() if l.startswith("{{< include _series/")]
 check("the four include lines, map/rules/ask near the top and qa last",
       [l.split("/")[-1] for l in inc] == ["semester-map.qmd >}}", "course-runs.qmd >}}",
                                           "ask-anytime.qmd >}}", "qa.qmd >}}"], str(inc))
 check("the recap slide names the prior session",
-      "(W01, Aug 28: Special lecture on AI)" in out.stdout)
+      "(W12, Nov 13: Leadership talk)" in out.stdout)
 bad = subprocess.run([sys.executable, str(REPO_ROOT / "scripts" / "new_deck.py"),
                       "--series", COURSE, "--series-index", "42", "--dry-run"],
                      capture_output=True, text=True)

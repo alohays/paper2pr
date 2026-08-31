@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="title desc">
+  <title id="title">The data barrier on a log scale</title>
+  <desc id="desc">Horizontal log-scale bars compare web text, web images, and robot teleoperation. The difference spans many orders of magnitude.</desc>
+  <defs>
+    <style>
+      .category { font: 600 25px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #012169; }
+      .value { font: 400 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
+      .value-gold { font: 600 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #9A7B3F; }
+      .tick { font: 600 14px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
+      .bracket-label { font: 600 20px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #9A7B3F; }
+      .grid { stroke: #D6DEE9; stroke-width: 1.5; }
+      .bar-bg { fill: #E8EDF5; }
+    </style>
+  </defs>
+
+  <path d="M382,46 V34 H1138 V46" fill="none" stroke="#B9975B" stroke-width="3"/>
+  <text class="bracket-label" x="760" y="24" text-anchor="middle">many orders of magnitude</text>
+
+  <g aria-hidden="true">
+    <line class="grid" x1="298" y1="64" x2="298" y2="382"/>
+    <line class="grid" x1="382" y1="64" x2="382" y2="382"/>
+    <line class="grid" x1="466" y1="64" x2="466" y2="382"/>
+    <line class="grid" x1="550" y1="64" x2="550" y2="382"/>
+    <line class="grid" x1="634" y1="64" x2="634" y2="382"/>
+    <line class="grid" x1="718" y1="64" x2="718" y2="382"/>
+    <line class="grid" x1="802" y1="64" x2="802" y2="382"/>
+    <line class="grid" x1="886" y1="64" x2="886" y2="382"/>
+    <line class="grid" x1="970" y1="64" x2="970" y2="382"/>
+    <line class="grid" x1="1054" y1="64" x2="1054" y2="382"/>
+    <line class="grid" x1="1138" y1="64" x2="1138" y2="382"/>
+  </g>
+
+  <g>
+    <text class="category" x="18" y="106">Web text</text>
+    <text class="value" x="18" y="132">~10^13 words</text>
+    <rect class="bar-bg" x="298" y="88" width="840" height="58" rx="4"/>
+    <rect x="298" y="88" width="840" height="58" rx="4" fill="#012169"/>
+    <rect x="1130" y="88" width="8" height="58" fill="#B9975B"/>
+  </g>
+
+  <g>
+    <text class="category" x="18" y="217">Web images</text>
+    <text class="value-gold" x="18" y="243">~10^7 to 10^9</text>
+    <rect class="bar-bg" x="298" y="199" width="840" height="58" rx="4"/>
+    <rect x="298" y="199" width="336" height="58" rx="4" fill="#7B8794"/>
+    <rect x="634" y="199" width="168" height="58" fill="#B9975B"/>
+    <line x1="634" y1="192" x2="634" y2="264" stroke="#012169" stroke-width="3"/>
+    <line x1="802" y1="192" x2="802" y2="264" stroke="#012169" stroke-width="3"/>
+  </g>
+
+  <g>
+    <text class="category" x="18" y="328">Robot teleoperation</text>
+    <text class="value-gold" x="18" y="354">~10^4 hours</text>
+    <rect class="bar-bg" x="298" y="310" width="840" height="58" rx="4"/>
+    <rect x="298" y="310" width="84" height="58" rx="4" fill="#B9975B"/>
+    <line x1="382" y1="303" x2="382" y2="375" stroke="#012169" stroke-width="3"/>
+  </g>
+
+  <g text-anchor="middle">
+    <text class="tick" x="298" y="414">10^3</text>
+    <text class="tick" x="382" y="414">10^4</text>
+    <text class="tick" x="466" y="414">10^5</text>
+    <text class="tick" x="550" y="414">10^6</text>
+    <text class="tick" x="634" y="414">10^7</text>
+    <text class="tick" x="718" y="414">10^8</text>
+    <text class="tick" x="802" y="414">10^9</text>
+    <text class="tick" x="886" y="414">10^10</text>
+    <text class="tick" x="970" y="414">10^11</text>
+    <text class="tick" x="1054" y="414">10^12</text>
+    <text class="tick" x="1138" y="414">10^13</text>
+  </g>
+</svg>

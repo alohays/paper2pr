@@ -1,0 +1,59 @@
+# Written by /new-deck. These are the premises the deck was built on;
+# every downstream tool reads them from here rather than guessing.
+#   quality_score.py  -> bullet budget and the profile's extra checks
+#   the Korean gate   -> whether non-English slides are allowed here,
+#                        and how much Hangul an English deck may carry
+#   write-speaker-notes -> which language the notes are in, and the
+#                        speaking minutes the script is budgeted on
+#   slide-excellence  -> audience, delivery, sources (review context)
+# Changing a value here changes how the deck is graded, so change it
+# when the premise changes, not to make a warning go away.
+profile: lecture
+title: "The Paradigm Shift Toward Embodied AI"
+
+# audience.assumes, audience.size, audience.prior and delivery are
+# context for the review agents (slide-excellence reads them), not
+# consumed by the gate; the gate's budget and checks come from the
+# profile above.
+audience:
+  assumes: none    # none | practitioner | expert
+  size: "93"
+  description: First- and second-year undergraduates outside AI-related majors
+delivery: in-person    # in-person | remote | hybrid
+
+# Wall-clock minutes. video_min (clips playing without narration) and
+# qa_min (questions) are subtracted: the speaker-notes budget runs on
+# speaking_min = duration_min - video_min - qa_min.
+duration_min: 60
+video_min: 7
+qa_min: 10
+
+language:
+  slides: en
+  notes: ko
+  korean_allowance: 0
+  # korean_allowance: <n>  -- max Hangul characters on English slides
+  # (term glosses, Wooclap instructions). Omit to take the profile's
+  # default (lecture 300, others 0). Slides declared ko are not counted.
+
+# What the fact-check agent compares the slides against: paths or
+# URLs. Add to it as the deck grows.
+sources:
+  - "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/outline.md"
+  - "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/assets/README.md"
+  - "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/deck-plan.md"
+
+# The course series (Quarto/lectures/_series/<series>.yml) and this
+# deck's session in it. deckprofile.py resolves the session date,
+# title and the previous session from the series lock; the gate
+# names that session when the callback slide is missing;
+# build_landing.py groups the deck under the course.
+series: dgist-2026f
+series_index: 2
+
+# Two optional files next to this deck are read when they exist:
+#   Quarto/lectures/dgist-2026f-w02.forbidden.txt  (one term per line;
+#     any hit in visible slide text is a BLOCKER at the gate)
+#   Figures/lectures/dgist-2026f-w02/figures.yml  (file, source, licence,
+#     third_party per figure; third-party figures need their source on
+#     the slide)

@@ -1,0 +1,7 @@
+# Public-safe claims that must not appear in visible slide text.
+Optimus Gen 3
+fifth-gen Atlas
+GR00T N2
+tech report
+failure
+failed
