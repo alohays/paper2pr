@@ -1,0 +1,133 @@
+videos:
+  - slug: s07a-bd-atlas-bring-me-a-drink
+    title: Atlas, can you bring me a drink?
+    publisher: Boston Dynamics
+    source_url: https://www.youtube.com/watch?v=3aQWvdCac9o
+    published: 2026-05
+    autonomy: claimed
+    segment: 0-32
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s07a-bd-atlas-bring-me-a-drink.mp4
+    caption: none
+    licence_note: Boston Dynamics official YouTube; the company describes a simulation-trained policy but does not state that teleoperation was absent.
+
+  - slug: s08c-unitree-embodied-avatar-teleop
+    title: "Embodied Avatar: full-body teleoperation"
+    publisher: Unitree
+    source_url: https://www.youtube.com/watch?v=24h4FTH7plY
+    published: 2025-11
+    autonomy: teleop
+    segment: 10-28
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s08c-unitree-embodied-avatar-teleop.mp4
+    caption: visible
+    licence_note: Unitree official YouTube; the title identifies a teleoperation platform.
+
+  - slug: s20a-bd-atlas-partners-in-parkour
+    title: Atlas | Partners in Parkour
+    publisher: Boston Dynamics
+    source_url: https://www.youtube.com/watch?v=tF4DML7FIWk
+    published: 2021-08
+    autonomy: autonomous
+    segment: 0-30
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s20a-bd-atlas-partners-in-parkour.mp4
+    caption: visible
+    licence_note: Boston Dynamics official YouTube and blog; model-predictive control and pre-planned trajectories, with audio removed.
+
+  - slug: rt2-extinct-animal
+    title: "RT-2: pick up the extinct animal"
+    publisher: Google DeepMind
+    source_url: https://robotics-transformer2.github.io/
+    published: 2023-07
+    autonomy: autonomous
+    segment: 0-8
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s26a-rt2-teaser-extinct-animal.mp4
+    caption: visible
+    licence_note: Official project-page experiment rollout; the instruction was absent from the robot data and interpreted through web knowledge.
+
+  - slug: pi0-laundry
+    title: π0 folds laundry, uncut
+    publisher: Physical Intelligence
+    source_url: https://www.pi.website/blog/pi0
+    published: 2024-10
+    autonomy: autonomous
+    segment: 10-50
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s30a-pi0-2min-reel.mp4
+    caption: visible
+    licence_note: Official blog reel; retain the on-screen autonomy and playback-speed disclosures.
+
+  - slug: pi05-unseen-bedroom
+    title: π0.5 works across unseen homes (10x)
+    publisher: Physical Intelligence
+    source_url: https://www.pi.website/blog/pi05
+    published: 2025-04
+    autonomy: autonomous
+    speed: 1x
+    segment: 91-136
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s30c-pi05-official-youtube.mp4
+    caption: visible
+    licence_note: Official 720p video; this unseen-home montage carries a 10x burn-in throughout, so the title discloses it and media preparation must not retime it.
+
+  - slug: helix-two-robots
+    title: "Helix: two robots put away groceries"
+    publisher: Figure
+    source_url: https://www.figure.ai/news/helix
+    published: 2025-02
+    autonomy: unknown
+    segment: 28-68
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s31d-figure-helix-v1-introducing-full.mp4
+    caption: visible
+    licence_note: The 2025 announcement describes onboard single-policy execution but does not state the autonomy mode.
+
+  - slug: unitree-gala
+    title: CMG 2026 Spring Festival Gala (Unitree)
+    publisher: Unitree
+    source_url: https://www.youtube.com/watch?v=Ykiuz1ZdGBc
+    published: 2026-02
+    autonomy: claimed
+    segment: 25-55
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s07c-unitree-spring-festival-gala-details.mp4
+    caption: visible
+    licence_note: Unitree official YouTube; the company calls the choreography autonomous, without an independent no-teleoperation statement.
+
+  - slug: atlas-tomorrow
+    title: "Atlas: The Beginning of Your Tomorrow (CES 2026)"
+    publisher: Boston Dynamics
+    source_url: https://www.youtube.com/watch?v=sd8ivhpjI6g
+    published: 2026-01
+    autonomy: unknown
+    segment: 35-65
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s32b-bd-atlas-beginning-of-your-tomorrow.mp4
+    caption: visible
+    licence_note: Official product film; this interval is restricted to live action and excludes the computer-generated product-feature sequence.
+
+  - slug: neo-home
+    title: NEO, the home robot - launch demos were teleoperated
+    publisher: 1X
+    source_url: https://www.youtube.com/watch?v=LTYMWadOW7c
+    published: 2025-10
+    autonomy: unknown
+    segment: 480-500
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s08a-1x-neo-keynote.mp4
+    caption: visible
+    licence_note: The selected promotional interval does not state its mode; the title separately records the CEO-acknowledged launch-demo history without generalizing it to all 1X footage.
+
+  - slug: costnav-teaser
+    title: "CostNav: navigation judged by cost, in simulation"
+    publisher: WoRV
+    source_url: https://worv-ai.github.io/costnav/
+    published: 2025-11
+    autonomy: unknown
+    segment: 0-13
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s35a-worv-costnav-teaser.mp4
+    caption: visible
+    licence_note: Public project-page simulation footage; the clip itself does not document its autonomy mode.
+
+  - slug: worv-bimanual
+    title: In-house dual-arm manipulation
+    publisher: WoRV
+    source_url: https://www.maum.ai/
+    published: 2026-03
+    autonomy: autonomous
+    segment: 0-20
+    source: /Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s35c-worv-inhouse-bimanual-demo.mp4
+    caption: visible
+    licence_note: Presenter-owned footage previously published in the media-tta-2026 release; the established TTA deck labels this clip autonomous.

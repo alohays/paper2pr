@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 390" role="img" aria-labelledby="title desc">
+  <title id="title">Three axes of generalization</title>
+  <desc id="desc">Three panels show task, environment, and embodiment generalization with one example model for each axis.</desc>
+  <defs>
+    <style>
+      .axis { font: 700 29px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; letter-spacing: 1.5px; fill: #012169; }
+      .tagline { font: 400 22px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
+      .example { font: 600 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #1A1A1A; }
+      .chip-label { font: 700 13px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; letter-spacing: 1.5px; fill: #9A7B3F; }
+      .chip-value { font: 700 20px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #012169; }
+      .icon { stroke: #012169; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .accent { stroke: #B9975B; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .divider { stroke: #D6DEE9; stroke-width: 2; }
+    </style>
+    <marker id="gold-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#B9975B"/>
+    </marker>
+  </defs>
+
+  <line class="divider" x1="389" y1="18" x2="389" y2="370"/>
+  <line class="divider" x1="779" y1="18" x2="779" y2="370"/>
+
+  <g transform="translate(0 0)">
+    <text class="axis" x="194" y="40" text-anchor="middle">TASK</text>
+    <line class="accent" x1="146" y1="55" x2="242" y2="55"/>
+    <text class="tagline" x="194" y="86" text-anchor="middle">new verb, same room</text>
+
+    <g transform="translate(55 112)">
+      <rect class="icon" x="8" y="26" width="104" height="82" rx="8"/>
+      <rect class="icon" x="29" y="48" width="62" height="38" rx="3"/>
+      <line class="icon" x1="60" y1="48" x2="60" y2="86"/>
+      <line class="icon" x1="29" y1="67" x2="91" y2="67"/>
+      <line class="accent" x1="126" y1="67" x2="178" y2="67" marker-end="url(#gold-arrow)"/>
+      <rect class="icon" x="197" y="26" width="104" height="82" rx="8"/>
+      <circle class="icon" cx="249" cy="67" r="23"/>
+      <circle class="icon" cx="249" cy="67" r="14"/>
+      <circle class="icon" cx="249" cy="67" r="6"/>
+    </g>
+    <text class="example" x="194" y="256" text-anchor="middle">fold -&gt; roll</text>
+    <rect x="91" y="302" width="206" height="54" rx="27" fill="#E8EDF5"/>
+    <text class="chip-label" x="126" y="335">EXAMPLE</text>
+    <circle cx="205" cy="329" r="4" fill="#B9975B"/>
+    <text class="chip-value" x="224" y="336">RT-2</text>
+  </g>
+
+  <g transform="translate(389 0)">
+    <text class="axis" x="195" y="40" text-anchor="middle">ENVIRONMENT</text>
+    <line class="accent" x1="127" y1="55" x2="263" y2="55"/>
+    <text class="tagline" x="195" y="86" text-anchor="middle">same verb, new room</text>
+
+    <g transform="translate(30 112)">
+      <rect class="icon" x="8" y="25" width="126" height="84" rx="6"/>
+      <rect class="icon" x="21" y="40" width="34" height="26"/>
+      <line class="icon" x1="38" y1="40" x2="38" y2="66"/>
+      <line class="icon" x1="21" y1="53" x2="55" y2="53"/>
+      <circle cx="90" cy="47" r="9" fill="#B9975B"/>
+      <line class="icon" x1="8" y1="87" x2="134" y2="87"/>
+      <rect x="100" y="73" width="18" height="14" fill="#012169"/>
+      <line class="accent" x1="145" y1="67" x2="185" y2="67" marker-end="url(#gold-arrow)"/>
+      <rect class="icon" x="204" y="25" width="126" height="84" rx="6"/>
+      <rect class="icon" x="272" y="40" width="34" height="26"/>
+      <line class="icon" x1="289" y1="40" x2="289" y2="66"/>
+      <line class="icon" x1="272" y1="53" x2="306" y2="53"/>
+      <path d="M236,40 A13,13 0 1,0 250,59 A10,10 0 1,1 236,40 Z" fill="#B9975B"/>
+      <line class="icon" x1="204" y1="87" x2="330" y2="87"/>
+      <circle cx="230" cy="79" r="9" fill="#012169"/>
+    </g>
+    <text class="example" x="195" y="256" text-anchor="middle">kitchen/day -&gt; living room/night</text>
+    <rect x="92" y="302" width="206" height="54" rx="27" fill="#E8EDF5"/>
+    <text class="chip-label" x="127" y="335">EXAMPLE</text>
+    <circle cx="206" cy="329" r="4" fill="#B9975B"/>
+    <text class="chip-value" x="225" y="336">π0.5</text>
+  </g>
+
+  <g transform="translate(779 0)">
+    <text class="axis" x="194" y="40" text-anchor="middle">EMBODIMENT</text>
+    <line class="accent" x1="128" y1="55" x2="260" y2="55"/>
+    <text class="tagline" x="194" y="86" text-anchor="middle">same brain, new body</text>
+
+    <g transform="translate(22 112)">
+      <g transform="translate(4 2)">
+        <rect class="icon" x="8" y="86" width="66" height="18" rx="3"/>
+        <line class="icon" x1="41" y1="86" x2="41" y2="53"/>
+        <line class="icon" x1="41" y1="53" x2="68" y2="38"/>
+        <line class="icon" x1="68" y1="38" x2="83" y2="38"/>
+        <line class="icon" x1="83" y1="31" x2="83" y2="45"/>
+      </g>
+      <line class="accent" x1="100" y1="67" x2="132" y2="67" marker-end="url(#gold-arrow)"/>
+      <g transform="translate(138 2)">
+        <rect class="icon" x="0" y="86" width="66" height="18" rx="3"/>
+        <line class="icon" x1="33" y1="86" x2="33" y2="61"/>
+        <line class="icon" x1="33" y1="61" x2="54" y2="42"/>
+        <line class="icon" x1="54" y1="42" x2="75" y2="31"/>
+        <circle cx="33" cy="61" r="4" fill="#B9975B"/>
+        <circle cx="54" cy="42" r="4" fill="#B9975B"/>
+        <line class="icon" x1="75" y1="31" x2="88" y2="23"/>
+        <line class="icon" x1="75" y1="31" x2="90" y2="31"/>
+        <line class="icon" x1="75" y1="31" x2="88" y2="39"/>
+      </g>
+      <line class="accent" x1="239" y1="67" x2="271" y2="67" marker-end="url(#gold-arrow)"/>
+      <g transform="translate(288 0)">
+        <circle class="icon" cx="38" cy="28" r="12"/>
+        <rect class="icon" x="23" y="43" width="30" height="38" rx="5"/>
+        <line class="icon" x1="23" y1="51" x2="7" y2="76"/>
+        <line class="icon" x1="53" y1="51" x2="69" y2="76"/>
+        <line class="icon" x1="31" y1="81" x2="25" y2="107"/>
+        <line class="icon" x1="45" y1="81" x2="51" y2="107"/>
+      </g>
+    </g>
+    <text class="example" x="194" y="256" text-anchor="middle" style="font-size: 17px;">parallel-jaw -&gt; dexterous hand -&gt; humanoid</text>
+    <rect x="91" y="302" width="206" height="54" rx="27" fill="#E8EDF5"/>
+    <text class="chip-label" x="126" y="335">EXAMPLE</text>
+    <circle cx="205" cy="329" r="4" fill="#B9975B"/>
+    <text class="chip-value" x="224" y="336">GR00T N1</text>
+  </g>
+</svg>

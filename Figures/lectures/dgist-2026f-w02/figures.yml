@@ -1,0 +1,124 @@
+figures:
+  - file: s13-ilsvrc.svg
+    source: own work
+    licence: repo
+    third_party: false
+  - file: s16-scaling-laws.svg
+    source: own work
+    licence: repo
+    third_party: false
+  - file: s24-lm-vlm-vla.svg
+    source: own work
+    licence: repo
+    third_party: false
+  - file: s28-generalization-axes.svg
+    source: own work
+    licence: repo
+    third_party: false
+  - file: s29-data-barrier.svg
+    source: own work
+    licence: repo
+    third_party: false
+
+  - file: worv-logo.png
+    source: WoRV
+    licence: own (WoRV)
+    third_party: false
+  - file: s14-transformer-architecture.png
+    source: Vaswani et al. (2017)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s17-dalle1-fox-monet.png
+    source: OpenAI
+    licence: company press/blog
+    third_party: true
+  - file: s17-dalle2-fox-monet.png
+    source: OpenAI
+    licence: company press/blog
+    third_party: true
+  - file: s17-gpt4o-whiteboard.png
+    source: OpenAI
+    licence: company press/blog
+    third_party: true
+  - file: s19-foundation-model-pipeline.png
+    source: Bommasani et al. (2021)
+    licence: CC BY 4.0
+    third_party: true
+  - file: s21-qtopt-robot-farm.png
+    source: Kalashnikov et al. (2018)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s21-rubiks-cube-hand.png
+    source: OpenAI (2019)
+    licence: company press/blog
+    third_party: true
+  - file: s21-rt1-teaser.png
+    source: Brohan et al. (2022)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s21-aloha-teleop.png
+    source: Zhao et al. (2023)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+
+  - file: s33-rt2.png
+    source: Google DeepMind
+    licence: company press/blog
+    third_party: true
+  - file: s33-openvla.png
+    source: OpenVLA
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s33-pi0.png
+    source: Physical Intelligence
+    licence: company press/blog
+    third_party: true
+  - file: s33-helix.png
+    source: Figure
+    licence: company press/blog
+    third_party: true
+  - file: s33-gemini-robotics.png
+    source: Google DeepMind
+    licence: company press/blog
+    third_party: true
+  - file: s33-groot-n1.png
+    source: NVIDIA
+    licence: company press/blog
+    third_party: true
+  - file: s33-pi05.png
+    source: Physical Intelligence
+    licence: company press/blog
+    third_party: true
+  - file: s33-gemini-robotics-2.png
+    source: Google DeepMind
+    licence: company press/blog
+    third_party: true
+
+  - file: s39-dreamzero-world-action-model.png
+    source: DreamZero
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s39-aloha-hardware.png
+    source: Zhao et al. (2023)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s39-openx-data-strip.png
+    source: Open X-Embodiment Collaboration (2023)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s40-diffusion-policy.png
+    source: Chi et al. (2023)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s40-vggt.png
+    source: Wang et al. (2025)
+    licence: arXiv non-exclusive / paper figure
+    third_party: true
+  - file: s40-gr2-safety.png
+    source: Google DeepMind
+    licence: company press/blog / public technical document
+    third_party: true
+  - file: s40-figure03.png
+    source: Figure
+    licence: company press/blog
+    third_party: true

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="ilsvrc-title ilsvrc-desc">
+  <title id="ilsvrc-title">ILSVRC top-5 error by year</title>
+  <desc id="ilsvrc-desc">Bar chart showing top-5 error falling from 28.2 percent in 2010 to 3.57 percent in 2015. The 2012 AlexNet result at 16.4 percent is highlighted in gold, and a dashed line marks human top-5 error near 5.1 percent.</desc>
+  <style>
+    text {
+      font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+      fill: #1a1a1a;
+    }
+    .grid {
+      stroke: #aab4c8;
+      stroke-width: 2;
+      stroke-opacity: 0.42;
+    }
+    .axis {
+      stroke: #012169;
+      stroke-width: 3;
+    }
+    .bar {
+      fill: #aab4c8;
+    }
+    .alexnet {
+      fill: #b9975b;
+    }
+    .human {
+      stroke: #012169;
+      stroke-width: 3;
+      stroke-dasharray: 10 8;
+    }
+    .gold-text {
+      fill: #9a7b3f;
+    }
+  </style>
+
+  <g aria-hidden="true">
+    <line class="grid" x1="100" y1="35" x2="870" y2="35"/>
+    <line class="grid" x1="100" y1="135" x2="870" y2="135"/>
+    <line class="grid" x1="100" y1="235" x2="870" y2="235"/>
+    <line class="grid" x1="100" y1="335" x2="870" y2="335"/>
+    <line class="axis" x1="100" y1="35" x2="100" y2="335"/>
+    <line class="axis" x1="100" y1="335" x2="870" y2="335"/>
+  </g>
+
+  <g font-size="22" text-anchor="end" aria-hidden="true">
+    <text x="86" y="43">30</text>
+    <text x="86" y="143">20</text>
+    <text x="86" y="243">10</text>
+    <text x="86" y="343">0</text>
+  </g>
+
+  <text x="24" y="188" font-size="23" font-weight="600" text-anchor="middle" transform="rotate(-90 24 188)">top-5 error (%) - lower is better</text>
+
+  <g>
+    <rect class="bar" x="100" y="53" width="84" height="282" rx="4"/>
+    <rect class="bar" x="235" y="77" width="84" height="258" rx="4"/>
+    <rect class="alexnet" x="370" y="171" width="84" height="164" rx="4"/>
+    <rect class="bar" x="505" y="218" width="84" height="117" rx="4"/>
+    <rect class="bar" x="640" y="268" width="84" height="67" rx="4"/>
+    <rect class="bar" x="775" y="299.3" width="84" height="35.7" rx="4"/>
+  </g>
+
+  <g font-size="24" text-anchor="middle">
+    <text x="142" y="43">28.2%</text>
+    <text x="277" y="67">25.8%</text>
+    <text class="gold-text" x="412" y="161" font-weight="700">16.4%</text>
+    <text x="547" y="208">11.7%</text>
+    <text x="682" y="258">6.7%</text>
+    <text x="817" y="326" font-size="21" font-weight="700" fill="#012169">3.57%</text>
+  </g>
+
+  <g font-size="23" text-anchor="middle" font-weight="600">
+    <text x="142" y="371">2010</text>
+    <text x="277" y="371">2011</text>
+    <text class="gold-text" x="412" y="371" font-weight="700">2012</text>
+    <text x="547" y="371">2013</text>
+    <text x="682" y="371">2014</text>
+    <text x="817" y="371">2015</text>
+  </g>
+
+  <line class="human" x1="100" y1="284" x2="870" y2="284"/>
+  <rect x="108" y="258" width="154" height="31" rx="3" fill="#ffffff" fill-opacity="0.94"/>
+  <text x="116" y="281" font-size="21" font-weight="600" fill="#012169">human ~5.1%</text>
+
+  <path d="M421 169 L451 132 L472 132" fill="none" stroke="#b9975b" stroke-width="3"/>
+  <circle cx="421" cy="169" r="5" fill="#b9975b"/>
+  <text class="gold-text" x="481" y="139" font-size="22" font-weight="700">AlexNet - deep learning arrives</text>
+</svg>

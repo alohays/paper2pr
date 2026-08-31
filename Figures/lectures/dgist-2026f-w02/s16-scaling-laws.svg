@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="scaling-title scaling-desc">
+  <title id="scaling-title">Three concept panels for AI scaling laws</title>
+  <desc id="scaling-desc">Three simple panels show error descending in straight lines as compute, data, and model size increase.</desc>
+  <style>
+    text {
+      font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+      fill: #1a1a1a;
+    }
+    .panel {
+      fill: #f7f9fc;
+      stroke: #e8edf5;
+      stroke-width: 3;
+    }
+    .axis {
+      fill: none;
+      stroke: #012169;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .law {
+      fill: none;
+      stroke: #b9975b;
+      stroke-width: 9;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <text x="30" y="190" font-size="26" font-weight="600" text-anchor="middle" transform="rotate(-90 30 190)">error</text>
+
+  <g>
+    <rect class="panel" x="70" y="28" width="250" height="320" rx="12"/>
+    <path class="axis" d="M105 65 V300 H292"/>
+    <path class="law" d="M126 92 L276 270"/>
+    <text x="195" y="388" font-size="26" font-weight="600" text-anchor="middle">more compute</text>
+  </g>
+
+  <g>
+    <rect class="panel" x="325" y="28" width="250" height="320" rx="12"/>
+    <path class="axis" d="M360 65 V300 H547"/>
+    <path class="law" d="M381 92 L531 270"/>
+    <text x="450" y="388" font-size="26" font-weight="600" text-anchor="middle">more data</text>
+  </g>
+
+  <g>
+    <rect class="panel" x="580" y="28" width="250" height="320" rx="12"/>
+    <path class="axis" d="M615 65 V300 H802"/>
+    <path class="law" d="M636 92 L786 270"/>
+    <text x="705" y="388" font-size="26" font-weight="600" text-anchor="middle">bigger model</text>
+  </g>
+</svg>
