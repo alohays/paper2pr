@@ -23,6 +23,8 @@ What a deck may declare, and where each value is read from (deck config first,
 then the profile, then the built-in default):
 
     profile                      which slide-profiles/<profile>.yml grades it
+    publish                      whether the Paper2PR public-site pipeline
+                                 includes the deck (deck only, default true)
     duration_min                 wall-clock minutes the slot runs
     video_min, qa_min            minutes of the slot spent on clips and on Q&A
                                  (deck only, default 0). speaking_min is derived:
@@ -234,6 +236,21 @@ class DeckConfig:
             raise ConfigError(
                 f"{self.deck.config}: sources must be a list, got {value!r}")
         return [str(v) for v in value]
+
+    @property
+    def publish(self) -> bool:
+        """Whether this deck belongs in the Paper2PR public site.
+
+        This is deliberately deck-only: a profile describes how a deck is
+        graded, not where it is hosted. Omission preserves the historical
+        behaviour that every deck is published.
+        """
+        value = self.raw.get("publish", True)
+        if not isinstance(value, bool):
+            raise ConfigError(
+                f"{self.deck.config}: publish must be true or false, "
+                f"got {value!r}")
+        return value
 
     @property
     def bullets_max(self) -> int:
@@ -467,6 +484,7 @@ class DeckConfig:
             "deck": self.deck.slug,
             "profile": self.profile,
             "has_config": self.has_config,
+            "publish": self.publish,
             "duration_min": self.duration_min,
             "video_min": self.video_min,
             "qa_min": self.qa_min,
@@ -557,6 +575,16 @@ def load(deck: "deckpath.Deck") -> DeckConfig:
                       profile_raw=_load_yaml(PROFILE_DIR / f"{name}.yml"))
 
 
+def publishable_decks() -> list["deckpath.Deck"]:
+    """Decks selected for the Paper2PR public site, in canonical order."""
+    return [deck for deck in deckpath.all_decks() if load(deck).publish]
+
+
+def unpublishable_decks() -> list["deckpath.Deck"]:
+    """Source decks deliberately omitted from the Paper2PR public site."""
+    return [deck for deck in deckpath.all_decks() if not load(deck).publish]
+
+
 def _fixture_deck(qmd: Path) -> "deckpath.Deck | None":
     """A qmd outside the genre directories with a <name>.deck.yml beside it.
 
@@ -602,14 +630,26 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("deck", nargs="?")
     ap.add_argument("--field")
-    ap.add_argument("--list-profiles", action="store_true")
+    listings = ap.add_mutually_exclusive_group()
+    listings.add_argument("--list-profiles", action="store_true")
+    listings.add_argument("--list-publishable", action="store_true")
+    listings.add_argument("--list-unpublishable", action="store_true")
     args = ap.parse_args(argv)
 
     if args.list_profiles:
         print("\n".join(profiles()))
         return 0
+    if args.list_publishable or args.list_unpublishable:
+        try:
+            decks = (publishable_decks() if args.list_publishable
+                     else unpublishable_decks())
+        except ConfigError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 1
+        print("\n".join(deck.slug for deck in decks))
+        return 0
     if not args.deck:
-        ap.error("a deck name is required unless --list-profiles is given")
+        ap.error("a deck name is required unless a --list-* option is given")
 
     try:
         cfg = resolve(args.deck)

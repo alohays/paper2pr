@@ -75,7 +75,7 @@ STYLE = """    body {
 def rows_for(genre: str) -> list[str]:
     """Rows for the decks of a genre that are not in a series."""
     out = []
-    for deck in deckpath.all_decks():
+    for deck in deckprofile.publishable_decks():
         if deck.genre != genre:
             continue
         cfg = deckprofile.load(deck)
@@ -100,7 +100,7 @@ def series_groups(genre: str) -> list[tuple[str, str, list[str]]]:
     "<course> (<code>, <institution>, <term>)" from the series data that
     deckprofile resolves (lock, or the yml when the lock is absent)."""
     groups: dict[str, dict] = {}
-    for deck in deckpath.all_decks():
+    for deck in deckprofile.publishable_decks():
         if deck.genre != genre:
             continue
         cfg = deckprofile.load(deck)
@@ -211,7 +211,7 @@ def main(argv=None):
         return 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(page, encoding="utf-8")
-    n = sum(1 for _ in deckpath.all_decks())
+    n = len(deckprofile.publishable_decks())
     print(f"Wrote {OUT.relative_to(REPO_ROOT)} with {n} deck(s)")
     return 0
 

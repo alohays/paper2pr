@@ -66,17 +66,18 @@ python3 scripts/backup_notes.py restore DreamZero   # after clone or accidental 
 
 ![Deck lifecycle: video and series manifests plus the project defaults feed quarto render; the quality gate, a push to main and CI publish the deck to GitHub Pages; clips live on a GitHub Release, while speaker notes and the PDF handout never leave the presenter's machine](assets/pipeline.svg)
 
-Left to right: `quarto render` builds `<deck>.qmd` under the `Quarto/_quarto.yml` defaults and the `Quarto/_filters/*.lua` shortcodes, `scripts/quality_score.py` grades the result, and a push to `main` hands it to `.github/workflows/deploy.yml`, which re-runs `render_decks.sh`, `strip_notes.sh`, `assemble_site.sh`, `check_site_assets.py` and `check_release_media.py` (the local references resolve, and the Release URLs the pages point at answer 200). Off the main line: `scripts/media_prep.py` and `scripts/series_assets.py` turn the two manifests into the `videos.json` and `series.json` locks the shortcodes read, `scripts/media_release.sh` puts the clips on the deck's Release, the clean filter `scripts/strip_qmd_notes.py` keeps speaker notes out of git, and `scripts/export_pdf.sh` writes the local-only handout. The source is `assets/pipeline.svg`.
+Left to right: `quarto render` builds `<deck>.qmd` under the `Quarto/_quarto.yml` defaults and the `Quarto/_filters/*.lua` shortcodes, `scripts/quality_score.py` grades the result, and a push to `main` hands it to `.github/workflows/deploy.yml`, which selects decks whose config does not set `publish: false`, then re-runs `render_decks.sh`, `strip_notes.sh`, `assemble_site.sh`, `check_site_assets.py` and `check_release_media.py` (the local references resolve, and the Release URLs the pages point at answer 200). Off the main line: `scripts/media_prep.py` and `scripts/series_assets.py` turn the two manifests into the `videos.json` and `series.json` locks the shortcodes read, `scripts/media_release.sh` puts the clips on the deck's Release, the clean filter `scripts/strip_qmd_notes.py` keeps speaker notes out of git, and `scripts/export_pdf.sh` writes the local-only handout. The source is `assets/pipeline.svg`.
 
-Decks live at `Quarto/<genre>/<name>.qmd`, where genre is one of the lines in `Quarto/_genres.txt`. A deck's figures, speaker-note backups, and presenter scripts are scoped the same way, so one rule finds everything a deck owns. Adding a genre is two edits and no code: a line in `_genres.txt`, and `genre_default: <genre>` in the profile that should grade it. `deckprofile.py` reads the genre-to-profile mapping from the profiles themselves, and `test_profiles.py` fails when a genre has no profile claiming it.
+Decks live at `Quarto/<genre>/<name>.qmd`, where genre is one of the lines in `Quarto/_genres.txt`. Listed genres are eligible for Pages publishing; an individual deck opts out with `publish: false` in its `.deck.yml`. A deck's figures, speaker-note backups, and presenter scripts are scoped the same way, so one rule finds everything a deck owns. Adding a genre is two edits and no code: a line in `_genres.txt`, and `genre_default: <genre>` in the profile that should grade it. `deckprofile.py` reads the genre-to-profile mapping from the profiles themselves, and `test_profiles.py` fails when a genre has no profile claiming it.
 
-Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, for how long, what they have already seen, which language the slides and notes are in. Those are not documentation. `quality_score.py` reads them to pick a bullet budget and decide which checks apply, the Korean gate reads them to decide how much Hangul this deck may carry, and `/write-speaker-notes` reads them for the script budget. Start a deck with `/new-deck`, which interviews for exactly those answers. Merging to `main` publishes; there is no publish field.
+Each deck declares its own premises in `<deck>.deck.yml` -- who is listening, for how long, what they have already seen, which language the slides and notes are in, and whether Paper2PR Pages should publish it. Those are not documentation. `quality_score.py` reads them to pick a bullet budget and decide which checks apply, the Korean gate reads them to decide how much Hangul this deck may carry, `/write-speaker-notes` reads them for the script budget, and the deploy pipeline reads `publish`. Start a deck with `/new-deck`, which interviews for the presentation premises and defaults to publishing. Set `publish: false` only when the deck is hosted elsewhere: it excludes the deck from Paper2PR Pages and its landing page, but source on `main` remains public and `quarto render Quarto/<genre>/<deck>.qmd` still works.
 
 `deck.yml` fields (`python3 scripts/deckprofile.py <deck>` shows the resolved values):
 
 | Field | Read by | Meaning |
 |-------|---------|---------|
 | `profile` | gate | which `slide-profiles/<profile>.yml` grades the deck (default: the genre's) |
+| `publish` | deploy, landing | whether the deck appears on Paper2PR Pages; omitted or `true` publishes, while `false` excludes it without affecting GitHub source or direct Quarto rendering |
 | `duration_min` | notes budget | wall-clock minutes of the slot |
 | `video_min`, `qa_min` | notes budget | minutes spent on clips and on Q&A; `speaking_min = duration_min - video_min - qa_min` is what the script is budgeted on |
 | `language.slides`, `language.notes` | Korean gate, notes | `ko` slides are exempt from the gate; notes default to `ko` |
@@ -288,7 +289,7 @@ paper2pr/
 ├── Figures/lectures/_series/<course>/   # series.json lock, qr-qa.{png,svg}, semester-map*.svg
 │                                #   (written by scripts/series_assets.py, committed)
 ├── Quarto/
-│   ├── _genres.txt              # Which directories publish. Single source of truth
+│   ├── _genres.txt              # Which directories are eligible to publish; deck.yml may opt out
 │   ├── _quarto.yml              # Project defaults for every deck (canvas, filter, shortcodes, fonts)
 │   ├── _filters/slide-types.lua # .divider / .video-full (video="@slug") -> reveal background attributes
 │   ├── _filters/video-card.lua  # {{< video-card >}} / {{< video-caption >}} shortcodes
@@ -351,8 +352,8 @@ python3 scripts/series_assets.py --list
 # fails loudly if Hangul beyond the deck's own visible text reaches the PDF
 bash scripts/export_pdf.sh <Deck> [--out FILE]
 
-# Deploy to GitHub Pages (automatic via CI/CD on push to main)
-git push  # GitHub Actions renders Quarto, strips notes, deploys
+# Deploy eligible decks to GitHub Pages (automatic via CI/CD on push to main)
+git push  # Decks with publish: false stay out of the Pages artifact
 
 # Local deploy preview -- renders, assembles exactly as CI does, then checks assets
 ./scripts/sync_to_docs.sh [Deck]

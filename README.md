@@ -22,9 +22,12 @@ One deck, from source to published page. Anything on a dashed path stays local.
 - Landing page: <https://alohays.github.io/paper2pr/>
 - One deck: `https://alohays.github.io/paper2pr/slides/<genre>/<deck>.html`
 
-Decks are published by GitHub Actions on every push to `main`: the decks
-are rendered, speaker notes are stripped, and the site is deployed. What
-is on `main` is public.
+Decks are published by GitHub Actions on every push to `main`: by default,
+each deck is rendered, speaker notes are stripped, and the site is deployed.
+Set `publish: false` in a deck's `.deck.yml` to leave that deck out of the
+Paper2PR Pages site and landing page. This is a hosting switch, not an access
+control: source committed to `main` remains public on GitHub, and the QMD can
+still be rendered directly with Quarto.
 
 ## Genres
 
@@ -35,8 +38,10 @@ is on `main` is public.
 | `lectures` | `lecture` | no background | ~60 min |
 
 A deck lives at `Quarto/<genre>/<deck>.qmd` and declares its premises
-(audience, length, language) in `Quarto/<genre>/<deck>.deck.yml`. The
-quality gate reads that file to choose the budgets and checks that apply.
+(audience, length, language, and whether Paper2PR Pages should publish it) in
+`Quarto/<genre>/<deck>.deck.yml`. The quality gate reads that file to choose
+the budgets and checks that apply; the deploy pipeline reads `publish`, which
+defaults to `true` when omitted.
 
 ## What a deck looks like
 

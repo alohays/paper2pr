@@ -34,22 +34,40 @@ for genre in $GENRES; do
   [ -d "Quarto/$genre" ] || continue
   mkdir -p "$OUT/slides/$genre"
 
-  # Rendered HTML + the RevealJS assets Quarto compiles beside it
-  for html in Quarto/"$genre"/*.html; do
-    [ -f "$html" ] || continue
-    name=$(basename "$html" .html)
-    cp "$html" "$OUT/slides/$genre/"
-    if [ -d "Quarto/$genre/${name}_files" ]; then
-      cp -r "Quarto/$genre/${name}_files" "$OUT/slides/$genre/"
-    fi
-  done
-
   # Loose runtime assets sitting next to the qmd. Quarto compiles scss into
   # <name>_files, but a plain <script src="foo.js"> in the header is left for
   # us to ship.
   find "Quarto/$genre" -maxdepth 1 -type f \( -name '*.js' -o -name '*.css' \) \
     -exec cp {} "$OUT/slides/$genre/" \; 2>/dev/null || true
 done
+
+# Rendered HTML + Quarto assets are copied from the publishable config list,
+# never from an `*.html` wildcard. Otherwise an old render of a deck marked
+# `publish: false` would silently remain public.
+while IFS= read -r slug; do
+  [ -n "$slug" ] || continue
+  genre=${slug%%/*}
+  name=${slug#*/}
+  html="Quarto/$genre/$name.html"
+  if [ ! -f "$html" ]; then
+    echo "error: publishable deck $slug has no rendered HTML at $html" >&2
+    exit 1
+  fi
+  mkdir -p "$OUT/slides/$genre"
+  cp "$html" "$OUT/slides/$genre/"
+  if [ -d "Quarto/$genre/${name}_files" ]; then
+    cp -r "Quarto/$genre/${name}_files" "$OUT/slides/$genre/"
+  fi
+done < <(python3 scripts/deckprofile.py --list-publishable)
+
+# A deck-local loose stylesheet or script shares the deck name. Remove those
+# exact files for unpublished decks after the broad shared-asset copy above.
+while IFS= read -r slug; do
+  [ -n "$slug" ] || continue
+  genre=${slug%%/*}
+  name=${slug#*/}
+  rm -f "$OUT/slides/$genre/$name.css" "$OUT/slides/$genre/$name.js"
+done < <(python3 scripts/deckprofile.py --list-unpublishable)
 
 # Shared fonts. Decks reference these as ../fonts/, which resolves to
 # slides/fonts/ from inside a genre directory.
@@ -62,6 +80,15 @@ done
 # page that still references them, and CI never has them anyway.
 cp -r Figures/* "$OUT/Figures/" 2>/dev/null || true
 find "$OUT/Figures" -mindepth 3 -maxdepth 3 -type d -name videos -prune -exec rm -rf {} + 2>/dev/null || true
+
+# Unpublished deck figures must not remain addressable just because the broad
+# genre-scoped figure copy above included them.
+while IFS= read -r slug; do
+  [ -n "$slug" ] || continue
+  genre=${slug%%/*}
+  name=${slug#*/}
+  rm -rf "$OUT/Figures/$genre/$name"
+done < <(python3 scripts/deckprofile.py --list-unpublishable)
 
 # Redirect stubs for the URLs these decks had before genres existed. Cheap
 # insurance: the links are already out in a CV, in email, and in chat, and a

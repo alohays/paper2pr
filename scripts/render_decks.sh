@@ -5,8 +5,10 @@
 # loop over the deck files, with their own idea of what to skip; the workflow's
 # copy could only ever be exercised by pushing.
 #
-# What counts as a deck comes from deckpath.py, which reads Quarto/_genres.txt
-# and already skips *_backup* files -- so the skip rule lives in one place too.
+# What counts as a publishable deck comes from deckprofile.py, which reads the
+# same deck configs as the rest of the pipeline and excludes `publish: false`.
+# An explicitly named unpublished deck still renders for local authoring or an
+# external host.
 #
 # A render failure stops the run. A preview that quietly carries on and then
 # assembles the previous render is how a broken deck reaches the site looking
@@ -40,6 +42,6 @@ while IFS= read -r slug; do
   echo "Rendering $qmd"
   quarto render "$qmd"
   n=$((n + 1))
-done < <(python3 scripts/deckpath.py --list)
+done < <(python3 scripts/deckprofile.py --list-publishable)
 
 echo "Rendered $n deck(s)"

@@ -87,10 +87,15 @@ may not hold.
 
 **Sources** - paths or URLs the fact-check agent will compare the slides
 against: a paper PDF, a vault research note, a reference list. Optional, a
-list; it can grow later. There is no publication question: merging to `main`
-publishes (plan D11). Ask instead whether the deck will carry anything not
-yet public, and if so seed `Quarto/<genre>/<name>.forbidden.txt` (one term
-per line; any hit in visible slide text is a BLOCKER at the gate).
+list; it can grow later. Publication is opt-out, not an interview question:
+the scaffold omits `publish`, so the deck is included on Paper2PR Pages by
+default. If the presenter explicitly says the deck will be hosted elsewhere,
+add `publish: false` to the generated `.deck.yml` after scaffolding. That
+excludes the deck from the Paper2PR Pages render and landing page only; source
+on `main` remains public on GitHub and the QMD remains directly renderable.
+Always ask whether the deck will carry anything not yet public, even when it
+opts out of Pages, and if so seed `Quarto/<genre>/<name>.forbidden.txt` (one
+term per line; any hit in visible slide text is a BLOCKER at the gate).
 
 **Deck name** — kebab-case, unique across every genre, since the speaker-note
 backups are keyed on it and `preview.sh <name>` takes a bare name. For a course series use `<venue>-<term>-w<NN>`, e.g.
