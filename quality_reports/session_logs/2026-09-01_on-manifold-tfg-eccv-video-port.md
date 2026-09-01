@@ -42,7 +42,7 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 
 **04:11 UTC:** Drafted and independently reviewed 15 English speaker-note scripts totaling 635 standard words. The word-rate estimate is 4:53 and the final local 130-wpm TTS rehearsal ran 4:43.9. The final resources slide is intentionally silent.
 
-**04:11 UTC:** Added the presenter-supplied MaumAI and SeoulTech logos to the title, mapped Yunsung Lee to MaumAI and Hyeongmin Lee to Assistant Professor at SeoulTech, and updated the opening narration. The final script is 643 words; TTS rehearsal is 4:47.4.
+**04:11 UTC:** Added the presenter-supplied MaumAI and SeoulTech logos to the title, mapped Yunsung Lee to MaumAI and Hyeongmin Lee to SeoulTech without rank labels, and updated the opening narration. The final script is 640 words.
 
 ## Learnings & Corrections
 
@@ -65,7 +65,7 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 | Site-wide preview | Six unrelated landing links are absent because this isolated preview assembled only the requested deck | EXPECTED WARNING |
 | PDF export | 16 pages, 960 x 540 pt, no Hangul or English note-phrase leak | PASS |
 | Push/PR | Branch remains local; no push or PR | PASS |
-| Speaker-note budget | 643 words, 4:57 estimated; 4:47.4 final local TTS rehearsal; 15/16 slides narrated | PASS |
+| Speaker-note budget | 640 words, 4:55 estimated; 4:45.8 final local TTS rehearsal; 15/16 slides narrated | PASS |
 | Notes backup | 15 blocks in `.speaker-notes/talks/on-manifold-tfg.json` | PASS |
 
 ## Open Questions / Blockers

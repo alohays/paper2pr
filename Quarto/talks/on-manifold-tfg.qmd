@@ -35,7 +35,7 @@ bibliography: ../../Bibliography_base.bib
         <div class="title-logo-seoultech"><img src="../../Figures/talks/on-manifold-tfg/seoultech-brand-guide.png" alt="SeoulTech logo"></div>
         <div class="title-affiliation-copy">
           <p class="title-affiliation-name">Hyeongmin Lee</p>
-          <p class="title-affiliation-role">Assistant Professor · SeoulTech</p>
+          <p class="title-affiliation-role">SeoulTech</p>
         </div>
       </div>
     </div>
