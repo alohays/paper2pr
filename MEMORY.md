@@ -74,3 +74,7 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 ## Course Architecture
 
 [LEARN:course-architecture] Put hardware foundations early as the bridge into robot learning → teach the robot-learning sequence first, then use hardware, control, and mechanical engineering as a late special module that synthesizes the physical stack.
+
+[LEARN:authoring] Shortened personal-site labels can silently change an explicitly supplied public identity reference → when the presenter supplies exact author URLs, preserve the scheme and trailing slash in visible copy unless they ask for display aliases.
+
+[LEARN:qa] `scripts/shoot_slides.py` stops when `Reveal.isLastSlide()` becomes true, before revealing fragments on the last physical slide → an all-state audit must continue until the last slide has no `.fragment:not(.visible)` elements.

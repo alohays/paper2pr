@@ -1,0 +1,25 @@
+# Premises for the ECCV 2026 five-minute paper video.
+profile: invited-talk
+title: "Not All Prediction Targets Keep Training-Free Diffusion Guidance on the Manifold"
+description: "on-manifold tfg · ECCV 2026 paper video"
+
+audience:
+  assumes: expert
+  description: "ECCV viewers familiar with diffusion models and classifier guidance."
+delivery: remote
+
+duration_min: 5
+video_min: 0
+qa_min: 0
+
+language:
+  slides: en
+  notes: en
+
+sources:
+  - https://arxiv.org/abs/2607.00647
+  - https://github.com/ManLuML/on-manifold-tfg
+  - https://ManLuML.github.io/on-manifold-tfg/
+  - https://hyeongminlee.github.io/slides/on-manifold-tfg-2026/
+  - https://alohays.github.io/
+  - https://hyeongminlee.github.io/
