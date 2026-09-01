@@ -103,3 +103,11 @@ figures:
     source: arXiv 2607.00647
     licence: generated QR code
     third_party: false
+  - file: maumai-logo.png
+    source: MaumAI brand asset supplied by presenter
+    licence: presenter-supplied brand asset
+    third_party: false
+  - file: seoultech-brand-guide.png
+    source: SeoulTech brand asset supplied by presenter
+    licence: presenter-supplied brand asset
+    third_party: false

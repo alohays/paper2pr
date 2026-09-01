@@ -75,9 +75,9 @@ Completion requires the final QMD and deck-local assets/CSS, clean full-size ren
 
 ## Completion handoff
 
-- **Changed:** rebuilt the ECCV title and final resources slides; ported the retained source markup, builds, formulas, colors, and figures; added the approved zero-build `on-manifold tfg` transition; added exact clickable author URLs; and registered the deck on the landing page.
+- **Changed:** rebuilt the ECCV title and final resources slides; ported the retained source markup, builds, formulas, colors, and figures; added the approved zero-build `on-manifold tfg` transition; added exact clickable author URLs; placed the presenter-supplied MaumAI and SeoulTech logos with explicit author-affiliation mapping on the title; and registered the deck on the landing page.
 - **Cut:** source sections 02-06 per the enumerated brief, then source section 19 only under Yunsung's timing decision. No other inherited slide or reveal was cut.
 - **Deliberate deviations:** the final soft-paper RGB value follows the authoritative PDF; attribution paragraphs use semantic `figcaption` tags without visual changes; one proof-card width compensation became irrelevant after the proof cut; no separate original-deck credit was added.
 - **Quality:** 84/100 PASS. The three inherited dash expressions and two inherited image-reuse slides remain as explained fidelity exceptions; rewriting them would violate verbatim carryover.
-- **Notes:** 15 local-only English scripts, 635 words, 4:53 word-rate estimate and 4:43.9 local TTS rehearsal; final resources slide is silent; backup saved under `.speaker-notes/`.
+- **Notes:** 15 local-only English scripts, 643 words, 4:57 word-rate estimate and 4:47.4 local TTS rehearsal; final resources slide is silent; backup saved under `.speaker-notes/`.
 - **Remaining presenter action:** open the local deck, press `S`, confirm the speaker view, and run one human rehearsal before recording. No push or PR was made.

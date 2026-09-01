@@ -10,7 +10,7 @@
 
 | Section | Slides | Word Count | Est. Time |
 |---------|--------|------------|-----------|
-| Opening | 1 | 38 | 0:18 |
+| Opening | 1 | 46 | 0:21 |
 | Diffusion background | 2 | 81 | 0:37 |
 | Guidance setting | 4 | 163 | 1:15 |
 | Off-manifold catch | 2 | 88 | 0:41 |
@@ -18,11 +18,11 @@
 | Paper transition and results | 3 | 127 | 0:59 |
 | Takeaway | 1 | 48 | 0:22 |
 | Resources | 1 | 0 | Silent |
-| **Total** | **16** | **635** | **4:53** |
+| **Total** | **16** | **643** | **4:57** |
 
 **Target range:** 585-715 words (650 target, +/-10%)
-**Actual:** 635 words
-**Status:** WITHIN RANGE (-2.3%)
+**Actual:** 643 words
+**Status:** WITHIN RANGE (-1.1%)
 
 ---
 
@@ -48,4 +48,4 @@
 
 ## Notes
 
-The user-approved proof-slide cut leaves 16 physical slides and 18 reveals, or 34 visual states. The standard word-count estimate is 4:53; a final local Samantha TTS rehearsal at 130 words/minute ran 4:43.9, leaving about 16 seconds for 33 advances and brief visual holds. The script closes on the takeaway slide; the final resources slide remains on screen silently. Speaker notes are local-only and backed up at `.speaker-notes/talks/on-manifold-tfg.json`.
+The user-approved proof-slide cut leaves 16 physical slides and 18 reveals, or 34 visual states. After adding the requested spoken affiliations, the standard word-count estimate is 4:57; a final local Samantha TTS rehearsal at 130 words/minute ran 4:47.4, leaving about 13 seconds for 33 advances and brief visual holds. The script closes on the takeaway slide; the final resources slide remains on screen silently. Speaker notes are local-only and backed up at `.speaker-notes/talks/on-manifold-tfg.json`.

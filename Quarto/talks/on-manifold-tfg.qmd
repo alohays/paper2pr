@@ -23,12 +23,24 @@ bibliography: ../../Bibliography_base.bib
       <span class="text-navy">Training-Free Diffusion Guidance</span><br>
       on the Manifold
     </h1>
-    <p class="mt-10 text-lg lg:text-xl text-ink-soft">
-      <span class="font-semibold text-ink">Yunsung Lee</span> ·
-      <span class="font-semibold text-ink">Hyeongmin Lee</span>
-    </p>
-    <p class="mt-2 text-base text-ink-mute"><a class="author-site-link" href="https://alohays.github.io/">https://alohays.github.io/</a> · <a class="author-site-link" href="https://hyeongminlee.github.io/">https://hyeongminlee.github.io/</a></p>
-    <p class="mt-8 text-sm text-ink-mute">Paper · arxiv.org/abs/2607.00647 · Code · github.com/ManLuML/on-manifold-tfg</p>
+    <div class="title-affiliation-row mt-10">
+      <div class="title-affiliation-item">
+        <img src="../../Figures/talks/on-manifold-tfg/maumai-logo.png" alt="MaumAI logo" class="title-logo-maumai">
+        <div class="title-affiliation-copy">
+          <p class="title-affiliation-name">Yunsung Lee</p>
+          <p class="title-affiliation-role">MaumAI</p>
+        </div>
+      </div>
+      <div class="title-affiliation-item">
+        <div class="title-logo-seoultech"><img src="../../Figures/talks/on-manifold-tfg/seoultech-brand-guide.png" alt="SeoulTech logo"></div>
+        <div class="title-affiliation-copy">
+          <p class="title-affiliation-name">Hyeongmin Lee</p>
+          <p class="title-affiliation-role">Assistant Professor · SeoulTech</p>
+        </div>
+      </div>
+    </div>
+    <p class="mt-5 text-sm text-ink-mute"><a class="author-site-link" href="https://alohays.github.io/">https://alohays.github.io/</a> · <a class="author-site-link" href="https://hyeongminlee.github.io/">https://hyeongminlee.github.io/</a></p>
+    <p class="mt-5 text-sm text-ink-mute">Paper · arxiv.org/abs/2607.00647 · Code · github.com/ManLuML/on-manifold-tfg</p>
 
   </div>
 </div>

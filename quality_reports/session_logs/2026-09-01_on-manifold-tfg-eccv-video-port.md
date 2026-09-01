@@ -14,7 +14,7 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 | `Quarto/talks/on-manifold-tfg.css` | Added the scoped source Tailwind subset, exact two-thirds reference geometry, Inter/KaTeX loading, and Reveal compatibility fixes | Preserve the authoritative 1920 x 1080 design at 1280 x 720 without preflight leakage | 84/100 |
 | `Quarto/talks/on-manifold-tfg.deck.yml` | Declared five-minute remote expert delivery, English slides/notes, sources, and alias | Drive the profile, gate, fact review, and notes budget | 84/100 |
 | `Quarto/talks/on-manifold-tfg.forbidden.txt` | Guarded removed workshop/bio/lab promotional strings | Prevent accidental framing regressions | 84/100 |
-| `Figures/talks/on-manifold-tfg/` | Copied 26 exact source raster assets and added figure provenance metadata | Keep every figure byte-faithful and deployable | 84/100 |
+| `Figures/talks/on-manifold-tfg/` | Copied 26 exact source rasters, added two presenter-supplied affiliation logos, and recorded provenance metadata | Keep every figure byte-faithful and make the title affiliations explicit | 84/100 |
 | `pages/index.html` | Added the generated `on-manifold tfg` talk entry | Keep the landing page consistent with the new deck | 84/100 |
 | `quality_reports/plans/2026-09-01_on-manifold-tfg-eccv-video-plan.md` | Recorded architecture, resolved decisions, timing math, and ranked optional cuts | Preserve the plan and user-owned decision gates | N/A |
 
@@ -42,6 +42,8 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 
 **04:11 UTC:** Drafted and independently reviewed 15 English speaker-note scripts totaling 635 standard words. The word-rate estimate is 4:53 and the final local 130-wpm TTS rehearsal ran 4:43.9. The final resources slide is intentionally silent.
 
+**04:11 UTC:** Added the presenter-supplied MaumAI and SeoulTech logos to the title, mapped Yunsung Lee to MaumAI and Hyeongmin Lee to Assistant Professor at SeoulTech, and updated the opening narration. The final script is 643 words; TTS rehearsal is 4:47.4.
+
 ## Learnings & Corrections
 
 - [LEARN:authoring] Shortened personal-site labels changed explicitly supplied author references -> preserve exact visible URLs, including scheme and trailing slash.
@@ -56,14 +58,14 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 | Formula recovery | 35/35 final LaTeX annotations equal and in source order; 75/75 candidate annotations were parser-extracted before the cut | PASS |
 | Fragments | 18 groups; 34 current 1280 x 720 states captured | PASS |
 | Geometry/runtime | All 16 roots are 1280 x 720 from a 1920 x 1080 virtual canvas; no root overflow or broken image | PASS |
-| Asset integrity | 26/26 referenced raster files byte-equal the source export | PASS |
+| Asset integrity | 26/26 inherited rasters byte-equal the source export; 2/2 affiliation logos byte-equal the presenter attachments | PASS |
 | Visual audit | All browser states and PDF pages inspected; no clipping, overlap, formula corruption, controls, or unintended fragment reflow | PASS |
 | Quality gate | 84/100, zero critical issues; five fidelity-mandated deductions explained above | PASS |
-| Focused deploy assets | 58 local references resolve; exact author URLs present | PASS |
+| Focused deploy assets | 60 local references resolve; both affiliation logos and exact author URLs present | PASS |
 | Site-wide preview | Six unrelated landing links are absent because this isolated preview assembled only the requested deck | EXPECTED WARNING |
 | PDF export | 16 pages, 960 x 540 pt, no Hangul or English note-phrase leak | PASS |
 | Push/PR | Branch remains local; no push or PR | PASS |
-| Speaker-note budget | 635 words, 4:53 estimated; 4:43.9 final local TTS rehearsal; 15/16 slides narrated | PASS |
+| Speaker-note budget | 643 words, 4:57 estimated; 4:47.4 final local TTS rehearsal; 15/16 slides narrated | PASS |
 | Notes backup | 15 blocks in `.speaker-notes/talks/on-manifold-tfg.json` | PASS |
 
 ## Open Questions / Blockers

@@ -113,6 +113,63 @@
   background-color: #f9fafc;
 }
 
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-affiliation-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-affiliation-item {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-affiliation-copy {
+  min-width: 0;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-affiliation-name {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-affiliation-role {
+  margin: 0.2rem 0 0;
+  color: var(--color-ink-mute);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] img.title-logo-maumai {
+  width: 13rem;
+  height: auto;
+  flex: none;
+  object-fit: contain;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-logo-seoultech {
+  width: 7rem;
+  height: 6.4rem;
+  overflow: hidden;
+  flex: none;
+  background: #fff;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-logo-seoultech img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: left top;
+}
+
 /*
  * KaTeX 0.16.11 is fractionally narrower than the source build here.
  * Restore the PDF's final-word wrap so the equal proof cards keep their
