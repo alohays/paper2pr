@@ -113,6 +113,34 @@
   background-color: #f9fafc;
 }
 
+/*
+ * Full-screen occupancy pass. Scale each slide's content block around its
+ * visual center instead of changing the 1920 x 1080 reference layout or
+ * reflowing any source copy. Dense result slides stay conservative; sparse
+ * title, transition, takeaway, and closing slides use more of the canvas.
+ */
+.reveal .slides > section.on-manifold-tfg .showcase-section > :first-child {
+  transform: scale(var(--on-manifold-content-scale, 1));
+  transform-origin: center center;
+}
+
+.reveal .slides > section.on-manifold-tfg[data-source-section="01"] { --on-manifold-content-scale: 1.35; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="07"] { --on-manifold-content-scale: 1.16; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="08"] { --on-manifold-content-scale: 1.24; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="09"] { --on-manifold-content-scale: 1.22; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="10"] { --on-manifold-content-scale: 1.16; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="11"] { --on-manifold-content-scale: 1.27; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="12"] { --on-manifold-content-scale: 1.14; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="13"] { --on-manifold-content-scale: 1.16; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="14"] { --on-manifold-content-scale: 1.24; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="15"] { --on-manifold-content-scale: 1.16; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="16"] { --on-manifold-content-scale: 1.15; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="paper-transition"] { --on-manifold-content-scale: 1.48; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="17"] { --on-manifold-content-scale: 1.08; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="18"] { --on-manifold-content-scale: 1.18; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="20"] { --on-manifold-content-scale: 1.42; }
+.reveal .slides > section.on-manifold-tfg[data-source-section="21"] { --on-manifold-content-scale: 1.35; }
+
 .reveal .slides > section.on-manifold-tfg[data-source-section="01"] .title-affiliation-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);

@@ -82,3 +82,5 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:authoring] Preserving source slide markup after cuts can leave stale audience-facing section numbers → keep original section numbers only in provenance attributes, and renumber every visible section-local label from 01 in the delivered sequence.
 
 [LEARN:publishing] A paper deck with an established project page should use that project site as its canonical host → keep the QMD in Paper2PR, opt it out of Paper2PR Pages, and publish only a speaker-note-stripped static bundle beneath the project URL.
+
+[LEARN:design] A faithful 1920 x 1080 port can still look undersized after fitting inside Reveal's 1280 x 720 canvas → measure each fully revealed content bound and scale the centered inner block per slide; never apply one global zoom when dense result slides have less safety margin than sparse title or closing slides.
