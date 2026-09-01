@@ -44,6 +44,8 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 
 **04:11 UTC:** Added the presenter-supplied MaumAI and SeoulTech logos to the title, mapped Yunsung Lee to MaumAI and Hyeongmin Lee to SeoulTech without rank labels, and updated the opening narration. The final script is 640 words.
 
+**04:11 UTC:** Audited every audience-facing section label after the source cuts. Renumbered the retained background slides from stale source labels 04/05 to delivered labels 01/02; Setting 01-04 and The catch 01-02 were already contiguous.
+
 ## Learnings & Corrections
 
 - [LEARN:authoring] Shortened personal-site labels changed explicitly supplied author references -> preserve exact visible URLs, including scheme and trailing slash.
@@ -54,6 +56,7 @@ Port Hyeongmin Lee's workshop deck into Paper2PR as a faithful five-minute ECCV 
 | Check | Result | Status |
 |-------|--------|--------|
 | Quarto render | 16 direct slides; sequence `01,07-16,paper-transition,17,18,20,21`; no nested sections | PASS |
+| Visible section numbering | Background 01-02, Setting 01-04, and The catch 01-02; original provenance IDs remain hidden | PASS |
 | Source fidelity | Normalized visible source text equal on all 13 inherited slides remaining after the approved proof cut | PASS |
 | Formula recovery | 35/35 final LaTeX annotations equal and in source order; 75/75 candidate annotations were parser-extracted before the cut | PASS |
 | Fragments | 18 groups; 34 current 1280 x 720 states captured | PASS |

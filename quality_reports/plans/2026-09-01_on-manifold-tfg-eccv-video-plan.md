@@ -75,7 +75,7 @@ Completion requires the final QMD and deck-local assets/CSS, clean full-size ren
 
 ## Completion handoff
 
-- **Changed:** rebuilt the ECCV title and final resources slides; ported the retained source markup, builds, formulas, colors, and figures; added the approved zero-build `on-manifold tfg` transition; added exact clickable author URLs; placed the presenter-supplied MaumAI and SeoulTech logos with explicit author-affiliation mapping on the title; and registered the deck on the landing page.
+- **Changed:** rebuilt the ECCV title and final resources slides; ported the retained source markup, builds, formulas, colors, and figures; renumbered visible section-local labels after the cuts while retaining hidden source provenance IDs; added the approved zero-build `on-manifold tfg` transition; added exact clickable author URLs; placed the presenter-supplied MaumAI and SeoulTech logos with explicit author-affiliation mapping on the title; and registered the deck on the landing page.
 - **Cut:** source sections 02-06 per the enumerated brief, then source section 19 only under Yunsung's timing decision. No other inherited slide or reveal was cut.
 - **Deliberate deviations:** the final soft-paper RGB value follows the authoritative PDF; attribution paragraphs use semantic `figcaption` tags without visual changes; one proof-card width compensation became irrelevant after the proof cut; no separate original-deck credit was added.
 - **Quality:** 84/100 PASS. The three inherited dash expressions and two inherited image-reuse slides remain as explained fidelity exceptions; rewriting them would violate verbatim carryover.

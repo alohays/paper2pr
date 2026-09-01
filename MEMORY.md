@@ -78,3 +78,5 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:authoring] Shortened personal-site labels can silently change an explicitly supplied public identity reference → when the presenter supplies exact author URLs, preserve the scheme and trailing slash in visible copy unless they ask for display aliases.
 
 [LEARN:qa] `scripts/shoot_slides.py` stops when `Reveal.isLastSlide()` becomes true, before revealing fragments on the last physical slide → an all-state audit must continue until the last slide has no `.fragment:not(.visible)` elements.
+
+[LEARN:authoring] Preserving source slide markup after cuts can leave stale audience-facing section numbers → keep original section numbers only in provenance attributes, and renumber every visible section-local label from 01 in the delivered sequence.
