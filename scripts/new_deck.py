@@ -51,8 +51,10 @@ NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9._-]{1,63}$")
 
 AUDIENCE_LEVELS = ("none", "practitioner", "expert")
 DELIVERY = ("in-person", "remote", "hybrid")
-# There is no "publish" answer. Merging to main is publishing (plan D11):
-# a field that nothing reads would only suggest a mechanism that is not there.
+# Publishing is opt-out rather than an interview answer. The scaffold omits
+# `publish`, so a deck publishes by default. Authors hosting it elsewhere may
+# add `publish: false` to deck.yml; the source stays public and directly
+# renderable, but the Paper2PR Pages pipeline leaves the deck out.
 
 
 def die(msg: str):

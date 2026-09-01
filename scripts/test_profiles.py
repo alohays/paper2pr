@@ -203,7 +203,7 @@ check("the built-in default is 0 when neither deck nor profile says",
 check("bare-name lookup does not find a fixture",
       not any(d.name == "pass" for d in deckpath.all_decks()))
 as_dict = pass_cfg.as_dict()
-for key in ("korean_allowance", "video_min", "qa_min", "speaking_min",
+for key in ("publish", "korean_allowance", "video_min", "qa_min", "speaking_min",
             "sources", "forbidden_file", "figures_manifest"):
     check(f"as_dict exposes {key}", key in as_dict)
 
@@ -225,6 +225,37 @@ check("video + qa larger than the slot clamps to 0, not negative",
       TopOnly({"duration_min": 20, "video_min": 15, "qa_min": 10}).speaking_min == 0)
 check("a deck that declares only video_min",
       TopOnly({"duration_min": 30, "video_min": 8}).speaking_min == 22)
+
+print("7a. publish is a strict, deck-only public-site switch")
+check("publish defaults to true", TopOnly({}).publish is True)
+check("a deck may opt out explicitly",
+      TopOnly({"publish": False}).publish is False)
+_profile_publish = deckprofile.DeckConfig(
+    deck=deckpath.Deck(name="inline", genre="papers"),
+    profile="paper-review", raw={}, profile_raw={"publish": False})
+check("profiles cannot opt every deck out",
+      _profile_publish.publish is True)
+try:
+    TopOnly({"publish": "false"}).publish
+    check("a non-boolean publish value is rejected", False, "no error")
+except deckprofile.ConfigError as e:
+    check("a non-boolean publish value is rejected",
+          "publish must be true or false" in str(e), str(e))
+
+_pub_decks = [deckpath.Deck("shown", "talks"),
+              deckpath.Deck("hidden", "talks")]
+_saved_all_decks = deckpath.all_decks
+_saved_load = deckprofile.load
+deckpath.all_decks = lambda: _pub_decks
+deckprofile.load = lambda deck: TopOnly({"publish": deck.name == "shown"})
+try:
+    check("publishable_decks returns only opted-in decks",
+          deckprofile.publishable_decks() == [_pub_decks[0]])
+    check("unpublishable_decks returns only opted-out decks",
+          deckprofile.unpublishable_decks() == [_pub_decks[1]])
+finally:
+    deckpath.all_decks = _saved_all_decks
+    deckprofile.load = _saved_load
 
 print("8. The acronym matcher keeps hyphenated and digit-suffixed names whole")
 NAMES = """---

@@ -27,8 +27,10 @@ jobs:
 
       # Every step below is a script, so the whole pipeline can be run locally
       # before pushing. Only directories listed in Quarto/_genres.txt are
-      # rendered and published, which is why the theme regression fixture in
-      # Quarto/_fixtures/ cannot ship to /slides/ by being forgotten about.
+      # eligible, and a deck with `publish: false` in its .deck.yml is left
+      # out of the Pages render and landing page. This is why the theme
+      # regression fixture in Quarto/_fixtures/ cannot ship to /slides/ by
+      # being forgotten about.
       #
       # Inline shell here has failed twice in ways nothing local could catch:
       # loose runtime assets silently not copied, and a loop that returned 1
@@ -49,8 +51,9 @@ jobs:
 
       # The asset check above skips external URLs by design, so the one state
       # it cannot see is a page whose Release URLs are well-formed and answer
-      # 404 because media_release.sh was never run. Merging is publishing
-      # here, and that reaches the room as a black slide.
+      # 404 because media_release.sh was never run. For every deck selected
+      # for Paper2PR Pages, merging publishes it here, and a missing release
+      # reaches the room as a black slide.
       - name: Check the Release media the pages point at actually exists
         run: python3 scripts/check_release_media.py _site
 
