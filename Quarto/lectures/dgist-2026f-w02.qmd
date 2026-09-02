@@ -9,6 +9,7 @@ title-slide-attributes:
 format:
   revealjs:
     theme: [default, ../clean-academic.scss]
+    css: dgist-2026f-w02.css
 bibliography: ../../Bibliography_base.bib
 ---
 
@@ -77,19 +78,23 @@ Questions go on the wall any time; we answer them in the last 10 minutes.
 
 ## Autonomous or teleoperated?
 
-:::: {.columns}
-::: {.column style="flex:0 0 44%;"}
-::: {.fragment}
-Company claim: trained in simulation, running on its own.
-
-[Atlas · Boston Dynamics · May 2026 · autonomy claimed]{.neutral}
+::: {.question-overlay .fragment .fade-out fragment-index="1"}
+[Hands up: did Atlas move on its own?]{.statement}
 :::
 
-::: {.fragment}
+:::: {.columns}
+::: {.column style="flex:0 0 44%;"}
+::: {.fragment fragment-index="1"}
+Company claim: trained in simulation, running on its own.
+
+[Atlas · Boston Dynamics · May 2026 · autonomy claimed]{.meta-line}
+:::
+
+::: {.fragment fragment-index="2"}
 Not stated: "no teleoperation"
 :::
 
-::: {.fragment}
+::: {.fragment fragment-index="3"}
 Teleoperation actually looks like this:
 :::
 :::
@@ -102,9 +107,9 @@ Teleoperation actually looks like this:
 
 ## Moravec's paradox (1988)
 
-[The hard problems are easy. The easy problems are hard.]{.statement}
+[The hard problems are easy.<br>The easy problems are hard.]{.statement}
 
-Chess fell in 1997. An AI can write your essay. Fetching a drink held out until now.
+Chess fell in 1997. An AI can write your essay.<br>Fetching a drink held out until now.
 
 ::: {.footnote}
 Hans Moravec, *Mind Children* (1988) - paraphrased.
@@ -145,11 +150,7 @@ Wooclap · code announced in class
 
 ## 2012 · AlexNet: Machines Learn to See
 
-```{=html}
-<figure class="chart-figure" style="width:72%;max-width:72%;">
-  <img src="../../Figures/lectures/dgist-2026f-w02/s13-ilsvrc.svg" alt="ILSVRC top-5 error fell sharply after AlexNet in 2012">
-</figure>
-```
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w02/s13-ilsvrc.svg width="60%" >}}
 
 - ImageNet: 1.2 million labeled photos, plus two gaming GPUs
 - No hand-written rules - the network learned from examples
@@ -177,11 +178,11 @@ Figure: Vaswani et al. (2017), "Attention Is All You Need" · Interactive: [polo
 :::
 
 
-## 2018-2020 · GPT: One Simple Game
+## 2018-2020 · GPT: One Simple Game {.tight}
 
 Guess the next word. That was the whole training.
 
-"Scientists discovered unicorns in the Andes that spoke perfect \_\_\_\_" [English.]{.fragment .hi-gold}
+"Scientists discovered unicorns in the Andes<br>that spoke perfect \_\_\_\_" [English.]{.fragment .hi-gold}
 
 ::: {.highlightbox .fragment}
 **GPT-2 continues (2019):**<br>
@@ -197,11 +198,7 @@ Sample: OpenAI (2019), "Better language models and their implications"
 
 ## 2020 · Bigger kept getting better
 
-```{=html}
-<figure class="chart-figure" style="width:56%;max-width:56%;">
-  <img src="../../Figures/lectures/dgist-2026f-w02/s16-scaling-laws.svg" alt="Three concept charts show error falling with more compute, more data, and a bigger model">
-</figure>
-```
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w02/s16-scaling-laws.svg width="60%" >}}
 
 - Bigger model + more data + more compute = predictably better
 - A straight line, again and again - no ceiling in sight
@@ -218,15 +215,15 @@ One sentence in, a painting out: "a fox in a field, in the style of Monet"
 
 :::: {.columns}
 ::: {.column}
-![2021 · DALL-E 1](../../Figures/lectures/dgist-2026f-w02/s17-dalle1-fox-monet.png){width="100%"}
+![2021 · DALL-E 1](../../Figures/lectures/dgist-2026f-w02/s17-dalle1-fox-monet.png){width="100%" style="max-height:330px;"}
 :::
 
 ::: {.column}
-![2022 · DALL-E 2](../../Figures/lectures/dgist-2026f-w02/s17-dalle2-fox-monet.png){width="100%"}
+![2022 · DALL-E 2](../../Figures/lectures/dgist-2026f-w02/s17-dalle2-fox-monet.png){width="100%" style="max-height:330px;"}
 :::
 
 ::: {.column .fragment}
-![2025 · the tool you use today](../../Figures/lectures/dgist-2026f-w02/s17-gpt4o-whiteboard.png){width="100%"}
+![2025 · the tool you use today](../../Figures/lectures/dgist-2026f-w02/s17-gpt4o-whiteboard.png){width="100%" style="max-height:330px;"}
 :::
 ::::
 
@@ -315,7 +312,7 @@ The robots of that decade were missing three things.
 - Language - you could not just tell a robot what you wanted
 - The open world - anything beyond the scripted lab task
 
-[By 2022, talking AI suddenly had all three. What happens when you give it a body?]{.fragment .hi}
+[By 2022, talking AI suddenly had all three.<br>What happens when you give it a body?]{.fragment .hi}
 
 
 ## {.divider}
@@ -339,11 +336,7 @@ Wooclap · code announced in class
 
 ## Same recipe, new output
 
-```{=html}
-<figure class="chart-figure" style="width:82%;max-width:82%;">
-  <img src="../../Figures/lectures/dgist-2026f-w02/s24-lm-vlm-vla.svg" alt="Language Model, Vision-Language Model, and Vision-Language-Action rail">
-</figure>
-```
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w02/s24-lm-vlm-vla.svg width="100%" >}}
 
 - Language models learn one trick: predict the next word.
 - Give the model eyes, and the same trick describes images (VLM).
@@ -407,12 +400,12 @@ From here on, we use the term [Embodied AI]{.hi}.
 
 ## Every new model bets on one of three axes
 
-![](../../Figures/lectures/dgist-2026f-w02/s28-generalization-axes.svg){fig-alt="Task, environment, and embodiment are three axes of generalization" width="100%"}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w02/s28-generalization-axes.svg width="100%" >}}
 
 
 ## The data barrier
 
-![](../../Figures/lectures/dgist-2026f-w02/s29-data-barrier.svg){fig-alt="Log-scale data barrier between web data and robot teleoperation" width="100%"}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w02/s29-data-barrier.svg width="92%" >}}
 
 [Action is [not on the internet]{.hi}.]{.fragment .statement}
 
@@ -461,7 +454,7 @@ The 2025 announcement never states the autonomy mode - the label under the clip 
 ## The 2023-2026 unlock
 
 ```{=html}
-<div class="timeline">
+<div class="timeline" style="width:94%;margin:0 auto;row-gap:0.4em;">
   <div class="tl-item"><img class="tl-thumb" src="../../Figures/lectures/dgist-2026f-w02/s33-rt2.png" alt="RT-2 robot"><div class="tl-date">Jul 2023</div><div class="tl-name">RT-2</div></div>
   <div class="tl-item"><img class="tl-thumb" src="../../Figures/lectures/dgist-2026f-w02/s33-openvla.png" alt="OpenVLA robot"><div class="tl-date">Jun 2024</div><div class="tl-name">OpenVLA</div></div>
   <div class="tl-item"><img class="tl-thumb" src="../../Figures/lectures/dgist-2026f-w02/s33-pi0.png" alt="Physical Intelligence pi zero"><div class="tl-date">Oct 2024</div><div class="tl-name">&pi;<sub>0</sub></div></div>
@@ -482,11 +475,16 @@ Sources: Google DeepMind · OpenVLA, Kim et al. (2024) · Physical Intelligence 
 
 ## The pull now comes from industry, not academia
 
-[Capital]{.hi}: Figure $1B+ at $39B; Skild $1.4B at $14B+; NEURA up to $1.4B.
-
-[Production]{.hi}: Unitree reports 5,500+ humanoids shipped in 2025; its $904M IPO rose 460% on debut. It was mainland China's first listed humanoid maker.
-
-[Platforms]{.hi}: NVIDIA's open GR00T reference humanoid and Google DeepMind's whole-body Gemini Robotics 2 arrived in 2026.
+```{=html}
+<div class="fact-grid">
+  <div class="fact-label">Capital</div>
+  <div class="fact-text">Figure $1B+ at $39B; Skild $1.4B at $14B+; NEURA up to $1.4B.</div>
+  <div class="fact-label">Production</div>
+  <div class="fact-text">Unitree reports 5,500+ humanoids shipped in 2025; its $904M IPO rose 460% on debut. It was mainland China’s first listed humanoid maker.</div>
+  <div class="fact-label">Platforms</div>
+  <div class="fact-text">NVIDIA’s open GR00T reference humanoid and Google DeepMind’s whole-body Gemini Robotics 2 arrived in 2026.</div>
+</div>
+```
 
 ::: {.footnote}
 Capital: Figure, Sep 16 2025 · Skild, Jan 14 2026 · NEURA/CNBC, Jun 10 2026<br>
@@ -548,35 +546,31 @@ Today set the question. The rest of the semester answers it.
 
 ## First: how robots learn
 
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 18%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s39-dreamzero-world-action-model.png" alt="DreamZero World Action Model" style="display:block;width:100%;height:105px;object-fit:cover;margin:0;">
-:::
-::: {.column style="flex:0 0 78%;"}
-**Sep 11 · Video and Robot Foundation Models**<br>
-[Guest: Hyeongmin Lee]{.neutral} · Robots that learn by watching video.
-:::
-::::
-
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 18%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s39-openx-data-strip.png" alt="Open X-Embodiment data overview" style="display:block;width:100%;height:105px;object-fit:contain;margin:0 auto;">
-:::
-::: {.column style="flex:0 0 78%;"}
-**Oct 2 · Action Data**<br>
-Where robot experience comes from.
-:::
-::::
-
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 18%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s40-diffusion-policy.png" alt="Diffusion Policy gradient field" style="display:block;width:100%;height:105px;object-fit:cover;margin:0;">
-:::
-::: {.column style="flex:0 0 78%;"}
-**Oct 23 · Learning Methods**<br>
-How demonstrations become skills.
-:::
-::::
+```{=html}
+<div class="roadmap">
+  <div class="rm-row">
+    <img class="rm-thumb" src="../../Figures/lectures/dgist-2026f-w02/s39-dreamzero-world-action-model.png" alt="DreamZero World Action Model">
+    <div class="rm-text">
+      <div class="rm-title">Sep 11 · Video and Robot Foundation Models</div>
+      <div class="rm-desc"><span class="rm-guest">Guest: Hyeongmin Lee</span> · Robots that learn by watching video.</div>
+    </div>
+  </div>
+  <div class="rm-row">
+    <img class="rm-thumb rm-fit" src="../../Figures/lectures/dgist-2026f-w02/s39-openx-data-strip.png" alt="Open X-Embodiment data overview">
+    <div class="rm-text">
+      <div class="rm-title">Oct 2 · Action Data</div>
+      <div class="rm-desc">Where robot experience comes from.</div>
+    </div>
+  </div>
+  <div class="rm-row">
+    <img class="rm-thumb rm-fit" src="../../Figures/lectures/dgist-2026f-w02/s40-diffusion-policy.png" alt="Diffusion Policy gradient field">
+    <div class="rm-text">
+      <div class="rm-title">Oct 23 · Learning Methods</div>
+      <div class="rm-desc">How demonstrations become skills.</div>
+    </div>
+  </div>
+</div>
+```
 
 ::: {.footnote}
 Sources: DreamZero (NVIDIA, 2026) · Open X-Embodiment Collaboration (2023) · Chi et al. (2023)
@@ -585,52 +579,50 @@ Sources: DreamZero (NVIDIA, 2026) · Open X-Embodiment Collaboration (2023) · C
 
 ## Then: from policy to physical motion
 
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 24%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s40-vggt.png" alt="VGGT photos to 3D reconstruction" style="display:block;width:100%;height:145px;object-fit:contain;margin:0;">
-:::
-::: {.column style="flex:0 0 72%;"}
-**Nov 6 · Spatial AI to Physical AI**<br>
-[Guest: Sunghwan Hong]{.neutral} · Machines that know where things are.
-:::
-::::
-
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 24%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s39-aloha-hardware.png" alt="ALOHA teleoperation hardware" style="display:block;width:100%;height:145px;object-fit:cover;margin:0;">
-:::
-::: {.column style="flex:0 0 72%;"}
-**Nov 20 · Robot Hardware Special**<br>
-Control and mechanics beneath learned policies.
-:::
-::::
+```{=html}
+<div class="roadmap rm-two">
+  <div class="rm-row">
+    <img class="rm-thumb rm-fit" src="../../Figures/lectures/dgist-2026f-w02/s40-vggt.png" alt="VGGT photos to 3D reconstruction">
+    <div class="rm-text">
+      <div class="rm-title">Nov 6 · Spatial AI to Physical AI</div>
+      <div class="rm-desc"><span class="rm-guest">Guest: Sunghwan Hong</span> · Machines that know where things are.</div>
+    </div>
+  </div>
+  <div class="rm-row">
+    <img class="rm-thumb" src="../../Figures/lectures/dgist-2026f-w02/s39-aloha-hardware.png" alt="ALOHA teleoperation hardware">
+    <div class="rm-text">
+      <div class="rm-title">Nov 20 · Robot Hardware Special</div>
+      <div class="rm-desc">Control and mechanics beneath learned policies.</div>
+    </div>
+  </div>
+</div>
+```
 
 ::: {.footnote}
 Sources: Wang et al. (2025) · Zhao et al. (2023)
 :::
 
 
-## Finally: safety and industry {.top-align}
+## Finally: safety and industry
 
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 24%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s40-gr2-safety.png" alt="Gemini Robotics 2 Safety Evaluations cover" style="display:block;width:100%;height:145px;object-fit:contain;margin:0;">
-:::
-::: {.column style="flex:0 0 72%;"}
-**Nov 27 · Ethics and Safety**<br>
-What robots must never do, and who checks.
-:::
-::::
-
-:::: {.columns style="margin:0.08em 0;"}
-::: {.column style="flex:0 0 24%;"}
-<img src="../../Figures/lectures/dgist-2026f-w02/s40-figure03.png" alt="Figure 03 humanoid" style="display:block;width:100%;height:145px;object-fit:contain;margin:0;">
-:::
-::: {.column style="flex:0 0 72%;"}
-**Dec 4 · Closing Keynote**<br>
-[Chris Choi]{.neutral} · Physical AI as a megatrend: the view from industry.
-:::
-::::
+```{=html}
+<div class="roadmap rm-two">
+  <div class="rm-row">
+    <img class="rm-thumb rm-fit" src="../../Figures/lectures/dgist-2026f-w02/s40-gr2-safety.png" alt="Gemini Robotics 2 Safety Evaluations cover">
+    <div class="rm-text">
+      <div class="rm-title">Nov 27 · Ethics and Safety</div>
+      <div class="rm-desc">What robots must never do, and who checks.</div>
+    </div>
+  </div>
+  <div class="rm-row">
+    <img class="rm-thumb rm-fit" src="../../Figures/lectures/dgist-2026f-w02/s40-figure03.png" alt="Figure 03 humanoid">
+    <div class="rm-text">
+      <div class="rm-title">Dec 4 · Closing Keynote</div>
+      <div class="rm-desc"><span class="rm-guest">Chris Choi</span> · Physical AI as a megatrend: the view from industry.</div>
+    </div>
+  </div>
+</div>
+```
 
 ::: {.footnote}
 Sources: Google DeepMind (2026) · Figure (2025)
@@ -639,11 +631,13 @@ Sources: Google DeepMind (2026) · Figure (2025)
 
 ## Three takeaways
 
-1. Same recipe, new output: [action]{.hi}.
-
-[2. [Data]{.hi} is the bottleneck: action is not on the internet.]{.fragment}
-
-[3. When you see a demo, ask first: [is it autonomous?]{.hi-gold}]{.fragment}
+```{=html}
+<ol class="takeaways">
+  <li>Same recipe, new output: <span class="hi">action</span>.</li>
+  <li class="fragment"><span class="hi">Data</span> is the bottleneck: action is not on the internet.</li>
+  <li class="fragment">When you see a demo, ask first: <span class="hi-gold">is it autonomous?</span></li>
+</ol>
+```
 
 
 ## Your questions {.qr-slide}

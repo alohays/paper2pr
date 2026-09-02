@@ -1,30 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="scaling-title scaling-desc">
+<svg id="s16-scaling-laws" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="scaling-title scaling-desc">
   <title id="scaling-title">Three concept panels for AI scaling laws</title>
   <desc id="scaling-desc">Three simple panels show error descending in straight lines as compute, data, and model size increase.</desc>
   <style>
-    text {
+    #s16-scaling-laws text {
       font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
       fill: #1a1a1a;
     }
-    .panel {
+    #s16-scaling-laws .panel {
       fill: #f7f9fc;
       stroke: #e8edf5;
       stroke-width: 3;
     }
-    .axis {
+    #s16-scaling-laws .axis {
       fill: none;
       stroke: #012169;
       stroke-width: 4;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    .law {
+    #s16-scaling-laws .law {
       fill: none;
       stroke: #b9975b;
       stroke-width: 9;
       stroke-linecap: round;
     }
-  </style>
+</style>
 
   <text x="30" y="190" font-size="26" font-weight="600" text-anchor="middle" transform="rotate(-90 30 190)">error</text>
 

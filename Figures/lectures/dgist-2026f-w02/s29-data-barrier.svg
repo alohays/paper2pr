@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="title desc">
-  <title id="title">The data barrier on a log scale</title>
-  <desc id="desc">Horizontal log-scale bars compare web text, web images, and robot teleoperation. The difference spans many orders of magnitude.</desc>
+<svg id="s29-data-barrier" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="s29-data-barrier-title s29-data-barrier-desc">
+  <title id="s29-data-barrier-title">The data barrier on a log scale</title>
+  <desc id="s29-data-barrier-desc">Horizontal log-scale bars compare web text, web images, and robot teleoperation. The difference spans many orders of magnitude.</desc>
   <defs>
     <style>
-      .category { font: 600 25px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #012169; }
-      .value { font: 400 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
-      .value-gold { font: 600 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #9A7B3F; }
-      .tick { font: 600 14px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
-      .bracket-label { font: 600 20px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #9A7B3F; }
-      .grid { stroke: #D6DEE9; stroke-width: 1.5; }
-      .bar-bg { fill: #E8EDF5; }
-    </style>
+      #s29-data-barrier .category { font: 600 25px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #012169; }
+      #s29-data-barrier .value { font: 400 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
+      #s29-data-barrier .value-gold { font: 600 19px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #9A7B3F; }
+      #s29-data-barrier .tick { font: 600 14px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #5F6B7A; }
+      #s29-data-barrier .bracket-label { font: 600 20px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #9A7B3F; }
+      #s29-data-barrier .grid { stroke: #D6DEE9; stroke-width: 1.5; }
+      #s29-data-barrier .bar-bg { fill: #E8EDF5; }
+</style>
   </defs>
 
   <path d="M382,46 V34 H1138 V46" fill="none" stroke="#B9975B" stroke-width="3"/>
