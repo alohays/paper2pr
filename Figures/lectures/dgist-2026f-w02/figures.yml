@@ -20,6 +20,10 @@ figures:
     licence: repo
     third_party: false
 
+  - file: profile.png
+    source: Yunsung Lee (alohays.github.io/assets/images/profile.png)
+    licence: own
+    third_party: false
   - file: worv-logo.png
     source: WoRV
     licence: own (WoRV)

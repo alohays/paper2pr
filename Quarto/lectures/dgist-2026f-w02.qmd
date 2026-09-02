@@ -13,9 +13,9 @@ format:
 bibliography: ../../Bibliography_base.bib
 ---
 
-## About me
+## About me {.tight}
 
-Korea University → NAVER AI Lab → Maum.AI WoRV
+![](../../Figures/lectures/dgist-2026f-w02/profile.png){.profile-photo fig-alt="Yunsung Lee"}
 
 **WoRV:** the autonomous driving & robotics research lab at Maum.AI<br>
 robots that learn from data
@@ -23,7 +23,7 @@ robots that learn from data
 **Co-instructor:** Chris Choi, CEO of Maum.AI<br>
 closing keynote on Dec 4
 
-![](../../Figures/lectures/dgist-2026f-w02/worv-logo.png){fig-alt="WoRV logo" width="280px"}
+![](../../Figures/lectures/dgist-2026f-w02/worv-logo.png){fig-alt="WoRV logo" width="240px"}
 
 
 ## Picking up from last week
