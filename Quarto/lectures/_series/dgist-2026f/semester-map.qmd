@@ -8,7 +8,3 @@ deck; the images come from scripts/series_assets.py dgist-2026f. -->
 ## The semester in one picture
 
 {{< semester-map >}}
-
-::: {.footnote}
-Dates follow the plan submitted to DGIST on 4 August 2026; the LMS is the authority.
-:::

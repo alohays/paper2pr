@@ -22,24 +22,27 @@ What it writes, all under Figures/lectures/_series/<course>/:
     semester-map.svg     the semester timeline, nothing highlighted
     semester-map-wNN.svg one per session, that session ringed as "today"
 
-The map is one horizontal timeline in a 1100x200 viewBox: a baseline, one dot
-per session, evenly spaced. It shows only dates and short kind tags, in large
-type; no session titles (they are said aloud, never memorised) and no
-presenter names. Above each dot sits the short date ("Sep 4") at 26 px, bold
-for lecture/guest/keynote sessions, regular and muted for the rest; below the
-line one kind tag: "Lecture" (navy bold), "Guest" / "Keynote" (navy),
-"DGIST" (muted) at 20 px, and "holiday" / "report" / "essay" muted at 18 px.
-Sixteen slots on 1100 units leave about 64 units of pitch and a 26 px
-"Sep 11" is about 78 units wide, so the dates (and the tags below, for the
-same reason) alternate two rows by index parity; map_layout() checks with a
-width estimate that no two texts of one row come closer than ROW_GAP and
-raises a loud SeriesError otherwise. Dots are filled navy for
-lecture/guest/keynote, hollow navy for DGIST-arranged sessions, grey for
-holiday and exam weeks; the highlighted session adds a gold ring and, at the
-very top of its column, a bold "today" tag in the theme's text gold (the
-colour binds the tag to the ring). Text is fill #1a1a1a (muted #5a5a5a for
-the quiet weeks), font-family inherit; the SVG is inlined into the slide by
-the semester-map shortcode, so the theme font applies.
+The map is one horizontal timeline in a 1100x300 viewBox, drawn for the
+student who wants to know when the talks are: a month band (AUG SEP ...,
+faint rules between months), a baseline, one mark per session, evenly
+spaced. Only the talks (lecture / guest / keynote) print a date ("Sep 4",
+23 px bold); their kind is the mark, not a word: filled navy dot, navy dot
+with a white core for a guest, gold diamond for the keynote. The quiet
+weeks are small marks (hollow navy for a DGIST-arranged session, grey for
+holiday and exam weeks) with one 15 px muted tag under the line ("DGIST",
+"holiday", "report", "essay"). A legend row at the bottom names the marks.
+No session titles (they are said aloud, never memorised) and no presenter
+names. Sixteen slots on 1100 units leave about 64 units of pitch and a
+23 px "Sep 11" is about 69 units wide, so a talk date moves to a far row
+(with a hairline down to its dot) only when the talk right before it is
+adjacent and on the near row; map_layout() checks with a width estimate
+that no two texts of one row come closer than ROW_GAP and raises a loud
+SeriesError otherwise. The highlighted session adds a gold ring and a bold
+"today" tag in the theme's text gold (the colour binds the tag to the ring):
+under the dot for a talk, where a tag would go, above the line for a quiet
+week that already has its tag there. Text is fill #1a1a1a (muted #5a5a5a for the band, the
+quiet tags and the legend), font-family inherit; the SVG is inlined into
+the slide by the semester-map shortcode, so the theme font applies.
 Nothing in the output depends on the clock, so a re-run on an unchanged yml
 writes byte-identical files, and --check compares the tree against a fresh
 in-memory render (never mtimes: a clone or checkout lands the yml and the
@@ -99,24 +102,33 @@ MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
 # ---- map geometry (viewBox units) -------------------------------------------
-MAP_W, MAP_H = 1100, 200
+MAP_W, MAP_H = 1100, 300
 MAP_MARGIN = 70             # x of the first dot; the last sits at MAP_W - MAP_MARGIN
-# Sixteen slots on 1100 leave about 64 units of pitch and a 26 px "Sep 11" is
-# about 78 units wide, so a single date row would touch everywhere: dates
-# alternate two rows by index parity (odd low, even high), which puts
-# same-row neighbours two slots (about 128 units) apart. The 20 px kind tags
-# below the line collide the same way ("Lecture" next to "holiday"), so they
-# alternate the same two rows.
-Y_TODAY = 26                # "today" baseline, above everything else
-Y_DATE_ROWS = (96, 60)      # date baselines: row 0 (low, odd indices), row 1 (high)
-Y_LINE = 126                # the timeline
-Y_TAG_ROWS = (158, 186)     # tag baselines: row 0 (near the line, odd), row 1 (low)
-DOT_R = 7
-RING_R = 13
-RING_W = 4
-FONT_DATE, FONT_TAG, FONT_TAG_SMALL, FONT_TODAY = 26, 20, 18, 20
+# Sixteen slots on 1100 leave about 64 units of pitch. Only the talks
+# (lecture / guest / keynote) print a date, at 23 px about 69 units wide, so
+# a date sits on the near row unless the talk right before it is adjacent
+# and already there; then it takes the far row, with a hairline down to its
+# dot (Sep 11 above Sep 4; Nov 27 between Nov 20 and Dec 4). The quiet weeks
+# print one small tag on a single row under the line; the widest neighbours
+# ("holiday" beside "DGIST") clear the pitch at 15 px. The talk kinds are
+# told apart by the mark, not by a word: filled navy dot, navy dot with a
+# white core (guest), gold diamond (keynote); the legend says which is which.
+Y_MONTH = 30                # month band baseline (AUG SEP OCT ...)
+Y_DATE_ROWS = (124, 92)     # talk-date baselines: row 0 near the line, row 1 far
+Y_LINE = 176                # the timeline
+Y_QUIET = 208               # quiet-week tag baseline
+Y_LEGEND = 272              # legend baseline
+TODAY_LIFT = 30             # a highlighted quiet week: "today" this far above the near date row
+DOT_R = 9                   # talk mark
+DOT_R_DGIST = 5.5           # hollow navy
+DOT_R_QUIET = 4.5           # grey
+RING_R = 16
+RING_W = 3.5
+FONT_DATE, FONT_MONTH, FONT_QUIET, FONT_LEGEND, FONT_TODAY = 23, 16, 15, 16, 17
+FONT_TAG = FONT_QUIET       # the name older callers use
 NAVY, GOLD, GREY, INK, MUTED = "#012169", "#B9975B", "#aab4c8", "#1a1a1a", "#5a5a5a"
 GOLD_TEXT = "#9A7B3F"       # the theme's text gold: #B9975B on white fails contrast
+RULE = "#e3e7ee"            # month separators and the far-row date hairlines
 
 # Width estimate for the overlap assertion: half the font size per character
 # (Source Sans Pro measures about 0.45 em on these short strings; 0.5 keeps
@@ -428,39 +440,93 @@ def _assert_row_clear(row_name: str, entries: list[tuple[float, float, str]]):
 
 def map_layout(series: dict) -> dict:
     """Where every session's marks go. Returns {index: item}; an item has x,
-    date ("Sep 4"), tag ("Lecture" / "DGIST" / "holiday" ...), titled (bold
-    date, navy tag), tag_size, and date_row / tag_row (0 low-near, 1 high-far:
-    both alternate by index parity, because a 26 px date is wider than the
-    slot pitch). Raises SeriesError when two texts of one row would overlap
-    under the width estimate."""
+    date ("Sep 4"), tag ("DGIST" / "holiday" / "report" ...), month ("Sep"),
+    titled (a talk: lecture / guest / keynote), and either date_row (talks:
+    0 near the line, 1 far, with a hairline down to the dot) or tag_row
+    (quiet weeks: always 0). A talk's date goes to the far row only when the
+    talk right before it is adjacent and already on the near row, so two
+    dates never touch and the far row stays rare. Raises SeriesError when two
+    texts of one row would overlap under the width estimate."""
     sessions = sorted(series["sessions"], key=lambda s: s["index"])
     n = len(sessions)
     items: dict[int, dict] = {}
+    prev_talk = None
     for s in sessions:
         idx = s["index"]
         titled = s["kind"] in TITLED
-        items[idx] = {
+        it = {
             "index": idx, "kind": s["kind"], "x": dot_x(n, idx),
             "date": short_date(s["date"]), "tag": kind_tag(s),
-            "date_row": (idx + 1) % 2, "tag_row": (idx + 1) % 2,
-            "titled": titled,
-            "tag_size": FONT_TAG if titled or s["kind"] == "dgist" else FONT_TAG_SMALL,
+            "month": MONTHS[int(s["date"][5:7]) - 1],
+            "titled": titled, "tag_size": FONT_QUIET,
+            "date_row": None, "tag_row": None,
         }
+        if titled:
+            row = 0
+            if (prev_talk is not None and prev_talk["index"] == idx - 1
+                    and prev_talk["date_row"] == 0):
+                row = 1
+            it["date_row"] = row
+            prev_talk = it
+        else:
+            it["tag_row"] = 0
+        items[idx] = it
     for row in (0, 1):
         _assert_row_clear(
             f"date {row}",
             [(it["x"], text_width(it["date"], FONT_DATE), f"date {it['date']!r}")
              for it in items.values() if it["date_row"] == row])
-        _assert_row_clear(
-            f"tag {row}",
-            [(it["x"], text_width(it["tag"], it["tag_size"]), f"tag {it['tag']!r}")
-             for it in items.values() if it["tag_row"] == row])
+    _assert_row_clear(
+        "tag",
+        [(it["x"], text_width(it["tag"], it["tag_size"]), f"tag {it['tag']!r}")
+         for it in items.values() if it["tag_row"] == 0])
     return items
 
 
 def _esc(s: str) -> str:
     return (str(s).replace("&", "&amp;").replace("<", "&lt;")
             .replace(">", "&gt;").replace('"', "&quot;"))
+
+
+def _dot(kind: str, x: float, y: float, r_scale: float = 1.0, cls: str = "") -> str:
+    """The mark for a session kind (also drawn in the legend at r_scale)."""
+    xs = f"{x:.1f}"
+    c = f' class="{cls}"' if cls else ""
+    if kind == "lecture":
+        return f'<circle{c} cx="{xs}" cy="{y}" r="{DOT_R * r_scale:.1f}" fill="{NAVY}"/>'
+    if kind == "guest":
+        return (f'<circle{c} cx="{xs}" cy="{y}" r="{DOT_R * r_scale:.1f}" fill="{NAVY}"/>'
+                f'<circle cx="{xs}" cy="{y}" r="{3.5 * r_scale:.1f}" fill="#fff"/>')
+    if kind == "keynote":
+        h = DOT_R * r_scale * 0.9
+        return (f'<rect{c} x="{x - h:.1f}" y="{y - h:.1f}" width="{2 * h:.1f}" '
+                f'height="{2 * h:.1f}" fill="{GOLD}" transform="rotate(45 {xs} {y})"/>')
+    if kind == "dgist":
+        return (f'<circle{c} cx="{xs}" cy="{y}" r="{DOT_R_DGIST * r_scale:.1f}" fill="#fff" '
+                f'stroke="{NAVY}" stroke-width="2"/>')
+    return f'<circle{c} cx="{xs}" cy="{y}" r="{DOT_R_QUIET * r_scale:.1f}" fill="{GREY}"/>'
+
+
+def _legend_entries(layout: dict) -> list[tuple[str, str]]:
+    """(kind, label) pairs for the legend, only for kinds the course has.
+    The quiet label joins the quiet weeks' own tags ("holiday / report /
+    essay week"), so a course's `tag:` overrides are explained where they
+    are printed."""
+    kinds = [it["kind"] for it in sorted(layout.values(), key=lambda i: i["index"])]
+    out = []
+    for kind, label in (("lecture", "Lecture"), ("guest", "Guest lecture"),
+                        ("keynote", "Keynote")):
+        if kind in kinds:
+            out.append((kind, label))
+    if "dgist" in kinds:
+        out.append(("dgist", f"{KIND_TAG['dgist']} session"))
+    quiet = []
+    for it in sorted(layout.values(), key=lambda i: i["index"]):
+        if it["kind"] in ("holiday", "exam") and it["tag"] not in quiet:
+            quiet.append(it["tag"])
+    if quiet:
+        out.append(("quiet", " / ".join(quiet) + " week"))
+    return out
 
 
 def semester_map_svg(series: dict, highlight: int | None = None,
@@ -477,42 +543,65 @@ def semester_map_svg(series: dict, highlight: int | None = None,
         f'class="semester-map-svg" role="img" aria-label="{_esc(title)}" '
         f'style="font-family:inherit">',
         f'<title>{_esc(title)}</title>',
-        f'<line x1="{dot_x(n, 1):.1f}" y1="{Y_LINE}" x2="{dot_x(n, n):.1f}" '
-        f'y2="{Y_LINE}" stroke="{GREY}" stroke-width="2"/>',
     ]
+    # Month band: one label per month, centred over its sessions, and a
+    # faint rule between months.
+    months: list[tuple[str, list[float]]] = []
+    for idx in sorted(layout):
+        it = layout[idx]
+        if months and months[-1][0] == it["month"]:
+            months[-1][1].append(it["x"])
+        else:
+            months.append((it["month"], [it["x"]]))
+    for name, xs in months:
+        cx = sum(xs) / len(xs)
+        out.append(f'<text x="{cx:.1f}" y="{Y_MONTH}" font-size="{FONT_MONTH}" '
+                   f'font-weight="600" letter-spacing="2" text-anchor="middle" '
+                   f'fill="{MUTED}" class="month">{_esc(name.upper())}</text>')
+    for (_, xa), (_, xb) in zip(months, months[1:]):
+        mx = (max(xa) + min(xb)) / 2
+        out.append(f'<line x1="{mx:.1f}" y1="{Y_MONTH + 16}" x2="{mx:.1f}" '
+                   f'y2="{Y_QUIET + 18}" stroke="{RULE}" stroke-width="1.5" class="month-rule"/>')
+    out.append(f'<line x1="{dot_x(n, 1):.1f}" y1="{Y_LINE}" x2="{dot_x(n, n):.1f}" '
+               f'y2="{Y_LINE}" stroke="{GREY}" stroke-width="2" class="baseline"/>')
     for idx in sorted(layout):
         it = layout[idx]
         kind = it["kind"]
-        xs = f"{it['x']:.1f}"
-        if kind in TITLED:
-            out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{DOT_R}" fill="{NAVY}"/>')
-        elif kind == "dgist":
-            out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{DOT_R - 1}" fill="#fff" '
-                       f'stroke="{NAVY}" stroke-width="2"/>')
-        else:
-            out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{DOT_R - 1}" fill="{GREY}"/>')
+        x = it["x"]
+        xs = f"{x:.1f}"
+        out.append(_dot(kind, x, Y_LINE, cls="dot"))
         if highlight == idx:
             out.append(f'<circle cx="{xs}" cy="{Y_LINE}" r="{RING_R}" fill="none" '
                        f'stroke="{GOLD}" stroke-width="{RING_W}" class="today-ring"/>')
-            out.append(f'<text x="{xs}" y="{Y_TODAY}" font-size="{FONT_TODAY}" '
-                       f'font-weight="700" text-anchor="middle" fill="{GOLD_TEXT}" '
-                       f'class="today-tag">today</text>')
-        date_weight = "700" if it["titled"] else "400"
-        date_fill = INK if it["titled"] else MUTED
-        out.append(f'<text x="{xs}" y="{Y_DATE_ROWS[it["date_row"]]}" '
-                   f'font-size="{FONT_DATE}" font-weight="{date_weight}" '
-                   f'text-anchor="middle" fill="{date_fill}" '
-                   f'class="date">{_esc(it["date"])}</text>')
+            # A talk has no tag under its dot, so "today" goes there, where a
+            # date on the far row next door cannot crowd it; a quiet week
+            # keeps its own tag and takes "today" above the line instead.
+            y_today = Y_QUIET if it["titled"] else Y_DATE_ROWS[0] - TODAY_LIFT
+            out.append(f'<text x="{xs}" y="{y_today}" '
+                       f'font-size="{FONT_TODAY}" font-weight="700" text-anchor="middle" '
+                       f'fill="{GOLD_TEXT}" class="today-tag">today</text>')
         if it["titled"]:
-            tag_fill = NAVY
-            tag_weight = ' font-weight="700"' if kind == "lecture" else ""
+            y = Y_DATE_ROWS[it["date_row"]]
+            if it["date_row"] == 1:
+                out.append(f'<line x1="{xs}" y1="{y + 8}" x2="{xs}" y2="{Y_LINE - RING_R + 2}" '
+                           f'stroke="{RULE}" stroke-width="1.5" class="date-rule"/>')
+            out.append(f'<text x="{xs}" y="{y}" font-size="{FONT_DATE}" font-weight="700" '
+                       f'text-anchor="middle" fill="{INK}" class="date">{_esc(it["date"])}</text>')
         else:
-            tag_fill = MUTED
-            tag_weight = ""
-        out.append(f'<text x="{xs}" y="{Y_TAG_ROWS[it["tag_row"]]}" '
-                   f'font-size="{it["tag_size"]}"{tag_weight} '
-                   f'text-anchor="middle" fill="{tag_fill}" class="tag">'
-                   f'{_esc(it["tag"])}</text>')
+            out.append(f'<text x="{xs}" y="{Y_QUIET}" font-size="{it["tag_size"]}" '
+                       f'text-anchor="middle" fill="{MUTED}" class="tag">'
+                       f'{_esc(it["tag"])}</text>')
+    # Legend, centred: mark, label, gap.
+    entries = _legend_entries(layout)
+    widths = [24 + text_width(label, FONT_LEGEND) for _, label in entries]
+    gap = 28
+    x = (MAP_W - (sum(widths) + gap * (len(entries) - 1))) / 2
+    cy = Y_LEGEND - 5
+    for (kind, label), w in zip(entries, widths):
+        out.append(_dot(kind, x + 8, cy, r_scale=0.78))
+        out.append(f'<text x="{x + 24:.1f}" y="{Y_LEGEND}" font-size="{FONT_LEGEND}" '
+                   f'fill="{MUTED}" class="legend">{_esc(label)}</text>')
+        x += w + gap
     out.append("</svg>")
     return "\n".join(out) + "\n"
 

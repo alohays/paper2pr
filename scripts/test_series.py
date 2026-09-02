@@ -15,7 +15,7 @@ What is pinned here, and why it is worth a test:
   4. week label and short date formatting.
   5. the semester map: every SVG exists; the highlighted file carries the
      gold ring and the "today" tag exactly once and the plain one not at all;
-     the map prints only dates and kind tags (no session-title words, no
+     the map prints only the talk dates and the quiet weeks' tags (no session-title words, no
      presenter names, no leader lines); dates and tags alternate their two
      rows by index parity and nothing on one row overlaps under the width
      estimate; an overlap is a loud SeriesError, never a silent collision.
@@ -213,29 +213,44 @@ check("one highlighted map per session",
       all((figdir / f"semester-map-w{s['index']:02d}.svg").exists() for s in S))
 w02 = (figdir / "semester-map-w02.svg").read_text(encoding="utf-8")
 plain = (figdir / "semester-map.svg").read_text(encoding="utf-8")
-check("highlighted: gold ring exactly once",
-      w02.count('class="today-ring"') == 1 and w02.count(sa.GOLD) == 1, str(w02.count(sa.GOLD)))
+check("highlighted: gold ring exactly once (the only gold stroke; the keynote diamond is a gold fill)",
+      w02.count('class="today-ring"') == 1 and w02.count(f'stroke="{sa.GOLD}"') == 1,
+      str(w02.count(f'stroke="{sa.GOLD}"')))
 check("highlighted: 'today' text exactly once", w02.count(">today<") == 1)
 check("plain: no ring, no today", "today-ring" not in plain and ">today<" not in plain)
 check("svg has no xml prolog (inlined as is) and inherits the font",
       w02.startswith("<svg ") and 'font-family:inherit' in w02)
-check("16 dots on the line", len(re.findall(r"<circle [^>]*cy=\"%d\"" % sa.Y_LINE, plain)) == 16)
+check("16 marks on the line", plain.count('class="dot"') == 16
+      and len(re.findall(r'class="dot" [^>]*cy="%d"' % sa.Y_LINE, plain)) == 15
+      and plain.count('rotate(45') == 2)   # 15 circles + the keynote diamond (+ its legend twin)
 check("presenter names are not on the map", "Hyeongmin" not in plain and "Yunsung" not in plain)
 check("no session titles on the map",
       all(w not in plain for w in ("Paradigm", "Embodied", "Hardware", "Imitation",
                                    "Ethics", "Megatrend", "Foundation", "Spatial",
                                    "Leadership", "Guest:", "Keynote:")))
-check("no leader lines, no title labels (the baseline is the only <line>)",
-      'class="label"' not in plain and plain.count("<line ") == 1)
-check("every kind tag appears",
-      all(t in plain for t in (">Lecture<", ">Guest<", ">Keynote<", ">DGIST<",
-                               ">holiday<", ">report<", ">essay<")))
-check("all 16 dates at 26 px", plain.count(f'font-size="{sa.FONT_DATE}"') == 16)
+check("no leader lines, no title labels: one baseline, month rules, far-row hairlines",
+      'class="label"' not in plain and plain.count('class="baseline"') == 1
+      and plain.count('class="month-rule"') == 4 and plain.count('class="date-rule"') == 2)
+check("month band: Aug to Dec", [m for m in ("AUG", "SEP", "OCT", "NOV", "DEC")
+                                  if f">{m}<" in plain] == ["AUG", "SEP", "OCT", "NOV", "DEC"])
+check("quiet weeks carry their tag, talks carry none",
+      all(t in plain for t in (">DGIST<", ">holiday<", ">report<", ">essay<"))
+      and plain.count('class="tag"') == 8
+      and not any(t in plain.replace('class="legend">', "") for t in (">Lecture<", ">Keynote<")))
+check("legend names every kind the course has",
+      all(t in plain for t in (">Lecture<", ">Guest lecture<", ">Keynote<",
+                               ">DGIST session<", ">holiday / report / essay week<")))
+check("only the 8 talks carry a date, at FONT_DATE", plain.count('class="date"') == 8
+      and plain.count(f'font-size="{sa.FONT_DATE}"') == 8)
 bold_plain = plain.count('font-weight="700"')
 bold_w02 = w02.count('font-weight="700"')
-check("bold dates for the 8 lecture/guest/keynote sessions plus 5 bold Lecture tags",
-      bold_plain == 13 and bold_w02 == 14, f"plain={bold_plain} w02={bold_w02}")
-check("quiet weeks are muted", plain.count(f'fill="{sa.MUTED}"') == 16)
+check("bold = the 8 talk dates, plus 'today' on the highlighted map",
+      bold_plain == 8 and bold_w02 == 9, f"plain={bold_plain} w02={bold_w02}")
+check("today sits under a talk's dot (the tag row), above the line for a quiet week",
+      int(re.search(r'y="(\d+)"[^>]*class="today-tag"', w02).group(1)) == sa.Y_QUIET
+      and int(re.search(r'y="(\d+)"[^>]*class="today-tag"',
+                        (figdir / "semester-map-w05.svg").read_text(encoding="utf-8")).group(1))
+      == sa.Y_DATE_ROWS[0] - sa.TODAY_LIFT)
 
 layout = sa.map_layout(series)
 
@@ -246,16 +261,22 @@ def row_clear(entries):
                for (xa, wa), (xb, wb) in zip(placed, placed[1:]))
 
 
+talks = [layout[i] for i in sorted(layout) if layout[i]["titled"]]
+quiet = [layout[i] for i in sorted(layout) if not layout[i]["titled"]]
 check("no two dates on one row overlap (width estimate + gap)",
       all(row_clear([(it["x"], sa.text_width(it["date"], sa.FONT_DATE))
-                     for it in layout.values() if it["date_row"] == r]) for r in (0, 1)))
-check("no two tags on one row overlap (width estimate + gap)",
-      all(row_clear([(it["x"], sa.text_width(it["tag"], it["tag_size"]))
-                     for it in layout.values() if it["tag_row"] == r]) for r in (0, 1)))
-check("consecutive sessions alternate date rows",
-      all(layout[i]["date_row"] != layout[i + 1]["date_row"] for i in range(1, len(layout))))
-check("consecutive sessions alternate tag rows",
-      all(layout[i]["tag_row"] != layout[i + 1]["tag_row"] for i in range(1, len(layout))))
+                     for it in talks if it["date_row"] == r]) for r in (0, 1)))
+check("quiet tags sit on one row and do not overlap",
+      all(it["tag_row"] == 0 for it in quiet)
+      and row_clear([(it["x"], sa.text_width(it["tag"], it["tag_size"])) for it in quiet]))
+check("adjacent talks never share the near row",
+      all(not (a["index"] + 1 == b["index"] and a["date_row"] == b["date_row"] == 0)
+          for a, b in zip(talks, talks[1:])))
+check("a talk with no adjacent talk before it sits on the near row",
+      all(b["date_row"] == 0 for a, b in zip(talks, talks[1:]) if a["index"] + 1 != b["index"])
+      and talks[0]["date_row"] == 0)
+check("quiet weeks carry no date row, talks no tag row",
+      all(it["date_row"] is None for it in quiet) and all(it["tag_row"] is None for it in talks))
 check("every session has a dot x in order",
       [layout[i]["x"] for i in sorted(layout)] == sorted(layout[i]["x"] for i in layout))
 
