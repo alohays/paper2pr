@@ -27,10 +27,13 @@ student who wants to know when the talks are: a month band (AUG SEP ...,
 faint rules between months), a baseline, one mark per session, evenly
 spaced. Only the talks (lecture / guest / keynote) print a date ("Sep 4",
 23 px bold); their kind is the mark, not a word: filled navy dot, navy dot
-with a white core for a guest, gold diamond for the keynote. The quiet
-weeks are small marks (hollow navy for a DGIST-arranged session, grey for
-holiday and exam weeks) with one 15 px muted tag under the line ("DGIST",
-"holiday", "report", "essay"). A legend row at the bottom names the marks.
+with a white core for a guest, gold diamond for the keynote. The host
+institution's own sessions are a hollow navy mark and print nothing, and
+the holiday and exam weeks are grey marks with one 15 px muted tag under
+the line ("holiday", "report", "essay"). A legend row at the bottom names
+the marks; the wording for the host's sessions and for the quiet weeks
+comes from those sessions' `tag:` in the yml, so a course says what its own
+weeks are called ("Leadership talk", not "DGIST session").
 No session titles (they are said aloud, never memorised) and no presenter
 names. Sixteen slots on 1100 units leave about 64 units of pitch and a
 23 px "Sep 11" is about 69 units wide, so a talk date moves to a far row
@@ -83,6 +86,8 @@ SKIPPED_FOR_PRIOR = ("holiday", "exam")          # never "the previous session"
 KIND_TAG = {"lecture": "Lecture", "guest": "Guest", "keynote": "Keynote",
             "dgist": "DGIST", "holiday": "holiday"}
 EXAM_TAG_DEFAULT = "exam"                        # overridden per session by `tag:`
+TAG_MAX_UNDER_DOT = 12                           # printed under a dot: 64 units of pitch
+TAG_MAX_LEGEND = 24                              # dgist: the legend's wording, not a dot label
 # Monday = 0, as datetime.date.weekday() counts. `meets_on:` in the series yml
 # names the day (or days) the course meets; the constant here only turns the
 # names into numbers. It used to be a single module-level WEEKDAY = 4, which
@@ -286,10 +291,16 @@ def validate(data: dict, name: str = "<series>") -> dict:
         presenter = _text(s.get("presenter"), where, "presenter", required=False)
         deck = _text(s.get("deck"), where, "deck", required=False)
         tag = _text(s.get("tag"), where, "tag", required=False)
-        if tag and len(tag) > 12:
+        # A tag printed under a dot has 64 units of pitch to live in; one
+        # that only names its kind in the legend (the host institution's
+        # sessions) may be a phrase.
+        cap = TAG_MAX_LEGEND if kind == "dgist" else TAG_MAX_UNDER_DOT
+        if tag and len(tag) > cap:
+            where_it_sits = ("it is the legend's wording" if kind == "dgist"
+                             else "it sits under a dot")
             raise SeriesError(
                 f"{where}: tag {tag!r} is too long for the map "
-                f"(12 characters; it sits under a dot)")
+                f"({cap} characters; {where_it_sits})")
         if deck:
             if deck in seen_deck:
                 raise SeriesError(
@@ -461,6 +472,13 @@ def map_layout(series: dict) -> dict:
             "titled": titled, "tag_size": FONT_QUIET,
             "date_row": None, "tag_row": None,
         }
+        if s["kind"] == "dgist":
+            # The host institution's own sessions print nothing: the hollow
+            # mark and the legend say what they are. Their `tag:` is the
+            # legend's wording, which is why it may be a phrase ("Leadership
+            # talk") too wide to sit under a dot 64 units from its neighbour.
+            items[idx] = it
+            continue
         if titled:
             row = 0
             if (prev_talk is not None and prev_talk["index"] == idx - 1
@@ -507,23 +525,34 @@ def _dot(kind: str, x: float, y: float, r_scale: float = 1.0, cls: str = "") -> 
     return f'<circle{c} cx="{xs}" cy="{y}" r="{DOT_R_QUIET * r_scale:.1f}" fill="{GREY}"/>'
 
 
+def _distinct_tags(layout: dict, kinds: tuple[str, ...]) -> list[str]:
+    """The tags of these kinds, in session order, without repeats."""
+    out: list[str] = []
+    for it in sorted(layout.values(), key=lambda i: i["index"]):
+        if it["kind"] in kinds and it["tag"] not in out:
+            out.append(it["tag"])
+    return out
+
+
 def _legend_entries(layout: dict) -> list[tuple[str, str]]:
     """(kind, label) pairs for the legend, only for kinds the course has.
-    The quiet label joins the quiet weeks' own tags ("holiday / report /
-    essay week"), so a course's `tag:` overrides are explained where they
-    are printed."""
+
+    Two labels are the course's to write, through the sessions' own `tag:`:
+    the host institution's sessions ("Leadership talk" reads better than
+    "DGIST session" in a course that DGIST hosts entirely) and the quiet
+    weeks ("holiday / report / essay week"). Both join the distinct tags in
+    session order, so a course that sets no tag falls back to the kind's
+    default word."""
     kinds = [it["kind"] for it in sorted(layout.values(), key=lambda i: i["index"])]
     out = []
     for kind, label in (("lecture", "Lecture"), ("guest", "Guest lecture"),
                         ("keynote", "Keynote")):
         if kind in kinds:
             out.append((kind, label))
-    if "dgist" in kinds:
-        out.append(("dgist", f"{KIND_TAG['dgist']} session"))
-    quiet = []
-    for it in sorted(layout.values(), key=lambda i: i["index"]):
-        if it["kind"] in ("holiday", "exam") and it["tag"] not in quiet:
-            quiet.append(it["tag"])
+    host = _distinct_tags(layout, ("dgist",))
+    if host:
+        out.append(("dgist", " / ".join(host)))
+    quiet = _distinct_tags(layout, ("holiday", "exam"))
     if quiet:
         out.append(("quiet", " / ".join(quiet) + " week"))
     return out
@@ -587,7 +616,10 @@ def semester_map_svg(series: dict, highlight: int | None = None,
                            f'stroke="{RULE}" stroke-width="1.5" class="date-rule"/>')
             out.append(f'<text x="{xs}" y="{y}" font-size="{FONT_DATE}" font-weight="700" '
                        f'text-anchor="middle" fill="{INK}" class="date">{_esc(it["date"])}</text>')
-        else:
+        elif it["tag_row"] is not None:
+            # Only what map_layout placed is drawn: the host institution's
+            # sessions have no tag row, and their `tag:` is the legend's
+            # wording, which would overlap its neighbours under a dot.
             out.append(f'<text x="{xs}" y="{Y_QUIET}" font-size="{it["tag_size"]}" '
                        f'text-anchor="middle" fill="{MUTED}" class="tag">'
                        f'{_esc(it["tag"])}</text>')

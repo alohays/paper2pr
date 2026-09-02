@@ -224,22 +224,31 @@ check("16 marks on the line", plain.count('class="dot"') == 16
       and len(re.findall(r'class="dot" [^>]*cy="%d"' % sa.Y_LINE, plain)) == 15
       and plain.count('rotate(45') == 2)   # 15 circles + the keynote diamond (+ its legend twin)
 check("presenter names are not on the map", "Hyeongmin" not in plain and "Yunsung" not in plain)
+# Distinctive words from the session titles. "Leadership" is not among them
+# any more: the course names its host sessions "Leadership talk" through
+# `tag:`, and that label is the legend's, not a leaked title.
 check("no session titles on the map",
       all(w not in plain for w in ("Paradigm", "Embodied", "Hardware", "Imitation",
                                    "Ethics", "Megatrend", "Foundation", "Spatial",
-                                   "Leadership", "Guest:", "Keynote:")))
+                                   "entrepreneurship", "Guest:", "Keynote:")))
 check("no leader lines, no title labels: one baseline, month rules, far-row hairlines",
       'class="label"' not in plain and plain.count('class="baseline"') == 1
       and plain.count('class="month-rule"') == 4 and plain.count('class="date-rule"') == 2)
 check("month band: Aug to Dec", [m for m in ("AUG", "SEP", "OCT", "NOV", "DEC")
                                   if f">{m}<" in plain] == ["AUG", "SEP", "OCT", "NOV", "DEC"])
-check("quiet weeks carry their tag, talks carry none",
-      all(t in plain for t in (">DGIST<", ">holiday<", ">report<", ">essay<"))
-      and plain.count('class="tag"') == 8
-      and not any(t in plain.replace('class="legend">', "") for t in (">Lecture<", ">Keynote<")))
-check("legend names every kind the course has",
+check("only the quiet weeks print a tag under a dot; talks and host sessions do not",
+      all(t in plain for t in (">holiday<", ">report<", ">essay<"))
+      and plain.count('class="tag"') == 4
+      and not any(t in plain.replace('class="legend">', "")
+                  for t in (">Lecture<", ">Keynote<", ">Leadership talk<")))
+check("legend names every kind the course has, in the course's own words",
       all(t in plain for t in (">Lecture<", ">Guest lecture<", ">Keynote<",
-                               ">DGIST session<", ">holiday / report / essay week<")))
+                               ">Leadership talk<",
+                               ">holiday / report / essay week<")))
+check("a host session with no tag falls back to the kind default in the legend",
+      sa._legend_entries(sa.map_layout(
+          {**series, "sessions": [dict(s, **({} if s["kind"] != "dgist" else {"tag": ""}))
+                                  for s in series["sessions"]]}))[3][1] == "DGIST")
 check("only the 8 talks carry a date, at FONT_DATE", plain.count('class="date"') == 8
       and plain.count(f'font-size="{sa.FONT_DATE}"') == 8)
 bold_plain = plain.count('font-weight="700"')
@@ -262,7 +271,8 @@ def row_clear(entries):
 
 
 talks = [layout[i] for i in sorted(layout) if layout[i]["titled"]]
-quiet = [layout[i] for i in sorted(layout) if not layout[i]["titled"]]
+quiet = [layout[i] for i in sorted(layout) if layout[i]["tag_row"] is not None]
+host = [layout[i] for i in sorted(layout) if layout[i]["kind"] == "dgist"]
 check("no two dates on one row overlap (width estimate + gap)",
       all(row_clear([(it["x"], sa.text_width(it["date"], sa.FONT_DATE))
                      for it in talks if it["date_row"] == r]) for r in (0, 1)))
@@ -277,6 +287,8 @@ check("a talk with no adjacent talk before it sits on the near row",
       and talks[0]["date_row"] == 0)
 check("quiet weeks carry no date row, talks no tag row",
       all(it["date_row"] is None for it in quiet) and all(it["tag_row"] is None for it in talks))
+check("host sessions are placed but print nothing",
+      len(host) == 4 and all(it["date_row"] is None and it["tag_row"] is None for it in host))
 check("every session has a dot x in order",
       [layout[i]["x"] for i in sorted(layout)] == sorted(layout[i]["x"] for i in layout))
 
