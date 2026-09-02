@@ -81,6 +81,7 @@ sessions:
   - index: 1
     date: "2026-08-28"
     kind: dgist
+    tag: Leadership talk
     title: Special lecture on AI
     presenter: ""
     deck: ""
@@ -100,6 +101,7 @@ sessions:
   - index: 4
     date: "2026-09-18"
     kind: dgist
+    tag: Leadership talk
     title: Leadership talk
     presenter: ""
     deck: ""
@@ -137,6 +139,7 @@ sessions:
   - index: 10
     date: "2026-10-30"
     kind: dgist
+    tag: Leadership talk
     title: Leadership talk on entrepreneurship
     presenter: ""
     deck: ""
@@ -150,6 +153,7 @@ sessions:
   - index: 12
     date: "2026-11-13"
     kind: dgist
+    tag: Leadership talk
     title: Leadership talk
     presenter: ""
     deck: ""

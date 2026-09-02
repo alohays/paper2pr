@@ -11,7 +11,6 @@
 <line x1="934.0" y1="46" x2="934.0" y2="226" stroke="#e3e7ee" stroke-width="1.5" class="month-rule"/>
 <line x1="70.0" y1="176" x2="1030.0" y2="176" stroke="#aab4c8" stroke-width="2" class="baseline"/>
 <circle class="dot" cx="70.0" cy="176" r="5.5" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="70.0" y="208" font-size="15" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
 <circle class="dot" cx="134.0" cy="176" r="9.0" fill="#012169"/>
 <circle cx="134.0" cy="176" r="16" fill="none" stroke="#B9975B" stroke-width="3.5" class="today-ring"/>
 <text x="134.0" y="208" font-size="17" font-weight="700" text-anchor="middle" fill="#9A7B3F" class="today-tag">today</text>
@@ -20,7 +19,6 @@
 <line x1="198.0" y1="100" x2="198.0" y2="162" stroke="#e3e7ee" stroke-width="1.5" class="date-rule"/>
 <text x="198.0" y="92" font-size="23" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Sep 11</text>
 <circle class="dot" cx="262.0" cy="176" r="5.5" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="262.0" y="208" font-size="15" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
 <circle class="dot" cx="326.0" cy="176" r="4.5" fill="#aab4c8"/>
 <text x="326.0" y="208" font-size="15" text-anchor="middle" fill="#5a5a5a" class="tag">holiday</text>
 <circle class="dot" cx="390.0" cy="176" r="9.0" fill="#012169"/>
@@ -32,11 +30,9 @@
 <circle class="dot" cx="582.0" cy="176" r="9.0" fill="#012169"/>
 <text x="582.0" y="124" font-size="23" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Oct 23</text>
 <circle class="dot" cx="646.0" cy="176" r="5.5" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="646.0" y="208" font-size="15" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
 <circle class="dot" cx="710.0" cy="176" r="9.0" fill="#012169"/><circle cx="710.0" cy="176" r="3.5" fill="#fff"/>
 <text x="710.0" y="124" font-size="23" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 6</text>
 <circle class="dot" cx="774.0" cy="176" r="5.5" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="774.0" y="208" font-size="15" text-anchor="middle" fill="#5a5a5a" class="tag">DGIST</text>
 <circle class="dot" cx="838.0" cy="176" r="9.0" fill="#012169"/>
 <text x="838.0" y="124" font-size="23" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Nov 20</text>
 <circle class="dot" cx="902.0" cy="176" r="9.0" fill="#012169"/>
@@ -46,14 +42,14 @@
 <text x="966.0" y="124" font-size="23" font-weight="700" text-anchor="middle" fill="#1a1a1a" class="date">Dec 4</text>
 <circle class="dot" cx="1030.0" cy="176" r="4.5" fill="#aab4c8"/>
 <text x="1030.0" y="208" font-size="15" text-anchor="middle" fill="#5a5a5a" class="tag">essay</text>
-<circle cx="166.0" cy="267" r="7.0" fill="#012169"/>
-<text x="182.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Lecture</text>
-<circle cx="274.0" cy="267" r="7.0" fill="#012169"/><circle cx="274.0" cy="267" r="2.7" fill="#fff"/>
-<text x="290.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Guest lecture</text>
-<rect x="423.7" y="260.7" width="12.6" height="12.6" fill="#B9975B" transform="rotate(45 430.0 267)"/>
-<text x="446.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Keynote</text>
-<circle cx="538.0" cy="267" r="4.3" fill="#fff" stroke="#012169" stroke-width="2"/>
-<text x="554.0" y="272" font-size="16" fill="#5a5a5a" class="legend">DGIST session</text>
-<circle cx="694.0" cy="267" r="3.5" fill="#aab4c8"/>
-<text x="710.0" y="272" font-size="16" fill="#5a5a5a" class="legend">holiday / report / essay week</text>
+<circle cx="158.0" cy="267" r="7.0" fill="#012169"/>
+<text x="174.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Lecture</text>
+<circle cx="266.0" cy="267" r="7.0" fill="#012169"/><circle cx="266.0" cy="267" r="2.7" fill="#fff"/>
+<text x="282.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Guest lecture</text>
+<rect x="415.7" y="260.7" width="12.6" height="12.6" fill="#B9975B" transform="rotate(45 422.0 267)"/>
+<text x="438.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Keynote</text>
+<circle cx="530.0" cy="267" r="4.3" fill="#fff" stroke="#012169" stroke-width="2"/>
+<text x="546.0" y="272" font-size="16" fill="#5a5a5a" class="legend">Leadership talk</text>
+<circle cx="702.0" cy="267" r="3.5" fill="#aab4c8"/>
+<text x="718.0" y="272" font-size="16" fill="#5a5a5a" class="legend">holiday / report / essay week</text>
 </svg>

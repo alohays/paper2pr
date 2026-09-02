@@ -24,9 +24,9 @@ figures:
     source: Yunsung Lee (alohays.github.io/assets/images/profile.png)
     licence: own
     third_party: false
-  - file: worv-logo.png
-    source: WoRV
-    licence: own (WoRV)
+  - file: maum-ai-logo.svg
+    source: Maum AI (maum.ai/assets/logo_maum.ai_fin)
+    licence: own (Maum AI)
     third_party: false
   - file: s14-transformer-architecture.png
     source: Vaswani et al. (2017)

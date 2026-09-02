@@ -218,8 +218,12 @@ JSON lock plus images, Lua shortcodes that read the lock.
    for the student who wants to know when the talks are: a month band, one mark per
    session, a date only above the talks (lecture / guest / keynote, 23 px bold; the
    kind is the mark: navy dot, navy dot with a white core, gold diamond), a small
-   muted tag under the quiet weeks ("DGIST", "holiday", "report", "essay") and a
-   legend row; never session titles or presenter names. A talk date moves to a far
+   muted tag under the quiet weeks only ("holiday", "report", "essay") and a legend
+   row; never session titles or presenter names. The host institution's own sessions
+   (`kind: dgist`) are a hollow navy mark that prints nothing, and their `tag:` is
+   the legend's wording, so a course names its own weeks ("Leadership talk", not
+   "DGIST session"); a tag printed under a dot is capped at 12 characters, a legend
+   one at 24. A talk date moves to a far
    row (hairline down to its dot) only when the talk before it is adjacent, and a
    layout whose texts would overlap fails loudly (SeriesError) instead of rendering. Output
    is byte-deterministic, and a re-run rewrites only files whose bytes change.
