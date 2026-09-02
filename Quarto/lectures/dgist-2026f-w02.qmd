@@ -22,13 +22,13 @@ bibliography: ../../Bibliography_base.bib
 </div>
 ```
 
-**WoRV:** the autonomous driving & robotics research lab at Maum.AI<br>
-robots that learn from data
+**WoRV:** World Models for Robotics and Vehicle Control<br>
+Robotics research lab at Maum.AI
 
 **Co-instructor:** Chris Choi, CEO of Maum.AI<br>
 closing keynote on Dec 4
 
-![](../../Figures/lectures/dgist-2026f-w02/worv-logo.png){fig-alt="WoRV logo" width="240px"}
+![](../../Figures/lectures/dgist-2026f-w02/maum-ai-logo.svg){fig-alt="Maum AI" width="260px"}
 
 
 ## Picking up from last week
