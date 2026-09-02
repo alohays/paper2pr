@@ -295,6 +295,7 @@ paper2pr/
 │   ├── _filters/video-card.lua  # {{< video-card >}} / {{< video-caption >}} shortcodes
 │   ├── _filters/video-manifest.lua # the one reader of videos.json, shared by both
 │   ├── _filters/series.lua      # {{< semester-map >}} / {{< series-qr >}} / {{< series-* >}}
+│   ├── _filters/inline-svg.lua  # {{< inline-svg path >}}: an SVG chart inlined so the theme font reaches it
 │   ├── lectures/_series/        # <course>.yml (the series file) + <course>/*.qmd shared slides
 │   ├── clean-academic*.scss     # Shared themes (main + legacy)
 │   ├── fonts/                   # Pretendard (Hangul fallback), linked by _quarto.yml
@@ -432,12 +433,17 @@ cd Quarto/_fixtures/series && quarto render series.qmd
 | `.video-inline` | 16:9 clip inside a normal content slide | A demo next to bullets |
 | `{{< video-card slug >}}` (`figure.video-card`) | Clip + caption strip from `videos.json`; poster printed instead of the video | A declared clip next to bullets |
 | `::: {.two-up}` | Two `video-card`s in one flex row, 48 percent each | Side-by-side montage |
-| `figure.chart-figure` | Inline SVG chart at 64% width, bullets a notch smaller | One chart plus takeaways |
+| `{{< inline-svg path [width=..] >}}` (`figure.chart-figure`) | An SVG file inlined at 64% width (or `width=`), so its text is set in the theme font; under a chart or a video card, bullets sit a notch smaller | One chart plus takeaways |
+| `::: {.question-overlay .fragment .fade-out fragment-index="1"}` | A statement centred over the content area before the first click, gone after it; the content's first fragment takes the same index | A show of hands before the answer is revealed |
 | `.formula-legend` | Centered symbol list under a 2em display formula | Hero equation slides |
 | `.gloss` | Small gray line pinned to the bottom of the content area | Korean or plain-language gloss of a term |
 | `.timeline` | `.tl-item` grid on a gold rail: one row up to six items, two rows of four from seven | Dated milestones |
 | `{{< semester-map >}}` (`figure.semester-map`) | The course timeline from the series lock, inlined SVG at full content width, this deck's week ringed | The shared "semester in one picture" slide |
 | `## Title {.qr-slide}` + `{{< series-qr >}}` (`.qr-block`) | A 420px QR of the question wall with the tool / code / URL line under it, one sentence below | The orientation and Q&A slides only (D19) |
+
+`{{< inline-svg path >}}` (`Quarto/_filters/inline-svg.lua`, wired next to the video and series shortcodes) reads the file relative to the deck and emits it inside `figure.chart-figure`; use it for a chart the deck owns instead of `![](chart.svg)`, because an `<img>` SVG cannot reach the page's web font and renders in Helvetica or Arial. Once inlined the file is part of the page, so the SVG must carry an `id` on its root, scope every `<style>` selector with it (`#s13-ilsvrc text {...}`), and keep its `<title>` / `<desc>` / marker ids unique; `width` and `height` attributes stay off the root (the theme sizes it from the `viewBox`). A missing file fails the render.
+
+Line breaking is the theme's job, not the author's: `.reveal p`, `li` and `figcaption` carry `text-wrap: pretty` (no single-word last line), `h2`, `.statement` and a standalone centred paragraph carry `text-wrap: balance`. Where a break carries meaning (two sentences of a statement), write the `<br>`.
 
 `.smaller` and `.smallest` still exist in the theme for the legacy decks only; they are forbidden in new decks (quality gate deducts -5 each). `.divider` and `.video-full` get their full-bleed backgrounds from `Quarto/_filters/slide-types.lua`, which turns the class and its `video=` / `poster=` attributes into reveal `data-background-*` attributes (the poster is painted under the background video by a small script the filter includes; it must not become `data-background-image`, which reveal 5.1 loads *instead of* the video); `Quarto/_quarto.yml` wires the filter and the video shortcodes for every deck under a genre directory. Each slide type has a rendered example in `Quarto/_fixtures/design-test.qmd`; the video path end to end is `Quarto/_fixtures/video/video.qmd`.
 

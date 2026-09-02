@@ -159,6 +159,39 @@ $slide-pad-x-px: 56px;
   margin-bottom: 0;
 }
 
+// A question that fills the slide before the first click and is gone after
+// it (a show of hands before the answer is revealed):
+//
+//   ::: {.question-overlay .fragment .fade-out fragment-index="1"}
+//   [Hands up: did it move on its own?]{.statement}
+//   :::
+//
+// followed by the real content, whose first fragment also carries
+// fragment-index="1" so the two swap on one click. The overlay is taken out
+// of the flow and centered over the content area, so the content behind it
+// keeps its own vertical centering; without the sibling rule below the
+// overlay would be the element after the h2 and eat the auto margin that
+// centers the content.
+.reveal .slides section.level2 > .question-overlay {
+  position: absolute;
+  left: $slide-pad-x-px;
+  right: $slide-pad-x-px;
+  top: 122px;      // below the h2 and its margin
+  bottom: 32px;    // the section's bottom padding
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  z-index: 3;
+  pointer-events: none;
+
+  p { margin: 0; }
+}
+
+.reveal .slides section.level2 > h2 + .question-overlay + * {
+  margin-top: auto;
+}
+
 .reveal a {
   line-height: 1.3em;
   text-decoration: none;
@@ -182,6 +215,25 @@ $slide-pad-x-px: 56px;
   margin-top: 0.3em;
 }
 
+// Line breaking. `pretty` keeps a single word from being stranded on the
+// last line of running text (measured on the W02 deck: seven such widows,
+// "hard." / "English." / "video." under a full line each); `balance` splits
+// a centered statement or a wrapped title into lines of even length instead
+// of one long and one short. Chrome 117+ and Safari 17.5+; an older engine
+// ignores the property and wraps as before. Sentence breaks that carry
+// meaning still get an explicit <br> in the slide.
+.reveal p,
+.reveal li,
+.reveal figcaption {
+  text-wrap: pretty;
+}
+
+.reveal h2,
+.reveal .statement,
+.reveal .slides section > p {
+  text-wrap: balance;
+}
+
 // ==============================================================================
 // HORIZONTAL CENTERING — element-wise defaults
 //
@@ -202,6 +254,8 @@ $slide-pad-x-px: 56px;
 // left-aligned for readability.
 .reveal .slides section > ul,
 .reveal .slides section > ol,
+.reveal .incremental > ul,
+.reveal .incremental > ol,
 .reveal .column > ul,
 .reveal .column > ol {
   width: fit-content;
@@ -801,6 +855,13 @@ $img-cap: $slide-height * 0.6;       // 432px -- image is the whole slide
 // 0.5em; the 0.8em padding took 24px out of the column and a 3-bullet list
 // under a capped image overflowed by that much.
 $img-cap-with-list: $slide-height * 0.4;
+// 300px (a 533-wide 16:9 clip) -- a video sharing the slide with a list.
+// The list under a video card sits at 0.85em (see the chart-figure rule in
+// SLIDE TYPES), which is what pays for the 12px over the image cap: three
+// single-line bullets plus the two-line caption strip still clear the
+// bottom padding (measured on W02 S26: 683 of 688; at 315px it ran 10px
+// over).
+$video-cap-with-list: 300px;
 
 // object-fit keeps the picture undistorted when an author width and the
 // max-height cap disagree about the box's aspect ratio.
@@ -1136,7 +1197,7 @@ $img-cap-with-list: $slide-height * 0.4;
 }
 .reveal .slides section.level2:has(ul, ol) video.video-inline,
 .reveal .slides section.level2:has(ul, ol) .video-inline video {
-  max-height: $img-cap-with-list;
+  max-height: $video-cap-with-list;
 }
 
 // ---- figure.video-card: what {{< video-card slug >}} emits (_filters/
@@ -1341,6 +1402,16 @@ $img-cap-with-list: $slide-height * 0.4;
   }
 }
 
+// Before the question wall exists a deck may stand a .keybox in the block
+// ("Wooclap / code announced in class") instead of the QR. The block is
+// shrink-to-fit, so the box settled at two narrow lines with "class" alone
+// on the second; keep each line whole and centered.
+.reveal .qr-block > .keybox {
+  white-space: nowrap;
+
+  p { text-align: center; }
+}
+
 // ---- figure.chart-figure: inline SVG chart at 64% of the slide width. The
 // SVG carries its own text sizes (24 / 23 / 18 viewBox units on a 900-wide
 // chart in the W02 fixture) so that the numbers read from the back row; no
@@ -1351,6 +1422,10 @@ $img-cap-with-list: $slide-height * 0.4;
   margin: 0 auto;
   color: $jet;
 
+  // An inlined chart ({{< inline-svg >}} emits <figure class="chart-figure">
+  // around the file's own <svg>) or a hand-written svg.chart: the figure
+  // width is the chart width, the height follows the viewBox.
+  > svg,
   svg.chart {
     width: 100%;
     height: auto;
@@ -1359,9 +1434,10 @@ $img-cap-with-list: $slide-height * 0.4;
   }
 }
 
-// Bullets on a chart slide sit a notch smaller so the chart and three
-// single-line bullets clear the footnote.
-.reveal .slides section:has(figure.chart-figure) ul {
+// Bullets under a chart or a video card sit a notch smaller so the figure
+// and three single-line bullets clear the footnote (the card's clip may be
+// $video-cap-with-list tall, see IMAGES AND FIGURES).
+.reveal .slides section:has(figure.chart-figure, figure.video-card) ul {
   font-size: 0.85em;
   line-height: 1.35;
   margin-top: 0.25em;
