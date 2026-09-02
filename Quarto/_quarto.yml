@@ -39,3 +39,6 @@ format:
       # Figures/lectures/_series/<course>/series.json for a deck that declares
       # `series: <course>` in its front matter (scripts/series_assets.py).
       - _filters/series.lua
+      # {{< inline-svg path [width=..] >}}: an SVG chart inlined so the page
+      # font reaches its text (an <img> SVG renders in the browser fallback).
+      - _filters/inline-svg.lua

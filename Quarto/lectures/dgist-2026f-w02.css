@@ -1,0 +1,136 @@
+/* dgist-2026f-w02.css: layout that belongs to this deck alone, linked from
+   its front matter (format.revealjs.css). Rules any deck could want live in
+   ../clean-academic.scss; what is here is the one-off geometry of four
+   slides. Sizes are in em against the 40px root, so 0.85em is the same
+   notch the theme gives bullets under a chart. */
+
+/* S08: the grey source line under the company claim, in the video-card
+   caption's register (0.5em, light, muted) rather than body size, so the
+   text column stays shorter than the card beside it. */
+.reveal .meta-line {
+  font-size: 0.5em;
+  font-weight: 300;
+  color: #6b6b6b;
+  letter-spacing: 0.01em;
+}
+
+/* S15: four stacked elements (prompt, blank and answer, the GPT-2 box, the
+   closing line) at full size ran 9px into the footnote; halving the box's
+   vertical margins and the paragraph gaps buys the 40px back without
+   touching a font size. */
+.reveal .slides section.tight > p {
+  margin-top: 0.25em;
+  margin-bottom: 0.2em;
+}
+
+.reveal .slides section.tight .highlightbox,
+.reveal .slides section.tight .keybox {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+/* S37: three labelled facts as a two-column grid, label left in navy, text
+   right at 0.85em and left-aligned, so the eye lands on Capital / Production
+   / Platforms first and reads across. Replaces three centred paragraphs
+   whose third line stranded "humanoid maker." on its own. */
+.reveal .fact-grid {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 0.9em;
+  row-gap: 0.55em;
+  align-items: baseline;
+  width: 100%;
+  margin: 0;
+}
+
+.reveal .fact-label {
+  font-weight: 600;
+  color: #012169;
+  line-height: 1.35;
+}
+
+.reveal .fact-text {
+  font-size: 0.85em;
+  font-weight: 300;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+/* S42-S44: the course roadmap as rows of a 16:9 thumbnail and a two-line
+   text block (date and title in navy, one-line description). Three rows at
+   300x160 fill the content area above the footnote (3 x 160 + 2 x 14 = 508
+   of the 559 available); the two-row slides take the larger 338x190 thumb.
+   .rm-fit is for a document page or a wide strip that would lose its
+   subject to a cover crop: contained on a pale ground instead. */
+.reveal .roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  width: 100%;
+  margin: 0;
+}
+
+.reveal .roadmap.rm-two {
+  gap: 0.6em;
+}
+
+.reveal .rm-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  min-width: 0;
+}
+
+.reveal .rm-row .rm-thumb {
+  flex: 0 0 300px;
+  width: 300px;
+  height: 160px;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #dfe3ea;
+  margin: 0;
+  background: #fff;
+}
+
+.reveal .rm-two .rm-row .rm-thumb {
+  flex-basis: 338px;
+  width: 338px;
+  height: 190px;
+}
+
+.reveal .rm-row .rm-thumb.rm-fit {
+  object-fit: contain;
+  background: #f7f9fc;
+  padding: 6px;
+}
+
+.reveal .rm-text {
+  min-width: 0;
+}
+
+.reveal .rm-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #012169;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.reveal .rm-desc {
+  font-size: 0.8em;
+  font-weight: 300;
+  line-height: 1.3;
+  margin-top: 0.15em;
+  text-wrap: pretty;
+}
+
+.reveal .rm-guest {
+  color: #525252;
+}
+
+/* S45: one ordered list for the three takeaways (the second and third are
+   fragments), with more air between items than a content list gets. */
+.reveal ol.takeaways li {
+  margin-bottom: 0.75em;
+}

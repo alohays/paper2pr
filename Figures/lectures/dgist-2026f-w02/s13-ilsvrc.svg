@@ -1,35 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="ilsvrc-title ilsvrc-desc">
+<svg id="s13-ilsvrc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="ilsvrc-title ilsvrc-desc">
   <title id="ilsvrc-title">ILSVRC top-5 error by year</title>
   <desc id="ilsvrc-desc">Bar chart showing top-5 error falling from 28.2 percent in 2010 to 3.57 percent in 2015. The 2012 AlexNet result at 16.4 percent is highlighted in gold, and a dashed line marks human top-5 error near 5.1 percent.</desc>
   <style>
-    text {
+    #s13-ilsvrc text {
       font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
       fill: #1a1a1a;
     }
-    .grid {
+    #s13-ilsvrc .grid {
       stroke: #aab4c8;
       stroke-width: 2;
       stroke-opacity: 0.42;
     }
-    .axis {
+    #s13-ilsvrc .axis {
       stroke: #012169;
       stroke-width: 3;
     }
-    .bar {
+    #s13-ilsvrc .bar {
       fill: #aab4c8;
     }
-    .alexnet {
+    #s13-ilsvrc .alexnet {
       fill: #b9975b;
     }
-    .human {
+    #s13-ilsvrc .human {
       stroke: #012169;
       stroke-width: 3;
       stroke-dasharray: 10 8;
     }
-    .gold-text {
+    #s13-ilsvrc .gold-text {
       fill: #9a7b3f;
     }
-  </style>
+</style>
 
   <g aria-hidden="true">
     <line class="grid" x1="100" y1="35" x2="870" y2="35"/>

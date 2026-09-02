@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 300" role="img" aria-labelledby="title desc">
-  <title id="title">Language models progress from words to actions</title>
-  <desc id="desc">A three-stage rail compares the inputs and outputs of a Language Model, a Vision-Language Model, and a Vision-Language-Action model.</desc>
+<svg id="s24-lm-vlm-vla" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 300" role="img" aria-labelledby="s24-lm-vlm-vla-title s24-lm-vlm-vla-desc">
+  <title id="s24-lm-vlm-vla-title">Language models progress from words to actions</title>
+  <desc id="s24-lm-vlm-vla-desc">A three-stage rail compares the inputs and outputs of a Language Model, a Vision-Language Model, and a Vision-Language-Action model.</desc>
   <defs>
     <style>
-      .model { font: 600 25px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #012169; }
-      .eyebrow { font: 700 14px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; letter-spacing: 2px; fill: #9A7B3F; }
-      .phrase { font: 400 22px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #1A1A1A; }
-      .step { font: 700 16px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #FFFFFF; }
-      .rail { stroke: #B9975B; stroke-width: 4; fill: none; }
-      .guide { stroke: #D6DEE9; stroke-width: 2; fill: none; }
-    </style>
+      #s24-lm-vlm-vla .model { font: 600 25px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #012169; }
+      #s24-lm-vlm-vla .eyebrow { font: 700 14px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; letter-spacing: 2px; fill: #9A7B3F; }
+      #s24-lm-vlm-vla .phrase { font: 400 22px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #1A1A1A; }
+      #s24-lm-vlm-vla .step { font: 700 16px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #FFFFFF; }
+      #s24-lm-vlm-vla .rail { stroke: #B9975B; stroke-width: 4; fill: none; }
+      #s24-lm-vlm-vla .guide { stroke: #D6DEE9; stroke-width: 2; fill: none; }
+</style>
     <marker id="rail-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M0,0 L10,5 L0,10 Z" fill="#B9975B"/>
     </marker>
