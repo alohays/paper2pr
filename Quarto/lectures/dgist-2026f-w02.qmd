@@ -15,7 +15,12 @@ bibliography: ../../Bibliography_base.bib
 
 ## About me {.tight}
 
-![](../../Figures/lectures/dgist-2026f-w02/profile.png){.profile-photo fig-alt="Yunsung Lee"}
+```{=html}
+<div class="who">
+  <img class="profile-photo" src="../../Figures/lectures/dgist-2026f-w02/profile.png" alt="Yunsung Lee">
+  <div class="who-name">Yunsung Lee</div>
+</div>
+```
 
 **WoRV:** the autonomous driving & robotics research lab at Maum.AI<br>
 robots that learn from data
@@ -84,18 +89,20 @@ Questions go on the wall any time; we answer them in the last 10 minutes.
 
 :::: {.columns}
 ::: {.column style="flex:0 0 44%;"}
-::: {.fragment fragment-index="1"}
-Company claim: trained in simulation, running on its own.
-
-[Atlas · Boston Dynamics · May 2026 · autonomy claimed]{.meta-line}
+::: {.fragment .claim-block fragment-index="1"}
+[Boston Dynamics says]{.eyebrow}
+[Trained in simulation.<br>Runs on its own.]{.claim}
+[Atlas · May 2026 · autonomy claimed]{.meta-line}
 :::
 
-::: {.fragment fragment-index="2"}
-Not stated: "no teleoperation"
+::: {.fragment .claim-block fragment-index="2"}
+[Never said]{.eyebrow}
+["No teleoperation."]{.claim}
 :::
 
-::: {.fragment fragment-index="3"}
-Teleoperation actually looks like this:
+::: {.fragment .claim-block fragment-index="3"}
+[For comparison]{.eyebrow}
+[This is teleoperation [→]{.hi-gold}]{.claim}
 :::
 :::
 
@@ -141,10 +148,6 @@ How AI Learned to See and Talk
 
 ::: {.divider-sub}
 2012 - 2022
-:::
-
-::: {.divider-sub}
-Wooclap · code announced in class
 :::
 
 
@@ -205,7 +208,7 @@ Sample: OpenAI (2019), "Better language models and their implications"
 - That one chart became the industry's playbook: scale up
 
 ::: {.footnote}
-Concept chart, redrawn after Kaplan et al. (2020), Fig. 1
+Concept chart after Kaplan et al. (2020), Fig. 1
 :::
 
 
@@ -329,10 +332,6 @@ The Turn
 Why action is next - and why now
 :::
 
-::: {.divider-sub}
-Wooclap · code announced in class
-:::
-
 
 ## Same recipe, new output
 
@@ -410,7 +409,7 @@ From here on, we use the term [Embodied AI]{.hi}.
 [Action is [not on the internet]{.hi}.]{.fragment .statement}
 
 ::: {.footnote}
-Log scale; units differ by type (words / images / hours) - read orders of magnitude, not counts. Own figure.
+Log scale; units differ by type (words / images / hours) - read orders of magnitude, not counts.
 :::
 
 
@@ -432,7 +431,7 @@ Log scale; units differ by type (words / images / hours) - read orders of magnit
 - By 2026, Helix 02 claims "fully autonomous, not teleoperated."
 
 ::: {.footnote}
-The 2025 announcement never states the autonomy mode - the label under the clip is doing the checking for you. Source: Figure (2025).
+Source: Figure (2025). The Feb 2025 announcement does not state the autonomy mode.
 :::
 
 
@@ -530,10 +529,6 @@ The map
 
 ::: {.divider-sub}
 Where this course goes
-:::
-
-::: {.divider-sub}
-Wooclap · code announced in class
 :::
 
 

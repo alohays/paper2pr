@@ -214,13 +214,14 @@ JSON lock plus images, Lua shortcodes that read the lock.
    `prior_index` = the nearest earlier session that is not a holiday or exam week; a
    guest or DGIST session counts), `qr-qa.png` and `qr-qa.svg` (qrencode, from
    `qa_tool.url`), `semester-map.svg` and one `semester-map-wNN.svg` per session
-   with that week ringed in gold as "today". The map is one 1100x200 timeline with a
-   dot per session, showing only dates and short kind tags, never session titles:
-   the short date above each dot (bold for lecture / guest / keynote, muted
-   otherwise) and a kind tag below ("Lecture", "Guest", "Keynote", "DGIST";
-   "holiday" for holiday weeks, "report" / "essay" for the exam weeks). Dates and
-   tags alternate two rows by index parity, and a layout whose texts would
-   overlap fails loudly (SeriesError) instead of rendering. Output
+   with that week ringed in gold as "today". The map is one 1100x300 timeline drawn
+   for the student who wants to know when the talks are: a month band, one mark per
+   session, a date only above the talks (lecture / guest / keynote, 23 px bold; the
+   kind is the mark: navy dot, navy dot with a white core, gold diamond), a small
+   muted tag under the quiet weeks ("DGIST", "holiday", "report", "essay") and a
+   legend row; never session titles or presenter names. A talk date moves to a far
+   row (hairline down to its dot) only when the talk before it is adjacent, and a
+   layout whose texts would overlap fails loudly (SeriesError) instead of rendering. Output
    is byte-deterministic, and a re-run rewrites only files whose bytes change.
    `--check` verifies every file exists and is byte-identical to a fresh in-memory
    render from the yml (content, never mtimes: a clone or checkout lands the yml

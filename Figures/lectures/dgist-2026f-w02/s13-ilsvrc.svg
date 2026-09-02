@@ -1,35 +1,19 @@
 <svg id="s13-ilsvrc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="ilsvrc-title ilsvrc-desc">
   <title id="ilsvrc-title">ILSVRC top-5 error by year</title>
-  <desc id="ilsvrc-desc">Bar chart showing top-5 error falling from 28.2 percent in 2010 to 3.57 percent in 2015. The 2012 AlexNet result at 16.4 percent is highlighted in gold, and a dashed line marks human top-5 error near 5.1 percent.</desc>
+  <desc id="ilsvrc-desc">Bar chart showing top-5 error falling from 28.2 percent in 2010 to 3.57 percent in 2015. Before 2012 the yearly gain was 2.4 points; AlexNet in 2012 cut 9.4 points in one year, and the deep-learning era after it passed the human reference of 5.1 percent within three years.</desc>
   <style>
-    #s13-ilsvrc text {
-      font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
-      fill: #1a1a1a;
-    }
-    #s13-ilsvrc .grid {
-      stroke: #aab4c8;
-      stroke-width: 2;
-      stroke-opacity: 0.42;
-    }
-    #s13-ilsvrc .axis {
-      stroke: #012169;
-      stroke-width: 3;
-    }
-    #s13-ilsvrc .bar {
-      fill: #aab4c8;
-    }
-    #s13-ilsvrc .alexnet {
-      fill: #b9975b;
-    }
-    #s13-ilsvrc .human {
-      stroke: #012169;
-      stroke-width: 3;
-      stroke-dasharray: 10 8;
-    }
-    #s13-ilsvrc .gold-text {
-      fill: #9a7b3f;
-    }
-</style>
+    #s13-ilsvrc text { font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; fill: #1a1a1a; }
+    #s13-ilsvrc .grid { stroke: #aab4c8; stroke-width: 2; stroke-opacity: 0.42; }
+    #s13-ilsvrc .axis { stroke: #012169; stroke-width: 3; }
+    #s13-ilsvrc .bar { fill: #aab4c8; }
+    #s13-ilsvrc .bar-dl { fill: #3d5588; }
+    #s13-ilsvrc .alexnet { fill: #b9975b; }
+    #s13-ilsvrc .human { stroke: #012169; stroke-width: 3; stroke-dasharray: 10 8; }
+    #s13-ilsvrc .gold-text { fill: #9a7b3f; }
+    #s13-ilsvrc .delta { fill: #5a5a5a; paint-order: stroke; stroke: #ffffff; stroke-width: 6; stroke-linejoin: round; }
+    #s13-ilsvrc .delta-big { fill: #9a7b3f; paint-order: stroke; stroke: #ffffff; stroke-width: 7; stroke-linejoin: round; }
+    #s13-ilsvrc .era { stroke: #012169; stroke-width: 2; fill: none; }
+  </style>
 
   <g aria-hidden="true">
     <line class="grid" x1="100" y1="35" x2="870" y2="35"/>
@@ -53,9 +37,9 @@
     <rect class="bar" x="100" y="53" width="84" height="282" rx="4"/>
     <rect class="bar" x="235" y="77" width="84" height="258" rx="4"/>
     <rect class="alexnet" x="370" y="171" width="84" height="164" rx="4"/>
-    <rect class="bar" x="505" y="218" width="84" height="117" rx="4"/>
-    <rect class="bar" x="640" y="268" width="84" height="67" rx="4"/>
-    <rect class="bar" x="775" y="299.3" width="84" height="35.7" rx="4"/>
+    <rect class="bar-dl" x="505" y="218" width="84" height="117" rx="4"/>
+    <rect class="bar-dl" x="640" y="268" width="84" height="67" rx="4"/>
+    <rect class="bar-dl" x="775" y="299.3" width="84" height="35.7" rx="4"/>
   </g>
 
   <g font-size="24" text-anchor="middle">
@@ -64,17 +48,30 @@
     <text class="gold-text" x="412" y="161" font-weight="700">16.4%</text>
     <text x="547" y="208">11.7%</text>
     <text x="682" y="258">6.7%</text>
-    <text x="817" y="326" font-size="21" font-weight="700" fill="#012169">3.57%</text>
+    <text x="817" y="276" font-size="21" font-weight="700" fill="#012169">3.57%</text>
+  </g>
+
+  <!-- year-over-year change, in points: the slow year and the AlexNet year -->
+  <g text-anchor="middle">
+    <path d="M190 62 L229 84" fill="none" stroke="#8a94a6" stroke-width="2" stroke-dasharray="4 4"/>
+    <text class="delta" x="209" y="108" font-size="21" font-weight="600">−2.4 pt</text>
+    <path d="M325 86 L364 176" fill="none" stroke="#b9975b" stroke-width="3"/>
+    <path d="M358 166 L364 176 L354 178" fill="none" stroke="#b9975b" stroke-width="3" stroke-linejoin="round"/>
+    <text class="delta-big" x="344" y="120" font-size="27" font-weight="700">−9.4 pt</text>
   </g>
 
   <g font-size="23" text-anchor="middle" font-weight="600">
     <text x="142" y="371">2010</text>
     <text x="277" y="371">2011</text>
     <text class="gold-text" x="412" y="371" font-weight="700">2012</text>
-    <text x="547" y="371">2013</text>
-    <text x="682" y="371">2014</text>
-    <text x="817" y="371">2015</text>
+    <text x="547" y="371" fill="#012169">2013</text>
+    <text x="682" y="371" fill="#012169">2014</text>
+    <text x="817" y="371" fill="#012169">2015</text>
   </g>
+
+  <!-- deep-learning era bracket under the years -->
+  <path class="era" d="M372 392 L372 402 L859 402 L859 392"/>
+  <text x="615" y="419" font-size="22" font-weight="600" text-anchor="middle" fill="#012169">deep learning: below human in three years</text>
 
   <line class="human" x1="100" y1="284" x2="870" y2="284"/>
   <rect x="108" y="258" width="154" height="31" rx="3" fill="#ffffff" fill-opacity="0.94"/>
