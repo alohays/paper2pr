@@ -230,9 +230,9 @@ JSON lock plus images, Lua shortcodes that read the lock.
    `--check` verifies every file exists and is byte-identical to a fresh in-memory
    render from the yml (content, never mtimes: a clone or checkout lands the yml
    and the figures in any order, and a comment-only edit to the yml changes no
-   output). The Wooclap URL and code are `PLACEHOLDER` until the
-   Message wall event exists: replace both in the yml and re-run the script; the
-   slides pick the new QR up through the lock. Everything in the directory is
+   output). A new series starts with the Wooclap URL and code set to
+   `PLACEHOLDER`; once the Message wall event exists, replace both in the yml and
+   re-run the script, and the slides pick the new QR up through the lock. Everything in the directory is
    committed (`assemble_site.sh` copies `Figures/*`, so the QR ships with the site).
 3. **Shortcodes** `Quarto/_filters/series.lua` (wired in `Quarto/_quarto.yml`
    `format.revealjs.shortcodes`, next to `video-card.lua`; fixtures and includes

@@ -65,17 +65,7 @@ closing keynote on Dec 4
 :::
 
 
-## Ask anytime {.qr-slide}
-
-::: {.qr-block}
-::: {.keybox}
-**Wooclap**
-
-code announced in class
-:::
-:::
-
-Questions go on the wall any time; we answer them in the last 10 minutes.
+{{< include _series/dgist-2026f/ask-anytime.qmd >}}
 
 
 ## {.video-full video="@s07a-bd-atlas-bring-me-a-drink"}
@@ -635,14 +625,6 @@ Sources: Google DeepMind (2026) · Figure (2025)
 ```
 
 
-## Your questions {.qr-slide}
-
-::: {.qr-block}
-::: {.keybox}
-**Wooclap**
-
-code announced in class
-:::
-:::
+{{< include _series/dgist-2026f/qa.qmd >}}
 
 <!-- End of deck. -->

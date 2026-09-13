@@ -14,10 +14,10 @@
     "policy": "pi(a | o, l)"
   },
   "qa_tool": {
-    "code": "PLACEHOLDER",
+    "code": "ZNQKOGF",
     "name": "Wooclap",
-    "note": "replace url and code once the Message wall event exists; re-run scripts/series_assets.py",
-    "url": "https://app.wooclap.com/PLACEHOLDER"
+    "note": "Persistent anonymous question wall for the course series",
+    "url": "https://app.wooclap.com/ZNQKOGF"
   },
   "room": "E7-233",
   "rules": [

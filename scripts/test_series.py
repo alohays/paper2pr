@@ -153,8 +153,9 @@ expect_error("short: is no longer a session key",
              GOOD.replace("    deck: dgist-2026f-w02\n",
                           "    deck: dgist-2026f-w02\n    short: x\n", 1),
              "unknown key")
-expect_error("qa_tool url must be http(s)", GOOD.replace("url: https://app.wooclap.com/PLACEHOLDER",
-                                                        "url: app.wooclap.com/PLACEHOLDER"),
+qa_url = re.search(r"(?m)^  url: (https?://\S+)$", GOOD).group(1)
+expect_error("qa_tool url must be http(s)",
+             GOOD.replace(f"url: {qa_url}", f"url: {qa_url.split('://', 1)[1]}"),
              "http(s) URL")
 
 print("2. lock generation is deterministic")
@@ -423,7 +424,7 @@ else:
           html.count('class="today-ring"') == 1 and html.count('<figure class="semester-map"') == 2)
     check("the QR block points at the series figures, one level up from _fixtures/<dir>/",
           html.count('src="../../../Figures/lectures/_series/dgist-2026f/qr-qa.svg"') == 2
-          and 'class="qr-code">code PLACEHOLDER<' in html)
+          and f'class="qr-code">code {series["qa_tool"]["code"]}<' in html)
     check("the rules and the LMS footnote come from the lock",
           "Attendance: every session" in html
           and "answers in the last 10 minutes" in html
