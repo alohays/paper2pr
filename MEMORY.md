@@ -86,3 +86,5 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:design] A faithful 1920 x 1080 port can still look undersized after fitting inside Reveal's 1280 x 720 canvas → measure each fully revealed content bound and scale the centered inner block per slide; never apply one global zoom when dense result slides have less safety margin than sparse title or closing slides.
 
 [LEARN:script-tone] Repeating autonomy and provenance caveats for every robot demo → teach source literacy once, let manifest captions carry later labels, and use each subsequent demo for a distinct capability-first insight; add only a few rounded local-currency anchors when dollar figures need intuition.
+
+[LEARN:naming] Calling the DGIST HSS118 course "Future Literacy" (a gloss of the Korean course name) → its official English name is "Seminar for Comprehensive Competency Cultivation" (SCCC; DGIST portal, confirmed 2026-09-13): write it in full on first use and SCCC after, let the series `course:` field be the single source for slide subtitles and the landing page, and keep "Physical AI for Everyone" as the term's theme title only, never as the course name.

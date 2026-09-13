@@ -325,7 +325,7 @@ def cfg_for(raw):
 
 cfg = cfg_for({"series": COURSE, "series_index": 2})
 check("series / series_index resolve the session",
-      cfg.series == COURSE and cfg.series_course == "Future Literacy"
+      cfg.series == COURSE and cfg.series_course == "Seminar for Comprehensive Competency Cultivation"
       and cfg.session_date == "2026-09-04"
       and cfg.session_title == "The Paradigm Shift Toward Embodied AI")
 prior = cfg.prior_session
@@ -345,7 +345,7 @@ check("a deck without a series resolves to None everywhere",
       and cfg_for({}).session_date is None)
 check("series without series_index: no session, no error",
       cfg_for({"series": COURSE}).series_session is None
-      and cfg_for({"series": COURSE}).series_course == "Future Literacy")
+      and cfg_for({"series": COURSE}).series_course == "Seminar for Comprehensive Competency Cultivation")
 check("as_dict carries the series fields",
       cfg.as_dict()["prior_session"]["index"] == 1 and cfg.as_dict()["series"] == COURSE)
 try:
@@ -401,7 +401,7 @@ with tempfile.TemporaryDirectory() as td:
         page = build_landing.build()
     finally:
         deckpath.QUARTO_DIR, deckpath.GENRES_FILE = saved
-    check("course heading", "Future Literacy (HSS118, DGIST, 2026 Fall)" in page)
+    check("course heading", "Seminar for Comprehensive Competency Cultivation (HSS118, DGIST, 2026 Fall)" in page)
     i2, i13 = page.find(">W02<"), page.find(">W13<")
     check("rows in series order with week labels", 0 < i2 < i13)
     check("rows show the date and a link",

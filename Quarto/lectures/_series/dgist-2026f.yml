@@ -49,7 +49,7 @@
 # Derived by series_assets.py into the lock, never written here: week label
 # ("W02"), short date ("Sep 4"), prior_index (nearest earlier session that is
 # not a holiday or exam week; a guest or DGIST session counts).
-course: Future Literacy
+course: Seminar for Comprehensive Competency Cultivation
 code: HSS118
 term: 2026 Fall
 institution: DGIST

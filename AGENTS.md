@@ -206,7 +206,7 @@ JSON lock plus images, Lua shortcodes that read the lock.
    deck to exist yet), optional `tag` (overrides the short word the map prints
    under the dot, at most 12 characters -- this is how the DGIST midterm week
    prints "report"), optional `remote` / `tentative`. An unknown top-level key is
-   an error. `dgist-2026f` is the DGIST HSS118 term.
+   an error. `dgist-2026f` is the DGIST HSS118 term (Seminar for Comprehensive Competency Cultivation, SCCC).
 2. **Build** `python3 scripts/series_assets.py <course>`: validates the yml (one
    mapping per week with unique indices 1..N, increasing dates on the `meets_on`
    days, kinds from the enum, unique decks) and writes `Figures/lectures/_series/<course>/`: `series.json`

@@ -1,6 +1,6 @@
 ---
 title: "The Paradigm Shift Toward Embodied AI"
-subtitle: "{{< series-field course >}} ({{< series-field code >}}) · {{< series-session week >}} · {{< series-field institution >}}"
+subtitle: "{{< series-field course >}}<br>{{< series-field code >}} · {{< series-session week >}} · {{< series-field institution >}}"
 author: Yunsung Lee
 date: "2026-09-04"
 series: dgist-2026f
