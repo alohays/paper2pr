@@ -1,6 +1,6 @@
 ---
 title: "The Paradigm Shift Toward Embodied AI"
-subtitle: "HSS118 Future Literacy, Week 2"
+subtitle: "Seminar for Comprehensive Competency Cultivation (HSS118), Week 2"
 author: "Yunsung Lee"
 institute: "DGIST, 2026-09-04"
 # The title gradient is a reveal background so it fills the viewport at any

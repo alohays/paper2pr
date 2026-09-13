@@ -47,7 +47,7 @@ talk.
 **Where it sits in a series** - for a lecture, which course series and which
 session. Run `python3 scripts/series_assets.py --list` for the series files
 (`Quarto/lectures/_series/<course>.yml`, one per course; `dgist-2026f` is the
-DGIST HSS118 term). When the deck is a session of one:
+DGIST HSS118 term, Seminar for Comprehensive Competency Cultivation). When the deck is a session of one:
 
 - ask for the **series** and the **session index** (the week number, W02 = 2)
   and pass `--series <course> --series-index <NN>`: the scaffold takes the

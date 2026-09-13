@@ -153,8 +153,9 @@ expect_error("short: is no longer a session key",
              GOOD.replace("    deck: dgist-2026f-w02\n",
                           "    deck: dgist-2026f-w02\n    short: x\n", 1),
              "unknown key")
-expect_error("qa_tool url must be http(s)", GOOD.replace("url: https://app.wooclap.com/PLACEHOLDER",
-                                                        "url: app.wooclap.com/PLACEHOLDER"),
+qa_url = re.search(r"(?m)^  url: (https?://\S+)$", GOOD).group(1)
+expect_error("qa_tool url must be http(s)",
+             GOOD.replace(f"url: {qa_url}", f"url: {qa_url.split('://', 1)[1]}"),
              "http(s) URL")
 
 print("2. lock generation is deterministic")
@@ -324,7 +325,7 @@ def cfg_for(raw):
 
 cfg = cfg_for({"series": COURSE, "series_index": 2})
 check("series / series_index resolve the session",
-      cfg.series == COURSE and cfg.series_course == "Future Literacy"
+      cfg.series == COURSE and cfg.series_course == "Seminar for Comprehensive Competency Cultivation"
       and cfg.session_date == "2026-09-04"
       and cfg.session_title == "The Paradigm Shift Toward Embodied AI")
 prior = cfg.prior_session
@@ -344,7 +345,7 @@ check("a deck without a series resolves to None everywhere",
       and cfg_for({}).session_date is None)
 check("series without series_index: no session, no error",
       cfg_for({"series": COURSE}).series_session is None
-      and cfg_for({"series": COURSE}).series_course == "Future Literacy")
+      and cfg_for({"series": COURSE}).series_course == "Seminar for Comprehensive Competency Cultivation")
 check("as_dict carries the series fields",
       cfg.as_dict()["prior_session"]["index"] == 1 and cfg.as_dict()["series"] == COURSE)
 try:
@@ -400,7 +401,7 @@ with tempfile.TemporaryDirectory() as td:
         page = build_landing.build()
     finally:
         deckpath.QUARTO_DIR, deckpath.GENRES_FILE = saved
-    check("course heading", "Future Literacy (HSS118, DGIST, 2026 Fall)" in page)
+    check("course heading", "Seminar for Comprehensive Competency Cultivation (HSS118, DGIST, 2026 Fall)" in page)
     i2, i13 = page.find(">W02<"), page.find(">W13<")
     check("rows in series order with week labels", 0 < i2 < i13)
     check("rows show the date and a link",
@@ -423,7 +424,7 @@ else:
           html.count('class="today-ring"') == 1 and html.count('<figure class="semester-map"') == 2)
     check("the QR block points at the series figures, one level up from _fixtures/<dir>/",
           html.count('src="../../../Figures/lectures/_series/dgist-2026f/qr-qa.svg"') == 2
-          and 'class="qr-code">code PLACEHOLDER<' in html)
+          and f'class="qr-code">code {series["qa_tool"]["code"]}<' in html)
     check("the rules and the LMS footnote come from the lock",
           "Attendance: every session" in html
           and "answers in the last 10 minutes" in html

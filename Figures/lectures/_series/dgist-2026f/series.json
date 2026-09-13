@@ -1,7 +1,7 @@
 {
   "co_instructor": "Chris (Hongseop) Choi, CEO, Maum AI",
   "code": "HSS118",
-  "course": "Future Literacy",
+  "course": "Seminar for Comprehensive Competency Cultivation",
   "course_page": "https://alohays.github.io/teaching/dgist-hss118-2026f/",
   "institution": "DGIST",
   "instructor": "Yunsung Lee",
@@ -14,10 +14,10 @@
     "policy": "pi(a | o, l)"
   },
   "qa_tool": {
-    "code": "PLACEHOLDER",
+    "code": "ZNQKOGF",
     "name": "Wooclap",
-    "note": "replace url and code once the Message wall event exists; re-run scripts/series_assets.py",
-    "url": "https://app.wooclap.com/PLACEHOLDER"
+    "note": "Persistent anonymous question wall for the course series",
+    "url": "https://app.wooclap.com/ZNQKOGF"
   },
   "room": "E7-233",
   "rules": [
