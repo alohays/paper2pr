@@ -84,3 +84,5 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:publishing] Moving only a deck's public endpoint does not move source ownership → when the project repository must own the presentation completely, transfer the editable source, assets, validation history, and note-free bundle together, then remove the deck-specific tree from Paper2PR; `publish: false` alone only excludes a deck from Paper2PR Pages.
 
 [LEARN:design] A faithful 1920 x 1080 port can still look undersized after fitting inside Reveal's 1280 x 720 canvas → measure each fully revealed content bound and scale the centered inner block per slide; never apply one global zoom when dense result slides have less safety margin than sparse title or closing slides.
+
+[LEARN:script-tone] Repeating autonomy and provenance caveats for every robot demo → teach source literacy once, let manifest captions carry later labels, and use each subsequent demo for a distinct capability-first insight; add only a few rounded local-currency anchors when dollar figures need intuition.

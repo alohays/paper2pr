@@ -259,8 +259,8 @@ Figure: Bommasani et al. (2021), Fig. 2 - CC BY 4.0
 
 {{< video-card s20a-bd-atlas-partners-in-parkour >}}
 
-- Astonishing athletics - every move modeled, planned, and choreographed by engineers
-- Superb engineering. But nothing here was learned from data.
+- Model-based control made dynamic whole-body motion possible.
+- Learning systems now build on that engineering foundation.
 
 
 ## Two Waves, One Wall
@@ -418,10 +418,10 @@ Log scale; units differ by type (words / images / hours) - read orders of magnit
 {{< video-card helix-two-robots >}}
 
 - Two Figure robots share one learned policy (Feb 2025).
-- By 2026, Helix 02 claims "fully autonomous, not teleoperated."
+- By 2026, Figure describes Helix 02 as "fully autonomous, not teleoperated."
 
 ::: {.footnote}
-Source: Figure (2025). The Feb 2025 announcement does not state the autonomy mode.
+Sources: Figure (2025, 2026). The autonomy wording belongs to the 2026 Helix 02 announcement.
 :::
 
 
@@ -493,7 +493,7 @@ Platforms: NVIDIA, Jun 1 2026 · Google DeepMind, Jul 30 2026
 Left: can a robot's route earn its keep? Right: can two arms do real work?
 
 
-## Demo ≠ deployment
+## From demo to deployment
 
 ::: {.compact}
 - Precise contact - buttons, cables, glassware.
@@ -503,7 +503,7 @@ Left: can a robot's route earn its keep? Right: can two arms do real work?
 :::
 
 ::: {.keybox .fragment}
-Ask first: was it autonomous?
+The next question: what capability can scale?
 :::
 
 
@@ -620,7 +620,7 @@ Sources: Google DeepMind (2026) · Figure (2025)
 <ol class="takeaways">
   <li>Same recipe, new output: <span class="hi">action</span>.</li>
   <li class="fragment"><span class="hi">Data</span> is the bottleneck: action is not on the internet.</li>
-  <li class="fragment">When you see a demo, ask first: <span class="hi-gold">is it autonomous?</span></li>
+  <li class="fragment">The next frontier: <span class="hi-gold">generalize and scale</span>.</li>
 </ol>
 ```
 
