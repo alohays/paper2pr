@@ -536,7 +536,7 @@ Today set the question. The rest of the semester answers it.
   <div class="rm-row">
     <img class="rm-thumb" src="../../Figures/lectures/dgist-2026f-w02/s39-dreamzero-world-action-model.png" alt="DreamZero World Action Model">
     <div class="rm-text">
-      <div class="rm-title">Sep 11 · Video and Robot Foundation Models</div>
+      <div class="rm-title">Sep 11 · Video Foundation Models and World Models</div>
       <div class="rm-desc"><span class="rm-guest">Guest: Hyeongmin Lee</span> · Robots that learn by watching video.</div>
     </div>
   </div>

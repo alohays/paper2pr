@@ -94,7 +94,7 @@ sessions:
   - index: 3
     date: "2026-09-11"
     kind: guest
-    title: Video and Robot Foundation Models
+    title: Video Foundation Models and World Models
     presenter: Hyeongmin Lee (SeoulTech)
     deck: ""
     remote: true
