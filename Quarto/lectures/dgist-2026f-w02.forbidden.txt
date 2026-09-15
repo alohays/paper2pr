@@ -5,3 +5,7 @@ GR00T N2
 tech report
 failure
 failed
+
+# Retired course and lecture names.
+Future Literacy
+Video and Robot Foundation Models

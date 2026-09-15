@@ -88,3 +88,5 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:script-tone] Repeating autonomy and provenance caveats for every robot demo → teach source literacy once, let manifest captions carry later labels, and use each subsequent demo for a distinct capability-first insight; add only a few rounded local-currency anchors when dollar figures need intuition.
 
 [LEARN:naming] Calling the DGIST HSS118 course "Future Literacy" (a gloss of the Korean course name) → its official English name is "Seminar for Comprehensive Competency Cultivation" (SCCC; DGIST portal, confirmed 2026-09-13): write it in full on first use and SCCC after, let the series `course:` field be the single source for slide subtitles and the landing page, and keep "Physical AI for Everyone" as the term's theme title only, never as the course name.
+
+[LEARN:publishing] Checking only the visible page after a course rename → also check document titles, descriptions, Open Graph and Twitter metadata, preview images, generated search indexes, series locks, roadmap slides, and linked external decks; a current page does not prove that a third-party preview cache has refreshed.
