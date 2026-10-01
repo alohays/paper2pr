@@ -1,0 +1,29 @@
+/* Local copies of Google Fonts Source Sans Pro for reliable classroom rendering. */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-300.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-600.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-700.ttf) format('truetype');
+}

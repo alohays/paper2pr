@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w06-09-text-targets-3" viewBox="0 0 1200 520" role="img" aria-labelledby="w06-09-text-targets-3-title w06-09-text-targets-3-desc" data-step="3">
+<title id="w06-09-text-targets-3-title">One passage supplies the next training target: It</title>
+<desc id="w06-09-text-targets-3-desc">Instructor-authored reconstruction of the input-prefix and next-target relation in Jason Wei's Stanford CS25 slide 7. The underline moves through Seoul, the period, and It. Current input: South Korea&#x27;s capital is Seoul.. Current target: It. Training uses the original text; generation appends model outputs. Token boundaries are illustrative.</desc>
+<style>#w06-09-text-targets-3 text{font-family:"Source Sans Pro","Pretendard",Arial,sans-serif} #w06-09-text-targets-3 *{vector-effect:non-scaling-stroke}</style>
+<rect width="1200" height="520" fill="#ffffff"/>
+<text x="600" y="45" font-size="40" fill="#657181" text-anchor="middle">Original text</text>
+<text class="source-passage" x="600" y="123" font-size="56" text-anchor="middle"><tspan fill="#012169">South Korea's capital is </tspan><tspan data-token="Seoul" fill="#012169" font-weight="600">Seoul</tspan><tspan data-token="." fill="#012169" font-weight="600">.</tspan><tspan data-token="It" fill="#936C24" font-weight="600" class="active-token" style="text-decoration-line:underline;text-decoration-color:#936C24;text-decoration-thickness:5px;text-underline-offset:10px"> It</tspan><tspan fill="#9CA5B0"> ...</tspan></text>
+<text x="370" y="231" font-size="40" fill="#657181" text-anchor="middle">Input: everything before the underline</text>
+<text x="995" y="231" font-size="40" fill="#657181" text-anchor="middle">Next target</text>
+<text class="input-prefix" x="370" y="327" font-size="48" fill="#012169" text-anchor="middle">South Korea&#x27;s capital is Seoul.</text>
+<line x1="760" y1="310" x2="847" y2="310" stroke="#012169" stroke-width="4"/>
+<path d="M 832 299 L 847 310 L 832 321" fill="none" stroke="#012169" stroke-width="4"/>
+<rect x="882" y="266" width="226" height="111" rx="6" fill="#FFF2D5"/>
+<text class="next-target" x="995" y="340" font-size="80" fill="#936C24" text-anchor="middle" font-weight="600">It</text>
+<text x="600" y="442" font-size="40" fill="#012169" text-anchor="middle">Training: the original text supplies the target.</text>
+<text class="generation-bridge" x="600" y="495" font-size="40" fill="#012169" text-anchor="middle">Generation: append the output, then predict again.</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w06-16-action-bridge" viewBox="0 0 1200 520" role="img" aria-labelledby="w06-16-action-bridge-title w06-16-action-bridge-desc">
+<title id="w06-16-action-bridge-title">Extend the data question from language to action</title>
+<desc id="w06-16-action-bridge-desc">Instructor-authored reconstruction. Instructor synthesis from both talks and the W06 action-data topic. Stage: bridge. Schematic charts contain no measured values.</desc>
+<style>#w06-16-action-bridge text{font-family:"Source Sans Pro","Pretendard",Arial,sans-serif} #w06-16-action-bridge *{vector-effect:non-scaling-stroke}</style>
+<rect width="1200" height="520" fill="#ffffff"/>
+<text x="90" y="160" font-size="58" fill="#012169" text-anchor="start" font-weight="600">Text</text><line x1="340" y1="146" x2="550" y2="146" stroke="#012169" stroke-width="4"/><path d="M 537 137 L 550 146 L 537 155" fill="none" stroke="#012169" stroke-width="4"/><text x="630" y="160" font-size="58" fill="#012169" text-anchor="start" font-weight="600">Next word</text><text x="90" y="340" font-size="58" fill="#012169" text-anchor="start" font-weight="600">Experience</text><line x1="450" y1="326" x2="600" y2="326" stroke="#B9975B" stroke-width="4"/><path d="M 587 317 L 600 326 L 587 335" fill="none" stroke="#B9975B" stroke-width="4"/><text x="680" y="340" font-size="58" fill="#9A7B3F" text-anchor="start" font-weight="600">Next action?</text><text x="600" y="482" font-size="46" fill="#012169" text-anchor="middle" font-weight="600">What experience should we collect?</text>
+</svg>

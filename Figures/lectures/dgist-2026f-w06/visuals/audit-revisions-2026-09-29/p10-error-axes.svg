@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w06-10-scaling-1" viewBox="0 0 1200 520" role="img" aria-labelledby="w06-10-scaling-1-title w06-10-scaling-1-desc">
+<title id="w06-10-scaling-1-title">More training compute can improve prediction</title>
+<desc id="w06-10-scaling-1-desc">Instructor-authored reconstruction. Wei slide 9 and live chalkboard near 10:00-11:30. Stage: axes. Schematic charts contain no measured values.</desc>
+<style>#w06-10-scaling-1 text{font-family:"Source Sans Pro","Pretendard",Arial,sans-serif} #w06-10-scaling-1 *{vector-effect:non-scaling-stroke}</style>
+<rect width="1200" height="520" fill="#ffffff"/>
+<text x="105" y="48" font-size="42" fill="#66758A" text-anchor="start" font-weight="400">Prediction error</text><line x1="110" y1="400" x2="1090" y2="400" stroke="#66758A" stroke-width="4"/><path d="M 1077 391 L 1090 400 L 1077 409" fill="none" stroke="#66758A" stroke-width="4"/><line x1="110" y1="400" x2="110" y2="78" stroke="#66758A" stroke-width="3"/><text x="1090" y="463" font-size="42" fill="#66758A" text-anchor="end" font-weight="400">Training compute</text>
+<text x="1120" y="46" font-size="40" fill="#586B83" text-anchor="end">Schematic</text><text x="110" y="485" font-size="44" fill="#012169" text-anchor="start">Lower is better ↓</text></svg>

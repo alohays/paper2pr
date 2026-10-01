@@ -1,0 +1,197 @@
+figures:
+  - file: "p27-portable-capture.svg"
+    source: "UMI"
+    licence: "Original hardware photo preserved inside a native teaching viewport."
+    third_party: true
+  - file: "p27-teleop-cost.svg"
+    source: "Instructor teaching schematic"
+    licence: "Original native diagram; referenced collection workflow credited on the slide."
+    third_party: false
+  - file: "p23-agent-loop-0.svg"
+    source: "Instructor teaching schematic after the agent-environment framework"
+    licence: "Original native diagram."
+    third_party: false
+  - file: "p23-agent-loop-1.svg"
+    source: "Instructor teaching schematic after the agent-environment framework"
+    licence: "Original native diagram."
+    third_party: false
+  - file: "p23-agent-loop-2.svg"
+    source: "Instructor teaching schematic after the agent-environment framework"
+    licence: "Original native diagram."
+    third_party: false
+  - file: "p26-aligned-streams.svg"
+    source: "Instructor teaching schematic"
+    licence: "Original illustrative aligned record; not measured robot data."
+    third_party: false
+  - file: "p26-training-pair.svg"
+    source: "Instructor teaching schematic"
+    licence: "Original illustrative training pair."
+    third_party: false
+  - file: "p17-text-modality.svg"
+    source: "Instructor teaching schematic"
+    licence: "Original native SVG; research definitions cited on the slide."
+    third_party: false
+  - file: "p17-add-vision.svg"
+    source: "Instructor teaching schematic"
+    licence: "Original native SVG; research definitions cited on the slide."
+    third_party: false
+  - file: "p17-vlm-mllm.svg"
+    source: "Instructor teaching schematic"
+    licence: "Original native SVG; research definitions cited on the slide."
+    third_party: false
+  - file: "p13-design-choice.svg"
+    source: "Instructor reconstruction after Hyung Won Chung, Stanford CS25 (2024)"
+    licence: "Original teaching diagram; referenced lecture credited on the slide."
+    third_party: false
+  - file: "p13-compute-low.svg"
+    source: "Hyung Won Chung"
+    licence: "Original source pixels retained with native SVG focus annotations."
+    third_party: true
+  - file: "p13-compute-high.svg"
+    source: "Hyung Won Chung"
+    licence: "Original source pixels retained with native SVG focus annotations."
+    third_party: true
+  - file: "aloha-operator-focus.png"
+    source: "ALOHA"
+    licence: "Local attributed teaching quotation; original retained."
+    third_party: true
+  - file: "umi-fig2-native-R14.jpg"
+    source: "UMI"
+    licence: "Local attributed teaching quotation; original retained."
+    third_party: true
+  - file: "umi-fig2-native-R13.jpg"
+    source: "UMI"
+    licence: "Local attributed teaching quotation; original retained."
+    third_party: true
+  - file: "31-egoverse-capture-original.jpg"
+    source: "EgoVerse"
+    licence: "Local attributed teaching quotation; original retained."
+    third_party: true
+  - file: "32-egoverse-annotation-still.png"
+    source: "EgoVerse"
+    licence: "Local attributed teaching quotation; original retained."
+    third_party: true
+  - file: "egoverse-hands.svg"
+    source: "EgoVerse"
+    licence: "Local attributed viewport of the unchanged original frame."
+    third_party: true
+  - file: "egoverse-task.svg"
+    source: "EgoVerse"
+    licence: "Local attributed viewport of the unchanged original frame."
+    third_party: true
+  - file: "chung-p007-embedded-0.jpg"
+    source: "Chung"
+    licence: "Original embedded chart extracted from the cited source PDF."
+    third_party: true
+  - file: "jepa-predict.svg"
+    source: "Meta V-JEPA"
+    licence: "Exact viewport of the attributed original; source retained locally."
+    third_party: true
+  - file: "jepa-compare.svg"
+    source: "Meta V-JEPA"
+    licence: "Exact viewport of the attributed original; source retained locally."
+    third_party: true
+  - file: "p11-wei-reading-cues.svg"
+    source: "Wei"
+    licence: "Original encoded source pixels retained in a native viewport; instructor reading cues added."
+    third_party: true
+  - file: "p14-chung-base.svg"
+    source: "Chung"
+    licence: "Original encoded source pixels retained in a native viewport; instructor axis cues added."
+    third_party: true
+  - file: "p14-chung-budget.svg"
+    source: "Chung"
+    licence: "Original encoded source pixels retained in a native viewport; instructor budget cue added."
+    third_party: true
+  - file: "p28-umi-tool-callouts.svg"
+    source: "UMI"
+    licence: "Original photo bytes retained; focused viewport and native camera/marker callouts added."
+    third_party: true
+  - file: "p38-egoverse-activity-contrast.svg"
+    source: "EgoVerse"
+    licence: "Selected original photo regions; original bytes retained and qualitative teaching labels added."
+    third_party: true
+  - file: "next-word-target.svg"
+    source: "own work"
+    licence: "Instructor teaching example adapted from the credited Stanford lecture."
+    third_party: false
+  - file: "p10-error-axes.svg"
+    source: "own work"
+    licence: "Instructor schematic adapted from the credited Stanford lecture."
+    third_party: false
+  - file: "p10-error-curve.svg"
+    source: "own work"
+    licence: "Instructor schematic adapted from the credited Stanford lecture."
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/watch-others-0.svg"
+    source: "AFC"
+    licence: "Source attribution retained; original source archived locally"
+    third_party: true
+  - file: "visuals/ch05-world-models-2026-10-02/jepa-compare.svg"
+    source: "CMU"
+    licence: "Source attribution retained; original source archived locally"
+    third_party: true
+  - file: "visuals/ch05-world-models-2026-10-02/watch-others-1.svg"
+    source: "AFC"
+    licence: "Source attribution retained; original source archived locally"
+    third_party: true
+  - file: "visuals/ch05-world-models-2026-10-02/proprioception.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/kick-prediction-0.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/kick-prediction-1.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/prediction-targets-1.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/generate-frames-0.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/generate-frames-1.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/prediction-targets-0.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/coverage-1.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/coverage-0.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/world-model-1.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/closing.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/world-model-0.svg"
+    source: "own work"
+    licence: "own teaching diagram"
+    third_party: false
+  - file: "visuals/ch05-world-models-2026-10-02/ego-body.svg"
+    source: "Sergi Coffee"
+    licence: "Source attribution retained; original source archived locally"
+    third_party: true
+  - file: "visuals/ch05-world-models-2026-10-02/jepa-predict.svg"
+    source: "CMU"
+    licence: "Source attribution retained; original source archived locally"
+    third_party: true
+  - file: "visuals/ch05-world-models-2026-10-02/references/guest-world-model-original.svg"
+    source: "Hyeongmin Lee"
+    licence: "Original diagram quoted with attribution; external image embedded for portability"
+    third_party: true

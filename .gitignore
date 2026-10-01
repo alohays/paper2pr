@@ -101,3 +101,10 @@ quality_reports/suny_script_compression/
 # clips, shots/ is regenerable evidence (quarto render + shoot.sh).
 Quarto/_fixtures/theme-mockups/media/
 Quarto/_fixtures/**/shots/
+
+# Local DGIST W06 preparation records can quote the private speaker script.
+/.local/dgist-w06-source-library/
+/quality_reports/dgist-2026f-w06_speaker_notes_report.md
+/quality_reports/plans/*dgist*w06*
+/quality_reports/reviews/*dgist*w06*
+/quality_reports/session_logs/*dgist*w06*
