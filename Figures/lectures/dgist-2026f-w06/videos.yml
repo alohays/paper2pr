@@ -1,0 +1,161 @@
+videos:
+  - slug: openvla-cup-recovery
+    title: "A second attempt at the cup"
+    publisher: "OpenVLA authors"
+    source_url: "https://openvla.github.io/"
+    published: "2024-06"
+    autonomy: "claimed"
+    speed: "1.5x"
+    keep_audio: false
+    caption: "visible"
+    licence_note: "Original policy rollout. Publisher states1.5x in the enclosing source section; no additional acceleration. Selected recovery example, not a reliability estimate. Preparation interval: 0-6 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: aloha-teleoperation-realtime
+    title: "A person controls ALOHA"
+    publisher: "Zhao et al., ALOHA"
+    source_url: "https://tonyzhaozh.github.io/aloha/"
+    published: "2023-04"
+    autonomy: "teleop"
+    speed: "1x"
+    keep_audio: false
+    caption: "visible"
+    licence_note: "Original source archived unchanged. Full-frame excerpt for attributed local teaching. teleoperated Preparation interval: 33-45 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: aloha2-leader-follower
+    title: "Leader and follower move together"
+    publisher: "ALOHA 2 Team"
+    source_url: "https://aloha-2.github.io/"
+    published: "2024-02"
+    autonomy: "teleop"
+    speed: "1x"
+    keep_audio: false
+    caption: "visible"
+    licence_note: "Source interval visibly labelled1x teleoperated. Manifest month follows the linked arXiv first-submission record; exact demo upload date is not stated. Original unchanged. Preparation interval: 9-16 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: umi-human-collection
+    title: "Collect a demonstration with a handheld gripper"
+    publisher: "Chi et al., UMI"
+    source_url: "https://umi-gripper.github.io/"
+    published: "2024-02"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Original source archived unchanged. Full-frame excerpt for attributed local teaching. human demonstration with a handheld tool Preparation interval: 0-8 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: sunday-capture-to-memo
+    title: "Skill Capture Glove to Memo"
+    publisher: "Sunday Robotics"
+    source_url: "https://www.sunday.ai/technology"
+    published: "2025-11"
+    autonomy: "claimed"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Two official full-frame excerpts: human Skill Capture Glove recording (6-12s of the Data capture asset), then Memo (16-22s of the ACT-1 feature). The robot source says Autonomous and 5x. No added acceleration. This is an edited illustration of capture and execution, not a synchronized replay. Originals, public playback IDs and hashes are retained in the local media-selection receipt. Preparation interval: 0-12 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: umi-several-places
+    title: "People collect in several places"
+    publisher: "Chi et al., UMI"
+    source_url: "https://umi-gripper.github.io/"
+    published: "2024-02"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Human-held collection, not robot teleoperation. This is the second part of the source used atp28; no added time scaling. Preparation interval: 8-13.333333 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: parkour-human-pov
+    title: "Human activity from a first-person view"
+    publisher: "Sergi Coffee (YouTube)"
+    source_url: "https://www.youtube.com/watch?v=g80ruOmVEVE"
+    published: "2026-05"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Video by Sergi Coffee (YouTube), https://www.youtube.com/@SergiCoffee. CC BY 4.0 as stated on the creator-linked Archive.org master, https://archive.org/details/pk-pov-caffeinated-lineal. Full-frame eight-second muted excerpt at source playback speed; resized/encoded for teaching. Source master and license metadata retained locally. Preparation interval: 18-26 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: egoverse-record
+    title: "Human video with movement and task records"
+    publisher: "EgoVerse authors"
+    source_url: "https://egoverse.ai/"
+    published: "2026-04"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Unchanged original archived with SHA-256. Source playback speed; capture speed is not independently verified. Human demonstrations are labelled as such in slide text. Preparation interval: 15-27 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: egosuite-human-activities
+    title: "Human activities across settings"
+    publisher: "Lightwheel, EgoSuite"
+    source_url: "https://egosuite100k.lightwheel.ai/"
+    published: "2026-08"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Full-frame human activity excerpt. No added time scaling. Numeric marketing overlays are outside this interval; announced program scope remains separately qualified. Preparation interval: 59-68.5 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: gen15-human
+    title: "Human demonstration"
+    publisher: "Generalist"
+    source_url: "https://generalistai.com/blog/gen-1.5"
+    published: "2026-08"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Unchanged original archived with SHA-256. Source playback speed; capture speed is not independently verified. Human demonstrations are labelled as such in slide text. Published files are the prepared teaching excerpts."
+  - slug: gen15-robot
+    title: "Robot execution"
+    publisher: "Generalist"
+    source_url: "https://generalistai.com/blog/gen-1.5"
+    published: "2026-08"
+    autonomy: "claimed"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Unchanged original archived with SHA-256. Source playback speed; capture speed is not independently verified. Human demonstrations are labelled as such in slide text. Published files are the prepared teaching excerpts."
+  - slug: dyna-human
+    title: "Human pretraining footage"
+    publisher: "Dyna Robotics"
+    source_url: "https://www.dyna.co/dyna-2#fig-4"
+    published: "2026-08"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Unchanged original archived with SHA-256. Source playback speed; capture speed is not independently verified. Human demonstrations are labelled as such in slide text. Published files are the prepared teaching excerpts."
+  - slug: dreamdojo-generated-futures
+    title: "DreamDojo generated robot futures"
+    publisher: "NVIDIA GEAR"
+    source_url: "https://dreamdojo-world.github.io/"
+    published: "2026-02"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Official generated-video demonstration, full-frame 2-10s excerpt. Not filmed robot execution. Source playback speed retained; source includes action-curve overlay. Original archived, no public reuse licence asserted. Preparation interval: 2-10 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: genie3-navigation
+    title: "Genie 3 interactive generated world"
+    publisher: "Google DeepMind"
+    source_url: "https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/"
+    published: "2025-08"
+    autonomy: "unknown"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Official recording of interaction in a generated world. Full-frame 1-11s at source speed with original keyboard overlay. Asset genie_modelling_physical_properties_1_MNInndd.mp4. Not real-world footage. Preparation interval: 1-11 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: vjepa2-robot-execution
+    title: "Robot execution using a world model"
+    publisher: "Meta FAIR, V-JEPA 2"
+    source_url: "https://ai.meta.com/blog/v-jepa-2-world-model-benchmarks/"
+    published: "2025-06"
+    autonomy: "autonomous"
+    speed: "source"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Observed robot execution from official Meta footage, not decoded predicted frames. Shows grasp, lift and transport; ends before placement. No added acceleration; physical capture speed not stated. Preparation interval: 24.1-29.1 seconds in the archived source. Published files are the prepared teaching excerpts."
+  - slug: lewm-pusht-planning
+    title: "LeWorldModel planning in simulation"
+    publisher: "Maes et al."
+    source_url: "https://le-wm.github.io/"
+    published: "2026-03"
+    autonomy: "unknown"
+    speed: "source, 4 loops"
+    keep_audio: false
+    caption: "none"
+    licence_note: "Original project Push-T planning GIF shown four times at its original frame timing, converted to H.264. Full source frames preserved. Left is simulated planning rollout; right is visual goal. Not a real robot or decoded prediction movie. Original GIF, project HTML and repository revision are archived. Preparation interval: 0-6.8 seconds in the archived source. Published files are the prepared teaching excerpts."

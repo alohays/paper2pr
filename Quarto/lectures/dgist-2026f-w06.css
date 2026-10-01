@@ -1,0 +1,104 @@
+@import url("dgist-2026f-w06-fonts.css");
+.reveal .visual-stack { width: 100%; }
+.reveal .visual-stack > div { width: 100%; }
+.reveal .visual-stack .fragment { transition: none; }
+.reveal .visual-stack figure.chart-figure { margin: 0; }
+.reveal .visual-stack .chart-figure > svg { width: 100%; height: auto; }
+.reveal .slides > section .footnote { max-width: calc(100% - 112px); }
+
+.reveal .source-stack {width:100%}
+.reveal .source-stack > div {width:100%}
+.reveal .source-stack .fragment {transition:none}
+.reveal .source-image {max-width:100%;max-height:490px;object-fit:contain;width:auto;margin:0 auto}
+.reveal .source-stack figure {margin:0 auto}
+.reveal .source-video video.video-inline {max-height:450px;width:auto;max-width:100%;object-fit:contain}
+.reveal .source-stack .columns {width:100%;align-items:center}
+.reveal .source-stack .column img {max-height:400px;max-width:100%;object-fit:contain}
+.reveal .prediction-pair {display:grid;grid-template-columns:170px 1fr;gap:18px;width:100%;align-items:center}
+.reveal .prediction-pair .row-labels {height:420px;display:grid;grid-template-rows:1fr 1fr;align-items:center}
+.reveal .prediction-image {height:420px;width:100%;object-fit:contain;max-width:100%}
+
+.reveal .source-stack .focus-image {max-height:415px}
+
+.reveal .source-video video.video-inline {aspect-ratio:auto}
+
+.reveal .visual-stack { width: 100%; }
+.reveal .visual-stack > div { width: 100%; }
+.reveal .visual-stack .fragment { transition: none; }
+.reveal .visual-stack figure.chart-figure { margin: 0; }
+.reveal .visual-stack .chart-figure > svg { width: 100%; height: auto; }
+.reveal .slides > section .footnote { max-width: calc(100% - 112px); }
+.reveal .original-page { height: 486px; display: flex; align-items: center; justify-content: center; }
+.reveal .original-page p { margin: 0; }
+.reveal .original-page img { display: block; width: auto; max-width: 100%; height: 486px; object-fit: contain; margin: 0 auto; }
+
+/* Source figures with a native teaching cue reserve a clear attribution band. */
+.reveal .figure-with-line .source-image { max-height: 410px; }
+.reveal .legend-blue { color: #2558a4; }
+.reveal .legend-green { color: #27613b; }
+.reveal #p28 video.video-inline { height: 450px; max-height: 450px; }
+.reveal .source-stack .focus-pair { max-height: 415px; }
+.reveal .source-stack .focus-branch { max-height: 370px; width: 100%; }
+.reveal .source-stack > .fragment > p { text-align: center; }
+.reveal .source-stack .paired-cue { width: 844px; max-width: 100%; margin: 0 auto; }
+.reveal .paired-cue .column p, .reveal #p11 .column p { text-align: center; }
+
+/* Fragment state changes are immediate so a departing clip pauses at the click. */
+.reveal .slides section .visual-stack .fragment { transition: none; }
+
+.reveal #p40 .ego-exo-labels { width: 100%; margin: 0 auto; }
+.reveal #p40 .ego-exo-labels .column p { text-align: center; }
+.reveal #p40 video.video-inline { width: 100%; max-height: 420px; }
+.reveal #p43 .source-video video.video-inline,
+.reveal #p45 .source-video video.video-inline { max-height: 410px; }
+.reveal #p40 .ego-exo-labels { gap: 0; }
+.reveal #p40 .ego-exo-labels > .column:first-child { flex: 0 0 36%; width: 36%; }
+.reveal #p40 .ego-exo-labels > .column:last-child { flex: 0 0 64%; width: 64%; }
+
+/* The five fixed stops repeat at chapter boundaries; numbering also carries position. */
+.reveal .lecture-route { width: 100%; }
+.reveal .lecture-route p { margin: 0; }
+.reveal .route-position { color: #002b70; font-weight: 600; text-align: center; }
+.reveal .route-stops { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; position: relative; margin: 26px 0 48px; }
+.reveal .route-stops::before { content: ""; position: absolute; top: 29px; left: 10%; right: 10%; height: 3px; background: #b5c0cf; }
+.reveal .route-stop { position: relative; text-align: center; color: #5a6575; }
+.reveal .route-number { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; margin: 0 auto 20px; border: 3px solid #b5c0cf; border-radius: 50%; background: #fff; box-sizing: border-box; font-weight: 600; }
+.reveal .route-stop p { line-height: 1.22; text-align: center; }
+.reveal .route-stop.done { color: #002b70; }
+.reveal .route-stop.done .route-number { background: #002b70; border-color: #002b70; color: white; }
+.reveal .route-stop.current { color: #002b70; font-weight: 700; }
+.reveal .route-stop.current p { font-weight: 600; }
+.reveal .route-stop.current .route-number { background: #e8bc52; border-color: #e8bc52; color: #002b70; }
+.reveal .route-bridge p { text-align: center; }
+.reveal .route-bridge .route-question { margin-top: 18px; color: #002b70; font-weight: 600; }
+
+/* Full original source frames remain intact, selected with native viewports. */
+.reveal .prediction-frame { width: 280px; height: 280px; overflow: hidden; position: relative; flex: none; margin: 0 auto; }
+.reveal .prediction-frame img { position: absolute; display: block; width: 400%; height: 200%; max-width: none; max-height: none; margin: 0; top: 0; left: 0; }
+.reveal .prediction-frame.frame-closed img { left: -300%; }
+.reveal .prediction-frame.frame-open img { left: -300%; top: -100%; }
+.reveal .prediction-frame .cup-ring { position: absolute; border: 4px solid #ffd166; border-radius: 50%; width: 16%; height: 24%; left: 33.5%; top: 40%; box-sizing: border-box; }
+.reveal .prediction-frame.frame-open .cup-ring { left: 33%; top: 66%; width: 20%; height: 30%; }
+.reveal .prediction-frame.frame-start .cup-ring { left: 32%; top: 68%; width: 18%; height: 26%; }
+.reveal .prediction-question-layout { display: grid; grid-template-columns: 420px 1fr; align-items: center; gap: 48px; width: 100%; }
+.reveal .prediction-start p { margin: 0 0 18px; text-align: center; }
+.reveal .prediction-start .prediction-frame { width: 360px; height: 360px; }
+.reveal .prediction-prompt p { margin: 0 0 24px; text-align: left; }
+.reveal .prediction-prompt .prediction-key { color: #002b70; font-weight: 700; }
+.reveal .prediction-comparison-content { width: 100%; }
+.reveal .prediction-comparison-content p { margin: 0; text-align: center; }
+.reveal .prediction-context { margin-bottom: 14px !important; }
+.reveal .prediction-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.reveal .prediction-action { margin-bottom: 10px !important; font-weight: 600; }
+.reveal .prediction-result { margin-top: 10px !important; color: #002b70; font-weight: 700; }
+.reveal .prediction-status { margin-top: 16px !important; }
+
+/* Reserve room for the source and teaching labels on the added video states. */
+.reveal #p29 .capture-transfer-video video.video-inline { max-height: 405px; }
+.reveal #route-4 .route-video video.video-inline { height: 405px; max-height: 405px; width: auto; max-width: 100%; object-fit: contain; }
+
+/* Chapter-five source clips share a stable frame with room for their provenance. */
+.reveal section[data-chapter="chapter-5"] .wm-video video.video-inline { height: 405px; max-height: 405px; width: auto; max-width: 100%; object-fit: contain; }
+
+.reveal #p45-latent .wm-panel-labels { display: grid; grid-template-columns: 1fr 1fr; width: 704px; max-width: 100%; margin: 0 auto 6px; text-align: center; }
+.reveal #p45-latent .wm-lewm-video video.video-inline { height: 352px; max-height: 352px; }

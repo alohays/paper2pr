@@ -1,0 +1,46 @@
+profile: lecture
+title: "Action as a New Modality and the Scaling of Robot Learning Data"
+audience:
+  assumes: none
+  size: "93"
+  description: First-year undergraduates with almost no AI background; comfortable with Korean-English mixed speech and original English technical terms when concepts are explained clearly
+  prior: Brief exposure to embodied AI in W02 and video/world models in W03; no assumed knowledge of language-model training or scaling
+delivery: in-person
+duration_min: 60
+video_min: 2.2
+qa_min: 9
+language:
+  slides: en
+  notes: ko
+  korean_allowance: 0
+series: dgist-2026f
+series_index: 6
+sources:
+  - https://www.youtube.com/watch?v=3gb-ZkVRemQ
+  - https://cvg.ethz.ch/lectures/Robot-Learning/
+  - https://arxiv.org/abs/2502.13923
+  - https://arxiv.org/abs/2503.20215
+  - https://cs224r.stanford.edu/spring_2025/slides/01_cs224r_intro_2025.pdf
+  - https://umi-gripper.github.io/
+  - https://www.sunday.ai/technology
+  - https://www.sunday.ai/blog/no-robot-data
+  - https://www.youtube.com/watch?v=g80ruOmVEVE
+  - https://archive.org/details/pk-pov-caffeinated-lineal
+  - https://rwr.ethz.ch/slides/2025/2025-Unit07-Data_Davidev2.pdf
+  - https://huggingface.co/blog/LightwheelAI/egosuite-open100k
+  - https://generalistai.com/blog/gen-1
+  - https://generalistai.com/blog/gen-1.5
+  - https://www.dyna.co/dyna-2
+  - https://latentactionpretraining.github.io/
+  - https://arxiv.org/abs/2506.09985
+  - https://hyeongminlee.github.io/slides/video-world-models-2026/
+  - https://doi.org/10.1152/physrev.00048.2011
+  - https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0155442
+  - https://ego4d-data.org/
+  - https://dreamdojo-world.github.io/
+  - https://arxiv.org/abs/2602.06949
+  - https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/
+  - https://ai.meta.com/research/vjepa/
+  - https://le-wm.github.io/
+  - https://arxiv.org/abs/2603.19312
+  - https://alohays.github.io/teaching/dgist-hss118-2026f/w06-sources/
