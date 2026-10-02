@@ -17,7 +17,7 @@ bibliography: ../../Bibliography_base.bib
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w06/visuals/teaching-visuals/remaining-sections/assets/01-title.svg width="100%" >}}
 
 ::: {.footnote}
-{{< series-field course >}} · {{< series-field code >}}
+{{< series-field course >}} · {{< series-field code >}}<br>AI: Artificial Intelligence
 :::
 
 
@@ -42,7 +42,7 @@ Course series: DGIST HSS118, Fall 2026
 ## How this course runs {#p04 data-chapter="intro" data-seconds="10"}
 
 - Attendance: every session
-- Assignments and deadlines: the LMS
+- Assignments: the Learning Management System (LMS)
 - Questions: Wooclap throughout the lecture
 
 ::: {.footnote}
@@ -188,7 +188,7 @@ Original [Jason Wei, Stanford CS25 (2024), slide 13](https://www.youtube.com/wat
 ::::
 
 ::: {.footnote}
-Original [Hyung Won Chung, Stanford CS25 (2024), slide 7](https://www.youtube.com/watch?v=3gb-ZkVRemQ). Historical hardware cost/performance; qualitative takeaway follows.
+Original [Hyung Won Chung, Stanford CS25 (2024), slide 7](https://www.youtube.com/watch?v=3gb-ZkVRemQ). Historical hardware cost/performance; qualitative takeaway follows.<br>GPU: Graphics Processing Unit, a processor for parallel computation.
 :::
 
 
@@ -416,7 +416,7 @@ Own agent-environment schematic after [Stanford CS224R, Introduction (2025)](htt
 ::::
 
 ::: {.footnote}
-Original [Zhao et al., ALOHA (2023)](https://tonyzhaozh.github.io/aloha/). Teleoperated · Real-time excerpt.
+ALOHA: A Low-cost Open-source Hardware System for Bimanual Teleoperation.<br>Original [Zhao et al., ALOHA (2023)](https://tonyzhaozh.github.io/aloha/). Teleoperated · Real-time excerpt.
 :::
 
 
@@ -464,11 +464,11 @@ Adapted from [ETH Real-World Robotics (2025)](https://rwr.ethz.ch/slides/2025/20
 ::::
 
 ::: {.footnote}
-Collection workflow based on [ETH Real-World Robotics (2025)](https://rwr.ethz.ch/slides/2025/2025-Unit07-Data_Davidev2.pdf), p17, and [UMI (2024), section VII](https://arxiv.org/html/2402.10329v1#S7). © Robert Katzschmann.
+Collection workflow based on [ETH Real-World Robotics (2025)](https://rwr.ethz.ch/slides/2025/2025-Unit07-Data_Davidev2.pdf), p17, and [Universal Manipulation Interface (UMI, 2024), section VII](https://arxiv.org/html/2402.10329v1#S7). © Robert Katzschmann.
 :::
 
 
-## Carry the gripper {#p28 data-chapter="chapter-3" data-seconds="90"}
+## UMI: Universal Manipulation Interface {#p28 data-chapter="chapter-3" data-seconds="90"}
 
 :::: {.r-stack .visual-stack .source-stack}
 ::: {.fragment .fade-out fragment-index="0"}
@@ -543,7 +543,7 @@ Original [UMI project montage (2024)](https://umi-gripper.github.io/). Human col
 ```
 :::
 ::: {.fragment .current-visible fragment-index="0"}
-Human activity from a first-person view
+Egocentric video = first-person view
 
 {{< video-card parkour-human-pov class="source-video route-video" >}}
 :::
