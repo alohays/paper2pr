@@ -1,0 +1,22 @@
+<svg id="w09-vla-learning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-vla-learning-title w09-vla-learning-desc"><title id="w09-vla-learning-title">A common VLA learning recipe</title><desc id="w09-vla-learning-desc">Vision-language pretraining and robot observation-instruction-action data support a VLA. Action output can be tokenized or continuous, depending on the design. This is a learning recipe, not a universal architecture.</desc>
+<defs><marker id="w09-vla-learning-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#012169"/></marker><marker id="w09-vla-learning-gold-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#B9975B"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<rect x="36" y="62" width="355" height="118" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="213.5" y="118.0" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" fill="#012169">Vision + language</text>
+<text x="213.5" y="156.0" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#56606E">Pretraining</text>
+<rect x="36" y="247" width="355" height="118" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="213.5" y="303.0" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" fill="#012169">Robot data</text>
+<text x="213.5" y="341.0" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#56606E">Image, task, action</text>
+<path d="M 391 121 L 439 121 L 439 211 L 484 211" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vla-learning-arrow)"/>
+<path d="M 391 306 L 439 306 L 439 211" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="494" y="156" width="207" height="110" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="597.5" y="225.0" font-family="Arial, sans-serif" font-size="48" font-weight="600" text-anchor="middle" fill="#012169">VLA</text>
+<text x="941" y="43" font-family="Arial, sans-serif" font-size="36" font-weight="600" text-anchor="middle" fill="#012169">Output choices</text>
+<rect x="812" y="84" width="330" height="105" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="977.0" y="150.5" font-family="Arial, sans-serif" font-size="36" font-weight="600" text-anchor="middle" fill="#012169">Action codes</text>
+<rect x="812" y="239" width="330" height="105" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="977.0" y="305.5" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Continuous values</text>
+<path d="M 701 211 L 756 211 L 756 137 L 802 137" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vla-learning-arrow)"/>
+<path d="M 756 211 L 756 292 L 802 292" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vla-learning-arrow)"/>
+<text x="584" y="416" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#56606E">A common recipe; architectures vary</text>
+</svg>

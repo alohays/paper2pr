@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-dagger-label" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-dagger-label-title w09-dagger-label-desc"><title id="w09-dagger-label-title">The expert labels the visited situation</title><desc id="w09-dagger-label-desc">Schematic: a photo of the coffee tool tilted in a situation the demonstrations never showed is sent to the expert, who supplies an action; the situation and action form a new training pair that is added to the data before retraining; the last state asks what happens if only a score is given instead of an action.</desc>
+<style>#w09-dagger-label text{font-family:inherit} #w09-dagger-label [data-panel-step]{visibility:hidden;opacity:0} #w09-dagger-label [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-dagger-label-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker><clipPath id="w09-dagger-label-clip"><rect x="30" y="72" width="430" height="242" rx="8"/></clipPath></defs>
+<rect width="1168" height="430" fill="white"/>
+<text x="245" y="56" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Situation the robot visited</text>
+<image href="../../Figures/lectures/dgist-2026f-w09/originals/coffee-scene.png" x="30" y="72" width="430" height="242" preserveAspectRatio="xMidYMid slice" clip-path="url(#w09-dagger-label-clip)"/>
+<rect x="30" y="72" width="430" height="242" rx="8" fill="none" stroke="#A8B1BE" stroke-width="2"/>
+<circle cx="234" cy="193" r="46" fill="none" stroke="#B9975B" stroke-width="4"/>
+<text x="245" y="350" font-size="30" text-anchor="middle" fill="#012169">The tool is tilted</text>
+<text x="535" y="140" font-size="26" text-anchor="middle" fill="#56606E">ask the</text>
+<text x="535" y="170" font-size="26" text-anchor="middle" fill="#56606E">expert</text>
+<path d="M470 196 L598 196" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-dagger-label-arrow)"/>
+<rect x="612" y="118" width="526" height="160" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="875" y="162" font-size="28" text-anchor="middle" fill="#56606E">Action supplied by the expert</text>
+<text x="875" y="212" font-size="36" font-weight="700" text-anchor="middle" fill="#012169">Adjust the grip before lifting</text>
+<text x="875" y="254" font-size="28" text-anchor="middle" fill="#9A7B3F">situation + action → new training pair</text>
+<path d="M875 286 L875 318" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-dagger-label-arrow)"/>
+<text x="875" y="350" font-size="30" text-anchor="middle" fill="#012169">Added to the data, then retrain</text>
+<g data-panel-step="0" class="is-active"><rect x="30" y="376" width="1108" height="46" rx="6" fill="#F2F3F5"/><text x="584" y="407" font-size="30" font-weight="600" text-anchor="middle" fill="#012169">Imitation: the expert supplies the action to copy</text></g>
+<g data-panel-step="1" class=""><rect x="30" y="376" width="1108" height="46" rx="6" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/><text x="584" y="407" font-size="30" font-weight="700" text-anchor="middle" fill="#012169">What if no one gives the action, only a score for how it went?</text></g>
+</svg>

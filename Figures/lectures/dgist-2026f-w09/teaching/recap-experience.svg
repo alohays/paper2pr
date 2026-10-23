@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-recap-experience" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-recap-experience-title w09-recap-experience-desc"><title id="w09-recap-experience-title">Layers of experience</title><desc id="w09-recap-experience-desc">Schematic of three layers of experience, from broad pretraining through coffee demonstrations to the robot's own attempts with expert corrections, with the last two tagged by the learning signals from chapter 2.</desc>
+<style>#w09-recap-experience text{font-family:inherit} #w09-recap-experience [data-panel-step]{visibility:hidden;opacity:0} #w09-recap-experience [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-recap-experience-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<rect x="30" y="40" width="740" height="96" rx="8" fill="#F7F8FA" stroke="#D7DCE3" stroke-width="2"/>
+<text x="60" y="82" font-size="34" font-weight="700" fill="#012169">Broad pretraining</text>
+<text x="60" y="118" font-size="28" fill="#56606E">Many robots, many tasks</text>
+<g fill="#F7F8FA" stroke="#012169" stroke-width="3" stroke-linejoin="round"><rect x="683" y="56" width="40" height="40" rx="4"/><rect x="695" y="68" width="40" height="40" rx="4"/><rect x="707" y="80" width="40" height="40" rx="4"/></g>
+<path d="M400 136 V156" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-recap-experience-arrow)"/>
+<rect x="30" y="158" width="740" height="96" rx="8" fill="#F7F8FA" stroke="#D7DCE3" stroke-width="2"/>
+<text x="60" y="200" font-size="34" font-weight="700" fill="#012169">Coffee demonstrations</text>
+<text x="60" y="236" font-size="28" fill="#56606E">A person shows the task</text>
+<path d="M706 214 V180 A7 7 0 0 1 720 180 V206 H730 A7 7 0 0 1 737 213 V232 A10 10 0 0 1 727 242 H706 A10 10 0 0 1 696 232 V226 L688 219 A5 5 0 0 1 696 212 L706 222 Z M712 226 H728 M712 234 H728" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M400 254 V274" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-recap-experience-arrow)"/>
+<rect x="30" y="276" width="740" height="96" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="60" y="318" font-size="34" font-weight="700" fill="#012169">The robot's own attempts</text>
+<text x="60" y="354" font-size="28" fill="#56606E">Successes, failures, expert corrections</text>
+<path d="M729 299.8 A28 28 0 1 1 701 299.8" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-recap-experience-arrow)"/>
+<rect x="852" y="184" width="236" height="44" rx="22" fill="white" stroke="#B9975B" stroke-width="2"/>
+<text x="970" y="216" font-size="28" font-weight="600" text-anchor="middle" fill="#9A7B3F">Imitation (ch. 2)</text>
+<rect x="817" y="278" width="306" height="44" rx="22" fill="white" stroke="#B9975B" stroke-width="2"/>
+<text x="970" y="310" font-size="28" font-weight="600" text-anchor="middle" fill="#9A7B3F">Outcomes → RL (ch. 2)</text>
+<rect x="792" y="330" width="356" height="44" rx="22" fill="white" stroke="#B9975B" stroke-width="2"/>
+<text x="970" y="362" font-size="28" font-weight="600" text-anchor="middle" fill="#9A7B3F">Corrections → DAgger idea</text>
+<text x="584" y="410" font-size="30" font-weight="600" text-anchor="middle" fill="#012169">New here: the robot learns from what it did itself</text>
+</svg>

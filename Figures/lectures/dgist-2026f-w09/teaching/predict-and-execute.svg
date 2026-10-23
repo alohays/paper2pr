@@ -1,0 +1,21 @@
+<svg id="w09-predict-and-execute" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-predict-and-execute-title w09-predict-and-execute-desc"><title id="w09-predict-and-execute-title">Predict a sequence and execute a prefix</title><desc id="w09-predict-and-execute-desc">A policy predicts several future actions. Execute only a short prefix, get a new observation and predict a new sequence. Prediction horizon and execution horizon are distinct.</desc>
+<defs><marker id="w09-predict-and-execute-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#012169"/></marker><marker id="w09-predict-and-execute-gold-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#B9975B"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<text x="584" y="55" font-family="Arial, sans-serif" font-size="40" font-weight="600" text-anchor="middle" fill="#012169">Predicted action sequence</text>
+<rect x="202" y="120" width="93" height="83" rx="4" fill="#FAF5EB" stroke="#B9975B" stroke-width="3"/>
+<rect x="318" y="120" width="93" height="83" rx="4" fill="#FAF5EB" stroke="#B9975B" stroke-width="3"/>
+<rect x="434" y="120" width="93" height="83" rx="4" fill="#FAF5EB" stroke="#B9975B" stroke-width="3"/>
+<rect x="550" y="120" width="93" height="83" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="3"/>
+<rect x="666" y="120" width="93" height="83" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="3"/>
+<rect x="782" y="120" width="93" height="83" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="3"/>
+<rect x="898" y="120" width="93" height="83" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="3"/>
+<rect x="1014" y="120" width="93" height="83" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="3"/>
+<text x="94" y="168" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#012169">Now</text>
+<path d="M 202 229 L 202 248 L 527 248 L 527 229" fill="none" stroke="#B9975B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="364" y="297" font-family="Arial, sans-serif" font-size="36" font-weight="600" text-anchor="middle" fill="#012169">Execute prefix</text>
+<text x="865" y="279" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#56606E">Later actions</text>
+<text x="865" y="319" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#56606E">can be replanned</text>
+<path d="M 364 310 L 364 364 L 132 364 L 132 162 L 190 162" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-predict-and-execute-arrow)"/>
+<rect x="277.88" y="343" width="612.24" height="46" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0"/>
+<text x="584" y="377" font-family="Arial, sans-serif" font-size="34" font-weight="400" text-anchor="middle" fill="#111111">Observe again and predict again</text>
+</svg>
