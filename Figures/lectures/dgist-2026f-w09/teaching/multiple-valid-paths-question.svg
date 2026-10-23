@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-multiple-valid-paths-question" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-multiple-valid-paths-question-title w09-multiple-valid-paths-question-desc"><title id="w09-multiple-valid-paths-question-title">Two valid routes around an obstacle</title><desc id="w09-multiple-valid-paths-question-desc">Two illustrative paths avoid the obstacle above and below. The average is deliberately not displayed so the audience can think about it before the answer is revealed.</desc>
+<defs><marker id="w09-multiple-valid-paths-question-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#012169" /></marker><marker id="w09-multiple-valid-paths-question-gold-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#B9975B" /></marker></defs>
+<rect width="1168" height="430" fill="white" />
+<text x="584" y="45" font-family="Arial, sans-serif" font-size="40" font-weight="600" text-anchor="middle" fill="#012169">Two valid paths</text>
+<rect x="504" y="146" width="160" height="142" rx="4" fill="#F2F3F5" stroke="#8F98A6" stroke-width="2" />
+<path d="M 174 216 C 330 216 340 91 584 91 C 828 91 838 216 994 216" fill="none" stroke="#012169" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-multiple-valid-paths-question-arrow)" />
+<path d="M 174 216 C 330 216 340 341 584 341 C 828 341 838 216 994 216" fill="none" stroke="#012169" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-multiple-valid-paths-question-arrow)" />
+<circle cx="150" cy="216" r="24" fill="#FFFFFF" stroke="#012169" stroke-width="4" />
+<circle cx="1018" cy="216" r="24" fill="#012169" stroke="#012169" stroke-width="4" />
+<text x="584" y="272" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#111111">Obstacle</text>
+<text x="150" y="292" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#111111">Start</text>
+<text x="1018" y="292" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#111111">Goal</text>
+<text x="584" y="413" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#56606E">Illustrative example</text>
+</svg>

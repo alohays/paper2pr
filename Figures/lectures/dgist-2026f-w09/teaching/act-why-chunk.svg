@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-act-why-chunk" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-act-why-chunk-title w09-act-why-chunk-desc"><title id="w09-act-why-chunk-title">ACT predicts a chunk of future joint targets, and three reasons why</title><desc id="w09-act-why-chunk-desc">Schematic: eight blank cells stand for a chunk of k = 100 joint targets; they carry no values and are not drawn to time scale, and temporal ensembling is not shown.</desc>
+<style>#w09-act-why-chunk text{font-family:inherit} #w09-act-why-chunk [data-panel-step]{visibility:hidden;opacity:0} #w09-act-why-chunk [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-act-why-chunk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<rect x="30" y="47" width="270" height="90" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="165" y="84" font-size="34" fill="#012169" font-weight="600" text-anchor="middle">Images</text>
+<text x="165" y="121" font-size="30" fill="#012169" text-anchor="middle">+ robot state</text>
+<path d="M 302 92 L 340 92" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-why-chunk-arrow)"/>
+<rect x="350" y="47" width="140" height="90" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="420" y="107" font-size="44" fill="#012169" font-weight="700" text-anchor="middle">ACT</text>
+<path d="M 492 92 L 550 92" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-why-chunk-arrow)"/>
+<text x="560" y="48" font-size="30" fill="#012169" font-weight="600" text-anchor="start">One prediction: a chunk of <tspan font-style="italic">k</tspan> joint targets</text>
+<rect x="560" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="632" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="704" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="776" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="848" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="920" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="992" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<rect x="1064" y="64" width="64" height="56" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<text x="560" y="148" font-size="26" fill="#56606E" text-anchor="start"><tspan font-style="italic">k</tspan> = 100 targets = 2 s at 50 Hz (one every 20 ms)</text>
+<g data-panel-step="0" class="is-active">
+<text x="584" y="300" font-size="28" fill="#56606E" text-anchor="middle">Why predict a chunk instead of one step?</text>
+</g>
+<g data-panel-step="1" class="">
+<rect x="30" y="176" width="344" height="230" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="202" y="220" font-size="32" fill="#012169" font-weight="700" text-anchor="middle">Fewer decisions</text>
+<text x="202" y="262" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> targets per prediction,</text>
+<text x="202" y="298" font-size="28" fill="#012169" text-anchor="middle">so small errors pile up</text>
+<text x="202" y="334" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> times more slowly</text>
+<text x="202" y="380" font-size="28" fill="#9A7B3F" font-weight="700" text-anchor="middle">Success 1% → 44% (sim.)</text>
+</g>
+<g data-panel-step="2" class="">
+<rect x="30" y="176" width="344" height="230" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="202" y="220" font-size="32" fill="#012169" font-weight="700" text-anchor="middle">Fewer decisions</text>
+<text x="202" y="262" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> targets per prediction,</text>
+<text x="202" y="298" font-size="28" fill="#012169" text-anchor="middle">so small errors pile up</text>
+<text x="202" y="334" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> times more slowly</text>
+<text x="202" y="380" font-size="28" fill="#9A7B3F" font-weight="700" text-anchor="middle">Success 1% → 44% (sim.)</text>
+<rect x="412" y="176" width="344" height="230" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="584" y="220" font-size="30" fill="#012169" font-weight="700" text-anchor="middle">Keeps human rhythm</text>
+<text x="584" y="262" font-size="28" fill="#012169" text-anchor="middle">Pauses and linked</text>
+<text x="584" y="298" font-size="28" fill="#012169" text-anchor="middle">motions are learned</text>
+<text x="584" y="334" font-size="28" fill="#012169" text-anchor="middle">together, not per step</text>
+</g>
+<g data-panel-step="3" class="">
+<rect x="30" y="176" width="344" height="230" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="202" y="220" font-size="32" fill="#012169" font-weight="700" text-anchor="middle">Fewer decisions</text>
+<text x="202" y="262" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> targets per prediction,</text>
+<text x="202" y="298" font-size="28" fill="#012169" text-anchor="middle">so small errors pile up</text>
+<text x="202" y="334" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> times more slowly</text>
+<text x="202" y="380" font-size="28" fill="#9A7B3F" font-weight="700" text-anchor="middle">Success 1% → 44% (sim.)</text>
+<rect x="412" y="176" width="344" height="230" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="584" y="220" font-size="30" fill="#012169" font-weight="700" text-anchor="middle">Keeps human rhythm</text>
+<text x="584" y="262" font-size="28" fill="#012169" text-anchor="middle">Pauses and linked</text>
+<text x="584" y="298" font-size="28" fill="#012169" text-anchor="middle">motions are learned</text>
+<text x="584" y="334" font-size="28" fill="#012169" text-anchor="middle">together, not per step</text>
+<rect x="794" y="176" width="344" height="230" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="966" y="220" font-size="32" fill="#012169" font-weight="700" text-anchor="middle">One answer, <tspan font-style="italic">k</tspan> steps</text>
+<text x="966" y="262" font-size="28" fill="#012169" text-anchor="middle">A large network answers</text>
+<text x="966" y="298" font-size="28" fill="#012169" text-anchor="middle">slowly, but motors need</text>
+<text x="966" y="334" font-size="28" fill="#012169" text-anchor="middle">a target every 20 ms</text>
+</g>
+</svg>

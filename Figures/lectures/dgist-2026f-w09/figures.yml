@@ -1,0 +1,319 @@
+# Source credits must be visible wherever a figure appears.
+figures:
+  - file: "originals/coffee-scene.png"
+    source: "Physical Intelligence, 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/rma-scene.png"
+    source: "Kumar et al., 2021"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/navigation-scene.png"
+    source: "X-NavDP, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/observation-action-loop.png"
+    source: "UC Berkeley CS188, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/mae-coffee.png"
+    source: "He et al., 2022"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/imitation-distribution-shift.png"
+    source: "Stanford CS224R, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/reward-loop.png"
+    source: "MIT 6.S191, 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/aloha-teleop-frame.png"
+    source: "Zhao et al., 2023"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/act-architecture.png"
+    source: "Zhao et al., 2023"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/dp-horizon.png"
+    source: "Chi et al., 2023"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/dp-multimodal.png"
+    source: "Chi et al., 2023"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/openvla-architecture.png"
+    source: "Kim et al., 2024"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/pi0-architecture.png"
+    source: "Black et al., 2024"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/recap-value-coffee.png"
+    source: "Physical Intelligence, 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/recap-espresso-throughput.png"
+    source: "Physical Intelligence, 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/vjepa-counterfactual.png"
+    source: "Assran et al., 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/model-predictive-control.png"
+    source: "Stanford CS231n, 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/dreamzero-architecture.png"
+    source: "DreamZero, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/internw0-inference.png"
+    source: "InternW0-Delta, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/hierarchical-policy.png"
+    source: "Stanford CS224R, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/hirobot-architecture.png"
+    source: "Hi Robot, 2025"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/pyrua-architecture.png"
+    source: "PyRUA-Lean, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+  - file: "originals/pyrua-moka-recovery.png"
+    source: "PyRUA-Lean, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true
+
+  - file: teaching/action-chunk-single.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/action-chunks.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/behavior-cloning.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/coffee-task-families.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/dagger.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/diffusion-actions.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/dreamzero-inference.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/dual-system.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/experience-learning-action.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/feedback-loop.svg
+    source: UC Berkeley CS188
+    licence: Educational teaching adaptation; original preserved separately
+    third_party: true
+
+  - file: teaching/multiple-valid-paths-question.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/multiple-valid-paths.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/predict-and-execute.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/recap-learning-loop.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/reinforcement-learning.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/vla-learning.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/world-action-model.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/world-model-planning.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/physicalrsi-control.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/astra-control.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/vpp2-control.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: originals/ddpm-process-original.png
+    source: Ho et al., 2020
+    licence: Educational quotation of the unchanged original author-hosted DDPM process figure
+    third_party: true
+
+  - file: teaching/chunk-clock.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/chunk-ensemble.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/diffusion-learn-sample.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/diffusion-action-denoising.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/chunk-receding.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/chunk-latency.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/chunk-async.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/chunk-continuity.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/reusable-skills.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/research-directions.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/recover-and-learn.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/replan-subgoal.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: originals/stanford-policy-world-models.png
+    source: Yunzhu Li, Stanford CS231n, 2025
+    licence: Educational quotation of original diagram from slide 96; only surrounding title and footer cropped
+    third_party: true
+
+  - file: originals/bai-2026-action-modeling.png
+    source: Bai et al., 2026
+    licence: CC BY 4.0; unchanged original Figure 5 from arXiv 2512.22983v2
+    third_party: true
+
+  - file: teaching/dagger-label.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/delayed-reward.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/experience-records.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/act-why-chunk.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/act-vs-dp.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/vlm-to-vla.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/recap-experience.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: teaching/advantage-signal.svg
+    source: Own instructional diagram
+    licence: repo
+    third_party: false
+
+  - file: originals/pi07-desk-frame.png
+    source: "Physical Intelligence, 2026"
+    licence: "Local educational reference; original source rights retained."
+    third_party: true

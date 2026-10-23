@@ -133,7 +133,7 @@ sessions:
   - index: 9
     date: "2026-10-23"
     kind: lecture
-    title: "Methods for Learning Action: Imitation, Reinforcement Learning, and Diffusion Policies"
+    title: "From Experience to Action: How Robots Learn"
     presenter: Yunsung Lee
     deck: dgist-2026f-w09
   - index: 10

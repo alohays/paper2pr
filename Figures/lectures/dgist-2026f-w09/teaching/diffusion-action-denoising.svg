@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-diffusion-action-denoising" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-diffusion-action-denoising-title w09-diffusion-action-denoising-desc">
+<title id="w09-diffusion-action-denoising-title">Diffusion Policy refines a whole action chunk: the same eight future commands shown as numbers and as planned pusher positions on the push-T table</title>
+<desc id="w09-diffusion-action-denoising-desc">Schematic: the eight one-dimensional values and the dot paths on a stylised top view of the push-T table are illustrative, not model output or a recorded trajectory.</desc>
+<style>#w09-diffusion-action-denoising text{font-family:inherit} #w09-diffusion-action-denoising [data-panel-step]{visibility:hidden;opacity:0} #w09-diffusion-action-denoising [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-diffusion-action-denoising-axis-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#A8B1BE"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<text x="355.0" y="44" font-size="28" fill="#56606E" text-anchor="middle">Future commands, one number each (schematic)</text>
+<text x="30" y="84" font-size="26" fill="#61728a" text-anchor="start">Action 0</text>
+<text x="680" y="84" font-size="26" fill="#61728a" text-anchor="end">Action 7</text>
+<path d="M 130 76 L 580 76" fill="none" stroke="#A8B1BE" stroke-width="3" stroke-linecap="round" marker-end="url(#w09-diffusion-action-denoising-axis-arrow)"/>
+<text x="355.0" y="262" font-size="28" fill="#56606E" text-anchor="middle">Every update uses the same observation</text>
+<text x="355.0" y="310" font-size="28" fill="#012169" text-anchor="middle" font-weight="600">Each cell is where the pusher will be at that moment</text>
+<text x="355.0" y="404" font-size="26" fill="#56606E" text-anchor="middle">Columns are future robot time, not computation steps</text>
+<text x="926.0" y="44" font-size="28" fill="#56606E" text-anchor="middle">Top view of the push-T table</text>
+<rect x="712" y="62" width="428" height="312" rx="8" fill="#F7F8FA" stroke="#A8B1BE" stroke-width="2"/>
+<text x="926.0" y="404" font-size="26" fill="#56606E" text-anchor="middle">Dots = planned pusher positions</text>
+<g data-panel-step="0" class="is-active">
+<rect x="30" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="68.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.72</text>
+<rect x="112" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="150.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">-0.83</text>
+<rect x="194" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="232.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.55</text>
+<rect x="276" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="314.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">-0.63</text>
+<rect x="358" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="396.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.85</text>
+<rect x="440" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="478.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">-0.48</text>
+<rect x="522" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="560.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.92</text>
+<rect x="604" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="642.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">-0.35</text>
+<text x="355.0" y="215" font-size="36" fill="#012169" text-anchor="middle" font-weight="700">Random action candidate</text>
+<polyline points="980,112 775,344 1100,138 905,314 760,92 1010,292 870,82 1110,272" fill="none" stroke="#A8B1BE" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="980" cy="112" r="9" fill="#A8B1BE"/>
+<circle cx="775" cy="344" r="9" fill="#A8B1BE"/>
+<circle cx="1100" cy="138" r="9" fill="#A8B1BE"/>
+<circle cx="905" cy="314" r="9" fill="#A8B1BE"/>
+<circle cx="760" cy="92" r="9" fill="#A8B1BE"/>
+<circle cx="1010" cy="292" r="9" fill="#A8B1BE"/>
+<circle cx="870" cy="82" r="9" fill="#A8B1BE"/>
+<circle cx="1110" cy="272" r="9" fill="#A8B1BE"/>
+</g>
+<g data-panel-step="1" class="">
+<rect x="30" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="68.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.10</text>
+<rect x="112" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="150.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.52</text>
+<rect x="194" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="232.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">-0.13</text>
+<rect x="276" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="314.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.55</text>
+<rect x="358" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="396.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.12</text>
+<rect x="440" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="478.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.66</text>
+<rect x="522" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="560.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.23</text>
+<rect x="604" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="642.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.79</text>
+<text x="355.0" y="215" font-size="36" fill="#012169" text-anchor="middle" font-weight="700">Denoising update 1</text>
+<polyline points="1046,292 1039,235 1003,315 986,235 948,282 930,207 896,253 879,193" fill="none" stroke="#012169" stroke-width="3" stroke-opacity=".6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="1046" cy="292" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="1039" cy="235" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="1003" cy="315" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="986" cy="235" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="948" cy="282" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="930" cy="207" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="896" cy="253" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<circle cx="879" cy="193" r="9" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+</g>
+<g data-panel-step="2" class="">
+<rect x="30" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="68.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.13</text>
+<rect x="112" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="150.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.28</text>
+<rect x="194" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="232.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.45</text>
+<rect x="276" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="314.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.60</text>
+<rect x="358" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="396.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.50</text>
+<rect x="440" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="478.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.30</text>
+<rect x="522" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="560.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.27</text>
+<rect x="604" y="100" width="76" height="54" rx="5" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="642.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.22</text>
+<text x="355.0" y="215" font-size="36" fill="#012169" text-anchor="middle" font-weight="700">Denoising update 2</text>
+<polyline points="1046,290 1028,267 1010,248 974,225 948,235 913,252 888,245 856,264" fill="none" stroke="#012169" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="1046" cy="290" r="9" fill="#012169"/>
+<circle cx="1028" cy="267" r="9" fill="#012169"/>
+<circle cx="1010" cy="248" r="9" fill="#012169"/>
+<circle cx="974" cy="225" r="9" fill="#012169"/>
+<circle cx="948" cy="235" r="9" fill="#012169"/>
+<circle cx="913" cy="252" r="9" fill="#012169"/>
+<circle cx="888" cy="245" r="9" fill="#012169"/>
+<circle cx="856" cy="264" r="9" fill="#012169"/>
+</g>
+<g data-panel-step="3" class="">
+<rect x="30" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="68.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.15</text>
+<rect x="112" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="150.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.32</text>
+<rect x="194" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="232.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.49</text>
+<rect x="276" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="314.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.55</text>
+<rect x="358" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="396.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.48</text>
+<rect x="440" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="478.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.33</text>
+<rect x="522" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="560.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.23</text>
+<rect x="604" y="100" width="76" height="54" rx="5" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="642.0" y="137" font-size="28" fill="#012169" text-anchor="middle" font-weight="700">0.25</text>
+<text x="355.0" y="215" font-size="36" fill="#012169" text-anchor="middle" font-weight="700">Ready action chunk</text>
+<path d="M 1046 286 C 1043.5 281.5, 1037.5 266.7, 1031 259 C 1024.5 251.3, 1016.2 244.0, 1007 240 C 997.8 236.0, 986.2 235.2, 976 235 C 965.8 234.8, 956.0 237.2, 946 239 C 936.0 240.8, 926.0 243.7, 916 246 C 906.0 248.3, 896.2 251.0, 886 253 C 875.8 255.0, 860.2 257.2, 855 258" fill="none" stroke="#b9975b" stroke-width="5" stroke-linecap="round"/>
+<circle cx="1046" cy="286" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="1031" cy="259" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="1007" cy="240" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="976" cy="235" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="946" cy="239" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="916" cy="246" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="886" cy="253" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<circle cx="855" cy="258" r="9" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+</g>
+<path d="M 750 128 H 900 V 168 H 845 V 288 H 805 V 168 H 750 Z" fill="#D64545"/>
+<circle cx="1080" cy="300" r="14" fill="#012169"/>
+<text x="1080" y="344" font-size="26" fill="#56606E" text-anchor="middle">pusher</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-act-vs-dp" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-act-vs-dp-title w09-act-vs-dp-desc">
+<title id="w09-act-vs-dp-title">ACT and Diffusion Policy both turn the current observation into an action chunk, but generate it differently</title>
+<desc id="w09-act-vs-dp-desc">Schematic block diagram: ACT produces the chunk in one pass through its network, while Diffusion Policy starts from noise and repeats a denoising update K times; box sizes and spacing do not represent network size, compute or timing.</desc>
+<style>#w09-act-vs-dp text{font-family:inherit} #w09-act-vs-dp [data-panel-step]{visibility:hidden;opacity:0} #w09-act-vs-dp [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-act-vs-dp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<path d="M 520 30 L 520 340" stroke="#D7DCE3" stroke-width="2"/>
+<text x="180" y="52" font-size="40" fill="#012169" text-anchor="middle" font-weight="700">ACT</text>
+<text x="789" y="52" font-size="40" fill="#012169" text-anchor="middle" font-weight="700">Diffusion Policy</text>
+<rect x="70.0" y="70" width="220" height="62" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="180" y="112" font-size="32" fill="#012169" text-anchor="middle">Observation</text>
+<path d="M 180 135 L 180 164" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-vs-dp-arrow)"/>
+<path d="M 180 249 L 180 278" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-vs-dp-arrow)"/>
+<rect x="70.0" y="280" width="220" height="64" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="180" y="323" font-size="32" fill="#012169" text-anchor="middle">Action chunk</text>
+<rect x="679.0" y="70" width="220" height="62" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="789" y="112" font-size="32" fill="#012169" text-anchor="middle">Observation</text>
+<path d="M 789 135 L 789 164" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-vs-dp-arrow)"/>
+<path d="M 789 249 L 789 278" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-vs-dp-arrow)"/>
+<rect x="679.0" y="280" width="220" height="64" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="789" y="323" font-size="32" fill="#012169" text-anchor="middle">Action chunk</text>
+<rect x="50" y="166" width="260" height="80" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="180" y="200" font-size="30" fill="#012169" text-anchor="middle">One pass through</text>
+<text x="180" y="234" font-size="30" fill="#012169" text-anchor="middle">the network</text>
+<rect x="540" y="178" width="120" height="56" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="600.0" y="216" font-size="30" fill="#012169" text-anchor="middle">Noise</text>
+<path d="M 663 206.0 L 702.0 206.0" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-vs-dp-arrow)"/>
+<rect x="704.0" y="166" width="170" height="80" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="789" y="200" font-size="30" fill="#012169" text-anchor="middle">Denoising</text>
+<text x="789" y="234" font-size="30" fill="#012169" text-anchor="middle">update</text>
+<path d="M 876.0 184 C 928.0 174, 928.0 238, 880.0 230" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-act-vs-dp-arrow)"/>
+<text x="934.0" y="217" font-size="32" fill="#012169" text-anchor="start" font-weight="700">× K</text>
+<rect x="30" y="362" width="1108" height="50" rx="6" fill="#F2F3F5"/>
+<text x="584" y="397" font-size="30" fill="#012169" text-anchor="middle" font-weight="600">Both: a chunk of future commands, execute part of it, observe again</text>
+<g data-panel-step="0" class="is-active"></g>
+<g data-panel-step="1" class="">
+<text x="405.0" y="302" font-size="28" fill="#9A7B3F" text-anchor="middle">one answer</text>
+<text x="405.0" y="336" font-size="28" fill="#9A7B3F" text-anchor="middle">per observation</text>
+<text x="1027.0" y="302" font-size="28" fill="#9A7B3F" text-anchor="middle">K updates before</text>
+<text x="1027.0" y="336" font-size="28" fill="#9A7B3F" text-anchor="middle">the first command</text>
+</g>
+</svg>

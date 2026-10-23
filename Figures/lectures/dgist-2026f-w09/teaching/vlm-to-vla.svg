@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-vlm-to-vla" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-vlm-to-vla-title w09-vlm-to-vla-desc"><title id="w09-vlm-to-vla-title">A VLM answers in text; an action head turns it into a VLA</title><desc id="w09-vlm-to-vla-desc">Schematic: the photo is a real frame from a robot demonstration video, but the question, the text reply and the four action cells are illustrative, not recorded model output.</desc>
+<style>#w09-vlm-to-vla text{font-family:inherit} #w09-vlm-to-vla [data-panel-step]{visibility:hidden;opacity:0} #w09-vlm-to-vla [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-vlm-to-vla-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker><marker id="w09-vlm-to-vla-gold-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B9975B"/></marker><clipPath id="w09-vlm-to-vla-photo-clip"><rect x="50" y="44" width="360" height="202" rx="6"/></clipPath></defs>
+<rect width="1168" height="430" fill="white"/>
+<rect x="30" y="24" width="400" height="350" rx="8" fill="#F7F8FA" stroke="#A8B1BE" stroke-width="2"/>
+<image href="../../Figures/lectures/dgist-2026f-w09/originals/pi07-desk-frame.png" x="50" y="44" width="360" height="202" preserveAspectRatio="xMidYMid slice" clip-path="url(#w09-vlm-to-vla-photo-clip)"/>
+<rect x="50" y="266" width="360" height="88" rx="14" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="230" y="302" font-size="30" fill="#012169" text-anchor="middle">Which object is</text>
+<text x="230" y="338" font-size="30" fill="#012169" text-anchor="middle">the red marker?</text>
+<path d="M 432 215 L 490 215" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vlm-to-vla-arrow)"/>
+<rect x="500" y="160" width="200" height="110" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="600" y="232" font-size="48" fill="#012169" font-weight="700" text-anchor="middle">VLM</text>
+<text x="600" y="300" font-size="28" fill="#56606E" text-anchor="middle">the model behind</text>
+<text x="600" y="334" font-size="28" fill="#56606E" text-anchor="middle">ChatGPT, Claude</text>
+<path d="M 702 190 L 740 190" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vlm-to-vla-arrow)"/>
+<text x="948.0" y="122" font-size="26" fill="#56606E" text-anchor="middle">text out</text>
+<rect x="750" y="140" width="396" height="100" rx="14" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
+<text x="948.0" y="183" font-size="30" fill="#012169" text-anchor="middle">The red pen, left of</text>
+<text x="948.0" y="219" font-size="30" fill="#012169" text-anchor="middle">the calculator.</text>
+<g data-panel-step="0" class="is-active">
+<text x="584" y="420" font-size="30" fill="#012169" font-weight="600" text-anchor="middle">Image + text in, text out: a VLM</text>
+</g>
+<g data-panel-step="1" class="">
+<path d="M 702 245 C 724 245, 718 297, 740 297" fill="none" stroke="#B9975B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vlm-to-vla-gold-arrow)"/>
+<rect x="750" y="262" width="196" height="70" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="848.0" y="307" font-size="30" fill="#012169" font-weight="600" text-anchor="middle">Action head</text>
+<path d="M 948 297 L 990 297" fill="none" stroke="#B9975B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vlm-to-vla-gold-arrow)"/>
+<rect x="1000" y="269" width="32" height="56" rx="4" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<rect x="1038" y="269" width="32" height="56" rx="4" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<rect x="1076" y="269" width="32" height="56" rx="4" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<rect x="1114" y="269" width="32" height="56" rx="4" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="1073.0" y="356" font-size="26" fill="#56606E" text-anchor="middle">actions out</text>
+<text x="584" y="420" font-size="32" fill="#012169" font-weight="700" text-anchor="middle">VLM + action head = Vision-Language-Action (VLA)</text>
+</g>
+</svg>

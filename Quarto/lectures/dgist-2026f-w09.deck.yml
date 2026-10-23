@@ -1,0 +1,78 @@
+# Written by /new-deck. These are the premises the deck was built on;
+# every downstream tool reads them from here rather than guessing.
+#   quality_score.py  -> bullet budget and the profile's extra checks
+#   the Korean gate   -> whether non-English slides are allowed here,
+#                        and how much Hangul an English deck may carry
+#   write-speaker-notes -> which language the notes are in, and the
+#                        speaking minutes the script is budgeted on
+#   slide-excellence  -> audience, delivery, sources (review context)
+# Changing a value here changes how the deck is graded, so change it
+# when the premise changes, not to make a warning go away.
+profile: lecture
+title: "From Experience to Action: How Robots Learn"
+
+# audience.assumes, audience.size, audience.prior and delivery are
+# context for the review agents (slide-excellence reads them), not
+# consumed by the gate; the gate's budget and checks come from the
+# profile above.
+audience:
+  assumes: none    # none | practitioner | expert
+  size: "93"
+  description: First-year students with no robotics or machine-learning prerequisites
+  prior: W06 introduced robot data; all technical concepts are reintroduced here
+delivery: in-person    # in-person | remote | hybrid
+
+# Wall-clock minutes. video_min (clips playing without narration) and
+# qa_min (questions) are subtracted: the speaker-notes budget runs on
+# speaking_min = duration_min - video_min - qa_min.
+duration_min: 55  # Slide clock: 52 min 25 sec; includes presenter-stepped diagrams
+video_min: 1  # Rounded reserve for event-alignment pauses; narration overlaps clips
+qa_min: 0
+
+language:
+  slides: en
+  notes: ko
+  korean_allowance: 0
+  # korean_allowance: <n>  -- max Hangul characters on English slides
+  # (term glosses, Wooclap instructions). Omit to take the profile's
+  # default (lecture 300, others 0). Slides declared ko are not counted.
+
+# What the fact-check agent compares the slides against: paths or
+# URLs. Add to it as the deck grows.
+sources:
+  - "https://arxiv.org/html/2312.08782v3"
+  - "https://arxiv.org/html/2512.22983v2"
+  - "https://arxiv.org/html/2605.00080v1"
+  - "https://cs231n.stanford.edu/slides/2025/lecture_17.pdf"
+  - "https://huggingface.co/learn/robotics-course/en/unit0/1"
+  - "https://arxiv.org/abs/2304.13705"
+  - "https://arxiv.org/abs/2303.04137"
+  - "https://hojonathanho.github.io/diffusion/"
+  - "https://arxiv.org/abs/2506.07339"
+  - "https://robodojo-benchmark.com/leaderboard"
+  - "https://robodojo-benchmark.com/leaderboard/protocol"
+  - "https://mmlab.hk/research/PhysicalRSI"
+  - "https://arxiv.org/abs/2609.24170"
+  - "https://arxiv.org/abs/2610.10270"
+  - "https://proceedings.mlr.press/v155/pirk21a.html"
+  - "https://arxiv.org/abs/2504.16054"
+  - "https://arxiv.org/abs/2511.14759"
+  - "https://us.macmillan.com/books/9780374275631/thinkingfastandslow/"
+  - "https://static.cambridge.org/content/id/urn:cambridge.org:id:article:S0140525X00243434/resource/name/S0140525X00003435a.pdf"
+  - "https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/"
+  - "https://www.pi.website/blog/pi07"
+
+# The course series (Quarto/lectures/_series/<series>.yml) and this
+# deck's session in it. deckprofile.py resolves the session date,
+# title and the previous session from the series lock; the gate
+# names that session when the callback slide is missing;
+# build_landing.py groups the deck under the course.
+series: dgist-2026f
+series_index: 9
+
+# Two optional files next to this deck are read when they exist:
+#   Quarto/lectures/dgist-2026f-w09.forbidden.txt  (one term per line;
+#     any hit in visible slide text is a BLOCKER at the gate)
+#   Figures/lectures/dgist-2026f-w09/figures.yml  (file, source, licence,
+#     third_party per figure; third-party figures need their source on
+#     the slide)

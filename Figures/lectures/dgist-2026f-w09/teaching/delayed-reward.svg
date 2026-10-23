@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-delayed-reward" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-delayed-reward-title w09-delayed-reward-desc"><title id="w09-delayed-reward-title">The consequence can arrive later</title><desc id="w09-delayed-reward-desc">Schematic: three steps of the coffee task happen in order (grip the handle, move the tool, fit it into the machine) and the reward arrives only after the third; the last state shows that the grip chosen at step 1 decided the outcome at step 3, so learning must look at the rewards that follow.</desc>
+<style>#w09-delayed-reward text{font-family:inherit} #w09-delayed-reward [data-panel-step]{visibility:hidden;opacity:0} #w09-delayed-reward [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-delayed-reward-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker><marker id="w09-delayed-reward-axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#A8B1BE"/></marker><marker id="w09-delayed-reward-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B9975B"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<rect x="833" y="40" width="310" height="56" rx="20" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<text x="988" y="78" font-size="30" font-weight="700" text-anchor="middle" fill="#012169">Reward arrives here</text>
+<path d="M988 100 L988 114" fill="none" stroke="#B9975B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-delayed-reward-gold)"/>
+<rect x="30" y="120" width="300" height="110" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<rect x="434" y="120" width="300" height="110" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<rect x="838" y="120" width="300" height="110" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="180" y="186" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Grip the handle</text>
+<text x="584" y="186" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Move the tool</text>
+<text x="988" y="167" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Fit it into</text>
+<text x="988" y="205" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">the machine</text>
+<path d="M330 175 L424 175" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-delayed-reward-arrow)"/>
+<path d="M734 175 L828 175" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-delayed-reward-arrow)"/>
+<circle cx="36" cy="126" r="18" fill="#B9975B"/><text x="36" y="135" font-size="26" font-weight="700" text-anchor="middle" fill="white">1</text>
+<circle cx="440" cy="126" r="18" fill="#B9975B"/><text x="440" y="135" font-size="26" font-weight="700" text-anchor="middle" fill="white">2</text>
+<circle cx="844" cy="126" r="18" fill="#B9975B"/><text x="844" y="135" font-size="26" font-weight="700" text-anchor="middle" fill="white">3</text>
+<path d="M60 262 L1110 262" fill="none" stroke="#A8B1BE" stroke-width="2" stroke-linecap="round" marker-end="url(#w09-delayed-reward-axis)"/>
+<text x="60" y="292" font-size="26" text-anchor="start" fill="#56606E">earlier</text>
+<text x="1110" y="292" font-size="26" text-anchor="end" fill="#56606E">later</text>
+<g data-panel-step="0" class="is-active"><text x="584" y="345" font-size="30" font-weight="600" text-anchor="middle" fill="#012169">No reward yet while the first two choices are made</text><text x="584" y="400" font-size="28" text-anchor="middle" fill="#56606E">The score comes only when the tool fits, or jams</text></g>
+<g data-panel-step="1" class=""><path d="M988 232 L988 322 L180 322 L180 234" fill="none" stroke="#B9975B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12 10" marker-end="url(#w09-delayed-reward-gold)"/><text x="584" y="368" font-size="30" font-weight="700" text-anchor="middle" fill="#012169">The grip chosen at step 1 decided the outcome at step 3</text><text x="584" y="410" font-size="28" text-anchor="middle" fill="#56606E">Learn from the rewards that follow, not only the next moment</text></g>
+</svg>

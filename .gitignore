@@ -108,3 +108,9 @@ Quarto/_fixtures/**/shots/
 /quality_reports/plans/*dgist*w06*
 /quality_reports/reviews/*dgist*w06*
 /quality_reports/session_logs/*dgist*w06*
+
+# Private recording analysis and speaker-script audit derivatives.
+.local/dgist-w09-script-voice-2026-10-13/
+
+# W09 rehearsal evidence contains private speaker-note text and source snapshots.
+/.local/dgist-w09-*/

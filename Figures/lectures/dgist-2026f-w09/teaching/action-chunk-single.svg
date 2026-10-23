@@ -1,0 +1,30 @@
+<svg id="w09-action-chunk-single" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-action-chunk-single-title w09-action-chunk-single-desc"><title id="w09-action-chunk-single-title">ACT predicts a short sequence of joint targets</title><desc id="w09-action-chunk-single-desc">Images and current robot state enter ACT, which predicts a short sequence of joint-position targets. Four slots labelled Now, Next, Then and Later illustrate successive movement commands, not a semantic task plan. No numerical target values or measured timing are implied. Overlap and temporal ensembling are not introduced in this first diagram.</desc>
+<defs><marker id="w09-action-chunk-single-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#012169"/></marker><marker id="w09-action-chunk-single-gold-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#B9975B"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<rect x="28" y="134" width="257" height="152" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="156.5" y="192" font-family="Arial, sans-serif" font-size="40" font-weight="600" text-anchor="middle" fill="#012169">Images</text>
+<text x="156.5" y="247" font-family="Arial, sans-serif" font-size="34" font-weight="400" text-anchor="middle" fill="#012169">+ robot state</text>
+<rect x="385" y="163" width="155" height="108" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="462.5" y="231.0" font-family="Arial, sans-serif" font-size="44" font-weight="600" text-anchor="middle" fill="#012169">ACT</text>
+<path d="M 285 217 L 375 217" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-action-chunk-single-arrow)"/>
+<path d="M 540 217 L 618 217" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-action-chunk-single-arrow)"/>
+<text x="888" y="57" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" fill="#012169">Short action sequence</text>
+<text x="691" y="138" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#012169">Now</text>
+<rect x="630" y="163" width="122" height="108" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<text x="691" y="207" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Joint</text>
+<text x="691" y="247" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">target</text>
+<text x="821" y="138" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#012169">Next</text>
+<rect x="760" y="163" width="122" height="108" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<text x="821" y="207" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Joint</text>
+<text x="821" y="247" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">target</text>
+<text x="951" y="138" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#012169">Then</text>
+<rect x="890" y="163" width="122" height="108" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<text x="951" y="207" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Joint</text>
+<text x="951" y="247" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">target</text>
+<text x="1081" y="138" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#012169">Later</text>
+<rect x="1020" y="163" width="122" height="108" rx="4" fill="#F2F3F5" stroke="#A8B1BE" stroke-width="2"/>
+<text x="1081" y="207" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">Joint</text>
+<text x="1081" y="247" font-family="Arial, sans-serif" font-size="32" font-weight="600" text-anchor="middle" fill="#012169">target</text>
+<text x="884" y="329" font-family="Arial, sans-serif" font-size="34" font-weight="400" text-anchor="middle" fill="#012169">Movement commands</text>
+<text x="584" y="407" font-family="Arial, sans-serif" font-size="32" font-weight="400" text-anchor="middle" fill="#56606E">Illustrative sequence of joint-position targets</text>
+</svg>

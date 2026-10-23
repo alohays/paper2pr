@@ -1,0 +1,20 @@
+<svg id="w09-behavior-cloning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-behavior-cloning-title w09-behavior-cloning-desc"><title id="w09-behavior-cloning-title">Behavior cloning uses aligned examples</title><desc id="w09-behavior-cloning-desc">The observation and expert action are recorded at the same time. The policy predicts an action from that observation and learns by comparing its output with the expert action.</desc>
+<defs><marker id="w09-behavior-cloning-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#012169"/></marker><marker id="w09-behavior-cloning-gold-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#B9975B"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<text x="584" y="44" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" fill="#012169">A paired training example</text>
+<rect x="40" y="84" width="300" height="100" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="190.0" y="148.0" font-family="Arial, sans-serif" font-size="40" font-weight="600" text-anchor="middle" fill="#012169">Observation</text>
+<rect x="840" y="84" width="288" height="100" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="984.0" y="148.0" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" fill="#012169">Expert action</text>
+<path d="M 190 84 L 190 65 L 984 65 L 984 84" fill="none" stroke="#A8B1BE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 8"/>
+<path d="M 190 184 L 190 296 L 425 296" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-behavior-cloning-arrow)"/>
+<rect x="435" y="246" width="290" height="100" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="580.0" y="310.0" font-family="Arial, sans-serif" font-size="40" font-weight="600" text-anchor="middle" fill="#012169">Policy</text>
+<rect x="840" y="246" width="288" height="100" rx="8" fill="#FFFFFF" stroke="#012169" stroke-width="2"/>
+<text x="984.0" y="310.0" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" fill="#012169">Prediction</text>
+<path d="M 725 296 L 830 296" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-behavior-cloning-arrow)"/>
+<path d="M 984 237 L 984 194" fill="none" stroke="#B9975B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-behavior-cloning-gold-arrow)"/>
+<rect x="1024.0" y="194" width="106.00000000000001" height="42" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0"/>
+<text x="1077" y="224" font-family="Arial, sans-serif" font-size="30" font-weight="400" text-anchor="middle" fill="#111111">Match</text>
+<text x="584" y="402" font-family="Arial, sans-serif" font-size="34" font-weight="400" text-anchor="middle" fill="#111111">Learn to match the demonstrated action</text>
+</svg>

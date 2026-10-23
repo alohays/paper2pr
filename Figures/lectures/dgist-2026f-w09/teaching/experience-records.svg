@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w09-experience-records" class="mechanism-svg" viewBox="0 0 1168 430" role="img" aria-labelledby="w09-experience-records-title w09-experience-records-desc"><title id="w09-experience-records-title">Collect experience, then learn from it</title><desc id="w09-experience-records-desc">Schematic: each attempt is one record of observation, action, outcome and reward, with a failed attempt kept alongside successes; the pile of records is used to improve the policy, and many attempts can come from practice in simulation. The three example rows are illustrative, not measured data.</desc>
+<style>#w09-experience-records text{font-family:inherit} #w09-experience-records [data-panel-step]{visibility:hidden;opacity:0} #w09-experience-records [data-panel-step].is-active{visibility:visible;opacity:1}</style>
+<defs><marker id="w09-experience-records-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#012169"/></marker></defs>
+<rect width="1168" height="430" fill="white"/>
+<g font-size="30" font-weight="700" text-anchor="middle" fill="#012169"><text x="176" y="62">Observation</text><text x="396" y="62">Action</text><text x="565" y="62">Outcome</text><text x="716" y="62">Reward</text></g>
+<path d="M30 80 L780 80" fill="none" stroke="#012169" stroke-width="2" stroke-linecap="round"/>
+<rect x="30" y="100" width="750" height="60" rx="6" fill="#F7F8FA" stroke="#D7DCE3" stroke-width="2"/>
+<rect x="30" y="170" width="750" height="60" rx="6" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
+<rect x="30" y="240" width="750" height="60" rx="6" fill="#F7F8FA" stroke="#D7DCE3" stroke-width="2"/>
+<path d="M316 112 L316 148" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M476 112 L476 148" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M653 112 L653 148" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M316 182 L316 218" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M476 182 L476 218" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M653 182 L653 218" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M316 252 L316 288" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M476 252 L476 288" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/><path d="M653 252 L653 288" stroke="#D7DCE3" stroke-width="2" stroke-linecap="round"/>
+<g font-size="30" text-anchor="middle" fill="#012169">
+<text x="176" y="140">Tool at the machine</text><text x="396" y="140">Push in</text><text x="565" y="140">Fitted</text><text x="716" y="140" font-weight="700" fill="#9A7B3F">+1</text>
+<text x="176" y="210">Tool tilted</text><text x="396" y="210">Lift</text><text x="565" y="210">Dropped</text><text x="716" y="210" font-weight="700" fill="#9A7B3F">−1</text>
+<text x="176" y="280">Cup under the spout</text><text x="396" y="280">Press brew</text><text x="565" y="280">Coffee flows</text><text x="716" y="280" font-weight="700" fill="#9A7B3F">+1</text>
+</g>
+<text x="405" y="350" font-size="28" text-anchor="middle" fill="#56606E">One attempt per row; the failed row is kept too</text>
+<path d="M792 200 L826 200" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-experience-records-arrow)"/>
+<rect x="830" y="150" width="310" height="100" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
+<text x="985" y="193" font-size="32" font-weight="700" text-anchor="middle" fill="#012169">Improve the policy</text>
+<text x="985" y="230" font-size="26" text-anchor="middle" fill="#56606E">from every record</text>
+<text x="985" y="300" font-size="28" font-weight="600" text-anchor="middle" fill="#012169">Need many attempts?</text>
+<text x="985" y="334" font-size="28" font-weight="600" text-anchor="middle" fill="#012169">practice in simulation</text>
+<path d="M940 368 L1010 368" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-experience-records-arrow)"/>
+<text x="1040" y="376" font-size="26" text-anchor="start" fill="#56606E">next</text>
+</svg>
