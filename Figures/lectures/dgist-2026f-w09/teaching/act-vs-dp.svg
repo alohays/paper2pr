@@ -36,7 +36,8 @@
 <g data-panel-step="1" class="">
 <text x="405.0" y="302" font-size="28" fill="#9A7B3F" text-anchor="middle">one answer</text>
 <text x="405.0" y="336" font-size="28" fill="#9A7B3F" text-anchor="middle">per observation</text>
-<text x="1027.0" y="302" font-size="28" fill="#9A7B3F" text-anchor="middle">K updates before</text>
-<text x="1027.0" y="336" font-size="28" fill="#9A7B3F" text-anchor="middle">the first command</text>
+<text x="1027.0" y="286" font-size="26" fill="#9A7B3F" text-anchor="middle">K updates before</text>
+<text x="1027.0" y="318" font-size="26" fill="#9A7B3F" text-anchor="middle">the first command;</text>
+<text x="1027.0" y="350" font-size="26" fill="#9A7B3F" text-anchor="middle">many paths possible</text>
 </g>
 </svg>

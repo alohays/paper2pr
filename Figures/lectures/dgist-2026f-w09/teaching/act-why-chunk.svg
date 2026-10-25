@@ -28,7 +28,7 @@
 <text x="202" y="262" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> targets per prediction,</text>
 <text x="202" y="298" font-size="28" fill="#012169" text-anchor="middle">so small errors pile up</text>
 <text x="202" y="334" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> times more slowly</text>
-<text x="202" y="380" font-size="28" fill="#9A7B3F" font-weight="700" text-anchor="middle">Success 1% → 44% (sim.)</text>
+<text x="202" y="380" font-size="26" fill="#9A7B3F" font-weight="700" text-anchor="middle">k = 1: 1% → k = 100: 44%</text>
 </g>
 <g data-panel-step="2" class="">
 <rect x="30" y="176" width="344" height="230" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
@@ -36,7 +36,7 @@
 <text x="202" y="262" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> targets per prediction,</text>
 <text x="202" y="298" font-size="28" fill="#012169" text-anchor="middle">so small errors pile up</text>
 <text x="202" y="334" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> times more slowly</text>
-<text x="202" y="380" font-size="28" fill="#9A7B3F" font-weight="700" text-anchor="middle">Success 1% → 44% (sim.)</text>
+<text x="202" y="380" font-size="26" fill="#9A7B3F" font-weight="700" text-anchor="middle">k = 1: 1% → k = 100: 44%</text>
 <rect x="412" y="176" width="344" height="230" rx="8" fill="#f3ebdc" stroke="#b9975b" stroke-width="2"/>
 <text x="584" y="220" font-size="30" fill="#012169" font-weight="700" text-anchor="middle">Keeps human rhythm</text>
 <text x="584" y="262" font-size="28" fill="#012169" text-anchor="middle">Pauses and linked</text>
@@ -49,7 +49,7 @@
 <text x="202" y="262" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> targets per prediction,</text>
 <text x="202" y="298" font-size="28" fill="#012169" text-anchor="middle">so small errors pile up</text>
 <text x="202" y="334" font-size="28" fill="#012169" text-anchor="middle"><tspan font-style="italic">k</tspan> times more slowly</text>
-<text x="202" y="380" font-size="28" fill="#9A7B3F" font-weight="700" text-anchor="middle">Success 1% → 44% (sim.)</text>
+<text x="202" y="380" font-size="26" fill="#9A7B3F" font-weight="700" text-anchor="middle">k = 1: 1% → k = 100: 44%</text>
 <rect x="412" y="176" width="344" height="230" rx="8" fill="white" stroke="#012169" stroke-width="2"/>
 <text x="584" y="220" font-size="30" fill="#012169" font-weight="700" text-anchor="middle">Keeps human rhythm</text>
 <text x="584" y="262" font-size="28" fill="#012169" text-anchor="middle">Pauses and linked</text>

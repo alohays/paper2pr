@@ -354,7 +354,7 @@ A Low-cost Open-source Hardware System for Bimanual Teleoperation
 
 
 
-## Action Chunking with Transformers (ACT) {#act data-chapter="3" data-seconds="72" }
+## Action Chunking with Transformers (ACT) {#act data-chapter="3" data-seconds="75" }
 
 ::: {.mechanism}
 
@@ -391,7 +391,7 @@ A Low-cost Open-source Hardware System for Bimanual Teleoperation
 
 
 
-## ACT combines predictions for the same moment {#act-feedback data-chapter="3" data-seconds="60" }
+## ACT combines predictions for the same moment {#act-feedback data-chapter="3" data-seconds="64" }
 
 ::: {.mechanism}
 
@@ -716,7 +716,7 @@ What extra experience did the model receive?
 
 
 
-## RECAP: experience and corrections {#recap-experience data-chapter="4" data-seconds="42" }
+## RECAP: experience and corrections {#recap-experience data-chapter="4" data-seconds="46" }
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w09/teaching/recap-experience.svg width="100%" >}}
 
