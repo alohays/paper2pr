@@ -15,7 +15,7 @@
 <path d="M 702 190 L 740 190" fill="none" stroke="#012169" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#w09-vlm-to-vla-arrow)"/>
 <text x="948.0" y="122" font-size="26" fill="#56606E" text-anchor="middle">text out</text>
 <rect x="750" y="140" width="396" height="100" rx="14" fill="#E7EDF5" stroke="#012169" stroke-width="2"/>
-<text x="948.0" y="183" font-size="30" fill="#012169" text-anchor="middle">The red pen, left of</text>
+<text x="948.0" y="183" font-size="30" fill="#012169" text-anchor="middle">The red marker, left of</text>
 <text x="948.0" y="219" font-size="30" fill="#012169" text-anchor="middle">the calculator.</text>
 <g data-panel-step="0" class="is-active">
 <text x="584" y="420" font-size="30" fill="#012169" font-weight="600" text-anchor="middle">Image + text in, text out: a VLM</text>
