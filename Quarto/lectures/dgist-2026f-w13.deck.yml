@@ -17,7 +17,8 @@ title: "Foundations of Robot Hardware, Control, and Modern Platforms"
 # profile above.
 audience:
   assumes: none    # none | practitioner | expert
-  size: "about 90 first- and second-year undergraduates"
+  size: "about 90"
+  description: "First-year undergraduates in their second semester. Introduce each hardware term through a visible action. Assume no prior mechanics, control theory, or programming."
   prior: [W03 video and robot foundation models, W06 action data, W09 robot learning and action chunks, W11 Spatial AI to Physical AI, W12 Leadership talk]
 delivery: in-person    # in-person | remote | hybrid
 
@@ -38,8 +39,10 @@ language:
 # URLs. Add to it as the deck grows.
 sources:
   - "https://bostondynamics.com/blog/atlas-on-a-roll/"
-  - "https://docs.universal-robots.com/tutorials/communication-protocol-tutorials/rtde-guide.html"
-  - "https://github.com/unitreerobotics/unitree_sdk2/blob/main/example/g1/low_level/g1_ankle_swing_example.cpp"
+  - "Quarto/lectures/dgist-2026f-w09.qmd"
+  - "https://frankarobotics.github.io/docs/doc/libfranka/README.html"
+  - "https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/"
+  - "https://www.figure.ai/news/helix-02"
 
 # The course series (Quarto/lectures/_series/<series>.yml) and this
 # deck's session in it. deckprofile.py resolves the session date,

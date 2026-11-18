@@ -18,7 +18,7 @@ bibliography: ../../Bibliography_base.bib
 
 Last week ({{< series-session prior_week >}}) · {{< series-session prior_title >}}
 
-In W09, an action chunk gave the robot a sequence of timed targets.
+In W09, we watched a robot drop a coffee tool.
 
 
 {{< include _series/dgist-2026f/semester-map.qmd >}}
@@ -27,12 +27,29 @@ In W09, an action chunk gave the robot a sequence of timed targets.
 
 {{< include _series/dgist-2026f/ask-anytime.qmd >}}
 
-<!-- The November 18 outline places the opening Atlas clip here. -->
+<!-- The teaching outline opens this question with the first 16 seconds of Atlas. -->
 
 ## A command is not motion
 
-What happens between the command and the turn of a wheel?
+What can we tell from the turn of a wheel?
 
-<!-- Continue the lecture here, through the return to Atlas in chapter 9. -->
+## Did the robot pick up the cup? {#cup-evidence}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/cup-grasp-evidence.svg width="100%" >}}
+
+
+<!-- The full sequence introduces the motor, gears and position sensor before this example. -->
+
+## How far does the elbow have to go? {#joint-error}
+
+The target angle is 30°.
+
+| Sensor reading | Angle still to go |
+|:---:|:---:|
+| 20° | 10° |
+| 28° | 2° |
+
+
+<!-- The teaching outline returns to Atlas and the W14 safety question before Q&A. -->
 
 {{< include _series/dgist-2026f/qa.qmd >}}

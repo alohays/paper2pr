@@ -73,6 +73,8 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 ## Course Architecture
 
+[LEARN:w13-audience] A mixed first- and second-year audience and a joint-design syllabus were assumed for W13 → teach first-years in their second semester. Draw on the presenter's computer-vision and robot-learning expertise to explain what a policy can observe and command, how the body responds and which evidence would explain an outcome.
+
 [LEARN:course-architecture] Put hardware foundations early as the bridge into robot learning → teach the robot-learning sequence first, then use hardware, control, and mechanical engineering as a late special module that synthesizes the physical stack.
 
 [LEARN:authoring] Shortened personal-site labels can silently change an explicitly supplied public identity reference → when the presenter supplies exact author URLs, preserve the scheme and trailing slash in visible copy unless they ask for display aliases.
