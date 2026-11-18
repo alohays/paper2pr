@@ -43,6 +43,10 @@ sources:
   - "https://frankarobotics.github.io/docs/doc/libfranka/README.html"
   - "https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/"
   - "https://www.figure.ai/news/helix-02"
+  - "https://arxiv.org/html/2611.03168v1"
+  - "https://forcectrl.github.io/#hardware"
+  - "https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/"
+  - "https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html"
 
 # The course series (Quarto/lectures/_series/<series>.yml) and this
 # deck's session in it. deckprofile.py resolves the session date,

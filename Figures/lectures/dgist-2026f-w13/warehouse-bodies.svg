@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-warehouse-bodies" viewBox="0 0 1152 302" role="img" aria-labelledby="w13-warehouse-title w13-warehouse-desc">
+  <title id="w13-warehouse-title">Four bodies for jobs around a warehouse</title>
+  <desc id="w13-warehouse-desc">A fixed arm reaches a cup at a packing bench. A wheeled arm travels between shelves on a level aisle. A quadruped carries a sensor up stairs. A humanoid reaches for a door lever designed for people.</desc>
+  <style>
+    #w13-warehouse-bodies text { font-family: inherit; fill: #142b4f; text-anchor: middle }
+    #w13-warehouse-bodies .name { font-size: 30px; font-weight: 700 }
+    #w13-warehouse-bodies .task { font-size: 26px }
+    #w13-warehouse-bodies .link { fill: none; stroke: #233f66; stroke-width: 13; stroke-linecap: round; stroke-linejoin: round }
+    #w13-warehouse-bodies .tool { fill: none; stroke: #233f66; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round }
+    #w13-warehouse-bodies .joint { fill: white; stroke: #233f66; stroke-width: 5 }
+    #w13-warehouse-bodies .scene { fill: none; stroke: #9a752f; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round }
+    #w13-warehouse-bodies .floor { fill: none; stroke: #9ba7b4; stroke-width: 3 }
+  </style>
+  <defs>
+    <g id="w13-warehouse-cup" fill="#faebc9" stroke="#805e22" stroke-width="3" stroke-linejoin="round">
+      <path d="M-12 0 H12 L9 29 H-9 Z"/>
+      <path d="M-14 0 L-12 -3 H12 L14 0 Z"/>
+    </g>
+  </defs>
+  <path d="M288 17 V279 M576 17 V279 M864 17 V279" stroke="#d3dae3" stroke-width="2"/>
+  <g>
+    <text class="name" x="144" y="40">Fixed arm</text>
+    <path class="floor" d="M20 218 H269"/>
+    <path class="scene" d="M131 164 H259 M143 165 V216 M248 165 V216"/>
+    <use href="#w13-warehouse-cup" x="203" y="133"/>
+    <path fill="#233f66" d="M39 216 L47 189 H89 L97 216 Z"/>
+    <path class="link" d="M68 189 L103 98 L179 116"/>
+    <circle class="joint" cx="68" cy="189" r="10"/>
+    <circle class="joint" cx="103" cy="98" r="9"/>
+    <path class="tool" d="M179 116 L202 118 V124 M184 123 H219 M184 123 V139 M219 123 V139"/>
+    <text class="task" x="144" y="266">Pack at one bench</text>
+  </g>
+  <g transform="translate(288 0)">
+    <text class="name" x="144" y="40">Wheeled arm</text>
+    <path class="floor" d="M20 218 H269"/>
+    <path class="scene" d="M194 101 H257 M194 163 H257 M255 86 V216"/>
+    <use href="#w13-warehouse-cup" x="218" y="132"/>
+    <rect x="44" y="170" width="100" height="32" rx="8" fill="#233f66"/>
+    <circle cx="65" cy="204" r="12" fill="#233f66"/>
+    <circle cx="123" cy="204" r="12" fill="#233f66"/>
+    <path class="link" d="M94 171 V117 L136 83 L170 114"/>
+    <circle class="joint" cx="94" cy="117" r="8"/>
+    <circle class="joint" cx="136" cy="83" r="8"/>
+    <path class="tool" d="M164 120 L176 108 L186 118 M164 120 L174 130"/>
+    <text class="task" x="144" y="266">Visit several shelves</text>
+  </g>
+  <g transform="translate(576 0)">
+    <text class="name" x="144" y="40">Four-legged robot</text>
+    <path class="scene" d="M18 211 H109 V192 H148 V171 H211 V151 H266"/>
+    <path d="M92 130 L67 159 L83 208 M162 123 L172 142 L192 168" fill="none" stroke="#768aa4" stroke-width="11" stroke-linejoin="round" stroke-linecap="round"/>
+    <path class="link" d="M87 130 L101 165 L57 207 M166 122 L148 143 L179 167"/>
+    <path d="M65 109 L174 98 Q184 97 190 105 L202 122 L175 135 L82 145 Q70 145 65 137 Z" fill="#233f66"/>
+    <rect x="124" y="92" width="31" height="16" rx="4" fill="#233f66"/>
+    <circle cx="183" cy="114" r="4" fill="white"/>
+    <text class="task" x="144" y="266">Inspect up the stairs</text>
+  </g>
+  <g transform="translate(864 0)">
+    <text class="name" x="144" y="40">Humanoid</text>
+    <path class="floor" d="M20 218 H269"/>
+    <path class="scene" d="M200 216 V73 H254 V216"/>
+    <path d="M219 140 H237" stroke="#9a752f" stroke-width="7" stroke-linecap="round"/>
+    <rect x="109" y="65" width="31" height="31" rx="10" fill="#233f66"/>
+    <path d="M102 105 Q124 98 149 106 L142 145 H112 Z" fill="#233f66"/>
+    <path class="link" d="M110 114 L90 143 L97 156 M145 115 L167 146 L207 140 M117 145 L107 174 L102 208 H89 M136 145 L150 174 L150 208 H163"/>
+    <path class="tool" d="M208 140 L214 135 H221 M208 140 L216 145 H222"/>
+    <text class="task" x="144" y="266">Use a door lever</text>
+  </g>
+</svg>

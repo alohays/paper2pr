@@ -1,0 +1,44 @@
+# Classroom excerpts. Public slides link to the publishers' originals.
+videos:
+  - slug: atlas-warehouse-turn
+    title: "Atlas on a Roll: warehouse turn"
+    publisher: Boston Dynamics
+    source_url: "https://www.youtube.com/watch?v=NL65Awuv8gU"
+    published: "2026-11"
+    autonomy: unknown
+    speed: source playback
+    segment: "0-16"
+    source: "../../../../.local/dgist-w13-source-library/assets/actuators-transmissions/actuators-transmissions-atlas-on-a-roll-2026-11/actuators-transmissions-atlas-on-a-roll-2026-11.mp4"
+    keep_audio: false
+    licence_note: "Publisher footage for local classroom playback. Public slides link to the original."
+  - slug: atlas-gamepad-simulation
+    title: "Atlas on a Roll: gamepad and simulation"
+    publisher: Boston Dynamics
+    source_url: "https://www.youtube.com/watch?v=NL65Awuv8gU"
+    published: "2026-11"
+    autonomy: unknown
+    speed: source playback
+    segment: "84-96"
+    source: "../../../../.local/dgist-w13-source-library/assets/actuators-transmissions/actuators-transmissions-atlas-on-a-roll-2026-11/actuators-transmissions-atlas-on-a-roll-2026-11.mp4"
+    keep_audio: false
+    licence_note: "Publisher footage for local classroom playback. Public slides link to the original."
+  - slug: box-raise-sonic
+    title: "SONIC: motion tracking"
+    publisher: UC Berkeley
+    source_url: "https://forcectrl.github.io/assets/clips/raise_sonic_2kg.mp4?v=g1"
+    published: "2026-11"
+    autonomy: unknown
+    speed: source playback
+    source: "../../../../.local/dgist-w13-source-library/assets/research-2026/research-2026-ctrl-f-force-interface-berkeley/raise_sonic_2kg.mp4"
+    keep_audio: false
+    licence_note: "One of the authors' two hardware examples under Raise a box, 2 kg. Local classroom playback."
+  - slug: box-raise-ctrl-f
+    title: "Ctrl-F: motion and force"
+    publisher: UC Berkeley
+    source_url: "https://forcectrl.github.io/assets/clips/raise_ours_2kg.mp4?v=g1"
+    published: "2026-11"
+    autonomy: unknown
+    speed: source playback
+    source: "../../../../.local/dgist-w13-source-library/assets/research-2026/research-2026-ctrl-f-force-interface-berkeley/raise_ours_2kg.mp4"
+    keep_audio: false
+    licence_note: "One of the authors' two hardware examples under Raise a box, 2 kg. Local classroom playback."

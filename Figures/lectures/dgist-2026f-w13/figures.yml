@@ -1,5 +1,17 @@
 figures:
+  - file: feedback-delay.svg
+    source: W13 Robot Body Lab feedback simulation
+    licence: Repository
+    third_party: false
   - file: cup-grasp-evidence.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: cup-reach.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: warehouse-bodies.svg
     source: Original teaching illustration
     licence: Repository
     third_party: false

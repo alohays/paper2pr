@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-delay-response" viewBox="0 0 1152 344" role="img" aria-labelledby="w13-delay-title w13-delay-desc">
+  <title id="w13-delay-title">Position of a simulated mass after a one-metre target is set</title>
+  <desc id="w13-delay-desc">The left trace reaches 1.16 metres with a current sensor reading. With a quarter-second sensor delay, the right trace reaches 1.32 metres. Both plots show the first five seconds at the same scale and with identical controller settings.</desc>
+  <style>
+    #w13-delay-response text { font-family: inherit; fill: #183451 }
+    #w13-delay-response .panel { font-size: 34px; font-weight: 700 }
+    #w13-delay-response .target, #w13-delay-response .tick { font-size: 25px }
+    #w13-delay-response .peak-label { font-size: 27px; font-weight: 700 }
+    #w13-delay-response .axis { stroke: #8494a5; stroke-width: 2; fill: none }
+    #w13-delay-response .goal { stroke: #765a29; stroke-width: 3; stroke-dasharray: 9 7; fill: none }
+    #w13-delay-response .trace { stroke: #184e81; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; fill: none }
+    #w13-delay-response .peak { fill: #184e81 }
+  </style>
+  <!-- W13 FeedbackLab. Target 1 m, Kp 1.8, Kd 0.55, disturbance 0, force limit 4 N. Each trace samples the model at 50 ms and retains the exact peak. -->
+  <g>
+    <text class="panel" x="294" y="44" text-anchor="middle">Current reading</text>
+    <path d="M64 79 V284 H524" class="axis"/>
+    <path d="M64 141 H524" class="goal"/>
+    <text class="target" x="72" y="132">Target 1 m</text>
+    <polyline class="trace" points="64.0,284.0 68.6,283.7 73.2,282.7 77.8,281.2 82.4,279.2 87.0,276.7 91.6,273.8 96.2,270.5 100.8,266.8 105.4,262.9 110.0,258.6 114.6,254.2 119.2,249.5 123.8,244.6 128.4,239.7 133.0,234.6 137.6,229.4 142.2,224.2 146.8,219.0 151.4,213.8 156.0,208.6 160.6,203.4 165.2,198.3 169.8,193.3 174.4,188.4 179.0,183.6 183.6,179.0 188.2,174.4 192.8,170.1 197.4,165.8 202.0,161.8 206.6,157.9 211.2,154.2 215.8,150.7 220.4,147.4 225.0,144.3 229.6,141.3 234.2,138.6 238.8,136.0 243.4,133.6 248.0,131.5 252.6,129.5 257.2,127.6 261.8,126.0 266.4,124.5 271.0,123.2 275.6,122.1 280.2,121.1 284.8,120.3 289.4,119.6 294.0,119.1 298.6,118.7 303.2,118.4 307.8,118.2 312.4,118.1 312.9,118.1 317.0,118.2 321.6,118.3 326.2,118.5 330.8,118.9 335.4,119.2 340.0,119.7 344.6,120.2 349.2,120.8 353.8,121.4 358.4,122.1 363.0,122.8 367.6,123.6 372.2,124.3 376.8,125.1 381.4,125.9 386.0,126.8 390.6,127.6 395.2,128.4 399.8,129.3 404.4,130.1 409.0,130.9 413.6,131.7 418.2,132.5 422.8,133.3 427.4,134.1 432.0,134.8 436.6,135.6 441.2,136.3 445.8,136.9 450.4,137.6 455.0,138.2 459.6,138.8 464.2,139.4 468.8,139.9 473.4,140.4 478.0,140.9 482.6,141.3 487.2,141.7 491.8,142.1 496.4,142.5 501.0,142.8 505.6,143.1 510.2,143.4 514.8,143.6 519.4,143.8 524.0,144.0"/>
+    <circle class="peak" cx="312.9" cy="118.1" r="6"/>
+    <text class="peak-label" x="312.9" y="104.1" text-anchor="middle">1.16 m</text>
+    <text class="tick" x="64" y="321" text-anchor="middle">0 s</text>
+    <text class="tick" x="524" y="321" text-anchor="middle">5 s</text>
+  </g>
+  <g>
+    <text class="panel" x="866" y="44" text-anchor="middle">Reading 0.25 s old</text>
+    <path d="M636 79 V284 H1096" class="axis"/>
+    <path d="M636 141 H1096" class="goal"/>
+    <text class="target" x="644" y="132">Target 1 m</text>
+    <polyline class="trace" points="636.0,284.0 640.6,283.7 645.2,282.7 649.8,281.1 654.4,279.0 659.0,276.3 663.6,273.1 668.2,269.4 672.8,265.3 677.4,260.7 682.0,255.8 686.6,250.6 691.2,245.0 695.8,239.3 700.4,233.3 705.0,227.2 709.6,220.9 714.2,214.5 718.8,208.1 723.4,201.7 728.0,195.2 732.6,188.8 737.2,182.5 741.8,176.3 746.4,170.2 751.0,164.2 755.6,158.4 760.2,152.8 764.8,147.4 769.4,142.2 774.0,137.3 778.6,132.6 783.2,128.2 787.8,124.0 792.4,120.1 797.0,116.5 801.6,113.2 806.2,110.2 810.8,107.5 815.4,105.1 820.0,102.9 824.6,101.1 829.2,99.5 833.8,98.2 838.4,97.2 843.0,96.4 847.6,95.9 852.2,95.6 855.4,95.5 856.8,95.5 861.4,95.7 866.0,96.1 870.6,96.7 875.2,97.5 879.8,98.5 884.4,99.6 889.0,100.8 893.6,102.2 898.2,103.8 902.8,105.4 907.4,107.1 912.0,108.9 916.6,110.8 921.2,112.7 925.8,114.7 930.4,116.7 935.0,118.8 939.6,120.8 944.2,122.9 948.8,124.9 953.4,127.0 958.0,129.0 962.6,130.9 967.2,132.9 971.8,134.7 976.4,136.5 981.0,138.3 985.6,140.0 990.2,141.6 994.8,143.1 999.4,144.5 1004.0,145.9 1008.6,147.2 1013.2,148.4 1017.8,149.4 1022.4,150.4 1027.0,151.4 1031.6,152.2 1036.2,152.9 1040.8,153.5 1045.4,154.1 1050.0,154.5 1054.6,154.9 1059.2,155.1 1063.8,155.3 1068.4,155.5 1073.0,155.5 1077.6,155.5 1082.2,155.4 1086.8,155.2 1091.4,155.0 1096.0,154.7"/>
+    <circle class="peak" cx="855.4" cy="95.5" r="6"/>
+    <text class="peak-label" x="855.4" y="81.5" text-anchor="middle">1.32 m</text>
+    <text class="tick" x="636" y="321" text-anchor="middle">0 s</text>
+    <text class="tick" x="1096" y="321" text-anchor="middle">5 s</text>
+  </g>
+</svg>

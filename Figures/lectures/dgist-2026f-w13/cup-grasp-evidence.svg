@@ -45,7 +45,7 @@
     <use href="#w13-hand-at-contact" y="116"/>
     <text class="caption" y="300">Still on the table.</text>
   </g>
-  <g transform="translate(1008 0)">
+  <g transform="translate(1008 0)" class="fragment" data-fragment-index="0">
     <text class="heading" y="47">Lift</text>
     <path class="table" d="M-110 244 H110"/>
     <use href="#w13-paper-cup" y="114"/>

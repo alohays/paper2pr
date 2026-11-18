@@ -27,18 +27,75 @@ In W09, we watched a robot drop a coffee tool.
 
 {{< include _series/dgist-2026f/ask-anytime.qmd >}}
 
-<!-- The teaching outline opens this question with the first 16 seconds of Atlas. -->
+## A command is not motion {#atlas-opening}
 
-## A command is not motion
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card atlas-warehouse-turn >}}
+:::
+
+::: {.content-visible unless-meta="w13-local-clips"}
+[Watch Atlas turn in the warehouse](https://bostondynamics.com/blog/atlas-on-a-roll/) · 0:00 to 0:16 · Boston Dynamics
+:::
 
 What can we tell from the turn of a wheel?
+
 
 ## Did the robot pick up the cup? {#cup-evidence}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/cup-grasp-evidence.svg width="100%" >}}
 
 
-<!-- The full sequence introduces the motor, gears and position sensor before this example. -->
+## What did the robot know? {#physical-ai-loop}
+
+**Observe** · A camera sees the cup.
+
+**Choose** · A learned policy asks the hand to close.
+
+**Act and observe again** · The hand moves. Where is the cup now?
+
+
+## What would you save from a failed grasp? {#armnet-data}
+
+Three camera views, joint measurements and the commands sent.
+
+::: {.fragment}
+ArmnetBench recorded **37 successes in 255 block-stacking attempts** on low-cost arms.
+:::
+
+::: {.footnote}
+[ArmnetBench · Table 2 · Nov 2, 2026](https://arxiv.org/html/2611.03168v1) · [Released recordings](https://huggingface.co/datasets/armnet/armnetbench_v01_lerobot_so101)
+:::
+
+
+## Where is the cup harder to hold? {#cup-reach}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/cup-reach.svg width="100%" >}}
+
+
+## What does a reduction gear change? {#gear-trade}
+
+An ideal 3:1 gear at steady speed
+
+| | Motor shaft | Joint shaft |
+|:---|:---:|:---:|
+| Turns per second | 3 | 1 |
+| Torque | 1 N·m | 3 N·m |
+
+::: {.footnote}
+[Lynch & Park, *Modern Robotics*, §8.9](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
+:::
+
+
+## Could the arm do this for an hour? {#repeat-lift}
+
+The arm lifted one full cup.
+
+What would you record if it lifted a cup every ten seconds?
+
+::: {.fragment}
+Watch the motor temperature and count completed lifts.
+:::
+
 
 ## How far does the elbow have to go? {#joint-error}
 
@@ -50,6 +107,127 @@ The target angle is 30°.
 | 28° | 2° |
 
 
-<!-- The teaching outline returns to Atlas and the W14 safety question before Q&A. -->
+## Which correction should be larger? {#proportional-correction}
+
+The elbow has 10° left to go. Later it has 2° left.
+
+::: {.fragment}
+With the same gain, a larger gap gives a larger correction.
+
+$$u = K_p (r - y)$$
+:::
+
+
+## What changes when a reading arrives late? {#sensor-delay}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/feedback-delay.svg width="100%" >}}
+
+::: {.footnote}
+Robot Body Lab simulation · Exercise adapted from [Stanford CS123, Lab 1, steps 4 to 7](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
+:::
+
+
+## Who chooses the next target? {#two-loops}
+
+A learned policy can ask the hand to move toward the cup.
+
+A joint controller measures the elbow angle and corrects its motion.
+
+
+## Which body fits the job? {#warehouse-bodies}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/warehouse-bodies.svg width="100%" >}}
+
+
+## The shelf moves upstairs {#new-task}
+
+The job is to read a gauge upstairs and bring a cup back down.
+
+::: {.fragment}
+Can the robot take the stairs? Can it also carry the cup?
+:::
+
+
+## How hard should the hands press? {#nov-force data-seconds="130"}
+
+:::: {.content-visible when-meta="w13-local-clips"}
+```{=html}
+<style>#nov-force .two-up video.video-inline { height: 360px; object-fit: contain; }</style>
+```
+
+::: {.two-up}
+{{< video-card box-raise-sonic >}}
+
+{{< video-card box-raise-ctrl-f >}}
+:::
+::::
+
+::: {.content-visible unless-meta="w13-local-clips"}
+Berkeley added a force command to a learned movement.
+:::
+
+**Ctrl-F lifted the box in 9 of 10 trials** with 2 kg added.
+
+::: {.footnote}
+[UC Berkeley · Ctrl-F hardware trials](https://forcectrl.github.io/#hardware) · [Preprint · Nov 3, 2026](https://arxiv.org/abs/2611.05507)
+:::
+
+
+## How did Atlas learn what its motors could do? {#nov-motor-model data-seconds="130"}
+
+Measure the real motors.
+
+Match the simulated motors to those measurements.
+
+Train in simulation, then try the movement on wheels.
+
+::: {.footnote}
+[Boston Dynamics · Atlas on a Roll · Nov 9, 2026](https://bostondynamics.com/blog/atlas-on-a-roll/)
+:::
+
+
+## Which robot is already doing the job? {#nov-fab-inspection data-seconds="120"}
+
+**Spot** · Two robots completed over 90,000 inspections in Singapore.
+
+**Atlas** · Onsite testing at GlobalFoundries was planned for early 2027.
+
+::: {.footnote}
+[Boston Dynamics and GlobalFoundries · Company-reported figures · Nov 17, 2026](https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/)
+:::
+
+
+## Who chose the warehouse turn? {#atlas-return}
+
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card atlas-gamepad-simulation >}}
+:::
+
+::: {.content-visible unless-meta="w13-local-clips"}
+[Watch the gamepad and the simulation](https://bostondynamics.com/blog/atlas-on-a-roll/) · 1:24 to 1:36 · Boston Dynamics
+:::
+
+What would the warehouse command log tell us?
+
+
+## Why are these experiments possible now? {#why-now}
+
+Affordable arms can record repeated attempts, including failures.
+
+Policies can command how hard a robot should press.
+
+Measured motors make simulated practice closer to real motion.
+
+
+## Would you trust the next lift? {#transfer}
+
+A new robot lifts one box beside a person.
+
+What would you check before it lifts the next hundred?
+
+::: {.fragment}
+Count attempts, dropped boxes and human interventions.
+:::
+
 
 {{< include _series/dgist-2026f/qa.qmd >}}
