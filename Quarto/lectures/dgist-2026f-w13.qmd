@@ -1,0 +1,38 @@
+---
+title: "Foundations of Robot Hardware, Control, and Modern Platforms"
+author: Yunsung Lee
+institute: WoRV / MaumAI
+date: "2026-11-20"
+series: dgist-2026f
+# Full-bleed title gradient as a reveal background (fills the viewport at any
+# aspect ratio; the theme drops its own section gradient when this is set).
+title-slide-attributes:
+  data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+format:
+  revealjs:
+    theme: [default, ../clean-academic.scss]
+bibliography: ../../Bibliography_base.bib
+---
+
+## Where we left off
+
+Last week ({{< series-session prior_week >}}) · {{< series-session prior_title >}}
+
+In W09, an action chunk gave the robot a sequence of timed targets.
+
+
+{{< include _series/dgist-2026f/semester-map.qmd >}}
+
+{{< include _series/dgist-2026f/course-runs.qmd >}}
+
+{{< include _series/dgist-2026f/ask-anytime.qmd >}}
+
+<!-- The November 18 outline places the opening Atlas clip here. -->
+
+## A command is not motion
+
+What happens between the command and the turn of a wheel?
+
+<!-- Continue the lecture here, through the return to Atlas in chapter 9. -->
+
+{{< include _series/dgist-2026f/qa.qmd >}}

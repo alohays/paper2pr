@@ -456,6 +456,8 @@ Line breaking is the theme's job, not the author's: `.reveal p`, `li` and `figca
 
 ## Current Project State
 
+For the November 20 DGIST HSS118 W13 lecture, open the [authoring handoff](quality_reports/plans/2026-11-18_dgist-w13-codex-handoff.md) for the working checkout, reviewed outline and media library.
+
 | Deck | Quarto (source) | Theme | Key Content |
 |------|-----------------|-------|-------------|
 | DreamZero | `papers/DreamZero.qmd` | legacy | NVIDIA - World Action Models as Zero-shot Policies |
