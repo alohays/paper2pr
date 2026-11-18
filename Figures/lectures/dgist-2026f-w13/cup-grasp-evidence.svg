@@ -1,11 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="w13-cup-evidence" viewBox="0 0 1152 334" role="img" aria-labelledby="w13-cup-title w13-cup-desc">
-  <title id="w13-cup-title">Seeing a cup, commanding a grasp and checking the lift</title>
-  <desc id="w13-cup-desc">The cup starts on the table. Inward arrows show a command to close the fingers. In the later image, a gap between the cup and the table shows it has been lifted.</desc>
+  <title id="w13-cup-title">From seeing the cup to lifting it</title>
+  <desc id="w13-cup-desc">The camera sees a cup on the table. Inward arrows show the command to close the fingers. The fingertips then touch the cup while it rests on the table. In the last image, a gap opens under the cup as it rises with the hand.</desc>
   <style>
     #w13-cup-evidence text { font-family: inherit; text-anchor: middle; fill: #142b4f }
     #w13-cup-evidence .heading { font-size: 34px; font-weight: 700 }
     #w13-cup-evidence .caption { font-size: 28px }
-    #w13-cup-evidence .hand { fill: none; stroke: #233f66; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round }
     #w13-cup-evidence .table { stroke: #758498; stroke-width: 4 }
     #w13-cup-evidence .arrow { fill: none; stroke: #986416; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round }
   </style>
@@ -17,29 +16,41 @@
     <g id="w13-open-hand" fill="none" stroke="#233f66" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
       <path d="M0 0 V20 M-72 20 H72 M-72 20 V97 H-61 M72 20 V97 H61"/>
     </g>
+    <g id="w13-hand-at-contact">
+      <path d="M0 0 V17 M-45 17 H45 M-45 17 V78 H-38 M45 17 V78 H38" fill="none" stroke="#233f66" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="-37" cy="78" r="5" fill="#b37d24"/>
+      <circle cx="37" cy="78" r="5" fill="#b37d24"/>
+    </g>
   </defs>
-  <path d="M384 24 V310 M768 24 V310" stroke="#d3dae3" stroke-width="2"/>
-  <g transform="translate(192 0)">
+  <path d="M288 24 V310 M576 24 V310 M864 24 V310" stroke="#d3dae3" stroke-width="2"/>
+  <g transform="translate(144 0)">
     <text class="heading" y="47">Camera image</text>
-    <path class="table" d="M-128 244 H128"/>
+    <path class="table" d="M-110 244 H110"/>
     <use href="#w13-paper-cup" y="161"/>
     <use href="#w13-open-hand" y="80"/>
     <text class="caption" y="300">The cup is in view.</text>
   </g>
-  <g transform="translate(576 0)">
+  <g transform="translate(432 0)">
     <text class="heading" y="47">Hand command</text>
-    <path class="table" d="M-128 244 H128"/>
+    <path class="table" d="M-110 244 H110"/>
     <use href="#w13-paper-cup" y="161"/>
     <use href="#w13-open-hand" y="80"/>
     <path class="arrow" d="M-124 187 H-78 M-89 177 L-78 187 L-89 197 M124 187 H78 M89 177 L78 187 L89 197"/>
     <text class="caption" y="300">Close the fingers.</text>
   </g>
-  <g transform="translate(960 0)">
-    <text class="heading" y="47">Later image</text>
-    <path class="table" d="M-128 244 H128"/>
+  <g transform="translate(720 0)">
+    <text class="heading" y="47">First contact</text>
+    <path class="table" d="M-110 244 H110"/>
+    <use href="#w13-paper-cup" y="161"/>
+    <use href="#w13-hand-at-contact" y="116"/>
+    <text class="caption" y="300">Still on the table.</text>
+  </g>
+  <g transform="translate(1008 0)">
+    <text class="heading" y="47">Lift</text>
+    <path class="table" d="M-110 244 H110"/>
     <use href="#w13-paper-cup" y="114"/>
-    <path class="hand" d="M0 69 V86 M-45 86 H45 M-45 86 V147 H-38 M45 86 V147 H38"/>
+    <use href="#w13-hand-at-contact" y="69"/>
     <path class="arrow" d="M98 198 V128 M88 140 L98 128 L108 140"/>
-    <text class="caption" y="300">The cup is off the table.</text>
+    <text class="caption" y="300">The cup rises.</text>
   </g>
 </svg>
