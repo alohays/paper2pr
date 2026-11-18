@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-motion-coordinates" viewBox="0 0 1084 304" role="img" aria-labelledby="w13-motion-coordinates-title w13-motion-coordinates-desc">
+  <title id="w13-motion-coordinates-title">Count independent joint motions</title>
+  <desc id="w13-motion-coordinates-desc">With its axle fixed, one wheel is described by one rotation angle. A planar two-link arm on a fixed base needs both a shoulder angle and an elbow angle.</desc>
+  <style>
+    #w13-motion-coordinates text { font-family: inherit; fill: #142b4f; text-anchor: middle }
+    #w13-motion-coordinates .head { font-size: 33px; font-weight: 700 }
+    #w13-motion-coordinates .sub { font-size: 27px }
+  </style>
+  <path d="M542 25 V267" stroke="#d3dbe3" stroke-width="2"/>
+  <text class="head" x="270" y="43">Wheel on an axle</text>
+  <text class="head" x="808" y="43">Two-joint arm</text>
+  <circle cx="270.00" cy="151.00" r="68" fill="#edf2f5" stroke="#233f66" stroke-width="8"/>
+  <path d="M270 151 L327.00 151.00" stroke="#233f66" stroke-width="6"/>
+  <path d="M270 151 L298.50 200.36" stroke="#233f66" stroke-width="6"/>
+  <path d="M270 151 L241.50 200.36" stroke="#233f66" stroke-width="6"/>
+  <path d="M270 151 L213.00 151.00" stroke="#233f66" stroke-width="6"/>
+  <path d="M270 151 L241.50 101.64" stroke="#233f66" stroke-width="6"/>
+  <path d="M270 151 L298.50 101.64" stroke="#233f66" stroke-width="6"/>
+  <circle cx="270.00" cy="151.00" r="9" fill="#ae7927" stroke="none" stroke-width="0"/>
+  <path d="M689 205 L760 118 L898 156" fill="none" stroke="#233f66" stroke-width="17" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="689.00" cy="205.00" r="14" fill="white" stroke="#ae7927" stroke-width="6"/>
+  <circle cx="760.00" cy="118.00" r="14" fill="white" stroke="#ae7927" stroke-width="6"/>
+  <path d="M891 142 L918 147 M885 159 L912 169" stroke="#233f66" stroke-width="6" stroke-linecap="round"/>
+  <text class="sub" x="270" y="267">One angle</text>
+  <text class="sub" x="808" y="267">Two independent angles</text>
+</svg>

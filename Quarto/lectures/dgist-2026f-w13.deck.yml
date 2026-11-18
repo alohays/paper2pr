@@ -18,7 +18,7 @@ title: "Foundations of Robot Hardware, Control, and Modern Platforms"
 audience:
   assumes: none    # none | practitioner | expert
   size: "about 90"
-  description: "First-year undergraduates in their second semester. Introduce each hardware term through a visible action. Assume no prior mechanics, control theory, or programming."
+  description: "First-year undergraduates in their second semester. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Assume no prior mechanics or control course."
   prior: [W03 video and robot foundation models, W06 action data, W09 robot learning and action chunks, W11 Spatial AI to Physical AI, W12 Leadership talk]
 delivery: in-person    # in-person | remote | hybrid
 
@@ -26,6 +26,7 @@ delivery: in-person    # in-person | remote | hybrid
 # qa_min (questions) are subtracted: the speaker-notes budget runs on
 # speaking_min = duration_min - video_min - qa_min.
 duration_min: 60
+video_min: 1  # Rounded quiet viewing time within the 50-minute teaching slot.
 qa_min: 10
 
 language:
@@ -38,15 +39,50 @@ language:
 # What the fact-check agent compares the slides against: paths or
 # URLs. Add to it as the deck grows.
 sources:
+  - "https://www.youtube.com/watch?v=esGtbGTmHW8"
+  - "https://ocw.mit.edu/courses/2-12-introduction-to-robotics-fall-2005/pages/syllabus/"
+  - "https://www.cs.cmu.edu/~16311/current/labs/labsindex.html"
+  - "https://khatib.stanford.edu/teaching/cs223a/"
+  - "https://pages.github.berkeley.edu/EECS-106/sp22-site/calendar/"
   - "https://bostondynamics.com/blog/atlas-on-a-roll/"
-  - "Quarto/lectures/dgist-2026f-w09.qmd"
-  - "https://frankarobotics.github.io/docs/doc/libfranka/README.html"
+  - "https://dev.bostondynamics.com/docs/concepts/robot_services.html"
+  - "https://frankarobotics.github.io/docs/overview.html"
+  - "https://franka.de/hubfs/Datasheet_FrankaResearch3_R02212_2.4.pdf"
+  - "https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf"
+  - "https://bostondynamics.com/products/spot/"
+  - "https://bostondynamics.com/wp-content/uploads/2026/01/atlas-spec-sheet.pdf"
   - "https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/"
+  - "https://www.hds.co.jp/english/products/hd_theory/"
+  - "https://www.youtube.com/watch?v=1ijFove42Kw"
+  - "https://biomimetics.mit.edu/research/1a9ba04b-d200-4743-b8fc-bf231f3231f0/"
+  - "https://fab.cba.mit.edu/classes/865.15/people/rebecca.kleinberger/assets/papers/SEA_Pratt.pdf"
+  - "https://www.cubemars.com/product/ak80-6-kv100-robotic-actuator.html"
+  - "https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/"
+  - "https://www.usdigital.com/support/resources/reference/technical-docs/white-papers/resolution-accuracy-and-precision-of-encoders/"
+  - "https://dev.bostondynamics.com/docs/concepts/joint_control/readme"
   - "https://www.figure.ai/news/helix-02"
-  - "https://arxiv.org/html/2611.03168v1"
-  - "https://forcectrl.github.io/#hardware"
-  - "https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/"
+  - "https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1Gripper.html"
+  - "https://bostondynamics.com/blog/robot-hands-for-modern-ai-and-real-work/"
   - "https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html"
+  - "https://www.youtube.com/watch?v=lZvPslCIQZY"
+  - "https://dspace.mit.edu/entities/publication/bc8c7e1e-5830-443f-a879-787947111fcf"
+  - "https://docs.odriverobotics.com/v/latest/manual/control.html"
+  - "https://www.youtube.com/watch?v=QE0pC-hY__4"
+  - "https://global.honda/en/newsroom/news/2005/c051213-asimo-eng.html"
+  - "https://www.darpa.mil/about/innovation-timeline/bigdog"
+  - "https://www.darpa.mil/research/programs/darpa-robotics-challenge-a"
+  - "https://www.youtube.com/watch?v=xNeZWP5Mx9s"
+  - "https://news.mit.edu/2019/mit-mini-cheetah-first-four-legged-robot-to-backflip-0304"
+  - "https://bostondynamics.com/blog/electric-new-era-for-atlas/"
+  - "https://www.youtube.com/watch?v=bmRYgXO0qgE"
+  - "https://www.flexiv.com/news/Flexiv_IROS%202026"
+  - "https://bostondynamics.com/news/boston-dynamics-launches-next-generation-stretch-robot/"
+  - "https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/"
+  - "https://forcectrl.github.io/#hardware"
+  - "https://arxiv.org/abs/2611.05507"
+  - "https://pixel-robot.com/pixel/"
+  - "https://arxiv.org/html/2611.03168v1"
+  - "https://beneath-the-policy.github.io/"
 
 # The course series (Quarto/lectures/_series/<series>.yml) and this
 # deck's session in it. deckprofile.py resolves the session date,

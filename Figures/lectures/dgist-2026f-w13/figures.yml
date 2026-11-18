@@ -15,3 +15,47 @@ figures:
     source: Original teaching illustration
     licence: Repository
     third_party: false
+  - file: block-stack-trials.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: command-journey.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: control-layers.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: encoder-reading.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: foot-support.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: motion-coordinates.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: motor-measure-train.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: reduction-families.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: rotary-joint-parts.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: shelf-load.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: trailer-unload.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false

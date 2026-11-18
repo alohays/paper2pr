@@ -73,6 +73,8 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 ## Course Architecture
 
+[LEARN:w13-breadth] Promoting the presenter's choice of a recurring grasp example into the W13 structure displaced history, actuation, sensing and whole-body control → the November 18 ten-chapter hardware survey governs the lecture. Adjust the depth of each explanation for freshmen. Rotate examples across arms, mobile manipulators, quadrupeds and humanoids, and use a grasp only where it teaches contact.
+
 [LEARN:w13-audience] A mixed first- and second-year audience and a joint-design syllabus were assumed for W13 → teach first-years in their second semester. Draw on the presenter's computer-vision and robot-learning expertise to explain what a policy can observe and command, how the body responds and which evidence would explain an outcome.
 
 [LEARN:course-architecture] Put hardware foundations early as the bridge into robot learning → teach the robot-learning sequence first, then use hardware, control, and mechanical engineering as a late special module that synthesizes the physical stack.

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-stack-count" viewBox="0 0 1130 269" role="img" aria-labelledby="w13-stack-t w13-stack-d">
+  <title id="w13-stack-t">Outcomes in 255 ArmnetBench block-stacking trials</title>
+  <desc id="w13-stack-d">The bar shows 37 successful trials and 218 failures. Table 2 lists zero suboptimal trials for this task.</desc>
+  <style>#w13-stack-count text{font-family:inherit;fill:#163757} #w13-stack-count .lab{font-size:30px} #w13-stack-count .count{font-size:44px;font-weight:700}</style>
+  <text class="count" x="35" y="60">37 successes</text><text class="count" x="1095" y="60" text-anchor="end">218 failures</text>
+  <rect x="35" y="90" width="1060" height="62" rx="4" fill="#c8d3dc"/><rect x="35" y="90" width="153.8" height="62" rx="4" fill="#21605d"/>
+  <text class="lab" x="565" y="216" text-anchor="middle">255 attempts at one tabletop task</text>
+</svg>

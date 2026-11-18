@@ -1,0 +1,31 @@
+/* Preserve the whole source frame, including labels and the floor beneath a load. */
+.reveal section[data-chapter] figure.video-card video.video-inline {
+  height: 332px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  aspect-ratio: auto;
+}
+
+.reveal #atlas-opening figure.video-card video,
+.reveal #atlas-return figure.video-card video,
+.reveal #body-mobile-arm figure.video-card video {
+  height: 390px;
+}
+
+.reveal #body-humanoid .two-up figure.video-card video {
+  height: 310px;
+  width: 100%;
+}
+
+.reveal #gear-families .r-stack {
+  width: 100%;
+}
+
+.reveal #gear-families .r-stack > div {
+  width: 100%;
+}
+
+.reveal #gear-families .r-stack figure {
+  margin-inline: auto;
+}

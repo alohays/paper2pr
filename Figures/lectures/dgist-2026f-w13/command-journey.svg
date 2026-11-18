@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-wheel-chain" viewBox="0 0 1160 340" role="img" aria-labelledby="w13-cmd-title w13-cmd-desc">
+  <title id="w13-cmd-title">From a speed target to a rolling wheel</title>
+  <desc id="w13-cmd-desc">The policy requests a speed. A controller compares the target with measured rotation. A drive sends current through the motor. The wheel turns against the ground. An encoder reports shaft rotation.</desc>
+  <defs><marker id="w13-cmd-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#496780" stroke-width="1.6"/></marker></defs>
+  <style>
+    #w13-wheel-chain text{font-family:inherit;text-anchor:middle;fill:#17344f}
+    #w13-wheel-chain .name{font-size:36px;font-weight:700}
+    #w13-wheel-chain .sub{font-size:25px}
+    #w13-wheel-chain .wire{fill:none;stroke:#496780;stroke-width:4;marker-end:url(#w13-cmd-head)}
+  </style>
+  <g fill="#f3f6f8" stroke="#b4c4ce" stroke-width="2"><rect x="12" y="61" width="238" height="116" rx="12"/><rect x="307" y="61" width="238" height="116" rx="12"/><rect x="602" y="61" width="238" height="116" rx="12"/><rect x="897" y="61" width="250" height="116" rx="12"/></g>
+  <text class="name" x="131" y="111">Policy</text><text class="sub" x="131" y="149">Requests a speed</text>
+  <text class="name" x="426" y="111">Controller</text><text class="sub" x="426" y="149">Checks the error</text>
+  <text class="name" x="721" y="111">Drive + motor</text><text class="sub" x="721" y="149">Current to torque</text>
+  <text class="name" x="1022" y="111">Wheel</text><text class="sub" x="1022" y="149">Pushes on the floor</text>
+  <path class="wire" d="M254 119 H300 M549 119 H595 M844 119 H890"/>
+  <path class="wire" d="M1022 182 V232 H426 V186"/>
+  <text class="sub" x="724" y="280">An encoder measures rotation.</text>
+</svg>

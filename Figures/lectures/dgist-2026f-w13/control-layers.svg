@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-control-layers" viewBox="0 0 1120 320" role="img" aria-labelledby="w13-control-layers-title w13-control-layers-desc">
+  <title id="w13-control-layers-title">An example control stack for a walking robot</title>
+  <desc id="w13-control-layers-desc">A policy requests forward motion, a whole-body controller coordinates joints and contacts, a joint controller produces a torque request, and a motor drive regulates current. Each controller uses measurements appropriate to its task.</desc>
+  <style>
+    #w13-control-layers text {font-family:inherit;fill:#183451}
+    #w13-control-layers .heading {font-size:34px;font-weight:700}
+    #w13-control-layers .label {font-size:28px}
+    #w13-control-layers .line {fill:none;stroke:#233f66;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+  <g fill="#f2f6fa" stroke="#a7bacb" stroke-width="2">
+    <rect x="16" y="74" width="232" height="142" rx="15"/><rect x="298" y="74" width="232" height="142" rx="15"/><rect x="580" y="74" width="232" height="142" rx="15"/><rect x="862" y="74" width="238" height="142" rx="15"/>
+  </g>
+  <g fill="none" stroke="#a17225" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M254 145 H286 M276 136 L286 145 L276 154"/><path d="M536 145 H568 M558 136 L568 145 L558 154"/><path d="M818 145 H850 M840 136 L850 145 L840 154"/>
+  </g>
+  <g text-anchor="middle">
+    <text class="heading" x="132" y="129">Policy</text><text class="label" x="132" y="177">Walk forward</text>
+    <text class="heading" x="414" y="129">Whole body</text><text class="label" x="414" y="177">Coordinate legs</text>
+    <text class="heading" x="696" y="129">Joint</text><text class="label" x="696" y="177">Track an angle</text>
+    <text class="heading" x="981" y="129">Motor drive</text><text class="label" x="981" y="177">Regulate current</text>
+  </g>
+  <text class="label" x="560" y="283" text-anchor="middle">Each layer can use feedback at its own pace.</text>
+</svg>

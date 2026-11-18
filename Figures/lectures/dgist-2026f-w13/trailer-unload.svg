@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-trailer" viewBox="0 0 1152 335" role="img" aria-labelledby="w13-tr-title w13-tr-desc">
+  <title id="w13-tr-title">A wheeled arm unloads a trailer</title>
+  <desc id="w13-tr-desc">A schematic side view shows a wheeled base and an articulated arm reaching a box on the exposed face of a stack. Removing boxes changes the base position needed to reach the next row.</desc>
+  <style>
+    #w13-trailer text { font-family: inherit; fill: #183653 }
+    #w13-trailer .label { font-size: 31px; font-weight: 700 }
+    #w13-trailer .line { fill: none; stroke: #284963; stroke-linecap: round; stroke-linejoin: round }
+    #w13-trailer .box { fill: #f5e7c7; stroke: #87641f; stroke-width: 4 }
+  </style>
+  <path d="M73 255 H1080 M615 61 H1080 V255" fill="none" stroke="#96a8b8" stroke-width="5"/>
+  <g>
+    <rect x="752" y="190" width="96" height="62" rx="3" class="box"/>
+    <rect x="854" y="190" width="96" height="62" rx="3" class="box"/>
+    <rect x="956" y="190" width="96" height="62" rx="3" class="box"/>
+    <rect x="752" y="122" width="96" height="62" rx="3" fill="#e2eedf" stroke="#486a4c" stroke-width="5"/>
+    <rect x="854" y="122" width="96" height="62" rx="3" class="box"/>
+    <rect x="956" y="122" width="96" height="62" rx="3" class="box"/>
+    <rect x="956" y="74" width="96" height="42" rx="3" class="box"/>
+  </g>
+  <g>
+    <rect x="321" y="189" width="215" height="46" rx="11" fill="#d8e8f1" stroke="#284963" stroke-width="7"/>
+    <circle cx="363" cy="235" r="16" fill="#284963"/><circle cx="490" cy="235" r="16" fill="#284963"/>
+    <path d="M398 185 L398 132 L492 79 L601 153 H737" class="line" stroke-width="18"/>
+    <g fill="#f5f8fa" stroke="#284963" stroke-width="5">
+      <circle cx="398" cy="132" r="12"/><circle cx="492" cy="79" r="12"/><circle cx="601" cy="153" r="12"/>
+    </g>
+    <path d="M733 139 H747 V167 H733" fill="#a4becd" stroke="#284963" stroke-width="4"/>
+  </g>
+  <text x="76" y="116" class="label">Move the base</text>
+  <path d="M90 146 H285 M268 133 L285 146 L268 159" fill="none" stroke="#a26f1d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="748" y="39" class="label">Find a box face</text>
+  <path d="M795 58 V110" fill="none" stroke="#486a4c" stroke-dasharray="6 6" stroke-width="4"/>
+  <text x="576" y="309" text-anchor="middle" font-size="30">As the stack recedes, the base can roll closer.</text>
+</svg>

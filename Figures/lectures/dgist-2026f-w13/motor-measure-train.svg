@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-motor-measure" viewBox="0 0 1152 330" role="img" aria-labelledby="w13-mm-title w13-mm-desc">
+  <title id="w13-mm-title">From real motor measurements to a trained controller</title>
+  <desc id="w13-mm-desc">Three schematic stages. Engineers measure a real motor under load, match the simulated joint to that response and train a controller, then try the movement on the physical robot.</desc>
+  <style>
+    #w13-motor-measure text { font-family: inherit; text-anchor: middle; fill: #183653 }
+    #w13-motor-measure .label { font-size: 34px; font-weight: 700 }
+    #w13-motor-measure .caption { font-size: 26px }
+    #w13-motor-measure .edge { fill: none; stroke: #284963; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round }
+    #w13-motor-measure .signal { fill: none; stroke: #a26f1d; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round }
+  </style>
+  <g transform="translate(175 0)">
+    <text class="label" y="45">Measure</text>
+    <rect x="-53" y="105" width="94" height="72" rx="12" fill="#e2edf3" stroke="#284963" stroke-width="6"/>
+    <path class="edge" d="M-31 120 V161 M-10 120 V161 M11 120 V161 M41 142 H78 M-33 178 V195 M21 178 V195 M-59 196 H46"/>
+    <circle cx="89" cy="141" r="25" fill="#faedca" stroke="#9d6a19" stroke-width="6"/>
+    <path class="signal" d="M89 141 L101 129"/>
+    <text class="caption" y="254">How does the motor</text>
+    <text class="caption" y="288">respond under load?</text>
+  </g>
+  <path class="signal" d="M344 147 H394 M380 135 L394 147 L380 159"/>
+  <g transform="translate(577 0)">
+    <text class="label" y="45">Model and train</text>
+    <rect x="-90" y="91" width="180" height="115" rx="8" fill="#edf3f6" stroke="#284963" stroke-width="6"/>
+    <path class="edge" d="M-69 111 V185 H71 M0 208 V223 M-32 223 H32" style="stroke-width:4"/>
+    <path d="M-64 176 C-38 176 -38 158 -24 149 S-4 128 15 128 H62" fill="none" stroke="#294d6d" stroke-width="6"/>
+    <path d="M-64 181 C-38 181 -35 164 -22 153 S0 134 19 134 H62" fill="none" stroke="#a26f1d" stroke-dasharray="6 7" stroke-width="4"/>
+    <text class="caption" y="254">Match the response.</text>
+    <text class="caption" y="288">Practice in simulation.</text>
+  </g>
+  <path class="signal" d="M757 147 H807 M793 135 L807 147 L793 159"/>
+  <g transform="translate(979 0)">
+    <text class="label" y="45">Test</text>
+    <path class="edge" d="M-24 81 L20 123 L-19 165"/>
+    <circle cx="-24" cy="81" r="11" fill="#f4f7fa" stroke="#284963" stroke-width="5"/>
+    <circle cx="20" cy="123" r="10" fill="#f4f7fa" stroke="#284963" stroke-width="5"/>
+    <circle cx="-19" cy="174" r="32" fill="#faedca" stroke="#284963" stroke-width="7"/>
+    <path class="signal" d="M-34 185 L-4 163 M-31 160 L-8 186"/>
+    <path d="M-80 212 H80" stroke="#95a7b7" stroke-width="4"/>
+    <text class="caption" y="254">Try the movement</text>
+    <text class="caption" y="288">on real wheels.</text>
+  </g>
+</svg>

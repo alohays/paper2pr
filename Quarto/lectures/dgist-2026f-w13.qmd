@@ -11,14 +11,17 @@ title-slide-attributes:
 format:
   revealjs:
     theme: [default, ../clean-academic.scss]
+    css: dgist-2026f-w13.css
 bibliography: ../../Bibliography_base.bib
 ---
 
-## Where we left off
+## Where we left off {#survey-route data-chapter="0"}
 
 Last week ({{< series-session prior_week >}}) · {{< series-session prior_title >}}
 
-In W09, we watched a robot drop a coffee tool.
+In W09, a model chose movements and when to make them.
+
+**Today** · Bodies and drives → sensing and control → platforms in the field
 
 
 {{< include _series/dgist-2026f/semester-map.qmd >}}
@@ -27,134 +30,431 @@ In W09, we watched a robot drop a coffee tool.
 
 {{< include _series/dgist-2026f/ask-anytime.qmd >}}
 
-## A command is not motion {#atlas-opening}
+## What made the wheels turn? {#atlas-opening data-chapter="0"}
 
-::: {.content-visible when-meta="w13-local-clips"}
+:::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card atlas-warehouse-turn >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Atlas on a Roll: warehouse turn · Boston Dynamics](https://bostondynamics.com/blog/atlas-on-a-roll/)
+::::
+
+What can we see? Who chose the direction?
+
+
+<!-- Chapter 1: Command -->
+
+## 01 · From a target to a moving wheel {#command-journey data-chapter="1"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/command-journey.svg width="100%" >}}
+
+
+## What can this body be told to do? {#action-interface data-chapter="1"}
+
+| Robot interface | One possible command |
+|:---|:---|
+| Spot mobile base | Move forward at a target speed |
+| Franka research arm | Follow target joint positions |
+
+::: {.footnote}
+[Boston Dynamics · Robot commands](https://dev.bostondynamics.com/docs/concepts/robot_services.html) · [Franka · Control interface](https://frankarobotics.github.io/docs/overview.html)
 :::
 
-::: {.content-visible unless-meta="w13-local-clips"}
-[Watch Atlas turn in the warehouse](https://bostondynamics.com/blog/atlas-on-a-roll/) · 0:00 to 0:16 · Boston Dynamics
-:::
 
-What can we tell from the turn of a wheel?
+## When was that position measured? {#command-clocks data-chapter="1"}
 
-
-## Did the robot pick up the cup? {#cup-evidence}
-
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/cup-grasp-evidence.svg width="100%" >}}
-
-
-## What did the robot know? {#physical-ai-loop}
-
-**Observe** · A camera sees the cup.
-
-**Choose** · A learned policy asks the hand to close.
-
-**Act and observe again** · The hand moves. Where is the cup now?
-
-
-## What would you save from a failed grasp? {#armnet-data}
-
-Three camera views, joint measurements and the commands sent.
+| Example record | Time |
+|:---|---:|
+| Camera sees a moving cart | 0 ms |
+| New steering target arrives | 100 ms |
 
 ::: {.fragment}
-ArmnetBench recorded **37 successes in 255 block-stacking attempts** on low-cost arms.
+At 1 m/s, the cart has moved 10 cm.
 :::
 
 ::: {.footnote}
-[ArmnetBench · Table 2 · Nov 2, 2026](https://arxiv.org/html/2611.03168v1) · [Released recordings](https://huggingface.co/datasets/armnet/armnetbench_v01_lerobot_so101)
+Illustrative timing · [Franka FCI · 1 kHz real-time interface example](https://frankarobotics.github.io/docs/overview.html)
 :::
 
 
-## Where is the cup harder to hold? {#cup-reach}
+## Four questions to carry through the lecture {#four-questions data-chapter="1"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/cup-reach.svg width="100%" >}}
+- Who or what issued the command?
+- Which body had to carry it out?
+- What did the robot measure and correct?
+- What evidence is missing from the clip?
 
 
-## What does a reduction gear change? {#gear-trade}
+<!-- Chapter 2: Body -->
 
-An ideal 3:1 gear at steady speed
+## 02 · How many ways can it move? {#body-dof data-chapter="2"}
 
-| | Motor shaft | Joint shaft |
-|:---|:---:|:---:|
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motion-coordinates.svg width="96%" >}}
+
+
+## How far from the shoulder? {#body-reach data-chapter="2"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/shelf-load.svg width="97%" >}}
+
+
+## How long can each body work? {#body-runtime data-chapter="2"}
+
+| Robot | Power or quoted battery life |
+|:--|:--|
+| Franka Research 3 · fixed arm | External power |
+| Hello Robot Stretch 4 · wheeled arm | 8 h under light computing load |
+| Spot · quadruped | 90 min on average |
+| Atlas · humanoid | 4 h, or 2 h with heavy lifting |
+
+::: {.footnote}
+Manufacturer figures · [Franka](https://franka.de/hubfs/Datasheet_FrankaResearch3_R02212_2.4.pdf) · [Hello Robot](https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf) · [Spot](https://bostondynamics.com/products/spot/) · [Atlas](https://bostondynamics.com/wp-content/uploads/2026/01/atlas-spec-sheet.pdf)
+:::
+
+
+## What does the payload number assume? {#body-payload data-chapter="2"}
+
+| Hello Robot Stretch 4 | Rated arm payload |
+|:--|:--|
+| Arm extended | 2.5 kg |
+| Arm retracted | 4 kg |
+
+::: {.footnote}
+[Hello Robot · Stretch 4 datasheet, rev. 5](https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf)
+:::
+
+
+<!-- Chapter 3: Actuators -->
+
+## 03 · Inside an electric joint {#joint-inside data-chapter="3"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/rotary-joint-parts.svg width="98%" >}}
+
+
+## How does electricity turn a shaft? {#motor-field data-chapter="3"}
+
+Current in the coils creates a magnetic field.
+
+The drive changes the field as the rotor turns.
+
+
+## A gear trades speed for torque {#gear-tradeoff data-chapter="3"}
+
+| Ideal 3:1 reduction | Motor shaft | Joint shaft |
+|:--|:--:|:--:|
 | Turns per second | 3 | 1 |
 | Torque | 1 N·m | 3 N·m |
 
 ::: {.footnote}
-[Lynch & Park, *Modern Robotics*, §8.9](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
+[Lynch & Park · Modern Robotics §8.9](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
 :::
 
 
-## Could the arm do this for an hour? {#repeat-lift}
+## Three ways to reduce speed {#gear-families data-chapter="3"}
 
-The arm lifted one full cup.
+::::: {.content-visible when-meta="w13-local-clips"}
+:::: {.r-stack}
+::: {.fragment .fade-out fragment-index="0"}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/reduction-families.svg width="99%" >}}
+:::
 
-What would you record if it lifted a cup every ten seconds?
+::: {.fragment fragment-index="0"}
+{{< video-card strain-wave-gear >}}
+:::
+::::
+:::::
+
+::: {.content-visible unless-meta="w13-local-clips"}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/reduction-families.svg width="99%" >}}
+:::
+
+::: {.footnote}
+[Strain wave · Harmonic Drive Systems](https://www.hds.co.jp/english/products/hd_theory/) · [Cycloidal · Sumitomo](https://www.youtube.com/watch?v=1ijFove42Kw)
+:::
+
+
+## Can the foot move the motor? {#backdrive-qdd data-chapter="3"}
+
+A bump moves the foot. Can that motion turn the motor shaft?
+
+**Quasi-direct drive** pairs a high-torque motor with a small reduction ratio.
+
+::: {.footnote}
+[MIT Biomimetic Robotics Lab · Actuator design for legged robots](https://biomimetics.mit.edu/research/1a9ba04b-d200-4743-b8fc-bf231f3231f0/)
+:::
+
+
+## Why put a spring in a joint? {#elastic-spring data-chapter="3"}
+
+**Motor → spring → joint**
+
+The spring bends under load. Its deflection helps estimate torque.
+
+::: {.footnote}
+[Pratt & Williamson · Series Elastic Actuators, IROS 1995](https://fab.cba.mit.edu/classes/865.15/people/rebecca.kleinberger/assets/papers/SEA_Pratt.pdf)
+:::
+
+
+## How long can a motor pull that hard? {#motor-heat data-chapter="3"}
+
+| CubeMars AK80-6 KV100 | Output torque |
+|:--|:--:|
+| Rated | 6 N·m |
+| Peak | 12 N·m |
+
+::: {.footnote}
+[CubeMars · AK80-6 KV100 actuator specifications](https://www.cubemars.com/product/ak80-6-kv100-robotic-actuator.html)
+:::
+
+
+## Atlas changed its source of joint motion {#atlas-power data-chapter="3"}
+
+**Hydraulic Atlas** used pressurized fluid to move its joints.
+
+**Electric Atlas** uses motors to turn its joints.
+
+::: {.footnote}
+[Boston Dynamics · Atlas from research robot to industrial humanoid](https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/)
+:::
+
+
+<!-- Chapter 4: Sensors -->
+
+## 04 · How does a joint know its angle? {#joint-encoder data-chapter="4"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/encoder-reading.svg width="100%" >}}
+
+::: {.footnote}
+[US Digital · Incremental and absolute encoders](https://www.usdigital.com/support/resources/reference/technical-docs/white-papers/resolution-accuracy-and-precision-of-encoders/)
+:::
+
+
+## What can each sensor tell us? {#body-and-world data-chapter="4"}
+
+| Sensor | A measurement we can use |
+|:---|:---|
+| Body motion sensor | How fast the body is turning |
+| Camera | Where the next stair appears in the image |
+| Fingertip pressure sensor | Where an object presses on the finger |
+
+::: {.footnote}
+[Spot · Inertial and foot-contact data](https://dev.bostondynamics.com/docs/concepts/joint_control/readme) · [Figure 03 · Palm cameras and fingertip sensing](https://www.figure.ai/news/helix-02)
+:::
+
+
+## Which hand fits the job? {#hand-design data-chapter="4"}
+
+**Parallel jaws** close together to hold a part.
+
+**Articulated fingers** can reposition an object within the hand.
+
+::: {.footnote}
+[Franka · Gripper interface](https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1Gripper.html) · [Boston Dynamics · Atlas hand design](https://bostondynamics.com/blog/robot-hands-for-modern-ai-and-real-work/)
+:::
+
+
+## What changes with hand sensing? {#hand-sensing data-chapter="4"}
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card figure-hand-sensing >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Opening a bottle with hand sensing · Figure AI](https://www.figure.ai/news/helix-02)
+::::
+
+Palm cameras and fingertip sensors · Watch the cap in each run.
+
+
+<!-- Chapter 5: Control -->
+
+## 05 · How does a wheel reach its target? {#wheel-feedback data-chapter="5"}
+
+**Open loop** · Send a timed command.
+
+**Closed loop** · Read the wheel angle and correct the motion.
 
 ::: {.fragment}
-Watch the motor temperature and count completed lifts.
+If the wheel slows under load, which controller notices?
 :::
 
 
-## How far does the elbow have to go? {#joint-error}
+## How much correction is left? {#proportional-correction data-chapter="5"}
 
-The target angle is 30°.
-
-| Sensor reading | Angle still to go |
-|:---:|:---:|
-| 20° | 10° |
-| 28° | 2° |
-
-
-## Which correction should be larger? {#proportional-correction}
-
-The elbow has 10° left to go. Later it has 2° left.
+Target **30°**. At **20°**, the gap is **10°**. At **28°**, it is **2°**.
 
 ::: {.fragment}
-With the same gain, a larger gap gives a larger correction.
+$$u = K_p(r-y)$$
 
-$$u = K_p (r - y)$$
+Correction = gain × remaining gap.
+:::
+
+::: {.footnote}
+[Stanford CS123 · One joint, one measured angle · Fall 2026 Lab 1](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
 :::
 
 
-## What changes when a reading arrives late? {#sensor-delay}
+## What changes when a reading arrives late? {#sensor-delay data-chapter="5"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/feedback-delay.svg width="100%" >}}
 
 ::: {.footnote}
-Robot Body Lab simulation · Exercise adapted from [Stanford CS123, Lab 1, steps 4 to 7](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
+W13 Robot Body Lab simulation · [Stanford CS123 · Lab 1, step 7](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
 :::
 
 
-## Who chooses the next target? {#two-loops}
+## Why would an arm give way? {#arm-compliance data-chapter="5"}
 
-A learned policy can ask the hand to move toward the cup.
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card kuka-compliance >}}
+::::
 
-A joint controller measures the elbow angle and corrects its motion.
+:::: {.content-visible unless-meta="w13-local-clips"}
+[A person pushes a compliant arm · KUKA](https://www.youtube.com/watch?v=lZvPslCIQZY)
+::::
+
+Watch how far the arm yields when a person pushes it.
 
 
-## Which body fits the job? {#warehouse-bodies}
+## Which feet can push on the floor? {#foot-support data-chapter="5"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/foot-support.svg width="100%" >}}
+
+::: {.footnote}
+[MIT Cheetah 3 · Planning ground forces over a short horizon](https://dspace.mit.edu/entities/publication/bc8c7e1e-5830-443f-a879-787947111fcf)
+:::
+
+
+## Who handles each part of a step? {#control-stack data-chapter="5"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/control-layers.svg width="100%" >}}
+
+::: {.footnote}
+Illustrative control stack · [Figure · Whole-body control](https://www.figure.ai/news/helix-02) · [ODrive · Motor control loops](https://docs.odriverobotics.com/v/latest/manual/control.html)
+:::
+
+
+<!-- Chapter 6: History -->
+
+## 06 · ASIMO could run in 2005 {#history-asimo data-chapter="6"}
+
+**6 km/h** in a straight line. Both feet briefly leave the floor.
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card asimo-run >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[ASIMO runs on stage in 2005 · AP Archive](https://www.youtube.com/watch?v=QE0pC-hY__4)
+::::
+
+::: {.footnote}
+[Honda · Dec 2005](https://global.honda/en/newsroom/news/2005/c051213-asimo-eng.html) · [AP archive footage of the 2005 demonstration](https://www.youtube.com/watch?v=QE0pC-hY__4)
+:::
+
+
+## What if the floor or the job changes? {#history-bigdog-hubo data-chapter="6"}
+
+**BigDog** crossed uneven ground. **DRC-HUBO** used tools in a human-supervised competition in 2015.
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card bigdog-ice >}}
+::::
+
+::: {.footnote}
+[DARPA · BigDog](https://www.darpa.mil/about/innovation-timeline/bigdog) · [DARPA Robotics Challenge · Jun 2015](https://www.darpa.mil/research/programs/darpa-robotics-challenge-a)
+:::
+
+
+## Electric joints that teams could change {#history-electric data-chapter="6"}
+
+**Mini Cheetah, 2019** · Modular electric legs
+
+**Atlas, 2024** · An all-electric humanoid
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card mini-cheetah-flip >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Mini Cheetah backflips · MIT](https://www.youtube.com/watch?v=xNeZWP5Mx9s)
+::::
+
+::: {.footnote}
+Video includes 8× and 0.3× playback · [MIT · Mar 2019](https://news.mit.edu/2019/mit-mini-cheetah-first-four-legged-robot-to-backflip-0304) · [Boston Dynamics · Apr 2024](https://bostondynamics.com/blog/electric-new-era-for-atlas/)
+:::
+
+
+## The real motor changed the virtual robot {#history-measure-train data-chapter="6"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motor-measure-train.svg width="98%" >}}
+
+::: {.footnote}
+[Boston Dynamics · Atlas on a Roll · Nov 9, 2026](https://bostondynamics.com/blog/atlas-on-a-roll/)
+:::
+
+
+<!-- Chapter 7: Platforms -->
+
+## 07 · Which body fits the job? {#warehouse-bodies data-chapter="7"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/warehouse-bodies.svg width="100%" >}}
 
 
-## The shelf moves upstairs {#new-task}
+## A fixed arm works inside one cell {#body-fixed-arm data-chapter="7"}
 
-The job is to read a gauge upstairs and bring a cup back down.
+A tray comes within reach. The base stays in place.
 
-::: {.fragment}
-Can the robot take the stairs? Can it also carry the cup?
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card fanuc-fixed-trays >}}
+::::
+
+::: {.content-visible unless-meta="w13-local-clips"}
+[Watch the tray-handling workcell · FANUC and CILYX](https://www.youtube.com/watch?v=esGtbGTmHW8)
+:::
+
+::: {.footnote}
+[FANUC Europe · CILYX tray handling · Nov 3, 2026](https://www.youtube.com/watch?v=esGtbGTmHW8)
 :::
 
 
-## How hard should the hands press? {#nov-force data-seconds="130"}
+## Inside a trailer, move the base as boxes disappear {#body-mobile-arm data-chapter="7"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
-```{=html}
-<style>#nov-force .two-up video.video-inline { height: 360px; object-fit: contain; }</style>
-```
+{{< video-card stretch-case-handling >}}
+::::
 
+:::: {.content-visible unless-meta="w13-local-clips"}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/trailer-unload.svg width="96%" >}}
+::::
+
+::: {.footnote}
+2021 prototype footage · [Boston Dynamics · Gen 2 update, Nov 3, 2026](https://bostondynamics.com/news/boston-dynamics-launches-next-generation-stretch-robot/)
+:::
+
+
+## On an inspection route, bring the sensor to the machine {#body-quadruped data-chapter="7"}
+
+**Spot** brings a sensor to the same inspection points.
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card spot-gauge-inspection >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+Which gauges can the camera see from each stop?
+::::
+
+::: {.footnote}
+Gauge-reading demonstration · [Boston Dynamics · Spot inspection payloads](https://bostondynamics.com/products/spot/)
+:::
+
+
+## With two hands, how hard should the robot press? {#body-humanoid data-chapter="7"}
+
+Berkeley Ctrl-F · **9 of 10 lifts** with 2 kg added to the box.
+
+:::: {.content-visible when-meta="w13-local-clips"}
 ::: {.two-up}
 {{< video-card box-raise-sonic >}}
 
@@ -162,72 +462,105 @@ Can the robot take the stairs? Can it also carry the cup?
 :::
 ::::
 
-::: {.content-visible unless-meta="w13-local-clips"}
-Berkeley added a force command to a learned movement.
-:::
-
-**Ctrl-F lifted the box in 9 of 10 trials** with 2 kg added.
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Ctrl-F: motion and force · UC Berkeley](https://forcectrl.github.io/#hardware)
+::::
 
 ::: {.footnote}
-[UC Berkeley · Ctrl-F hardware trials](https://forcectrl.github.io/#hardware) · [Preprint · Nov 3, 2026](https://arxiv.org/abs/2611.05507)
+[UC Berkeley · Hardware trials](https://forcectrl.github.io/#hardware) · [Preprint · Nov 3, 2026](https://arxiv.org/abs/2611.05507)
 :::
 
 
-## How did Atlas learn what its motors could do? {#nov-motor-model data-seconds="130"}
+## What if the upper body has wheels? {#body-hybrid-pixel data-chapter="7"}
 
-Measure the real motors.
+**CMU Pixel** pairs a wheeled base with two arms.
 
-Match the simulated motors to those measurements.
-
-Train in simulation, then try the movement on wheels.
+Matched camera views and gripper shapes help it learn from people.
 
 ::: {.footnote}
-[Boston Dynamics · Atlas on a Roll · Nov 9, 2026](https://bostondynamics.com/blog/atlas-on-a-roll/)
+[Carnegie Mellon · Pixel system and labeled demonstrations · Nov 2026](https://pixel-robot.com/pixel/)
 :::
 
 
-## Which robot is already doing the job? {#nov-fab-inspection data-seconds="120"}
+<!-- Chapter 8: Deployment -->
+
+## 08 · Read the label on a demo {#demo-label data-chapter="8"}
+
+| Label | What it tells you |
+|:---|:---|
+| Teleoperated | A person supplied commands |
+| Autonomous rollout | The robot controlled this recorded attempt |
+| 2× playback | Screen time is half the recorded time |
+
+::: {.footnote}
+[CMU Pixel · Teleoperation and policy demonstrations](https://pixel-robot.com/pixel/)
+:::
+
+
+## Where are the other attempts? {#trial-count data-chapter="8"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/block-stack-trials.svg width="91%" >}}
+
+::: {.footnote}
+[ArmnetBench · SO-101 block stacking, Table 2 · Nov 2, 2026](https://arxiv.org/html/2611.03168v1)
+:::
+
+
+## Field work or a future trial? {#field-evidence data-chapter="8"}
 
 **Spot** · Two robots completed over 90,000 inspections in Singapore.
 
 **Atlas** · Onsite testing at GlobalFoundries was planned for early 2027.
 
 ::: {.footnote}
-[Boston Dynamics and GlobalFoundries · Company-reported figures · Nov 17, 2026](https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/)
+[Boston Dynamics and GlobalFoundries · Joint announcement · Nov 17, 2026](https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/)
 :::
 
 
-## Who chose the warehouse turn? {#atlas-return}
+## What happens on the next shift? {#field-failure data-chapter="8"}
 
-::: {.content-visible when-meta="w13-local-clips"}
-{{< video-card atlas-gamepad-simulation >}}
-:::
+A pallet blocks a mobile robot's usual route.
 
-::: {.content-visible unless-meta="w13-local-clips"}
-[Watch the gamepad and the simulation](https://bostondynamics.com/blog/atlas-on-a-roll/) · 1:24 to 1:36 · Boston Dynamics
-:::
-
-What would the warehouse command log tell us?
-
-
-## Why are these experiments possible now? {#why-now}
-
-Affordable arms can record repeated attempts, including failures.
-
-Policies can command how hard a robot should press.
-
-Measured motors make simulated practice closer to real motion.
-
-
-## Would you trust the next lift? {#transfer}
-
-A new robot lifts one box beside a person.
-
-What would you check before it lifts the next hundred?
+What would you record before sending it back into the aisle?
 
 ::: {.fragment}
-Count attempts, dropped boxes and human interventions.
+Load and surface · Stops and recovery · Human interventions
 :::
+
+
+## Why does hardware matter to Physical AI now? {#why-now data-chapter="8"}
+
+- Affordable arms can record failures alongside successes.
+- A policy can request how hard the hands should push.
+- Measured motors make simulated practice more realistic.
+
+::: {.footnote}
+[ArmnetBench](https://arxiv.org/html/2611.03168v1) · [Ctrl-F](https://forcectrl.github.io/#hardware) · [Atlas](https://bostondynamics.com/blog/atlas-on-a-roll/) · [CoRL workshop, Nov 12](https://beneath-the-policy.github.io/)
+:::
+
+
+<!-- Chapter 9: Return -->
+
+## 09 · Read the wheeled robot again {#atlas-return data-chapter="9"}
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card atlas-gamepad-simulation >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Atlas on a Roll: gamepad and simulation · Boston Dynamics](https://bostondynamics.com/blog/atlas-on-a-roll/)
+::::
+
+Whose command set the direction of the warehouse turn?
+
+
+## What would you ask about a new robot? {#read-new-robot data-chapter="9"}
+
+**A command is not motion.**
+
+What was commanded? Which body moved?
+
+What was measured? What still needs evidence?
 
 
 {{< include _series/dgist-2026f/qa.qmd >}}
