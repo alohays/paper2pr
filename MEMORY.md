@@ -73,6 +73,8 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 ## Course Architecture
 
+[LEARN:course-continuity] W13 introduced policy, feedback and inference delay again after students had worked examples in W02, W06 and W09 → check the delivered slides and recordings before adding a recap. Name the familiar example in one sentence and give the student a new physical quantity to measure.
+
 [LEARN:w13-breadth] Promoting the presenter's choice of a recurring grasp example into the W13 structure displaced history, actuation, sensing and whole-body control → the November 18 ten-chapter hardware survey governs the lecture. Adjust the depth of each explanation for freshmen. Rotate examples across arms, mobile manipulators, quadrupeds and humanoids, and use a grasp only where it teaches contact.
 
 [LEARN:w13-audience] A mixed first- and second-year audience and a joint-design syllabus were assumed for W13 → teach first-years in their second semester. Draw on the presenter's computer-vision and robot-learning expertise to explain what a policy can observe and command, how the body responds and which evidence would explain an outcome.

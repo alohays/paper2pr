@@ -19,7 +19,7 @@ audience:
   assumes: none    # none | practitioner | expert
   size: "about 90"
   description: "First-year undergraduates in their second semester. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Assume no prior mechanics or control course."
-  prior: [W03 video and robot foundation models, W06 action data, W09 robot learning and action chunks, W11 Spatial AI to Physical AI, W12 Leadership talk]
+  prior: [W02 embodied AI and policy, W03 video and world models, W06 drawer commands and timestamped robot state, W09 timed action targets and inference delay, W11 Spatial AI to Physical AI, W12 Leadership talk]
 delivery: in-person    # in-person | remote | hybrid
 
 # Wall-clock minutes. video_min (clips playing without narration) and
@@ -46,6 +46,8 @@ sources:
   - "https://pages.github.berkeley.edu/EECS-106/sp22-site/calendar/"
   - "https://bostondynamics.com/blog/atlas-on-a-roll/"
   - "https://dev.bostondynamics.com/docs/concepts/robot_services.html"
+  - "https://dev.bostondynamics.com/python/bosdyn-client/src/bosdyn/client/robot_command.html#bosdyn.client.robot_command.RobotCommandBuilder.synchro_velocity_command"
+  - "https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1JointPositions.html"
   - "https://frankarobotics.github.io/docs/overview.html"
   - "https://franka.de/hubfs/Datasheet_FrankaResearch3_R02212_2.4.pdf"
   - "https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf"

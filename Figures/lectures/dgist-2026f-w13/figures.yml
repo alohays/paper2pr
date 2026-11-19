@@ -23,6 +23,10 @@ figures:
     source: Original teaching illustration
     licence: Repository
     third_party: false
+  - file: wheel-travel-check.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
   - file: control-layers.svg
     source: Original teaching illustration
     licence: Repository

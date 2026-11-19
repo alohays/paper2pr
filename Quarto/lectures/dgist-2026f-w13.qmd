@@ -19,7 +19,7 @@ bibliography: ../../Bibliography_base.bib
 
 Last week ({{< series-session prior_week >}}) · {{< series-session prior_title >}}
 
-In W09, a model chose movements and when to make them.
+W11 guest lecture · Finding the same point in different images
 
 **Today** · Bodies and drives → sensing and control → platforms in the field
 
@@ -45,45 +45,48 @@ What can we see? Who chose the direction?
 
 <!-- Chapter 1: Command -->
 
-## 01 · From a target to a moving wheel {#command-journey data-chapter="1"}
+## 01 · What turns the wheel after a command? {#command-journey data-chapter="1" data-seconds="65"}
+
+W06 · “Move 2 cm right.” How far did the hand actually go?
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/command-journey.svg width="100%" >}}
 
 
-## What can this body be told to do? {#action-interface data-chapter="1"}
+## What does 0.5 ask each robot to do? {#action-interface data-chapter="1" data-seconds="45"}
 
-| Robot interface | One possible command |
+| Command field | Meaning of 0.5 in this example |
 |:---|:---|
-| Spot mobile base | Move forward at a target speed |
-| Franka research arm | Follow target joint positions |
+| Spot · forward body speed | Move forward at 0.5 m/s |
+| Franka · one of seven joint angles | Aim for an angle of 0.5 radians |
 
 ::: {.footnote}
-[Boston Dynamics · Robot commands](https://dev.bostondynamics.com/docs/concepts/robot_services.html) · [Franka · Control interface](https://frankarobotics.github.io/docs/overview.html)
+Illustrative values · [Spot velocity command](https://dev.bostondynamics.com/python/bosdyn-client/src/bosdyn/client/robot_command.html#bosdyn.client.robot_command.RobotCommandBuilder.synchro_velocity_command) · [Franka joint targets](https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1JointPositions.html)
 :::
 
 
-## When was that position measured? {#command-clocks data-chapter="1"}
+## How fast did the wheel turn on average? {#command-clocks data-chapter="1" data-seconds="65"}
 
-| Example record | Time |
+Target wheel speed · **1 turn/s**
+
+| Time | Encoder reading since the start |
 |:---|---:|
-| Camera sees a moving cart | 0 ms |
-| New steering target arrives | 100 ms |
+| 0 s | 0 turns |
+| 1 s | ¾ turn |
+
+[The wheel averaged **¾ turn/s** over that second.]{.fragment}
+
+::: {.footnote}
+Illustrative wheel-axle readings
+:::
+
+
+## How far did the cart travel? {#four-questions data-chapter="1" data-seconds="75"}
+
+The axle turned **¾ of a turn**. What else would you measure?
 
 ::: {.fragment}
-At 1 m/s, the cart has moved 10 cm.
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/wheel-travel-check.svg width="96%" >}}
 :::
-
-::: {.footnote}
-Illustrative timing · [Franka FCI · 1 kHz real-time interface example](https://frankarobotics.github.io/docs/overview.html)
-:::
-
-
-## Four questions to carry through the lecture {#four-questions data-chapter="1"}
-
-- Who or what issued the command?
-- Which body had to carry it out?
-- What did the robot measure and correct?
-- What evidence is missing from the clip?
 
 
 <!-- Chapter 2: Body -->
