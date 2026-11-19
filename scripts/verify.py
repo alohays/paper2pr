@@ -157,6 +157,7 @@ def main():
     revision = git("rev-parse", "HEAD").strip()
     clean = not git("status", "--porcelain=v1", "-z")
     fixtures = []
+    whole_site = args.all
     if args.all:
         decks, fixtures = deckprofile.publishable_decks(), FIXTURES
     elif args.changed_from:
@@ -164,6 +165,7 @@ def main():
         changes = git("diff", "--no-renames", "--name-only", "-z", base, "HEAD").split("\0")
         decks, shared = affected([p for p in changes if p], deckpath.all_decks())
         if shared:
+            whole_site = True
             fixtures = FIXTURES
         step("Checking the language policy on the proposed changes",
              "bash", "scripts/check-korean-pre-commit.sh", base)
@@ -193,8 +195,10 @@ def main():
         return
 
     sites = {}
-    if public:
+    public_site = None
+    if public or whole_site:
         site = args.site.resolve() if args.site else build / "site"
+        public_site = site
         step("Assembling the public audience site", "bash", "scripts/assemble_site.sh",
              str(site), *(d.slug for d in public))
         sites.update((d.qmd, site) for d in public)
@@ -207,7 +211,8 @@ def main():
             step(f"Packaging a local {args.delivery} preview of {qmd.stem}", sys.executable,
                  "scripts/assemble_site.py", "--preview", args.delivery, str(site), str(qmd))
             sites[qmd] = site
-    for site in dict.fromkeys(sites.values()):
+    all_sites = ([public_site] if public_site else []) + list(sites.values())
+    for site in dict.fromkeys(all_sites):
         options = ["--classroom"] if args.delivery == "classroom" else []
         step("Checking packaged assets", sys.executable, "scripts/check_site_assets.py", *options, str(site))
         if args.delivery == "public" and not args.slide:
