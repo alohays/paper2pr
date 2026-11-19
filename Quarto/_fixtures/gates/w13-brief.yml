@@ -10,27 +10,38 @@ brief:
   complete_clock: true
   chapters:
     - slide: survey-route
+      title: "Opening"
       seconds: 170
     - slide: command-journey
+      title: "A command is not motion"
       seconds: 250
     - slide: body-dof
+      title: "The body in numbers"
       seconds: 200
     - slide: joint-inside
+      title: "Actuators and transmissions"
       seconds: 620
     - slide: joint-encoder
+      title: "Sensing and hands"
       seconds: 160
     - slide: wheel-feedback
+      title: "Feedback and control layers"
       seconds: 600
     - slide: history-asimo
+      title: "How we got here: ASIMO to integrated platforms"
       seconds: 220
     - slide: warehouse-bodies
+      title: "The task chooses the body"
       seconds: 430
     - slide: demo-label
+      title: "Demo vs. deployment"
       seconds: 260
     - slide: atlas-return
+      title: "Back to the robot on wheels"
       seconds: 90
   demonstrations:
     - slide: atlas-opening
+      chapter: survey-route
       clip: atlas-warehouse-turn
     - slide: sensor-delay
     - slide: body-fixed-arm
@@ -44,4 +55,5 @@ brief:
     - slide: body-humanoid
       clip: box-raise-ctrl-f
     - slide: atlas-return
+      chapter: atlas-return
       clip: atlas-gamepad-simulation

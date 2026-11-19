@@ -471,10 +471,7 @@ def main(argv=None):
     if not args.dry_run:
         print(f"  Quarto/_script/{v['genre']}/")
         print()
-        print("Next:")
-        print(f"  bash scripts/preview.sh {v['name']}")
-        print(f"  python3 scripts/quality_score.py "
-              f"Quarto/{v['genre']}/{v['name']}.qmd --summary")
+        print(f"Verify the audience build with ./verify {v['name']}")
     return 0
 
 

@@ -27,18 +27,20 @@ audience:
 brief:
   chapters:
     - slide: read-the-wheel
+      title: What can the wheel encoder tell us?
       seconds: 180
     - slide: feedback
       seconds: 300
   demonstrations:
     - slide: turning-wheel
+      chapter: read-the-wheel
       clip: wheel-turn
   complete_clock: true
 ```
 
-A chapter's `slide` names its opening Reveal section, e.g., `## Read the wheel {#read-the-wheel}`. Chapters appear in brief order. A demonstration names its slide and optionally a manifest clip. Either list accepts a plain slide ID when that is the whole requirement. Other slides, examples and reveal steps are the author's choices.
+A chapter's `slide` names its opening Reveal section, e.g., `## Read the wheel {#read-the-wheel}`. Chapters appear in brief order. A demonstration names its slide and optionally a manifest clip. Add `chapter` with a chapter slide ID when a demo has an agreed placement, such as an opening question or a closing reprise. Either list accepts a plain slide ID when that is the whole requirement. Other slides, examples and reveal steps are the author's choices.
 
-Each chapter may have a budget in seconds. When the presenter apportions the whole teaching slot, `complete_clock: true` checks that the budgets sum to `60 × (duration_min - qa_min)`, which includes video time. If the QMD includes per-slide `data-seconds`, verification also checks those figures against the chapter's budget. Actual presentation speed comes from rehearsal. List just the constrained items for a partial brief. Chapter and demonstration checks inspect the rendered audience sections and their clip markers. Reviewers assess what those sections teach. The [archived W13 fixture](../Quarto/_fixtures/gates/w13-brief.yml) preserves an example with ten chapters and a fifty-minute clock.
+An optional `title` on a chapter or demonstration preserves the presenter’s wording for the teaching reviewer while the slide heading can evolve. Each chapter may have a budget in seconds. When the presenter apportions the whole teaching slot, `complete_clock: true` checks that the budgets sum to `60 × (duration_min - qa_min)`, which includes video time. If the QMD includes per-slide `data-seconds`, verification also checks those figures against the chapter's budget. Actual presentation speed comes from rehearsal. List just the constrained items for a partial brief. Chapter and demonstration checks inspect the rendered audience sections and their clip markers. Reviewers assess what those sections teach. The [archived W13 fixture](../Quarto/_fixtures/gates/w13-brief.yml) preserves an example with ten chapters and a fifty-minute clock.
 
 ## Notes and delivery
 

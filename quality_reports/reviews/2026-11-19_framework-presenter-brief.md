@@ -29,4 +29,4 @@ python3 scripts/test_profiles.py \
   --w13-config "$replay/b1517c4/Quarto/lectures/dgist-2026f-w13.deck.yml"
 ```
 
-The default regression suite also checks missing, duplicate and reordered IDs, a substituted clip, an incorrect chapter budget, notes-only content and the freedom to add slides inside the brief. The historical replay reads the classroom clip identities from HTML. Playback verification runs on the actual media-equipped build.
+The W13 replay also removes one video from the paired Berkeley comparison and moves the Atlas opening to the final chapter. Both changes fail the brief. The default regression suite also checks missing, duplicate and reordered IDs, a substituted clip, an incorrect chapter budget, notes-only content and the freedom to add slides inside the brief. The historical replay reads the classroom clip identities from HTML. Playback verification runs on the actual media-equipped build.

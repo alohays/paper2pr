@@ -17,6 +17,7 @@ inline documents.
 Usage: python3 scripts/test_profiles.py
 """
 import argparse
+import re
 import os
 import subprocess
 import sys
@@ -491,6 +492,23 @@ check("a partial allocation can leave the author time for other material",
       not matches(sample, {"chapters": [{"slide": "close", "seconds": 10}]}))
 check("substituting a different clip on a required slide is detected",
       matches(sample.replace('data-video-slug="turn"', 'data-video-slug="other"')))
+check("a demo assigned to a chapter cannot move outside its boundaries",
+      matches(sample, {"chapters": ["open", "close"],
+                       "demonstrations": [{"slide": "open", "chapter": "close"}]}))
+check("an empty clip marker, poster or hidden alternative cannot satisfy a demonstration",
+      all(matches(sample.replace('<a data-video-slug="turn" href="https://example.org">'
+                                 'Watch the turn</a>', element)) for element in (
+          '<figure data-video-slug="turn"></figure>',
+          '<figure data-video-slug="turn"><img src="poster.jpg"></figure>',
+          '<div hidden><video data-video-slug="turn" src="turn.mp4"></video></div>',
+          '<figure data-video-slug="turn"><source src="not-a-video.mp4"></figure>',
+          '<style></style><figure style="display: none" data-video-slug="turn"><video src="v"></video></figure>',
+      )))
+check("an actual video source or a Reveal video background counts",
+      not matches(sample.replace('<a data-video-slug="turn" href="https://example.org">Watch the turn</a>',
+                                 '<figure data-video-slug="turn"><video><source data-src="turn.mp4"></video></figure>'))
+      and not matches(sample.replace('data-seconds="40"', 'data-seconds="40" data-video-slug="turn" data-background-video="turn.mp4"')
+                      .replace('<a data-video-slug="turn"', '<a')))
 check("stack containers, speaker notes and elements outside the slides cannot satisfy the brief",
       matches(sample, {"chapters": ["stack"]}) and matches(sample, {"chapters": ["backstage"]})
       and matches(sample, {"demonstrations": [{"slide": "open", "clip": "private"}]}))
@@ -557,15 +575,27 @@ if args.w13_html:
         audience = config["audience"]["description"].lower()
         check("the restored metadata preserves the introductory audience and booked slot",
               config["audience"]["assumes"] == historical["audience"]["assumes"]
-              and all(term in audience for term in ("first-year", "second semester", "no prior mechanics or control"))
+              and all(term in audience for term in ("first-year", "second semester"))
+              and re.search(r"no (?:prior )?mechanics or control", audience)
               and all(config[key] == historical[key] for key in ("duration_min", "qa_min", "video_min")))
-    actual = RenderedSlides(args.w13_html.read_text()).slides
+    archived_html = args.w13_html.read_text()
+    actual = RenderedSlides(archived_html).slides
     errors = check_brief(plan, actual, clock)
     check("10 chapters, 3,000 teaching seconds and eight demonstration requirements",
           not errors and len(plan["chapters"]) == 10 and clock == 3000
           and len(plan["demonstrations"]) == 8, "; ".join(errors))
     check("removing the history chapter fails the original brief",
           check_brief(plan, [s for s in actual if s.id != "history-asimo"], clock))
+    half_demo = re.sub(r'<figure[^>]*data-video-slug="box-raise-ctrl-f"[^>]*>.*?</figure>',
+                       '<figure data-video-slug="box-raise-ctrl-f"></figure>', archived_html, flags=re.S)
+    check("leaving an empty second card in the Berkeley comparison fails its demonstration",
+          any("box-raise-ctrl-f" in m for m in check_brief(plan, RenderedSlides(half_demo).slides, clock)))
+    opening = re.search(r'<section id="atlas-opening".*?</section>', archived_html, re.S)
+    moved = archived_html.replace(opening[0], "").replace('<section id="atlas-return"',
+                                                          opening[0] + '<section id="atlas-return"', 1)
+    check("moving the opening Atlas question beside the closing reprise fails the brief",
+          any("belongs in chapter #survey-route" in m for m in
+              check_brief(plan, RenderedSlides(moved).slides, clock)))
     if args.w13_before:
         earlier = RenderedSlides(args.w13_before.read_text()).slides
         missing = check_brief(plan, earlier, clock)
