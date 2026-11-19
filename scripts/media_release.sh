@@ -30,7 +30,6 @@ ROWS_FILE=$(mktemp)
 trap 'rm -f "$ROWS_FILE"' EXIT
 python3 - "$DECK" > "$ROWS_FILE" <<'PYTHON'
 import sys
-from urllib.parse import unquote
 sys.path.insert(0, "scripts")
 import deckpath, media_prep
 from private_terms import contains_private, private_terms
@@ -41,7 +40,7 @@ except ValueError:
     sys.exit("error: cannot read the external private denylist")
 
 def protected(value):
-    return contains_private(value, terms) or contains_private(unquote(value), terms)
+    return contains_private(value, terms)
 
 try:
     home = deckpath.find_media(sys.argv[1])

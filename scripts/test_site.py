@@ -101,7 +101,8 @@ class SiteTest(unittest.TestCase):
                       '<link href="../../Figures/lectures/Public/figures.yml">',
                       '<img src="../../Figures/lectures/Public/videos/private.mp4">',
                       '<script src="Hidden-timer.js"></script>',
-                      '<img src="broken.png">', f'<p>{self.private}</p>'):
+                      '<img src="broken.png">', f'<p>{self.private}</p>',
+                      f'<a href="https://example.org/{self.private.replace("-", "%2D")}">Source</a>'):
             with self.subTest():
                 self.page.write_text("<section>" + extra + "</section>")
                 self.assemble(success=False)

@@ -2,6 +2,7 @@
 import os
 from html import unescape
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -29,5 +30,6 @@ def private_terms():
 def contains_private(text, terms):
     if not terms:
         return False
-    normalized = unescape(text).casefold()
-    return any(term.casefold() in normalized for term in terms)
+    raw = text.casefold()
+    decoded = unquote(unescape(text)).casefold()
+    return any(term.casefold() in raw or term.casefold() in decoded for term in terms)
