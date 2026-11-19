@@ -722,7 +722,7 @@ format:
     text-align: center;
     line-height: 1; }
 #s07 .bottom-callout { position: absolute;
-    bottom: 0;
+    bottom: 30px;
     left: 0;
     right: 0;
     background: rgba(11,29,58,0.92);
@@ -1745,7 +1745,7 @@ format:
   color: #FCFBF7;
 }
 #s18 .gold-rule { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, transparent 0%, #C9A84C 20%, #C9A84C 80%, transparent 100%); }
-#s18 .content { height:100%; padding:28px 40px 12px; position:relative; z-index:2; display:grid; grid-template-rows:auto 1fr auto; }
+#s18 .content { height:100%; padding:28px 40px 46px; position:relative; z-index:2; display:grid; grid-template-rows:auto 1fr auto; }
 #s18 .eyebrow { font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#C9A84C; margin-bottom:8px; }
 #s18 .headline { font-family:"Instrument Serif", Georgia, serif; font-size:38px; line-height:0.94; letter-spacing:-0.05em; max-width:360px; padding-bottom:6px; }
 #s18 .sub { font-size:13px; line-height:1.5; color:#D7DEE9; max-width:360px; margin-top:6px; }
@@ -1772,7 +1772,7 @@ format:
       <p class="sub">Personalized conversations, proactive prompts, multimodal entry points — all inside one AI-native consumer product.</p>
     </div>
     <div class="stage" style="grid-template-columns:1fr; justify-items:center;">
-      <img src="../../Figures/talks/SUNY/wrtn/wrtn-seri-demo.png" alt="Wrtn Seri AI companion — chat, voice call, diary" style="width:100%; max-height:320px; object-fit:contain; border-radius:18px;">
+      <img src="../../Figures/talks/SUNY/wrtn/wrtn-seri-demo.png" alt="Wrtn Seri AI companion — chat, voice call, diary" style="width:100%; max-height:235px; object-fit:contain; border-radius:18px;">
     </div>
     <div class="chips">
       <span class="chip">personalized chat</span>
