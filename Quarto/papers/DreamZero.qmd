@@ -35,11 +35,6 @@ format:
 bibliography: ../../Bibliography_base.bib
 ---
 
-<!---------------------------------------------------------------------------->
-<!-- PART 1: MOTIVATION & BACKGROUND                                        -->
-<!---------------------------------------------------------------------------->
-
-<!-- Slide 1: Title -->
 ## {background-color="white"}
 
 ::: {style="text-align: center;"}
