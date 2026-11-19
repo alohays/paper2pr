@@ -29,7 +29,7 @@ PROBE_QMD="Quarto/lectures/zz-korean-gate-probe.qmd"
 PROBE_CFG="Quarto/lectures/zz-korean-gate-probe.deck.yml"
 PAPER_QMD="Quarto/papers/zz-korean-gate-probe-paper.qmd"
 PAPER_CFG="Quarto/papers/zz-korean-gate-probe-paper.deck.yml"
-PLAIN="quality_reports/zz-korean-gate-probe.md"
+PLAIN="quality_reports/zz-korean-gate probe.md"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp" "$PROBE_QMD" "$PROBE_CFG" "$PAPER_QMD" "$PAPER_CFG" "$PLAIN"' EXIT
 
@@ -74,7 +74,7 @@ stage() {
 }
 
 run_hook() {
-  bash scripts/check-korean-pre-commit.sh >"$tmp/out" 2>&1
+  bash scripts/check-korean-pre-commit.sh "$@" >"$tmp/out" 2>&1
   echo $?
 }
 
@@ -90,15 +90,16 @@ expect() {
 }
 
 echo "0. The hook git actually runs is the script this repo maintains"
-# git runs .git/hooks/pre-commit, a copy. Editing a script under scripts/
+# Git runs its configured hook, a copy. Editing the wrapper under scripts/
 # changes nothing until setup-git-filters.sh copies it over, so every test
 # below could pass against a stale hook. Ask this first. The installed hook
 # is the wrapper (scripts/pre-commit.sh), which runs the speaker-note gate
 # and then this one.
-if [ ! -x .git/hooks/pre-commit ]; then
+hook="$(git rev-parse --git-path hooks/pre-commit)" || exit 1
+if [ ! -x "$hook" ]; then
   echo "  FAIL  no pre-commit hook installed -- run scripts/setup-git-filters.sh"
   fail=1
-elif ! cmp -s .git/hooks/pre-commit scripts/pre-commit.sh; then
+elif ! cmp -s "$hook" scripts/pre-commit.sh; then
   echo "  FAIL  installed hook is stale -- run scripts/setup-git-filters.sh"
   echo "        Until you do, your edits to the gate are not in effect."
   fail=1
@@ -141,7 +142,8 @@ echo "4. The exemption does not leak to files that are not decks"
 mkdir -p "$(dirname "$PLAIN")"
 printf '# probe\n\n%s\n' "$korean" > "$PLAIN"
 stage "$PLAIN"
-expect "a Korean report is still blocked" 1 "$(run_hook)"
+expect "a Korean report with a space in its name is still blocked" 1 "$(run_hook)"
+expect "the PR base check also blocks the report" 1 "$(run_hook HEAD)"
 
 echo "5. An English deck is unaffected"
 printf '## A slide\n\n- Body text.\n' > "$PROBE_QMD"

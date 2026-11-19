@@ -4,7 +4,6 @@
 # Exceptions:
 #   - .claude/skills/** (Korean examples for bilingual functionality)
 #   - .claude/agents/** (Korean examples for bilingual functionality)
-#   - .speaker-notes/**  (local-only, gitignored anyway)
 #   - a deck that declares `language.slides: ko` in its own <deck>.deck.yml
 #   - a deck qmd may carry up to `language.korean_allowance` Hangul
 #     characters (deck config, else its profile, else 0) -- term glosses,
@@ -29,14 +28,20 @@
 # filter strips them out of the staged content before the diff is read.
 #
 # Install: bash scripts/setup-git-filters.sh, which puts scripts/pre-commit.sh
-# in .git/hooks/ to run this gate after the speaker-note one
-# (scripts/check-notes-pre-commit.sh). Runnable on its own at any time.
+# in Git's active hooks directory to run this gate after the speaker-note one
+# (scripts/check-notes-pre-commit.sh). With BASE, compare the index to that
+# commit, allowing read-only PR verification against the merge base.
 
-EXEMPT_PATTERNS=(
-    ".claude/skills/"
-    ".claude/agents/"
-    ".speaker-notes/"
-)
+set -eo pipefail
+cd "$(git rev-parse --show-toplevel)"
+diff=(git diff --cached --no-renames)
+if [[ "$#" == 1 ]]; then
+    base="$(git rev-parse --verify --end-of-options "$1^{commit}")"
+    diff+=("$base")
+elif [[ "$#" != 0 ]]; then
+    echo "Usage: bash scripts/check-korean-pre-commit.sh [BASE]" >&2
+    exit 2
+fi
 
 # A deck qmd: Quarto/<genre>/<deck>.qmd (a fixture with a config beside it
 # resolves the same way; see deckprofile.resolve). Everything else is held
@@ -80,18 +85,15 @@ print(len(hangul.findall(sys.stdin.read())))
 
 found_korean=0
 
-for file in $(git diff --cached --name-only --diff-filter=ACM); do
-    # Skip exempt paths
-    skip=false
-    for pattern in "${EXEMPT_PATTERNS[@]}"; do
-        if [[ "$file" == *"$pattern"* ]]; then
-            skip=true
-            break
-        fi
-    done
-    if $skip; then
-        continue
-    fi
+# A path may contain whitespace. Store names only; diff and blob contents
+# pass through pipes and are never printed.
+files="$(mktemp)"
+trap 'rm -f "$files"' EXIT
+"${diff[@]}" --name-only --diff-filter=ACMT -z -- > "$files"
+while IFS= read -r -d '' file; do
+    case "$file" in
+        .claude/skills/*|.claude/agents/*) continue ;;
+    esac
 
     if slides_may_be_korean "$file"; then
         echo "  $file: Korean slides allowed (language.slides: ko in its deck config)"
@@ -99,7 +101,7 @@ for file in $(git diff --cached --name-only --diff-filter=ACM); do
     fi
 
     # Skip binary files
-    if git diff --cached --numstat "$file" | grep -q "^-"; then
+    if [[ "$("${diff[@]}" --numstat -- "$file")" == -* ]]; then
         continue
     fi
 
@@ -139,10 +141,17 @@ for file in $(git diff --cached --name-only --diff-filter=ACM); do
     # filter and by CI, its \uXXXX escapes mean this file stays pure ASCII
     # (a literal Hangul class here gets mangled back into escapes), and it
     # is locale-independent, unlike a BSD bracket expression.
-    korean_lines=$(git diff --cached -p "$file" | grep "^+" | python3 -c '
+    korean_lines=$("${diff[@]}" -p -- "$file" | python3 -c '
 import re, sys
 hangul = re.compile("[\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]")
-print(sum(1 for line in sys.stdin if hangul.search(line)))
+count = 0
+in_hunk = False
+for line in sys.stdin:
+    if line.startswith("@@"):
+        in_hunk = True
+    elif in_hunk and line.startswith("+") and hangul.search(line):
+        count += 1
+print(count)
 ')
 
     if [ "${korean_lines:-0}" -gt 0 ]; then
@@ -154,7 +163,7 @@ print(sum(1 for line in sys.stdin if hangul.search(line)))
         echo "  $file ($korean_lines added lines with Korean)"
         found_korean=1
     fi
-done
+done < "$files"
 
 if [ "$found_korean" -eq 1 ]; then
     echo ""
