@@ -412,8 +412,10 @@ with tempfile.TemporaryDirectory() as td:
           ">2026-09-04<" in page and 'href="slides/lectures/dgist-2026f-w13.html"' in page)
     check("a deck without a series stays in the plain table",
           ">Loose<" in page and page.find(">Loose<") > i13)
-    check("the live landing page keeps the SUNY row",
-          "SUNY" in build_landing.build() or "Career" in build_landing.build())
+    suny = deckpath.find("SUNY")
+    suny_link = f'href="slides/{suny.slug}.html"'
+    check("the live landing includes SUNY according to its publication setting",
+          (suny_link in build_landing.build()) == deckprofile.load(suny).publish)
 
 print("10. render-level")
 quarto = shutil.which("quarto")
