@@ -23,10 +23,12 @@ Exit 0 when every Release URL answers 200 (or when a page references none),
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import html
 import os
 import re
 import sys
+import ssl
 import time
 import urllib.error
 import urllib.request
@@ -57,7 +59,17 @@ def urls_in_site(site_root: str) -> dict:
     return found
 
 
-def status_of(url: str, timeout: float) -> str:
+def tls_context():
+    context = ssl.create_default_context()
+    # Some python.org macOS installs have no OpenSSL bundle. Keep certificate
+    # verification enabled and fall back to the operating system's CA bundle.
+    if (not context.get_ca_certs() and not os.environ.get("SSL_CERT_FILE")
+            and os.path.isfile("/etc/ssl/cert.pem")):
+        context.load_verify_locations(cafile="/etc/ssl/cert.pem")
+    return context
+
+
+def status_of(url: str, timeout: float, context=None) -> str:
     """The HTTP status the browser would get, following the redirect GitHub
     answers a Release asset with. A transport error is retried: a flaky
     network must not read as a missing file."""
@@ -65,7 +77,7 @@ def status_of(url: str, timeout: float) -> str:
     for attempt in range(ATTEMPTS):
         try:
             req = urllib.request.Request(url, method="HEAD")
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
+            with urllib.request.urlopen(req, timeout=timeout, context=context) as resp:
                 return str(resp.status)
         except urllib.error.HTTPError as e:
             # A real answer from the server: 404 is the finding, not an error.
@@ -93,13 +105,13 @@ def main() -> int:
         return 0
 
     missing = []
-    for url in sorted(found):
-        code = status_of(url, args.timeout)
-        if code == "200":
-            print(f"  200  {url}")
-        else:
-            print(f"  {code}  {url}")
-            missing.append((url, found[url], code))
+    urls = sorted(found)
+    context = tls_context()
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        statuses = pool.map(lambda url: status_of(url, args.timeout, context), urls)
+        for url, code in zip(urls, statuses):
+            if code != "200":
+                missing.append((url, found[url], code))
 
     if missing:
         print(f"\n{len(missing)} Release asset(s) referenced by the site do not "

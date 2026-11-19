@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Project-local QA tools take precedence when installed.
+set -eu
+root="$(cd "$(dirname "$0")" && pwd)"
+export PATH="$root/.venv/bin:$root/.tools/quarto/bin:$PATH"
+exec python3 "$root/scripts/verify.py" "$@"

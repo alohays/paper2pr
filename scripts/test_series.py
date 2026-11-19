@@ -39,6 +39,7 @@ Usage: python3 scripts/test_series.py
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
@@ -59,6 +60,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 COURSE = "dgist-2026f"
 FIXTURE = REPO_ROOT / "Quarto" / "_fixtures" / "series"
 
+cli = argparse.ArgumentParser(description="Test course series and their rendered fixture.")
+cli.add_argument("--rendered", type=Path, help="already freshly rendered series fixture")
+args = cli.parse_args()
 fail = 0
 
 
@@ -416,10 +420,14 @@ quarto = shutil.which("quarto")
 if not quarto:
     check("quarto on PATH", False, "skipped: quarto not found")
 else:
-    out = subprocess.run([quarto, "render", "series.qmd"], cwd=FIXTURE,
-                         capture_output=True, text=True)
-    html = (FIXTURE / "series.html").read_text(encoding="utf-8") if out.returncode == 0 else ""
-    check("the fixture renders", out.returncode == 0, (out.stdout + out.stderr)[-400:])
+    if args.rendered:
+        html = args.rendered.read_text(encoding="utf-8")
+        check("the supplied series fixture rendered", bool(html))
+    else:
+        out = subprocess.run([quarto, "render", "series.qmd"], cwd=FIXTURE,
+                             capture_output=True, text=True)
+        html = (FIXTURE / "series.html").read_text(encoding="utf-8") if out.returncode == 0 else ""
+        check("the fixture renders", out.returncode == 0, (out.stdout + out.stderr)[-400:])
     check("one map is ringed (week=2) and one is plain",
           html.count('class="today-ring"') == 1 and html.count('<figure class="semester-map"') == 2)
     check("the QR block points at the series figures, one level up from _fixtures/<dir>/",
@@ -482,7 +490,7 @@ format:
 """, encoding="utf-8")
         out = subprocess.run([quarto, "render", str(qmd)], cwd=td, capture_output=True, text=True)
         log = out.stdout + out.stderr
-        e_lines = [l for l in log.splitlines() if "(E) series:" in l]
+        e_lines = [l for l in log.splitlines() if l.lstrip().startswith("(E) series:")]
         check("no `series:` metadata aborts the render with one (E) series: line",
               out.returncode != 0 and not (Path(td) / "neg.html").exists()
               and len(e_lines) == 1 and "declares no `series:" in e_lines[0]

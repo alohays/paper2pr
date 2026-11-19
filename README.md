@@ -61,17 +61,19 @@ the shared timeline into every session of it with that week ringed.
 ![The DGIST 2026 fall semester timeline, week 02 ringed as
 today](assets/semester-map.svg)
 
-## Making a deck
+## Authoring and verification
+
+Give Codex or Claude the audience, the slot and any chapters or demonstrations you want to keep. The agent chooses examples, diagrams, layouts and reveal order. The deck's QMD remains the presentation source. The optional brief in its deck config records presenter requirements.
+
+After the one-time QA setup, verify the same audience HTML that you intend to present or publish.
 
 ```bash
-quarto render Quarto/<genre>/<deck>.qmd      # render one deck locally
-./scripts/sync_to_docs.sh [<deck>]           # local preview of the published site
+./verify dgist-2026f-w02                         # public slides
+./verify dgist-2026f-w02 --delivery classroom    # classroom playback
+./verify --all --regressions --site _site        # simulate a Pages release
 ```
 
-With Claude Code, `/new-deck` interviews for the premises, scaffolds the
-deck, and carries authoring through the quality gate; `/slide-excellence`
-runs the review fan-out. Speaker notes (`::: {.notes}`) stay local: a git
-clean filter keeps them out of commits and CI strips them from the HTML.
+The command saves final-fragment screenshots, a checked PDF handout and the HTML hashes in a local run directory. The public site contains the audience pages and their runtime assets. [QA setup and commands](guides/verification.md) · [Authoring a deck](guides/framework.md) · [Classroom media](guides/media.md)
 
 ## Layout
 
@@ -83,6 +85,7 @@ paper2pr/
 ├── assets/            # Diagrams for this README and AGENTS.md (never deployed)
 ├── scripts/           # Render, assemble, gate, and test utilities (stdlib Python + bash)
 ├── .claude/           # Rules, skills, agents, hooks
+├── guides/           # Authoring, delivery and verification references
 └── quality_reports/   # Plans and session logs (history)
 ```
 

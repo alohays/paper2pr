@@ -63,12 +63,15 @@ else:
         rel = path.relative_to(REPO_ROOT)
         try:
             mine = minyaml.load_path(path)
-        except minyaml.MinYamlError as e:
-            check(str(rel), False, f"minyaml refused it: {e}")
+        except minyaml.MinYamlError:
+            check(str(rel), False, "minyaml could not read the document")
             continue
-        theirs = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        check(str(rel), mine == theirs,
-              f"differs; mine={mine!r} theirs={theirs!r}")
+        try:
+            theirs = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        except yaml.YAMLError:
+            check(str(rel), False, "PyYAML could not read the document")
+            continue
+        check(str(rel), mine == theirs, "the two parsers returned different values")
 
 print("2. The shapes these files are built from")
 cases = [
