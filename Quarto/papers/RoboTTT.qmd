@@ -740,7 +740,7 @@ batch drops from 64 to 16 above 4K context.
 
 ::::: {.slidebody}
 
-![](../../Figures/papers/RoboTTT/tasks.jpg){width="88%" fig-align="center"}
+![](../../Figures/papers/RoboTTT/tasks.jpg){width="68%" fig-align="center"}
 
 :::: {.columns}
 ::: {.column width="33%"}
