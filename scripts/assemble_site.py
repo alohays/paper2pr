@@ -80,6 +80,10 @@ def assemble(site, selected, fixtures, preview):
     all_decks = deckpath.all_decks()
     selected_ids = {(deck.genre, deck.name) for deck in selected}
     owners = selected_ids | {(deck.genre, deck.name) for deck in deckprofile.publishable_decks()}
+    # The design fixture exercises real deck figures even when their owners
+    # opt out of Pages. Fixture previews are confined to ignored exports/.
+    if fixtures:
+        owners.update((deck.genre, deck.name) for deck in all_decks)
     sources = [deck.qmd for deck in selected] + fixtures
     queue = [Path("slides") / qmd.relative_to(ROOT / "Quarto").with_suffix(".html")
              for qmd in sources]

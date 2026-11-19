@@ -154,6 +154,18 @@ class SiteTest(unittest.TestCase):
         self.assemble()
         self.assertEqual(len(list((self.root / "exports").glob("legacy-site-*"))), 1)
 
+    def test_private_fixture_can_exercise_an_opted_out_figure(self):
+        self.write("Quarto/lectures/Public.deck.yml", "publish: false\n")
+        self.write("Figures/lectures/Hidden/chart.svg", "<svg></svg>")
+        self.write("Quarto/_fixtures/layout.qmd", "## Chart\n")
+        self.write("Quarto/_fixtures/layout.html",
+                   '<img src="../../Figures/lectures/Hidden/chart.svg">')
+        self.cli("bash", "scripts/assemble_site.sh", "_site")
+        self.assertFalse((self.root / "_site/Figures").exists())
+        self.cli(sys.executable, "scripts/assemble_site.py", "--preview", "public",
+                 "exports/check", "Quarto/_fixtures/layout.qmd")
+        self.assertTrue((self.root / "exports/check/Figures/lectures/Hidden/chart.svg").is_file())
+
     def test_output_ownership(self):
         original = self.write("_site/keep.txt", "keep")
         self.assemble(success=False)
