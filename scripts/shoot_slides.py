@@ -13,6 +13,7 @@ import functools
 import hashlib
 import http.server
 import json
+import socket
 import subprocess
 import sys
 import tempfile
@@ -39,7 +40,20 @@ def resolve_html(ref: str) -> Path:
     return qmd.with_suffix(".html")
 
 
+class DeckServer(http.server.ThreadingHTTPServer):
+    # A cold deck requests its plugins, CSS and fonts together. The stdlib
+    # default backlog of five can reset Chrome's burst of loopback connections.
+    request_queue_size = socket.SOMAXCONN
+
+    def handle_error(self, request, client_address):
+        # Chrome cancels resource requests when a tab closes or a clip pauses.
+        if not isinstance(sys.exc_info()[1], ConnectionError):
+            super().handle_error(request, client_address)
+
+
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+
     def log_message(self, format, *args):
         pass
 
@@ -53,7 +67,7 @@ def local_url(html: Path, supplied: str | None = None):
     root = next((parent.parent for parent in html.parents
                  if parent.name in {"slides", "Quarto"}), html.parent)
     handler = functools.partial(QuietHandler, directory=str(root))
-    with http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler) as server:
+    with DeckServer(("127.0.0.1", 0), handler) as server:
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         try:
@@ -64,17 +78,22 @@ def local_url(html: Path, supplied: str | None = None):
             thread.join()
 
 
+# getSlides() is the number displayed to the audience. It excludes navigable
+# "uncounted" appendix slides. Reveal removes hidden slides from the DOM on init.
+SLIDES = """Array.from(Reveal.getSlidesElement().querySelectorAll(
+    ':scope > section:not(.stack), :scope > section.stack > section'))"""
+
 # Fragment indices are normalized by Reveal, including simultaneously revealed groups.
 STATE = """(() => {
   const section = Reveal.getCurrentSlide();
-  const index = Reveal.getSlides().indexOf(section);
+  const index = %s.indexOf(section);
   const fragment = Reveal.getIndices().f ?? -1;
   const remaining = !!Reveal.availableFragments().next;
   const widget = section.querySelector('.rttt-widget[data-beats]');
   const caption = widget && +widget.dataset.beats ?
     widget.querySelector('.rttt-caption')?.innerText.trim() : null;
   return {index, fragment, remaining, caption};
-})()"""
+})()""" % SLIDES
 
 # Check the real interactive state on both forward and backward key presses.
 WIDGETS = """(() => {
@@ -178,7 +197,7 @@ def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
             if hashlib.sha256(response.read()).hexdigest() != digest:
                 raise ValueError("the served HTML differs from the input HTML")
         with browser_page(address, width) as page:
-            slides = page.evaluate("Reveal.getSlides().map(s => ({id:s.id, pos:Reveal.getIndices(s)}))")
+            slides = page.evaluate(SLIDES + ".map(s => ({id:s.id, pos:Reveal.getIndices(s)}))")
             ids = [slide["id"] for slide in slides]
             if not slides:
                 raise ValueError("Reveal has no slides")
@@ -213,6 +232,8 @@ def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
                     state = step(page, "n")
                     ensure_state(state, index + 1, -1)
                     states.append(state)
+            if stop == len(slides) and not page.evaluate("Reveal.isLastSlide()"):
+                raise ValueError("the capture stopped before the last navigable slide")
             for expected in reversed(states[:-1]):
                 state = step(page, "p")
                 ensure_state(state, expected["index"], expected["fragment"])

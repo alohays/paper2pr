@@ -33,12 +33,22 @@ class Page:
     def __init__(self, socket):
         self.socket = socket
         self.ids = itertools.count(1)
+        self.failures = set()
 
     def send(self, method, **params):
         serial = next(self.ids)
         self.socket.send(json.dumps({"id": serial, "method": method, "params": params}))
         while True:
             message = json.loads(self.socket.recv())
+            # Keep error categories for a failed run. URLs, exception text and
+            # console messages can contain an author's private source details.
+            if message.get("method") == "Network.loadingFailed":
+                info = message["params"]
+                if info["type"] in ("Document", "Stylesheet", "Script", "Font"):
+                    self.failures.add(f"{info['type']} request failed")
+            elif message.get("method") == "Runtime.exceptionThrown":
+                details = message["params"]["exceptionDetails"]
+                self.failures.add(f"JavaScript exception at line {details['lineNumber'] + 1}")
             if message.get("id") == serial:
                 if "error" in message:
                     raise RuntimeError(f"{method} failed: {message['error']['message']}")
@@ -59,7 +69,8 @@ class Page:
             if self.evaluate(condition):
                 return
             time.sleep(0.1)
-        raise RuntimeError(message)
+        details = ", ".join(sorted(self.failures))
+        raise RuntimeError(f"{message} ({details})" if details else message)
 
     def key(self, key):
         code = ord(key.upper())
@@ -94,6 +105,8 @@ def browser_page(url, width=1280, height=720):
             try:
                 page = Page(ws)
                 page.send("Page.enable")
+                page.send("Runtime.enable")
+                page.send("Network.enable")
                 page.send("Emulation.setDeviceMetricsOverride", width=width, height=height,
                           deviceScaleFactor=1, mobile=False)
                 page.send("Page.navigate", url=url)
