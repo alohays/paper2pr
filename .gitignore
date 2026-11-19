@@ -114,3 +114,8 @@ Quarto/_fixtures/**/shots/
 
 # W09 rehearsal evidence contains private speaker-note text and source snapshots.
 /.local/dgist-w09-*/
+
+# Local verification tools and language environments.
+/node_modules/
+/.venv/
+/.tools/
