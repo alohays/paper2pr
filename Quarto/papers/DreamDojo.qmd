@@ -24,7 +24,7 @@ bibliography: ../../Bibliography_base.bib
 ![](../../Figures/papers/DreamDojo/teaser_compressed.svg){fig-align="center" width="60%"}
 :::
 
-<video src="https://dreamdojo-world.github.io/dreamdojo_demo.mp4" muted autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video preload="metadata" data-src="https://dreamdojo-world.github.io/dreamdojo_demo.mp4" muted data-autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 
 
@@ -608,7 +608,7 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 | Student | 13.15 | 0.379 | 0.485 | [**~10**]{.positive} | 4 | 12 |
 :::
 
-<video src="https://dreamdojo-world.github.io/real_time.mp4" muted autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video preload="metadata" data-src="https://dreamdojo-world.github.io/real_time.mp4" muted data-autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 :::: {.columns}
 ::: {.column width="48%"}
@@ -740,7 +740,7 @@ Adding more human data [**consistently improves**]{.positive} all OOD benchmarks
 Post-trained on GR-1, G1, AgiBot, and YAM --- each with separate post-training runs using the same pretrained foundation.
 :::
 
-<video src="https://dreamdojo-world.github.io/g1/g1_0024_pred.mp4" muted autoplay loop playsinline style="max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video preload="metadata" data-src="https://dreamdojo-world.github.io/g1/g1_0024_pred.mp4" muted data-autoplay loop playsinline style="max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 [**Per-embodiment adaptation:**]{.hi}
 
@@ -802,7 +802,7 @@ DreamDojo can reliably rank policies without deploying on a real robot.
 ::: {.column width="48%"}
 [**Live Teleoperation:**]{.hi}
 
-<video src="https://dreamdojo-world.github.io/teleop/1.mp4" muted autoplay loop playsinline style="max-height: 200px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video preload="metadata" data-src="https://dreamdojo-world.github.io/teleop/1.mp4" muted data-autoplay loop playsinline style="max-height: 200px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 - PICO VR controller $\rightarrow$ G1 actions
 - Distilled model on RTX 5090
