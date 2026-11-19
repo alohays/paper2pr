@@ -50,9 +50,15 @@ def affected(paths, decks):
     return [deck for deck in decks if deck.slug in selected], False
 
 
+def announce(message, *, error=False):
+    # A deck, section or file name can itself contain a protected term.
+    if not contains_private(message, private_terms()):
+        print(message, file=sys.stderr if error else sys.stdout, flush=True)
+
+
 def step(label, *cmd, quiet=False, private_output=False):
     """Keep authoring metadata out of CI logs, including Quarto's YAML dump."""
-    print(label, flush=True)
+    announce(label)
     result = subprocess.run(cmd, cwd=ROOT, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, text=True, errors="replace")
     if result.returncode:
@@ -62,8 +68,7 @@ def step(label, *cmd, quiet=False, private_output=False):
         raise RuntimeError(f"{label} failed ({result.returncode}).\n{diagnostic}")
     if not quiet and result.stdout.strip():
         summary = result.stdout.strip().splitlines()[-1].replace(str(ROOT) + os.sep, "")
-        if not contains_private(summary, private_terms()):
-            print(f"  {summary}", flush=True)
+        announce(f"  {summary}")
 
 
 def digest(path):
@@ -73,7 +78,7 @@ def digest(path):
 def regressions(series_html=None):
     py = sys.executable
     step("Checking tracked QMD blobs for notes", "bash", "scripts/check-notes-pre-commit.sh", "--all")
-    for cmd in (["bash", "scripts/test_note_filter.sh"],
+    for cmd in (["bash", "scripts/test_note_filter.sh", "--speaker"],
                 [py, "scripts/test_profiles.py"],
                 [py, "scripts/test_minyaml.py"],
                 ["bash", "scripts/test_korean_gate.sh"],
@@ -111,9 +116,12 @@ def check_deck(qmd, site, build, slide, delivery):
                 cmd.extend(["--slide", slide])
             step(f"Inspecting {rel.stem} at {width}x720", *cmd)
             stats = json.loads((shots / "browser.json").read_text())
+            if stats["html_sha256"] != initial:
+                raise RuntimeError(f"Browser inspected a different {rel.stem} build")
             results["viewports"][str(width)] = {
                 key: stats[key] for key in ("total_slides", "forward_steps", "reverse_steps")
             }
+            results["viewports"][str(width)]["captured_slides"] = len(stats["captured_ids"])
         if not slide:
             if rel.as_posix() == "papers/DreamZero.html":
                 step("Checking DreamZero equations and HLS playback on entry and return",
@@ -147,6 +155,7 @@ def main():
     private_terms()  # Invalid configuration stops the build before any diagnostic output.
     os.chdir(ROOT)
     revision = git("rev-parse", "HEAD").strip()
+    clean = not git("status", "--porcelain=v1", "-z")
     fixtures = []
     if args.all:
         decks, fixtures = deckprofile.publishable_decks(), FIXTURES
@@ -166,7 +175,7 @@ def main():
     exports = ROOT / "exports/verify"
     exports.mkdir(parents=True, exist_ok=True)
     build = Path(tempfile.mkdtemp(prefix="run-", dir=exports))
-    print(f"Checking {revision[:12]} in {build.relative_to(ROOT)}", flush=True)
+    announce(f"Checking {revision[:12]} in {build.relative_to(ROOT)}")
     public = [d for d in decks if deckprofile.load(d).publish and args.delivery == "public"]
     checks = [d.qmd for d in decks] + fixtures
     rendered = {}
@@ -222,13 +231,15 @@ def main():
                 reports[name] = report
             except (ValueError, OSError, RuntimeError) as error:
                 failed.append(futures[task].stem)
-                print(str(error), file=sys.stderr, flush=True)
+                announce(str(error), error=True)
     if failed:
         raise RuntimeError("Audience verification failed for " + ", ".join(sorted(failed)))
     receipt = build / "verification.json"
-    receipt.write_text(json.dumps({"commit": revision, "quarto": (ROOT / ".quarto-version").read_text().strip(),
+    receipt.write_text(json.dumps({"commit": revision, "clean_worktree": clean,
+                                   "quarto": (ROOT / ".quarto-version").read_text().strip(),
+                                   "regressions": args.regressions, "selected_slide": args.slide,
                                    "decks": dict(sorted(reports.items()))}, indent=2) + "\n")
-    print(f"Verified {len(checks)} audience build(s). Receipt: {receipt.relative_to(ROOT)}")
+    announce(f"Verified {len(checks)} audience build(s). Receipt: {receipt.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
@@ -236,4 +247,8 @@ if __name__ == "__main__":
         main()
     except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError,
             deckpath.DeckNotFound, deckpath.AmbiguousDeck, deckprofile.ConfigError) as exc:
-        sys.exit(str(exc))
+        try:
+            announce(str(exc), error=True)
+        except ValueError:
+            print("Invalid private vocabulary configuration.", file=sys.stderr)
+        sys.exit(1)
