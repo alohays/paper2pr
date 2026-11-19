@@ -97,3 +97,5 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 [LEARN:publishing] Checking only the visible page after a course rename → also check document titles, descriptions, Open Graph and Twitter metadata, preview images, generated search indexes, series locks, roadmap slides, and linked external decks; a current page does not prove that a third-party preview cache has refreshed.
 [LEARN:pedagogy] Opening a first-year class with several scenes from earlier weeks made students depend on memory → establish a new scene and define the idea in everyday words first. Mention one earlier example in a complete sentence, and keep the rest of the prior-course evidence in instructor references.
+
+[LEARN:terminology] Translating industry terms differently across the W13 plan, diagrams and speaker notes obscured the words students will find on real spec sheets → use the original English term, give a plain Korean explanation at first teaching use, and retain Korean names for glossary searches.

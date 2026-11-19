@@ -81,7 +81,7 @@ Both front wheels turned **¾ of a turn**. Where would you put a ruler?
 
 <!-- Chapter 2: Body -->
 
-## 02 · How many ways can it move? {#body-dof data-chapter="2"}
+## 02 · Count the degrees of freedom (DoF) {#body-dof data-chapter="2"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motion-coordinates.svg width="96%" >}}
 
@@ -105,7 +105,9 @@ Manufacturer figures · [Franka](https://franka.de/hubfs/Datasheet_FrankaResearc
 :::
 
 
-## What does the payload number assume? {#body-payload data-chapter="2"}
+## How much payload can this arm carry? {#body-payload data-chapter="2"}
+
+The **rated payload** tells us how much mass the arm can carry in a given pose.
 
 | Hello Robot Stretch 4 | Rated arm payload |
 |:--|:--|
@@ -119,7 +121,9 @@ Manufacturer figures · [Franka](https://franka.de/hubfs/Datasheet_FrankaResearc
 
 <!-- Chapter 3: Actuators -->
 
-## 03 · Inside an electric joint {#joint-inside data-chapter="3"}
+## 03 · What is inside a joint actuator? {#joint-inside data-chapter="3"}
+
+An **actuator** converts energy into force or motion.
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/rotary-joint-parts.svg width="98%" >}}
 
@@ -128,7 +132,7 @@ Manufacturer figures · [Franka](https://franka.de/hubfs/Datasheet_FrankaResearc
 
 Current in the coils creates a magnetic field.
 
-The drive changes the field as the rotor turns.
+The motor drive changes the field as the rotor turns.
 
 
 ## A gear trades speed for torque {#gear-tradeoff data-chapter="3"}
@@ -170,7 +174,7 @@ The drive changes the field as the rotor turns.
 
 A bump moves the foot. Can that motion turn the motor shaft?
 
-**Quasi-direct drive** pairs a high-torque motor with a small reduction ratio.
+**Quasi-direct drive (QDD)** pairs a high-torque motor with a small reduction ratio.
 
 ::: {.footnote}
 [MIT Biomimetic Robotics Lab · Actuator design for legged robots](https://biomimetics.mit.edu/research/1a9ba04b-d200-4743-b8fc-bf231f3231f0/)
@@ -181,7 +185,7 @@ A bump moves the foot. Can that motion turn the motor shaft?
 
 **Motor → spring → joint**
 
-The spring bends under load. Its deflection helps estimate torque.
+In a **series elastic actuator (SEA)**, spring deflection helps estimate torque.
 
 ::: {.footnote}
 [Pratt & Williamson · Series Elastic Actuators, IROS 1995](https://fab.cba.mit.edu/classes/865.15/people/rebecca.kleinberger/assets/papers/SEA_Pratt.pdf)
@@ -226,7 +230,7 @@ The spring bends under load. Its deflection helps estimate torque.
 
 | Sensor | A measurement we can use |
 |:---|:---|
-| Body motion sensor | How fast the body is turning |
+| Inertial measurement unit (IMU) | How fast the body is turning |
 | Camera | Where the next stair appears in the image |
 | Fingertip pressure sensor | Where an object presses on the finger |
 
@@ -237,7 +241,7 @@ The spring bends under load. Its deflection helps estimate torque.
 
 ## Which hand fits the job? {#hand-design data-chapter="4"}
 
-**Parallel jaws** close together to hold a part.
+A **parallel-jaw gripper** closes its two jaws to hold a part.
 
 **Articulated fingers** can reposition an object within the hand.
 

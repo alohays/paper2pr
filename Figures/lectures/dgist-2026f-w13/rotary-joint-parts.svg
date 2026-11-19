@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="w13-rotary-joint-parts" viewBox="0 0 1050 306" role="img" aria-labelledby="w13-rotary-joint-parts-title w13-rotary-joint-parts-desc">
-  <title id="w13-rotary-joint-parts-title">Inside an electric rotary joint</title>
+  <title id="w13-rotary-joint-parts-title">Inside an electric joint actuator</title>
   <desc id="w13-rotary-joint-parts-desc">Four schematic symbols identify the drive electronics, electric motor, gearbox and angle sensor. Actual arrangements and sensor locations differ between actuators.</desc>
   <style>
     #w13-rotary-joint-parts text { font-family: inherit; fill: #142b4f; text-anchor: middle }
@@ -7,7 +7,7 @@
     #w13-rotary-joint-parts .sub { font-size: 27px }
   </style>
   <path d="M90 158 H921" stroke="#c9d3db" stroke-width="6"/>
-  <text class="head" x="132" y="38">Drive</text>
+  <text class="head" x="132" y="38">Motor drive</text>
   <text class="head" x="386" y="38">Motor</text>
   <text class="head" x="646" y="38">Gearbox</text>
   <text class="head" x="918" y="38">Encoder</text>

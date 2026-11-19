@@ -18,7 +18,7 @@ title: "Foundations of Robot Hardware, Control, and Modern Platforms"
 audience:
   assumes: none    # none | practitioner | expert
   size: "about 90"
-  description: "First-year undergraduates in their second semester. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Teach each example from the scene on screen. A short reminder may follow a new example. Assume no recall of earlier examples and no mechanics or control course."
+  description: "First-year undergraduates in their second semester. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Use the original English technical name in the slides, Korean notes and visual guide. At first teaching use, explain it in plain Korean with a physical example. Teach each example from the scene on screen. A short reminder may follow a new example. Assume no recall of earlier examples and no mechanics or control course."
   prior: [W02 embodied AI and policy, W03 video and world models, W06 drawer commands and timestamped robot state, W09 timed action targets and inference delay, W11 Spatial AI to Physical AI, W12 Leadership talk]
 delivery: in-person    # in-person | remote | hybrid
 
