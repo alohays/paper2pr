@@ -20,6 +20,7 @@ class Selection(unittest.TestCase):
                      "Quarto/clean-academic.scss", "Quarto/_filters/video-card.lua",
                      "Quarto/lectures/dgist-2026f-w06-fonts.css",
                      "Quarto/_quarto.yml", "Quarto/lectures/removed.qmd",
+                     "Quarto/lectures/dgist-2026f-w02.deck.yml",
                      "Figures/lectures/_series/dgist-2026f/series.json"):
             with self.subTest(path=path):
                 self.assertEqual(affected([path], self.decks), (self.decks, True))

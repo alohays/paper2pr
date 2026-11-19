@@ -28,14 +28,14 @@ def git(*args):
 
 
 def affected(paths, decks):
-    """Only a change confined to a known deck source/config narrows the build.
+    """Only an edit to a known deck source or its editorial terms narrows the build.
 
     Loose assets can be shared even when named for a deck (W09 uses W06's
-    font stylesheet). Removed decks change the landing page and redirects.
+    font stylesheet). Deck configs can change publication and the landing page.
     """
     owners = {}
     for deck in decks:
-        for path in (deck.qmd, deck.config, deck.forbidden):
+        for path in (deck.qmd, deck.forbidden):
             owners[path.relative_to(ROOT).as_posix()] = deck
     selected = set()
     for path in paths:
