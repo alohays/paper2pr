@@ -20,7 +20,7 @@ Tracked content is English, including commits and reports. Korean examples are p
 
 Install the pinned local QA tools once. [Setup and verification evidence](guides/verification.md)
 
-- `./verify <deck>` builds and checks the public version. Use `--delivery classroom` for local playback.
+- `./verify <deck>` builds and checks the public version. Use `--delivery classroom` for local playback. [QA setup and commands](guides/verification.md)
 - For a copy edit use `./verify <deck> --slide <id>` and inspect the affected frame. For a changed number also check its meaning, units and scope against the primary source.
 - For a new talk or release, run independent factual, visual and teaching reviews. Use `./verify --all --regressions` for the framework release. Punctuation, estimated wrapping and callback wording are editorial feedback. The existing thresholds are 80 for a commit, 90 for a PR and 95 for excellence. [Review workflow](.agents/skills/slide-excellence/SKILL.md) · [Quality checks](.claude/rules/quality-gates.md)
 

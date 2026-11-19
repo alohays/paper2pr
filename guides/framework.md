@@ -181,6 +181,3 @@ JSON lock plus images, Lua shortcodes that read the lock.
 Line breaking is the theme's job, not the author's: `.reveal p`, `li` and `figcaption` carry `text-wrap: pretty` (no single-word last line), `h2`, `.statement` and a standalone centred paragraph carry `text-wrap: balance`. Where a break carries meaning (two sentences of a statement), write the `<br>`.
 
 `.smaller` and `.smallest` still exist in the theme for the legacy decks only; they are forbidden in new decks (quality gate deducts -5 each). `.divider` and `.video-full` get their full-bleed backgrounds from `Quarto/_filters/slide-types.lua`, which turns the class and its `video=` / `poster=` attributes into reveal `data-background-*` attributes (the poster is painted under the background video by a small script the filter includes; it must not become `data-background-image`, which reveal 5.1 loads *instead of* the video); `Quarto/_quarto.yml` wires the filter and the video shortcodes for every deck under a genre directory. Each slide type has a rendered example in `Quarto/_fixtures/design-test.qmd`; the video path end to end is `Quarto/_fixtures/video/video.qmd`.
-
----
-

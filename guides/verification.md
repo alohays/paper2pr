@@ -13,6 +13,8 @@ python3 -m venv .venv
 PUPPETEER_SKIP_DOWNLOAD=true npm ci
 ```
 
+Run the Git setup before staging the first private note in a new clone. A linked checkout uses the hook location reported by `git rev-parse --git-path hooks/pre-commit`. For installations with worktree-specific Git configuration, `bash scripts/setup-git-filters.sh --worktree` writes the filter settings for the active checkout.
+
 FFmpeg includes ffprobe. Poppler supplies pdfinfo, pdftotext and pdftoppm. On macOS install these command-line tools with `brew install ffmpeg poppler qrencode`. On Ubuntu use `sudo apt-get install ffmpeg poppler-utils qrencode`. The verifier picks up the project virtual environment and checks the Quarto pin. Normal authoring and Git hooks use the Python standard library.
 
 ## Choose the audience
