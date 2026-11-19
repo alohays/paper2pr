@@ -1,23 +1,3 @@
-# Session Logging
+# Project records
 
-**Location:** `quality_reports/session_logs/YYYY-MM-DD_description.md`
-**Template:** `templates/session-log.md`
-
-## Three Triggers (all proactive)
-
-### 1. Post-Plan Log
-
-After plan approval, immediately capture: goal, approach, rationale, key context.
-
-### 2. Incremental Logging
-
-Append 1-3 lines whenever: a design decision is made, a problem is solved, the user corrects something, or the approach changes. Do not batch.
-
-### 3. End-of-Session Log
-
-When wrapping up: high-level summary, quality scores, open questions, blockers.
-
-## Quality Reports
-
-Generated **only at merge time** -- not at every commit or PR.
-Save to `quality_reports/merges/YYYY-MM-DD_[branch-name].md` as free-form markdown (score, blocking issues, recommendations, what was verified). `templates/session-log.md` is the only template kept for session logs.
+Keep review decisions and plans that the next author needs. Preserve archived reports. For a milestone or release, use `quality_reports/reviews/` or `quality_reports/session_logs/` for a concise record of the brief, verified build, corrections and open checks. For a small edit, the affected-slide result in the handoff is sufficient. Keep private notes, source paths and private vocabulary out of shared reports.

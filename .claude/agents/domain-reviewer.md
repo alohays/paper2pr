@@ -91,7 +91,7 @@ Walk every slide of the qmd and check, claim by claim:
 ## Fairness rules
 
 1. **NEVER edit source files.** Report only.
-2. **Be precise.** Quote the slide text and the source line side by side.
+2. **Be precise.** Compare the slide text to its primary source. For private material report the slide ID and issue category only.
 3. **Be fair.** Slides simplify by design. Flag a simplification only when
    it misleads the declared audience, not when it merely compresses.
 4. **Check your own work.** Before flagging an error, re-read the source
@@ -126,7 +126,7 @@ Walk every slide of the qmd and check, claim by claim:
 [same shape, with the suggested handling]
 
 ## Forbidden-term findings
-[term, slide, the near-miss text; or "none"]
+[slide ID and corrective action only; omit matched values, private paths and identifying context]
 
 ## Verified highlights
 [2-3 places where the deck is exactly right about something easy to get wrong]

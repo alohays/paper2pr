@@ -55,14 +55,14 @@ Focus: `.claude/skills/*/SKILL.md`, `.claude/agents/*.md`, `.claude/rules/*.md`,
 - `allowed-tools` values are sensible
 - Rule `paths:` reference existing directories
 - No contradictions between rules, or between a rule and the profile numbers the gate enforces
-- AGENTS.md skills and agents tables match actual directories 1:1
+- The root instructions link to the shared workflows and current technical references
 - Every agent a skill launches exists in `.claude/agents/`
 - All templates referenced in rules/skills exist in `templates/`
 
 #### Agent 4: Scripts and Cross-Document Consistency
 Focus: `scripts/`, `README.md`, `AGENTS.md`, `MEMORY.md`
 - Every script a skill, rule, or doc invokes exists, and its documented flags match its `--help`
-- Feature counts and the directory tree agree between `README.md` and `AGENTS.md`
+- README and the linked framework guide agree on the public delivery path
 - All links point to valid targets
 - License section matches LICENSE file
 - `MEMORY.md` entries do not point at deleted files

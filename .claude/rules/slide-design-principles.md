@@ -26,7 +26,7 @@ RoboTTT) and SUNY's own theme are exempt — do not retrofit them.
 > expansion; a paper review owes neither. Run
 > `python3 scripts/deckprofile.py <deck>` to see what a deck is actually held
 > to, and `python3 scripts/test_profiles.py` to confirm the profiles still
-> grade differently from each other.
+> grade differently from each other. Punctuation and character-based wrap estimates are editorial feedback. Inspect the rendered frame for actual clipping.
 
 ---
 
@@ -35,33 +35,7 @@ RoboTTT) and SUNY's own theme are exempt — do not retrofit them.
 **Never pack much content onto one slide.** When content does not fit, split
 the slide — do not compress.
 
-Density budget (enforced by the quality gate):
-
-| Limit | Value |
-|-------|-------|
-| Core message per slide | 1 |
-| Bullets per slide | ≤ 5, all on one line |
-| Bullets when a figure shares the slide | ≤ 3 |
-| Two-line bullets | ≤ 1 per slide, **and it costs a slot** (cap drops by 1) |
-| Three-line bullets | never |
-| Colored boxes per slide | ≤ 1 |
-| List nesting | ≤ 1 sub-level |
-
-**Write one-line bullets.** A bullet that wraps is a bullet that is doing too
-much — cut it or split the slide. One wrapped bullet per slide is tolerated,
-not encouraged, and it takes the place of another bullet: five one-liners is
-fine, four bullets with one wrapped is fine, five with one wrapped is not.
-With a figure the same arithmetic applies from a base of 3.
-
-At 1280×720 on the 40px root font, a bullet fits on one line up to about
-**70 characters** of rendered text (markup like `[x]{.hi}` and links do not
-count). 71–137 characters wrap to two lines; past that it is three, which the
-frame cannot absorb.
-
-> This replaces the original "≤5 bullets, each ≤2 lines". That budget did not
-> fit: five two-line bullets overflow the 720px canvas by 38px and the surplus
-> is silently clipped by `overflow: hidden`, while the gate scored the slide
-> 100/100. Measured, not estimated.
+Use the deck profile's limits for bullet count, nesting and callouts. Prefer short lines and give a figure room to teach. The length of a source line cannot tell how it wraps in the delivery font, especially beside a diagram or in the DGIST caption room. Check the final fragments in the rendered audience view. Split a slide when its ideas compete for space.
 
 A ~30 min talk may run 40–60 slides. Splitting is always preferred over
 cutting, and cutting is always preferred over cramming.

@@ -28,8 +28,7 @@ checks:
   # and the expansions live in the speaker notes for this audience anyway.
   # The check itself stays available to any profile that wants it.
   expand_acronyms: false
-  # Mechanically checkable and what a sixteen-week course for non-majors
-  # actually lives or dies on.
+  # The source matcher offers editorial feedback on session continuity.
   prior_session_callback: true
   # WP2 gates (D22). A lecture quotes other people's clips and figures, so
   # every third-party figure carries its source on the slide.

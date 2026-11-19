@@ -22,12 +22,12 @@ Quarto/<genre>/<deck>.qmd (SOURCE OF TRUTH)
   ├── Figures/<genre>/<deck>/          SVG/PNG figures (data source for images)
   ├── Figures/<genre>/<deck>/videos.yml    clip manifest, hand-written
   │     -> videos.json + videos/<slug>.mp4, <slug>-poster.jpg (derived by
-  │        scripts/media_prep.py; the media go to the GitHub Release
+  │        scripts/media_prep.py; approved media go to the GitHub Release
   │        media-<deck> via scripts/media_release.sh, never into git)
   ├── Quarto/lectures/_series/<course>.yml course manifest, hand-written
   │     -> Figures/lectures/_series/<course>/series.json, semester-map*.svg,
   │        qr-qa.png|svg (derived by scripts/series_assets.py)
-  └── rendered HTML -> docs/ -> GitHub Pages (derived, via sync_to_docs.sh / CI)
+  └── rendered HTML -> assembled public site -> GitHub Pages (derived, via sync_to_docs.sh / CI)
 
 NEVER edit derived artifacts independently.
 ALWAYS propagate changes from source -> derived.

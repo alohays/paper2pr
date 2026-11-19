@@ -27,20 +27,18 @@ profile's budgets, not this table, when they differ.
 | Severity | Issue | Deduction |
 |----------|-------|-----------|
 | Critical | Render failure (`quarto render`) | -100 |
-| Critical | Equation overflow | -20 |
 | Critical | Broken citation | -15 |
 | Critical | Typo in equation | -10 |
 | Major | Text overflow | -5 |
 | Major | `.smaller`/`.smallest` or font-size override used to fit content | -5 per slide |
-| Major | >5 bullets on a slide (>3 with a figure; one less again if a bullet wraps to two lines) | -3 per slide |
-| Major | >1 two-line bullet on a slide, or any bullet running past two lines | -3 per slide |
+| Major | More than the profile bullet budget (default 5, or 3 with a figure) | -3 per slide |
 | Major | >1 colored box on a slide | -3 per slide |
 | Major | Notation inconsistency | -3 |
 | Major | Unexpanded acronym on first appearance (profiles with `expand_acronyms`) | -2 each |
-| Major | No callback to the previous session in the first three slides (`prior_session_callback`, `series_index` != 1) | -3 |
-| Major | Dash expression in visible text: `---`, `--`, a literal em/en dash, or an `&mdash;`/`&ndash;` entity (`dash_lint`) | -2 each, cap 10 |
 | Major | Third-party figure shown without its source on the slide (`attribution`) | -5 each, cap 20 |
 | Minor | List nesting deeper than 1 sub-level | -1 per slide |
+
+Estimated wrapping, long equation source lines, dash punctuation and prior-session keyword detection produce editorial feedback. Inspect the audience frame to establish actual clipping.
 
 ### Citations
 
@@ -74,7 +72,7 @@ terms.
 ### Dash lint
 
 Quarto's smart punctuation turns `---` into an em dash and `--` into an en
-dash on render. The presenter writes a plain hyphen instead, everywhere. A
+dash on render. A dash preference is editorial feedback. A
 line that is only a rule (`---` slide break, a table delimiter row) and the
 inside of display math are syntax, not text, and are not counted.
 
@@ -107,18 +105,10 @@ reported as a missing attribution, not skipped.
 
 ## BLOCKERS
 
-Two findings are not deductions. Any hit forces the score to **0**, the
-status to `BLOCKED`, and a non-zero exit, and `--summary` prints every
-`BLOCKER` line; the deck is either leaking or mis-rendering and nothing else
-about it matters until that is fixed.
+A blocker gives the deck a score of zero and a failing exit status.
 
-- **Forbidden term** (`forbidden_terms`). When `Quarto/<genre>/<deck>.forbidden.txt`
-  exists, any term in it that appears in visible text is reported as
-  `file:line` plus the term. File format: one term per line, `#` starts a
-  comment, blank lines are ignored, matching is a case-insensitive substring
-  match on visible text and the front-matter title, never on speaker notes.
-  Seed it with internal project names, unpublished numbers, anything that
-  must not reach a public page. Absent file = nothing to check.
+- **Prohibited vocabulary.** A versioned `Quarto/<genre>/<deck>.forbidden.txt` may list public editorial vocabulary only. Use one term per line. Blank lines and lines starting with `#` are ignored. The gate reads source titles and visible slide text, including resolved includes and the audience render. For private vocabulary, set `PAPER2PR_PRIVATE_DENYLIST` to an external UTF-8 file using the same format. Matching values and private paths must stay out of logs, reports and public assets.
+- **Presenter brief.** Required chapter IDs, demonstration clips and declared budgets are verified against the rendered sections and deck metadata. [Brief format](../../guides/framework.md)
 - **Level-1 heading** (`level1_heading: fail`). Any line starting with `# `
   after the front matter (outside fences, raw blocks, notes and comments).
   Quarto turns a level-1 heading into a vertical stack and every following
@@ -156,8 +146,7 @@ Hangul character count, after the notes filter, exceeds it.
 
 ## Running it
 
-Scoring renders the deck (that is the compile check), so it writes
-`<deck>.html` and `<deck>_files` next to the qmd. `--no-render` skips both.
+Use `./verify <deck>` to score the same fresh audience copy used for screenshots, asset and handout checks. For standalone scoring, `--rendered path/to/audience.html` reuses that HTML. `--no-render` provides a source-only grade for decks without a presenter brief.
 A render that does not finish inside `QUALITY_RENDER_TIMEOUT` seconds
 (default 300) is reported as `INCONCLUSIVE`, not as a compilation failure:
 the clock ran out, which says nothing about the deck. Exit stays 2, because
