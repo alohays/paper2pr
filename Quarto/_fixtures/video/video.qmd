@@ -14,6 +14,7 @@ title-slide-attributes:
 # (An HTML comment before the first `##` would become an empty first slide,
 # which is why this note sits in the front matter.)
 video-manifest: videos.json
+metadata-files: [../../_math.yml]
 format:
   revealjs:
     theme: [default, ../../clean-academic.scss]
@@ -27,9 +28,6 @@ format:
     center: false
     auto-stretch: false
     slide-number: true
-    html-math-method:
-      method: katex
-      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
     filters:
       - ../../_filters/slide-types.lua
     shortcodes:

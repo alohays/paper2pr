@@ -3,6 +3,7 @@
 # themselves. NOTE: _fixtures/ is underscore-prefixed, so Quarto treats it as
 # outside the project and none of this applies there; every fixture qmd repeats
 # what it needs (canvas, filter, font link).
+metadata-files: [_math.yml]
 format:
   revealjs:
     # 16:9 canvas, content pinned by the theme, not by reveal. margin 0 makes
@@ -14,11 +15,6 @@ format:
     center: false
     auto-stretch: false
     slide-number: true
-    html-math-method:
-      method: katex
-      # Pin it. The default is katex@latest on jsdelivr, so an upstream
-      # release can change how a published deck renders without us touching it.
-      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
     include-in-header:
       # Pretendard (Hangul fallback in the theme's font stack). Relative to the
       # deck at Quarto/<genre>/ and to the deployed slides/<genre>/ alike.

@@ -5,6 +5,7 @@ author: "Yunsung Lee"
 institute: "WoRV / MaumAI"
 title-slide-attributes:
   data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
+metadata-files: [../../_math.yml]
 format:
   revealjs:
     theme: [default, ../../clean-academic.scss]
@@ -16,9 +17,6 @@ format:
     center: false
     auto-stretch: false
     slide-number: true
-    html-math-method:
-      method: katex
-      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
     filters:
       - ../../_filters/slide-types.lua
     include-in-header:

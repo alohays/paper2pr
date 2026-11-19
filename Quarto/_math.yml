@@ -1,0 +1,6 @@
+# Used by the project and standalone fixtures.
+format:
+  revealjs:
+    html-math-method:
+      method: katex
+      url: "https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/"

@@ -11,6 +11,7 @@ title-slide-attributes:
 # "the current session" it says week=2 (W02) explicitly; a real deck named
 # dgist-2026f-w02 resolves that from the lock by itself.
 series: dgist-2026f
+metadata-files: [../../_math.yml]
 format:
   revealjs:
     theme: [default, ../../clean-academic.scss]
@@ -24,9 +25,6 @@ format:
     center: false
     auto-stretch: false
     slide-number: true
-    html-math-method:
-      method: katex
-      url: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"
     filters:
       - ../../_filters/slide-types.lua
     shortcodes:
