@@ -34,6 +34,33 @@ Promise.all(Array.from(Reveal.getCurrentSlide().querySelectorAll('video[data-hls
 """
 
 
+# IntersectionObserver accounts for the viewport and overflow-clipping parents.
+# Reveal's scaled canvas can be smaller than the viewport on a letterboxed deck.
+CLIPPED = """
+(async () => {
+  const canvas = Reveal.getSlidesElement().getBoundingClientRect();
+  const elements = Reveal.getCurrentSlide().querySelectorAll('video[data-hls], .video-label');
+  return Promise.all(Array.from(elements, (element, index) => new Promise(resolve => {
+    const observer = new IntersectionObserver(([entry]) => {
+      observer.disconnect();
+      const box = entry.boundingClientRect, visible = entry.intersectionRect;
+      const clipped = Math.max(
+        Math.max(canvas.left, visible.left) - box.left,
+        Math.max(canvas.top, visible.top) - box.top,
+        box.right - Math.min(canvas.right, visible.right),
+        box.bottom - Math.min(canvas.bottom, visible.bottom));
+      const name = element.matches('video') ? 'player' : 'caption';
+      if (!element.checkVisibility({opacityProperty: true, visibilityProperty: true}) ||
+          box.width <= 0 || box.height <= 0) resolve(name + ' ' + (index + 1) + ' is hidden');
+      else if (clipped > 1) resolve(name + ' ' + (index + 1) + ' clipped by ' + Math.ceil(clipped) + 'px');
+      else resolve(null);
+    });
+    observer.observe(element);
+  }))).then(results => results.filter(Boolean));
+})()
+"""
+
+
 def select_slide(page, slide_id):
     page.evaluate(f"""(() => {{
       const target = document.getElementById({json.dumps(slide_id)});
@@ -89,12 +116,15 @@ def check(url):
                 sizes = page.evaluate(FRAMES)
                 if not sizes or any(width <= 0 or height <= 0 for width, height in sizes):
                     raise ValueError(f"HLS frame missing on {slide_id}")
+                clipped = page.evaluate(CLIPPED)
+                if clipped:
+                    raise ValueError(f"{slide_id}: " + ", ".join(clipped))
                 count += len(sizes)
             if count != expected:
                 raise ValueError(f"Decoded {count} of {expected} authored HLS clips")
 
         labels = ", ".join(f"{lib['name']} {lib['version']}" for lib in versions)
-        print(f"{labels}: {math['total']} equations, {expected} HLS clips decoded on entry and return")
+        print(f"{labels}: {math['total']} equations, {expected} fully visible HLS clips decoded on entry and return")
 
 
 if __name__ == "__main__":
