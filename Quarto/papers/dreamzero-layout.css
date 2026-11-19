@@ -57,3 +57,16 @@
 .reveal .demo-layout table {
   margin: 0.55em auto;
 }
+
+/* Keep the technical figure or numbered process beside its interpretation. */
+.reveal .evidence-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1em;
+}
+
+.reveal .evidence-pair figure,
+.reveal .evidence-pair figure p {
+  margin: 0;
+}

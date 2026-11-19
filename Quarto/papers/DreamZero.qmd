@@ -6,7 +6,7 @@ institute: "WoRV / MaumAI"
 format:
   revealjs:
     theme: [default, ../clean-academic-legacy.scss]
-    css: dreamzero-demos.css
+    css: dreamzero-layout.css
     slide-number: true
     chalkboard: false
     preview-links: auto
@@ -140,7 +140,7 @@ $\Rightarrow$ Robotics needs [**vastly more experience**]{.hi-gold} to match hum
 
 ![](../../Figures/papers/DreamZero/eval_bar_chart.svg){fig-align="center" width="75%"}
 
-[VLA from-scratch at $\sim$0% on diverse data]{style="font-size: 0.75em;"}
+[VLA from-scratch at &asymp;0% on diverse data]{style="font-size: 0.75em;"}
 
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} The fundamental gap --- VLMs encode "[**what**]{.hi} to do" but not "[**how**]{.hi} to move".
@@ -308,7 +308,7 @@ Joint video frames
 - Distorts native FPS $\rightarrow$ breaks alignment
 - Especially harmful mid-task
 
-![](../../Figures/papers/DreamZero/bidiraug.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/bidiraug.svg){fig-align="center" width="94%"}
 :::
 
 ::: {.column width="48%"}
@@ -318,12 +318,12 @@ Joint video frames
 - [**KV-cache**]{.positive} for $3$--$4\times$ speedup
 - Natural modality alignment
 - Variable-length training
-:::
-::::
 
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} AR wins on both quality AND speed --- KV-cache gives $3$--$4\times$ speedup (bidirectional cannot cache), and native frame rate preserves the temporal signal the IDM needs.
 :::
+:::
+::::
 
 
 <!-- Slide 10: Chunk-wise Generation -->
@@ -415,14 +415,18 @@ $$
 
 ## Attention Masking Strategy
 
-![](../../Figures/papers/DreamZero/dreamzero_attention_figure.svg){fig-align="center" width="78%"}
+::::: {.evidence-pair}
+![](../../Figures/papers/DreamZero/dreamzero_attention_figure.svg){fig-align="center" width="100%"}
 
+:::: {.takeaway}
 ::: {.methodbox}
 **Key Rules**
 
 - [**Training:**]{.hi} noisy chunk attends ONLY to [**clean context**]{.positive}
 - [**No cross-attention**]{.hi} between noisy video and noisy actions within same chunk
 :::
+::::
+:::::
 
 
 <!-- Slide 13: Ground-Truth Injection -->
@@ -430,6 +434,7 @@ $$
 
 ## Inference: Ground-Truth Injection
 
+::::: {.evidence-pair}
 ::: {.keybox}
 **The Elegant Trick**
 
@@ -439,6 +444,7 @@ $$
 4. This [**eliminates error accumulation!**]{.positive}
 :::
 
+:::: {.takeaway}
 [**Why this is unique to WAMs:**]{.hi}
 
 - Pure video generation: errors compound
@@ -448,6 +454,8 @@ $$
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} WAMs [**self-correct via reality**]{.hi}. No other paradigm gets this for free.
 :::
+::::
+:::::
 
 
 <!-- Slide 14: DreamZero-Flash -->
@@ -537,7 +545,7 @@ $\rightarrow$ [**+51% relative improvement**]{.positive} from diversity
 - [**500 hours**]{.hi-gold} teleoperation
 - 7.2K episodes
 - [**22**]{.hi-gold} real-world environments
-- Avg episode: 4.4 min, $\sim$42 subtasks
+- Avg episode: 4.4 min, about 42 subtasks
 :::
 
 ::: {.column width="46%"}
@@ -619,7 +627,7 @@ Training and evaluation in [**different geographic locations**]{.negative}
 ::: {.resultbox}
 DreamZero: [**62.2%**]{.positive} avg. task progress
 Best VLA (pretrained): 27.4% $\rightarrow$ [**$2.3\times$**]{.positive}
-VLA from-scratch: [**$\sim$0%**]{.negative}
+VLA from-scratch: [**&asymp;0%**]{.negative}
 :::
 
 
@@ -628,7 +636,7 @@ VLA from-scratch: [**$\sim$0%**]{.negative}
 
 ## Unseen Tasks: Zero-shot Generalization
 
-![](../../Figures/papers/DreamZero/unseen_success_rates.svg){fig-align="center" width="78%"}
+![](../../Figures/papers/DreamZero/unseen_success_rates.svg){fig-align="center" height="410px"}
 
 ::: {.resultbox}
 DreamZero: [**39.5%**]{.positive} on novel tasks
@@ -808,7 +816,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 ::: {.column width="48%"}
 [**Seen Tasks (10 evaluated):**]{.hi}
 
-![](../../Figures/papers/DreamZero/agibot_seen_example.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/agibot_seen_example.svg){fig-align="center" width="69%"}
 
 [take, place, push, open, pour]{style="font-size: 0.85em;"}
 :::
@@ -816,7 +824,7 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 ::: {.column width="48%"}
 [**Unseen Tasks (10 evaluated):**]{.hi}
 
-![](../../Figures/papers/DreamZero/agibot_unseen_example.svg){fig-align="center" width="100%"}
+![](../../Figures/papers/DreamZero/agibot_unseen_example.svg){fig-align="center" width="69%"}
 
 [iron, untie, shake hands, remove hat]{style="font-size: 0.85em;"}
 :::
@@ -886,13 +894,17 @@ Full video gallery: `dreamzero0.github.io`
 
 ## Failure Analysis: When DreamZero Breaks
 
-![](../../Figures/papers/DreamZero/generated.svg){fig-align="center" width="75%"}
+::::: {.evidence-pair}
+![](../../Figures/papers/DreamZero/generated.svg){fig-align="center" width="100%"}
 
+:::: {.takeaway}
 [**Error causal chain:**]{.hi} Video backbone hallucinates $\rightarrow$ wrong predicted frames $\rightarrow$ IDM extracts actions from wrong video $\rightarrow$ robot executes incorrect motion
 
 ::: {.softbox}
 [**Commentary:**]{.hi-gold} The tight coupling is both strength and weakness --- [**video quality is the bottleneck**]{.hi}.
 :::
+::::
+:::::
 
 
 <!---------------------------------------------------------------------------->
@@ -938,7 +950,7 @@ Full video gallery: `dreamzero0.github.io`
 - [**WebSocket server:**]{.hi} distributed multi-GPU
 - [**DiT caching:**]{.hi} skip forward pass when velocity vectors converge
 - [**Quantization:**]{.hi} NVFP4 (weights), FP8 (QKV/Softmax), FP16 (non-linear)
-- [**Frame sequence:**]{.hi} 880 tokens (33 frames $\times$ $\sim$27 tokens/frame)
+- [**AgiBot training:**]{.hi} 33 input frames and $880$ tokens per latent frame
 :::
 
 ::: {.softbox}

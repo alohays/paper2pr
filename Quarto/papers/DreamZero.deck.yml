@@ -22,3 +22,8 @@ checks:
 language:
   slides: en
   notes: ko  # no notes written yet; ko is the language they will be in
+
+sources:
+  - https://arxiv.org/html/2602.15922
+  - https://github.com/dreamzero0/dreamzero/blob/ab790c198fbce33503358efbbd4187ce9a89adf3/scripts/train/agibot_training.sh
+  - https://github.com/dreamzero0/dreamzero/blob/ab790c198fbce33503358efbbd4187ce9a89adf3/groot/vla/model/dreamzero/modules/wan_video_dit_action_casual_chunk.py
