@@ -96,9 +96,11 @@ def main():
                    "--chrome-path", executable(), "--size", "1280x720", "--pause", "1000",
                    url, str(pdf)]
         # Browser console output may contain private author paths or notes.
-        result = subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if result.returncode:
-            raise ValueError(f"DeckTape failed with exit {result.returncode} while opening {page.name}")
+            if b"Navigation timeout" in result.stdout:
+                raise ValueError(f"DeckTape timed out waiting for {page.name} to finish loading")
+            raise ValueError(f"DeckTape failed with exit {result.returncode} on {page.name}")
         pages = validate_pdf(pdf, qmd, args.pages)
         pdf.replace(out)
     print(f"Handout verified: {out.name}, {pages} pages")
