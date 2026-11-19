@@ -13,11 +13,11 @@ from urllib.request import urlopen
 
 import deckpath
 from browser import executable
+from qmd_includes import expanded_source
 from strip_qmd_notes import strip_notes
 
 ROOT = Path(__file__).resolve().parents[1]
 HANGUL = re.compile("[\u1100-\u11ff\u3130-\u318f\ua960-\ua97f\uac00-\ud7a3\ud7b0-\ud7ff]")
-INCLUDE = re.compile(r'''\{\{<\s*include\s+(?:"([^"]+)"|'([^']+)'|([^\s>]+))\s*>\}\}''')
 
 
 def source_path(value):
@@ -31,20 +31,10 @@ def source_path(value):
 
 def visible_hangul(qmd):
     """Allow glosses in the source and its includes, after Git's note filter."""
-    chars = set()
-    pending = [qmd] if qmd else []
-    seen = set()
-    while pending:
-        path = pending.pop()
-        if path in seen:
-            continue
-        seen.add(path)
-        source = strip_notes(path.read_text(encoding="utf-8"))
-        chars.update(HANGUL.findall(html.unescape(source)))
-        for match in INCLUDE.finditer(source):
-            relative = next(part for part in match.groups() if part is not None)
-            pending.append((path.parent / relative).resolve())
-    return chars
+    if qmd is None:
+        return set()
+    source, _ = expanded_source(qmd)
+    return set(HANGUL.findall(html.unescape(strip_notes(source))))
 
 
 def validate_pdf(pdf, qmd, expected_pages):
