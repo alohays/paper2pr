@@ -778,7 +778,7 @@ remote. [10 stages.]{.dim}
 :::: {.columns}
 ::: {.column width="33%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/pup-go-car-1x-poster.jpg">
+<video data-redistribution="embed-only" muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/pup-go-car-1x-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/pup-go-car-1x.mp4" type="video/mp4">
 <source src="../videos/pup-go-car-1x.mp4" type="video/mp4">
 </video>
@@ -789,7 +789,7 @@ remote. [10 stages.]{.dim}
 
 ::: {.column width="33%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/circuit-1x-1-poster.jpg">
+<video data-redistribution="embed-only" muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/circuit-1x-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/circuit-1x-1.mp4" type="video/mp4">
 <source src="../videos/circuit-1x-1.mp4" type="video/mp4">
 </video>
@@ -800,7 +800,7 @@ remote. [10 stages.]{.dim}
 
 ::: {.column width="33%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/gear-bot-1x-1-poster.jpg">
+<video data-redistribution="embed-only" muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/gear-bot-1x-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/gear-bot-1x-1.mp4" type="video/mp4">
 <source src="../videos/gear-bot-1x-1.mp4" type="video/mp4">
 </video>
@@ -1001,7 +1001,7 @@ shortest episode. [Appendix A6.]{.dim}
 ![](../../Figures/papers/RoboTTT/one_shot_rollout.jpg){width="100%"}
 
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;margin-top:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/circuit-1-poster.jpg">
+<video data-redistribution="embed-only" muted loop playsinline style="width:100%;border-radius:6px;margin-top:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/circuit-1-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/circuit-1.mp4" type="video/mp4">
 <source src="../videos/circuit-1.mp4" type="video/mp4">
 </video>
@@ -1040,7 +1040,7 @@ It [encoded]{.hi} the video. It could not [use]{.hi} it.
 :::: {.columns}
 ::: {.column width="46%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/perturbation-roof-poster.jpg">
+<video data-redistribution="embed-only" muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/perturbation-roof-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/perturbation-roof.mp4" type="video/mp4">
 <source src="../videos/perturbation-roof.mp4" type="video/mp4">
 </video>
@@ -1081,7 +1081,7 @@ every method has some of this.
 :::: {.columns}
 ::: {.column width="46%"}
 ```{=html}
-<video muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/on-the-fly-roof-poster.jpg">
+<video data-redistribution="embed-only" muted loop playsinline style="width:100%;border-radius:6px;aspect-ratio:16/9" preload="none" poster="../../Figures/papers/RoboTTT/on-the-fly-roof-poster.jpg">
 <source src="https://research.nvidia.com/labs/gear/robottt/videos/on-the-fly-roof.mp4" type="video/mp4">
 <source src="../videos/on-the-fly-roof.mp4" type="video/mp4">
 </video>

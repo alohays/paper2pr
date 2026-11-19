@@ -2769,7 +2769,7 @@ format:
 
     <div class="right">
       <div class="video-wrapper">
-        <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/canvas-orchard.mp4" style="width: 100%; height: auto; border-radius: 8px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/canvas-orchard-poster.jpg" controls muted loop preload="metadata"></video>
+        <video data-redistribution="embed-only" src="https://github.com/alohays/paper2pr/releases/download/media-v1/canvas-orchard.mp4" style="width: 100%; height: auto; border-radius: 8px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/canvas-orchard-poster.jpg" controls muted loop preload="metadata"></video>
         <span class="video-label">SketchDrive · Orchard Demo</span>
       </div>
     </div>
@@ -3103,7 +3103,7 @@ format:
     <div class="video-row">
       <div class="video-panel fail">
         <div class="video-wrapper">
-          <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_baseline_fail_top.mp4" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_baseline_fail_top-poster.jpg" muted loop preload="metadata" controls></video>
+          <video data-redistribution="embed-only" src="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_baseline_fail_top.mp4" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_baseline_fail_top-poster.jpg" muted loop preload="metadata" controls></video>
         </div>
         <span class="video-label label-fail">Baseline (FAIL)</span>
       </div>
@@ -3114,7 +3114,7 @@ format:
 
       <div class="video-panel success">
         <div class="video-wrapper">
-          <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_ours_success_top.mp4" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_ours_success_top-poster.jpg" muted loop preload="metadata" controls></video>
+          <video data-redistribution="embed-only" src="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_ours_success_top.mp4" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/d2e-so101_ours_success_top-poster.jpg" muted loop preload="metadata" controls></video>
         </div>
         <span class="video-label label-success">Ours (SUCCESS)</span>
       </div>
@@ -3599,7 +3599,7 @@ format:
         <img src="../../Figures/talks/SUNY/worv/results_cost.png" alt="CostNav cost results" style="max-width: 340px;">
       </div>
       <div class="video-wrap">
-        <video src="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser.mp4" style="width: 300px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser-poster.jpg" muted loop preload="metadata" controls></video>
+        <video data-redistribution="embed-only" src="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser.mp4" style="width: 300px;" poster="https://github.com/alohays/paper2pr/releases/download/media-v1/costnav-teaser-poster.jpg" muted loop preload="metadata" controls></video>
       </div>
     </div>
   </div>

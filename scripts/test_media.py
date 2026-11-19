@@ -590,6 +590,8 @@ format:
 {{{{< video-caption restricted >}}}}
 
 ## {{#empty .video-full video="@unspecified"}}
+
+## {{#published .video-full video="@approved"}}
 """, encoding="utf-8")
     if quarto:
         def render(*options):
@@ -605,6 +607,17 @@ format:
               and all(secret not in html for secret in
                       (source.name, "restricted.mp4", "restricted-poster.jpg", "unspecified.mp4",
                        "unspecified-poster.jpg", "private-poster-canary.jpg")), result.stderr[-300:])
+        page = Path("slides/test/mixed.html")
+        if html:
+            check_site_assets.validate_public_videos(page, html, home)
+            check("public cards and backgrounds carry approved manifest playback",
+                  html.count('data-redistribution="release"') == 2)
+            try:
+                altered = html.replace(lock["videos"][0]["release_url"], "https://example.org/unapproved.mp4")
+                check_site_assets.validate_public_videos(page, altered, home)
+                check("a manifest marker cannot approve a different source", False)
+            except ValueError as exc:
+                check("a manifest marker cannot approve a different source", "public video" in str(exc))
         result = render("-M", "delivery:classroom")
         html = qmd.with_suffix(".html").read_text() if not result.returncode else ""
         check("classroom + --local renders playable local cards and full-slide backgrounds",

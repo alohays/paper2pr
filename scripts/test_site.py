@@ -129,6 +129,27 @@ class SiteTest(unittest.TestCase):
         self.page.write_text('<section>Public lesson</section>')
         self.assemble()
 
+    def test_raw_videos_need_an_external_playback_policy(self):
+        external = "https://publisher.example/demo.mp4"
+        tagged = 'data-redistribution="embed-only"'
+        self.page.write_text(f'<video {tagged} src="{external}"></video>'
+                             f'<video {tagged} data-hls="https://publisher.example/live.m3u8"></video>'
+                             f'<video {tagged}><source src="{external}">'
+                             '<source src="../videos/task1.mp4"></video>'
+                             f'<section {tagged} data-background-video="{external}"></section>')
+        self.assemble()
+        for raw in (f'<video data-src="{external}"></video>',
+                    f'<video><source data-src="{external}"></video>',
+                    f'<section data-background-video="{external}"></section>',
+                    f'<video data-redistribution="release" src="{external}"></video>',
+                    f'<section data-redistribution="classroom" data-background-video="{external}"></section>',
+                    '<video data-redistribution="embed-only" src="data:video/mp4;base64,AAAA"></video>',
+                    '<video data-redistribution="fixture" src="https://publisher.example/demo.mp4"></video>',
+                    f'<iframe srcdoc="&lt;video src=&quot;{external}&quot;&gt;&lt;/video&gt;"></iframe>'):
+            with self.subTest():
+                self.page.write_text(raw)
+                self.assertIn("public video", self.assemble(success=False))
+
     def test_classroom_media_is_preview_only(self):
         self.write("Figures/lectures/Hidden/videos/c.mp4", "video")
         self.write("Figures/lectures/Hidden/videos/c-poster.jpg", "poster")

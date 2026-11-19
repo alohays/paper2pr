@@ -24,7 +24,7 @@ bibliography: ../../Bibliography_base.bib
 ![](../../Figures/papers/DreamDojo/teaser_compressed.svg){fig-align="center" width="60%"}
 :::
 
-<video preload="metadata" data-src="https://dreamdojo-world.github.io/dreamdojo_demo.mp4" muted data-autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video data-redistribution="embed-only" preload="metadata" data-src="https://dreamdojo-world.github.io/dreamdojo_demo.mp4" muted data-autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 
 
@@ -640,7 +640,7 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 | Student | 13.15 | 0.379 | 0.485 | [**~10**]{.positive} | 4 | 12 |
 :::
 
-<video preload="metadata" data-src="https://dreamdojo-world.github.io/real_time.mp4" muted data-autoplay loop playsinline style="max-width: 100%; max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video data-redistribution="embed-only" preload="metadata" data-src="https://dreamdojo-world.github.io/real_time.mp4" muted data-autoplay loop playsinline style="max-width: 100%; max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 :::
 ::: {.column width="30%"}
@@ -780,7 +780,7 @@ Post-trained on GR-1, G1, AgiBot, and YAM --- each with separate post-training r
 
 :::: {.columns}
 ::: {.column width="46%"}
-<video preload="metadata" data-src="https://dreamdojo-world.github.io/g1/g1_0024_pred.mp4" muted data-autoplay loop playsinline style="max-width:100%; max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video data-redistribution="embed-only" preload="metadata" data-src="https://dreamdojo-world.github.io/g1/g1_0024_pred.mp4" muted data-autoplay loop playsinline style="max-width:100%; max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 :::
 
 ::: {.column width="52%"}
@@ -846,7 +846,7 @@ DreamDojo can reliably rank policies without deploying on a real robot.
 ::: {.column width="48%"}
 [**Live Teleoperation:**]{.hi}
 
-<video preload="metadata" data-src="https://dreamdojo-world.github.io/teleop/1.mp4" muted data-autoplay loop playsinline style="max-height: 200px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video data-redistribution="embed-only" preload="metadata" data-src="https://dreamdojo-world.github.io/teleop/1.mp4" muted data-autoplay loop playsinline style="max-height: 200px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
 - PICO VR controller $\rightarrow$ G1 actions
 - Distilled model on RTX 5090

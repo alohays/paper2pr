@@ -71,6 +71,8 @@ class RuntimeRefs(HTMLParser):
         self.urls = []
         self.in_style = False
         self.video_primary = None
+        self.sources = None
+        self.videos = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -78,6 +80,11 @@ class RuntimeRefs(HTMLParser):
             self.in_style = True
         if tag == "video":
             self.video_primary = False
+            self.sources = []
+            self.videos.append((attrs.get("data-redistribution"), self.sources))
+        if attrs.get("data-background-video"):
+            urls = [value.strip() for value in attrs["data-background-video"].split(",")]
+            self.videos.append((attrs.get("data-redistribution"), urls))
         for key, value in attrs.items():
             if not value:
                 continue
@@ -87,6 +94,9 @@ class RuntimeRefs(HTMLParser):
                         continue
                     if value.startswith(("https://", "http://")):
                         self.video_primary = True
+                if (self.sources is not None and tag in {"video", "source"}
+                        and key in {"src", "data-src", "data-hls"}):
+                    self.sources.append(value)
                 self.urls.append(value)
             elif key in {"srcset", "data-srcset"}:
                 self.urls.extend(srcset_refs(value))
@@ -98,12 +108,14 @@ class RuntimeRefs(HTMLParser):
                 embedded.feed(value)
                 embedded.close()
                 self.urls.extend(embedded.urls)
+                self.videos.extend(embedded.videos)
 
     def handle_endtag(self, tag):
         if tag == "style":
             self.in_style = False
         if tag == "video":
             self.video_primary = None
+            self.sources = None
 
     def handle_data(self, data):
         if self.in_style:
@@ -181,6 +193,33 @@ def check(site_root, classroom=False):
     return checked, missing
 
 
+def validate_public_videos(page, text, home):
+    """Authorize raw external playback and the approved URLs produced by shortcodes."""
+    from media_prep import ManifestError, release_assets
+
+    parser = RuntimeRefs()
+    parser.feed(text)
+    parser.close()
+    approved = None
+    for policy, sources in parser.videos:
+        if policy == "embed-only":
+            if sources and all(urlsplit(url).scheme in {"https", "http"} and urlsplit(url).netloc
+                               for url in sources):
+                continue
+        elif policy == "release" and home is not None:
+            if approved is None:
+                try:
+                    approved = {url for name, url in release_assets(home) if name.endswith(".mp4")}
+                except (ManifestError, OSError, ValueError, KeyError, TypeError):
+                    raise ValueError("could not validate approved video sources") from None
+            if sources and all(url in approved for url in sources):
+                continue
+        elif (policy == "fixture" and page == Path("slides/_fixtures/design-test.html")
+              and sources == ["assets/placeholder-video.mp4"]):
+            continue
+        raise ValueError("public video needs an approved manifest clip or external embed-only source")
+
+
 def validate(site_root, classroom=False):
     """Verify contents as well as references; private values never enter diagnostics."""
     root = Path(site_root)
@@ -193,8 +232,13 @@ def validate(site_root, classroom=False):
     from media_prep import ManifestError, load_manifest, restricted_media_urls
     restricted = set()
     source_paths = set()
+    homes = {}
+    fixture = deckpath.QUARTO_DIR / "_fixtures/video/videos.yml"
+    if fixture.is_file():
+        homes[Path("slides/_fixtures/video/video.html")] = deckpath.find_media(str(fixture))
     for deck in deckpath.all_decks():
         if deck.videos_manifest.is_file():
+            homes[Path("slides") / deck.genre / f"{deck.name}.html"] = deck.media
             try:
                 restricted.update(restricted_media_urls(deck.media))
                 for entry in load_manifest(deck.videos_manifest):
@@ -233,6 +277,8 @@ def validate(site_root, classroom=False):
             raise ValueError("a local filesystem path appears in the audience artifact")
         if any(url in decoded for url in restricted):
             raise ValueError("a classroom-only clip has a release reference in the audience artifact")
+        if path.suffix.lower() == ".html" and not classroom:
+            validate_public_videos(rel, text, homes.get(rel))
         if path.suffix.lower() == ".html" and count_notes(path):
             raise ValueError("presenter notes remain in the audience artifact")
     return count

@@ -136,7 +136,7 @@ Slide types
 fixture
 :::
 
-## {.video-full video="assets/placeholder-video.mp4" poster="assets/placeholder-poster.jpg"}
+## {.video-full data-redistribution="fixture" video="assets/placeholder-video.mp4" poster="assets/placeholder-poster.jpg"}
 
 ::: {.video-caption}
 [Placeholder clip fills the frame]{.video-caption-title}
@@ -146,7 +146,7 @@ fixture
 ## Inline Video With Bullets
 
 ```{=html}
-<video class="video-inline" src="assets/placeholder-video.mp4" poster="assets/placeholder-poster.jpg" muted loop autoplay playsinline></video>
+<video data-redistribution="fixture" class="video-inline" src="assets/placeholder-video.mp4" poster="assets/placeholder-poster.jpg" muted loop autoplay playsinline></video>
 ```
 
 - A 16:9 clip inside a content slide, capped so the list fits

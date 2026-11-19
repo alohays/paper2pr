@@ -67,7 +67,7 @@ local function video_card(args, kwargs, meta)
   local src, poster = manifest.escape(entry.src), manifest.escape(entry.poster)
   local html = {
     '<figure class="' .. manifest.escape(classes) .. '" data-video-slug="' .. manifest.escape(entry.slug) .. '">',
-    '<video class="video-inline" poster="' .. poster
+    '<video class="video-inline" data-redistribution="' .. entry.redistribution .. '" poster="' .. poster
       .. '" preload="auto" muted playsinline loop data-autoplay>',
     '<source data-src="' .. src .. '" type="video/mp4">',
     '</video>',

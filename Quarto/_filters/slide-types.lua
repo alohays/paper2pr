@@ -80,6 +80,7 @@ local function header(h, meta)
         h.attributes["video-slug"] = entry.slug
         return {h, pandoc.RawBlock("html", "<p>" .. manifest.publisher_link(entry) .. "</p>")}
       end
+      h.attributes["redistribution"] = entry.redistribution
       src = entry.src
       if not poster or poster == "" then poster = entry.poster end
       h.attributes["video-slug"] = entry.slug   -- pandoc writes data-video-slug

@@ -150,6 +150,7 @@ function M.load(meta)
       v.caption = v.caption or "visible"
       -- Locks predating the policy carry no release approval.
       local approved = v.redistribution == "release" and data.manifest_sha1 ~= nil
+      v.redistribution = approved and "release" or "classroom"
       v.link_only = not approved and delivery == "public"
       if v.needs_prep and not v.link_only then
         fail("video-manifest: " .. v.slug .. " needs preparation; run media_prep.py")

@@ -30,6 +30,8 @@ A plain render uses public media choices. To keep a separate local presenter cop
 
 Use `{{< video-card grasp >}}` for an inline clip or two cards inside a `.two-up` div. `## {.video-full video="@grasp"}` sets a full-slide background. An optional `{{< video-caption grasp >}}` adds its caption. Public full-slide treatment includes a publisher link even for an empty slide or `caption: none`. The shortcode also accepts `class="..."`. Both forms preserve `data-video-slug` for verification.
 
+DreamZero, DreamDojo, RoboTTT and SUNY also play existing videos directly from a publisher or historical Release. Their raw `<video>` elements declare `data-redistribution="embed-only"`. Use the same attribute on a Reveal section with an external background video. The public check requires an HTTP(S) playback source. Embed-only media stays at its existing host and the uploader reads only the managed manifest. The design fixture’s local placeholder is confined to that fixture.
+
 Other manifest fields include `speed` (default `1x`), `keep_audio` (default `false`), `autonomy` (`autonomous`, `claimed`, `teleop` or `unknown`) and `caption` (`visible`, `fragment` or `none`). The segment uses source seconds, either `start-end` or `start-`. `--only <slug>` prepares one entry. `--force` recuts selected clips.
 
 To check existing Release files, use `bash scripts/media_release.sh <Deck> --check`. For an authorized upload, omit `--check`. Both commands select the same approved files from the current manifest, check the lock and use the existing `media-<Deck>` tag and asset names. A manifest with only classroom entries makes zero network calls. Changing a policy updates future renders and upload lists. Previously uploaded assets have their own GitHub Release lifecycle.

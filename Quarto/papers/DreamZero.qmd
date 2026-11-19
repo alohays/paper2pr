@@ -41,7 +41,7 @@ bibliography: ../../Bibliography_base.bib
 ::: {.demo-intro-layout}
 ![](../../Figures/papers/DreamZero/dreamzero-header-v2.svg){fig-align="center"}
 
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_post_train/hsl/DreamZero_AgiBotPostTrain_FruitPacking_2x.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_post_train/hsl/DreamZero_AgiBotPostTrain_FruitPacking_2x.m3u8" data-autoplay loop muted playsinline>
 </video>
 :::
 
@@ -665,12 +665,12 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 :::: {.demo-players}
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_unseen/hsl/NEWUNSEEN_006_02.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_unseen/hsl/NEWUNSEEN_006_02.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Untie Shoelace (Unseen)]{.video-label}
 :::
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_unseen/hsl/NEWUNSEEN_057.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_unseen/hsl/NEWUNSEEN_057.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Shake Hands (Unseen)]{.video-label}
 :::
@@ -693,12 +693,12 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 :::: {.demo-players}
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_seen/hsl/SEENASYNC_001_AI.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_seen/hsl/SEENASYNC_001_AI.m3u8" data-autoplay loop muted playsinline>
 </video>
 [AI Prediction]{.video-label}
 :::
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_seen/hsl/SEENASYNC_001.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_seen/hsl/SEENASYNC_001.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Real Execution]{.video-label}
 :::
@@ -739,12 +739,12 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 :::: {.demo-players}
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/droid/hsl/toast_bread%20(AI).m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/droid/hsl/toast_bread%20(AI).m3u8" data-autoplay loop muted playsinline>
 </video>
 [DROID: AI Prediction]{.video-label}
 :::
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/droid/hsl/toast_bread%20(real).m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/droid/hsl/toast_bread%20(real).m3u8" data-autoplay loop muted playsinline>
 </video>
 [DROID: Real Execution]{.video-label}
 :::
@@ -766,12 +766,12 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 :::: {.demo-players}
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/yam/hsl/1_teddy.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/yam/hsl/1_teddy.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Pick Teddy Bear]{.video-label}
 :::
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/yam/hsl/2_orange.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/yam/hsl/2_orange.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Orange to Pumpkin]{.video-label}
 :::
@@ -794,12 +794,12 @@ Best VLA (pretrained): 16.3% $\rightarrow$ [**$2.4\times$**]{.positive}
 
 :::: {.demo-players}
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_interactive_prompting/hsl/Water_the_plant.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_interactive_prompting/hsl/Water_the_plant.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Water Plant]{.video-label}
 :::
 ::: {.demo-player}
-<video data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_interactive_prompting/hsl/Open_the_door.m3u8" data-autoplay loop muted playsinline>
+<video data-redistribution="embed-only" data-hls="https://dreamzero0.github.io/labs/gear/videos/agi_interactive_prompting/hsl/Open_the_door.m3u8" data-autoplay loop muted playsinline>
 </video>
 [Open Door]{.video-label}
 :::
