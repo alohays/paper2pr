@@ -1,213 +1,257 @@
 #!/usr/bin/env python3
-"""Screenshot every slide of a deck at exactly 1280x720, one PNG per slide.
+"""Capture the final fragment of each slide and check the clicker path in both directions.
 
-Usage:
-    python3 scripts/shoot_slides.py <Deck|genre/name|path.qmd|path.html>
-                                    [--out DIR] [--max N] [--prefix P]
-
-The argument is resolved like everywhere else in this repo:
-  - a bare deck name or genre/name goes through scripts/deckpath.py, and the
-    rendered html is expected next to the qmd (Quarto/<genre>/<name>.html);
-  - a .qmd path (a fixture, say) uses the sibling .html;
-  - a .html path is used as-is, no render check.
-For a qmd, the html is (re)rendered first -- by shelling to `quarto render` --
-when it is missing or older than the qmd, so the shots never show a stale deck.
-
-Output: <out_dir>/<prefix>-<NN>.png, NN = 0-based index in reading order,
-vertical stacks included; the walk stops at the last slide or at --max.
-Default out dir is a fresh temp dir, printed on the first line; default
-prefix is the deck name.
-
-Why this drives headless Chrome over the DevTools protocol instead of the
-`--screenshot` one-liner: the one-shot flag lays the page out once at a
-smaller viewport and then resizes, and Chrome can paint SVG <text> from that
-stale layout. Here the viewport is pinned before navigation, fonts are
-awaited, reveal is re-laid out, and slides are switched from inside the page.
-
-The ?slide=N / URL-fragment trap, so nobody rediscovers it: reveal ignores
-`?slide=N` entirely (its URL scheme is the `#/h` or `#/h/v` hash), and a flat
-index does not survive vertical stacks -- a level-1 `#` heading folds every
-following slide into one vertical stack, so `#/7` is not the eighth slide in
-reading order. Mutating location.hash on a live page also races reveal's own
-hash handling, and the capture can catch the previous slide still painted.
-The deterministic walk is `Reveal.slide(0, 0)` once, then `Reveal.next()`,
-which descends vertical stacks in reading order. Do not "optimise" this back
-to hash navigation, and do not use `--virtual-time-budget` (it fast-forwards
-timers, which breaks the settle delay background videos and transitions need).
-
-Needs the `websocket-client` module (python3 -c "import websocket") and
-Google Chrome (path below, override with the CHROME env var).
+A deck name or QMD always renders fresh. An HTML path uses those exact bytes. With
+--url the checked site is already served on loopback. Images are numbered in
+reading order; --slide ID checks a single slide and its neighboring transition.
 """
 from __future__ import annotations
 
 import argparse
 import base64
+import functools
+import hashlib
+import http.server
 import json
-import os
-import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
+import urllib.parse
 import urllib.request
+from contextlib import contextmanager
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import deckpath  # noqa: E402
-
-import websocket  # websocket-client  # noqa: E402
-
-CHROME = os.environ.get(
-    "CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
-DEFAULT_MAX = 500  # the walk stops at Reveal.isLastSlide() anyway
-SETTLE_S = 0.6     # let background video/poster and transitions settle
+import deckpath
+from browser import browser_page
 
 
 def resolve_html(ref: str) -> Path:
-    """Turn the CLI argument into the html file to shoot, rendering first
-    when the argument names a qmd (directly or via a deck name) whose html
-    is missing or stale."""
-    ref = ref.strip()
-    p = Path(ref)
-    p = p if p.is_absolute() else (Path.cwd() / p)
-    if ref.endswith(".html"):
-        if not p.is_file():
-            sys.exit(f"error: {ref}: no such file")
-        return p.resolve()
-    if ref.endswith(".qmd"):
-        if not p.is_file():
-            sys.exit(f"error: {ref}: no such file")
-        qmd = p.resolve()
-    else:
+    path = Path(ref)
+    if path.suffix.lower() == ".html":
+        if not path.is_file():
+            raise ValueError(f"no rendered HTML at {path}")
+        return path.resolve()
+    qmd = path.resolve() if path.suffix.lower() == ".qmd" else deckpath.find(ref).qmd
+    renderer = Path(__file__).with_name("render_decks.sh")
+    subprocess.run(["bash", renderer, qmd], check=True)
+    return qmd.with_suffix(".html")
+
+
+class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, format, *args):
+        pass
+
+
+@contextmanager
+def local_url(html: Path, supplied: str | None = None):
+    if supplied:
+        yield supplied
+        return
+    # Match the deployment layout, including ../../Figures from a deck.
+    root = next((parent.parent for parent in html.parents
+                 if parent.name in {"slides", "Quarto"}), html.parent)
+    handler = functools.partial(QuietHandler, directory=str(root))
+    with http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler) as server:
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
         try:
-            qmd = deckpath.find(ref).qmd
-        except (deckpath.DeckNotFound, deckpath.AmbiguousDeck) as e:
-            sys.exit(f"error: {e}")
-    html = qmd.with_suffix(".html")
-    if not html.exists() or html.stat().st_mtime < qmd.stat().st_mtime:
-        why = "missing" if not html.exists() else "older than the qmd"
-        print(f"render  {html.name} is {why}; quarto render {qmd}")
-        r = subprocess.run(["quarto", "render", str(qmd)])
-        if r.returncode != 0 or not html.exists():
-            sys.exit(f"error: quarto render failed for {qmd}")
-    return html
+            path = urllib.parse.quote(html.relative_to(root).as_posix())
+            yield f"http://127.0.0.1:{server.server_port}/{path}"
+        finally:
+            server.shutdown()
+            thread.join()
 
 
-def shoot(html: Path, out_dir: Path, prefix: str,
-          max_slides: int = DEFAULT_MAX) -> list[Path]:
-    """Walk the rendered deck in reading order and save one PNG per slide.
-    Returns the paths written, in order."""
-    url = html.resolve().as_uri()
+# Fragment indices are normalized by Reveal, including simultaneously revealed groups.
+STATE = """(() => {
+  const section = Reveal.getCurrentSlide();
+  const index = Reveal.getSlides().indexOf(section);
+  const fragment = Reveal.getIndices().f ?? -1;
+  const remaining = !!Reveal.availableFragments().next;
+  const widget = section.querySelector('.rttt-widget[data-beats]');
+  const caption = widget && +widget.dataset.beats ?
+    widget.querySelector('.rttt-caption')?.innerText.trim() : null;
+  return {index, fragment, remaining, caption};
+})()"""
+
+# Check the real interactive state on both forward and backward key presses.
+WIDGETS = """(() => {
+  const slide = Reveal.getCurrentSlide();
+  for (const diagram of slide.querySelectorAll('.mechanism:has(.build-step)')) {
+    const step = diagram.querySelectorAll('.build-step.visible').length;
+    if (diagram.dataset.step !== String(step)) return 'lecture diagram step';
+  }
+  return '';
+})()"""
+
+RESOURCES = """(() => {
+  const slide = Reveal.getCurrentSlide();
+  const visible = el => el.checkVisibility({checkOpacity: true, checkVisibilityCSS: true});
+  const images = [...slide.querySelectorAll('img')].filter(visible);
+  const missing = images.filter(img => !img.complete || !img.naturalWidth).length;
+  if (missing) return missing + ' visible image(s)';
+  if ([...document.querySelectorAll('link[rel=stylesheet]')].some(css => !css.disabled && !css.sheet))
+    return 'missing stylesheet';
+  const active = [...slide.querySelectorAll('video')].filter(visible);
+  if (slide.dataset.backgroundVideo) {
+    const bg = Reveal.getSlideBackground(Reveal.getIndices().h, Reveal.getIndices().v);
+    if (bg?.querySelector('video')) active.push(bg.querySelector('video'));
+    else if (!slide.dataset.backgroundPoster) return 'missing background video';
+  }
+  for (const v of active) {
+    if (v.readyState >= 2 && v.videoWidth) continue;
+    const poster = v.poster || slide.dataset.backgroundPoster;
+    if (!poster) return 'video without a decoded frame';
+    window.__paper2prPosters ??= new Map();
+    if (!window.__paper2prPosters.has(poster)) {
+      const img = new Image();
+      img.src = poster;
+      window.__paper2prPosters.set(poster, img);
+    }
+    if (!window.__paper2prPosters.get(poster).naturalWidth) return 'video without a decoded poster';
+  }
+  const math = [...slide.querySelectorAll('.math')].filter(visible);
+  if (math.some(el => el.querySelector('.katex-error') ||
+      !el.querySelector('.katex, mjx-container, .MathJax'))) return 'unrendered equation';
+  if ([...document.fonts].some(face => face.status === 'error')) return 'failed web font';
+  return '';
+})()"""
+
+
+# A caption's outer box is the title and source label the audience must see.
+# Use the scaled Reveal canvas at caption-room size, including its letterbox.
+CAPTIONS = """(() => {
+  const slide = Reveal.getCurrentSlide();
+  const canvas = Reveal.getSlidesElement().getBoundingClientRect();
+  const bottom = Math.min(innerHeight, canvas.bottom);
+  return [...slide.querySelectorAll('figure.video-card figcaption, .video-full > .video-caption')]
+    .filter(el => el.checkVisibility({checkOpacity:true, checkVisibilityCSS:true}))
+    .map(el => {
+      const r = el.getBoundingClientRect();
+      const outside = Math.max(0, r.bottom - bottom, Math.max(0, canvas.top) - r.top,
+        Math.max(0, canvas.left) - r.left, r.right - Math.min(innerWidth, canvas.right));
+      return {top:Math.round(r.top), bottom:Math.round(r.bottom),
+              canvas_bottom:Math.round(bottom), outside:Math.round(outside)};
+    });
+})()"""
+
+
+def ensure_state(state, slide, fragment):
+    actual = (state["index"], state["fragment"])
+    if actual != (slide, fragment):
+        raise ValueError(f"navigation reached slide/fragment {actual}; expected {(slide, fragment)}")
+
+
+def step(page, key):
+    page.key(key)
+    problem = page.evaluate(WIDGETS)
+    if problem:
+        raise ValueError(f"{problem} did not follow the clicker on {page.evaluate('Reveal.getCurrentSlide().id')}")
+    return page.evaluate(STATE)
+
+
+def capture(page, path):
+    page.evaluate("document.fonts.ready.then(() => true)")
+    # Reveal transitions run in wall-clock time. Wait for a settled audience frame,
+    # including any animated diagram movement, before capturing it.
+    time.sleep(0.65)
+    if page.evaluate("!!Reveal.getCurrentSlide().querySelector('.rttt-widget[data-beats]')"):
+        time.sleep(1.1)
+    problem = page.evaluate(RESOURCES)
+    if problem:
+        page.wait_for(f"!({RESOURCES})", f"{path.stem}: {problem}", timeout=25)
+    image = page.send("Page.captureScreenshot", format="png", fromSurface=True)["data"]
+    path.write_bytes(base64.b64decode(image))
+
+
+def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
+          width=1280, slide_id=None, url=None) -> list[Path]:
+    html = html.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
-    if not Path(CHROME).exists():
-        sys.exit(f"error: Chrome not found at {CHROME} (set CHROME to override)")
-    profile_dir = Path(tempfile.mkdtemp(prefix="shoot-chrome-"))
-    # --remote-debugging-port=0 lets the OS pick a free port (parallel runs
-    # never collide); Chrome writes the real port to DevToolsActivePort in
-    # the user-data dir.
-    chrome = subprocess.Popen(
-        [CHROME, "--headless=new", "--hide-scrollbars", "--disable-gpu",
-         "--autoplay-policy=no-user-gesture-required",
-         "--allow-file-access-from-files",
-         f"--user-data-dir={profile_dir}",
-         "--remote-debugging-port=0", "--window-size=1280,720", "about:blank"],
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    shots: list[Path] = []
-    try:
-        port_file = profile_dir / "DevToolsActivePort"
-        for _ in range(100):
-            if port_file.exists() and port_file.read_text().strip():
-                break
-            time.sleep(0.2)
-        else:
-            sys.exit("error: chrome did not come up")
-        port = int(port_file.read_text().splitlines()[0])
-        for _ in range(50):
-            try:
-                targets = json.load(
-                    urllib.request.urlopen(f"http://127.0.0.1:{port}/json"))
-                page = next(t for t in targets if t["type"] == "page")
-                break
-            except Exception:
-                time.sleep(0.2)
-        else:
-            sys.exit("error: no debuggable page")
-        ws = websocket.create_connection(page["webSocketDebuggerUrl"],
-                                         suppress_origin=True)
-        mid = [0]
+    shots = []
+    captions = {}
+    digest = hashlib.sha256(html.read_bytes()).hexdigest()
+    with local_url(html, url) as address:
+        with urllib.request.urlopen(address, timeout=12) as response:
+            if hashlib.sha256(response.read()).hexdigest() != digest:
+                raise ValueError("the served HTML differs from the input HTML")
+        with browser_page(address, width) as page:
+            slides = page.evaluate("Reveal.getSlides().map(s => ({id:s.id, pos:Reveal.getIndices(s)}))")
+            ids = [slide["id"] for slide in slides]
+            if not slides:
+                raise ValueError("Reveal has no slides")
+            if slide_id and ids.count(slide_id) != 1:
+                raise ValueError(f"expected one slide with id {slide_id}")
+            start = ids.index(slide_id) if slide_id else 0
+            count = 1 if slide_id else min(max_slides or len(ids), len(ids))
+            stop = start + count
+            pos = slides[start]["pos"]
+            page.evaluate(f"Reveal.slide({pos['h']},{pos.get('v', 0)},-1); Reveal.layout()")
+            state = page.evaluate(STATE)
+            ensure_state(state, start, -1)
+            # Record the expected path from the forward walk. Reverse must retrace it,
+            # including grouped fragments, vertical stacks and interactive builds.
+            states = [state]
+            for index in range(start, stop):
+                ensure_state(state, index, -1)
+                while state["remaining"]:
+                    previous = state
+                    state = step(page, "n")
+                    ensure_state(state, index, previous["fragment"] + 1)
+                    if state.get("caption") and state["caption"] == previous.get("caption"):
+                        raise ValueError(f"widget caption did not advance on {ids[index]}")
+                    states.append(state)
+                path = out_dir / f"{prefix}-{index:02d}.png"
+                capture(page, path)
+                shots.append(path)
+                boxes = page.evaluate(CAPTIONS)
+                if boxes:
+                    captions[ids[index]] = boxes
+                if index + 1 < len(ids):
+                    state = step(page, "n")
+                    ensure_state(state, index + 1, -1)
+                    states.append(state)
+            for expected in reversed(states[:-1]):
+                state = step(page, "p")
+                ensure_state(state, expected["index"], expected["fragment"])
+                if state.get("caption") != expected.get("caption"):
+                    raise ValueError(f"widget caption did not rewind on {ids[state['index']]}")
 
-        def send(method, **params):
-            mid[0] += 1
-            ws.send(json.dumps({"id": mid[0], "method": method, "params": params}))
-            while True:
-                msg = json.loads(ws.recv())
-                if msg.get("id") == mid[0]:
-                    if "error" in msg:
-                        raise RuntimeError(msg["error"])
-                    return msg.get("result", {})
-
-        def evaluate(expr):
-            r = send("Runtime.evaluate", expression=expr,
-                     awaitPromise=True, returnByValue=True)
-            return r.get("result", {}).get("value")
-
-        send("Page.enable")
-        send("Runtime.enable")
-        send("Emulation.setDeviceMetricsOverride", width=1280, height=720,
-             deviceScaleFactor=1, mobile=False)
-        send("Page.navigate", url=url + "#/0")
-        for _ in range(100):
-            if evaluate("typeof Reveal !== 'undefined' && Reveal.isReady()"):
-                break
-            time.sleep(0.1)
-        else:
-            sys.exit(f"error: Reveal never became ready on {html}")
-        evaluate("document.fonts.ready.then(() => true)")
-        # The deterministic walk (see the module docstring for why not
-        # hash navigation): rewind, re-layout, then Reveal.next() through
-        # the deck, which descends vertical stacks in reading order.
-        evaluate("Reveal.slide(0, 0); Reveal.layout(); true")
-        for i in range(max_slides):
-            time.sleep(SETTLE_S)
-            png = send("Page.captureScreenshot", format="png",
-                       fromSurface=True)["data"]
-            out = out_dir / f"{prefix}-{i:02d}.png"
-            out.write_bytes(base64.b64decode(png))
-            shots.append(out)
-            print(f"ok  {out}  {evaluate('JSON.stringify(Reveal.getIndices())')}")
-            if evaluate("Reveal.isLastSlide()"):
-                break
-            evaluate("Reveal.next(); true")
-        ws.close()
-    finally:
-        chrome.terminate()
-        chrome.wait(timeout=10)
-        shutil.rmtree(profile_dir, ignore_errors=True)
+    report = {"html_sha256": digest, "width": width, "height": 720,
+              "total_slides": len(ids), "captured_ids": ids[start:stop],
+              "forward_steps": len(states) - 1, "reverse_steps": len(states) - 1,
+              "captions": captions}
+    (out_dir / "browser.json").write_text(json.dumps(report, indent=2) + "\n")
+    print(f"{len(shots)}/{len(ids)} final slide frames, {len(states)-1} steps each way "
+          f"at {width}x720 -> {out_dir}")
+    clipped = [name for name, boxes in captions.items() if any(b["outside"] > 1 for b in boxes)]
+    if clipped:
+        raise ValueError(f"caption clipped on {', '.join(clipped)} (see {out_dir / 'browser.json'})")
     return shots
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("deck",
-                    help="deck name, genre/name, a .qmd path, or a rendered "
-                         ".html path")
-    ap.add_argument("--out", help="output directory (default: a fresh temp "
-                                  "dir, printed first)")
-    ap.add_argument("--max", type=int, default=DEFAULT_MAX,
-                    help="stop after N slides (default: the whole deck)")
-    ap.add_argument("--prefix",
-                    help="PNG name prefix (default: the deck name)")
-    args = ap.parse_args(argv)
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("deck", help="deck name, QMD or rendered HTML")
+    parser.add_argument("--out", type=Path, help="screenshot directory")
+    parser.add_argument("--max", type=int, help="maximum slides to capture")
+    parser.add_argument("--prefix", help="screenshot file prefix")
+    parser.add_argument("--width", type=int, choices=[896, 1280], default=1280)
+    parser.add_argument("--slide", help="capture one rendered slide ID")
+    parser.add_argument("--url", help="URL serving the supplied HTML build")
+    args = parser.parse_args(argv)
+    if args.max is not None and args.max < 1:
+        parser.error("--max must be positive")
     html = resolve_html(args.deck)
-    out_dir = Path(args.out) if args.out else Path(
-        tempfile.mkdtemp(prefix="slide-shots-"))
-    prefix = args.prefix or html.stem
-    print(f"shots -> {out_dir}")
-    shots = shoot(html, out_dir, prefix, args.max)
-    print(f"{len(shots)} slides -> {out_dir}")
-    return 0
+    out = args.out or Path(tempfile.mkdtemp(prefix="slide-shots-"))
+    shoot(html, out, args.prefix or html.stem, args.max, width=args.width,
+          slide_id=args.slide, url=args.url)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        main()
+    except (ValueError, RuntimeError, OSError, deckpath.DeckNotFound, deckpath.AmbiguousDeck) as e:
+        sys.exit(f"error: {e}")
