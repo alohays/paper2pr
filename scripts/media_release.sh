@@ -1,7 +1,6 @@
 #!/bin/bash
 # Upload a deck's trimmed clips and posters to its GitHub Release, then verify.
 #
-#
 # bash scripts/media_release.sh <Deck-or-videos.yml> [--check]
 # Compare the lock to the current manifest, then upload the approved MP4 and
 # poster for each release entry. --check probes those URLs without any writes.
@@ -21,14 +20,9 @@ CHECK=0
 for arg in "$@"; do
   case "$arg" in
     --check) CHECK=1 ;;
-    *) echo "unknown option: $arg" >&2; exit 2 ;;
+    *) echo "error: unsupported release option" >&2; exit 2 ;;
   esac
 done
-
-VIDEOS_DIR=$(python3 scripts/deckpath.py "$DECK" --field videos-dir)
-TAG=$(python3 scripts/deckpath.py "$DECK" --field release-tag)
-SLUG=$(python3 scripts/deckpath.py "$DECK" --field media-slug)
-NAME="${TAG#media-}"
 
 # Write validated rows before invoking gh. Process substitution would hide
 # the Python process's failure from Bash 3.2.
@@ -36,30 +30,58 @@ ROWS_FILE=$(mktemp)
 trap 'rm -f "$ROWS_FILE"' EXIT
 python3 - "$DECK" > "$ROWS_FILE" <<'PYTHON'
 import sys
+from urllib.parse import unquote
 sys.path.insert(0, "scripts")
 import deckpath, media_prep
+from private_terms import contains_private, private_terms
+
 try:
-    assets = media_prep.release_assets(deckpath.find_media(sys.argv[1]))
-except media_prep.ManifestError as e:
-    sys.exit(f"error: {e}")
+    terms = private_terms()
+except ValueError:
+    sys.exit("error: cannot read the external private denylist")
+
+def protected(value):
+    return contains_private(value, terms) or contains_private(unquote(value), terms)
+
+try:
+    home = deckpath.find_media(sys.argv[1])
+    assets = media_prep.release_assets(home)
+except (deckpath.DeckNotFound, deckpath.AmbiguousDeck, media_prep.ManifestError) as exc:
+    message = str(exc)
+    sys.exit(1 if protected(message) else f"error: {message}")
 except (OSError, KeyError, ValueError, TypeError):
     sys.exit("error: invalid or missing media lock; run media_prep.py")
-for filename, url in assets:
-    print(f"{filename}|{url}")
+
+if assets:
+    public = [home.release_tag] + [value for row in assets for value in row]
+    if any(protected(value) for value in public):
+        message = "error: a private term occurs in public release metadata"
+        sys.exit(1 if protected(message) else message)
+    # Emit the entire validated plan together. The directory is local input
+    # to gh and must never be included in public notes or progress messages.
+    if "\n" in str(home.videos_dir):
+        sys.exit("error: media directory must fit on one line")
+    print(home.release_tag)
+    print(home.videos_dir)
+    for filename, url in assets:
+        print(f"{filename}|{url}")
 PYTHON
 if [ ! -s "$ROWS_FILE" ]; then
   echo "No clips approved for release."
   exit 0
 fi
 ROWS=()
-while IFS= read -r line; do
-  [ -n "$line" ] && ROWS+=("$line")
-done < "$ROWS_FILE"
+{
+  IFS= read -r TAG
+  IFS= read -r VIDEOS_DIR
+  while IFS= read -r line; do ROWS+=("$line"); done
+} < "$ROWS_FILE"
+NAME="${TAG#media-}"
 if [ "$CHECK" -eq 0 ]; then
   FILES=()
   for row in "${ROWS[@]}"; do
     file="${row%%|*}"
-    [ -f "$VIDEOS_DIR/$file" ] || { echo "error: $VIDEOS_DIR/$file is missing; run media_prep.py" >&2; exit 1; }
+    [ -f "$VIDEOS_DIR/$file" ] || { echo "error: prepared $file is missing; run media_prep.py" >&2; exit 1; }
     FILES+=("$VIDEOS_DIR/$file")
   done
 
@@ -94,7 +116,7 @@ status_of() {
   echo "$code"
 }
 
-echo "verifying $SLUG assets on $TAG"
+echo "verifying assets on $TAG"
 missing=0
 for row in "${ROWS[@]}"; do
   url="${row#*|}"

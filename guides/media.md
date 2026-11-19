@@ -33,3 +33,5 @@ Use `{{< video-card grasp >}}` for an inline clip or two cards inside a `.two-up
 Other manifest fields include `speed` (default `1x`), `keep_audio` (default `false`), `autonomy` (`autonomous`, `claimed`, `teleop` or `unknown`) and `caption` (`visible`, `fragment` or `none`). The segment uses source seconds, either `start-end` or `start-`. `--only <slug>` prepares one entry. `--force` recuts selected clips.
 
 To check existing Release files, use `bash scripts/media_release.sh <Deck> --check`. For an authorized upload, omit `--check`. Both commands select the same approved files from the current manifest, check the lock and use the existing `media-<Deck>` tag and asset names. A manifest with only classroom entries makes zero network calls. Changing a policy updates future renders and upload lists. Previously uploaded assets have their own GitHub Release lifecycle.
+
+With `PAPER2PR_PRIVATE_DENYLIST` configured, both release commands check the tag, each approved filename and its URL for private terms before contacting GitHub or a CDN.

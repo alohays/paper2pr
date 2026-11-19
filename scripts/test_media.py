@@ -526,21 +526,46 @@ with tempfile.TemporaryDirectory() as td:
                         ('[ "$2" != view ]\n' if name == "gh" else 'printf 200\n'))
         stub.chmod(0o755)
     env = dict(os.environ, PATH=f"{bin_dir}{os.pathsep}{os.environ['PATH']}", MEDIA_CALLS=str(calls))
-    def release(*args):
+    def release(*args, release_env=env):
         calls.write_text("")
         proc = subprocess.run(["bash", str(REPO_ROOT / "scripts/media_release.sh"), str(root), *args],
-                              env=env, capture_output=True, text=True)
-        return proc.returncode, calls.read_text().splitlines()
-    status, rows = release()
+                              env=release_env, capture_output=True, text=True)
+        return proc, calls.read_text().splitlines()
+    proc, rows = release()
     uploads = [r.split() for r in rows if r.startswith("gh release upload")]
     check("uploader sends exactly the approved MP4/poster from a --local lock",
-          status == 0 and uploads == [["gh", "release", "upload", "media-" + root.name,
+          proc.returncode == 0 and uploads == [["gh", "release", "upload", "media-" + root.name,
                                        str(home.videos_dir / "approved.mp4"),
                                        str(home.videos_dir / "approved-poster.jpg"), "--clobber"]]
           and not any("restricted" in r or "unspecified" in r for r in rows), repr(rows))
-    status, rows = release("--check")
-    check("release --check probes only the approved URLs", status == 0 and len(rows) == 2
+    proc, rows = release("--check")
+    check("release --check probes only the approved URLs", proc.returncode == 0 and len(rows) == 2
           and all(r.startswith("curl ") and "/approved" in r for r in rows))
+
+    # Use external URLs with unrelated filenames so these three probes each
+    # isolate one public field. The manifest’s private source is never sent.
+    from urllib.parse import quote
+    guard = Path(td) / "private-release-terms"
+    guarded = dict(env, PAPER2PR_PRIVATE_DENYLIST=str(guard))
+    prepared = home.lock.read_text()
+    probe = json.loads(prepared)
+    probe["videos"][0]["release_url"] = "https://cdn.example.org/movie.mp4"
+    probe["videos"][0]["poster_url"] = "https://cdn.example.org/" + quote("draft only") + ".jpg"
+    home.lock.write_text(json.dumps(probe))
+    for field, term in (("filename", "APPROVED.mp4"), ("release tag", "media-mixed"), ("URL", "draft only")):
+        guard.write_text(term)
+        for options in ((), ("--check",)):
+            proc, rows = release(*options, release_env=guarded)
+            output = (proc.stdout + proc.stderr).casefold()
+            check(f"protected {field} stops {'checking' if options else 'upload'} before remote commands",
+                  proc.returncode != 0 and not rows and term.casefold() not in output
+                  and quote(term).casefold() not in output)
+    guard.write_text(source.stem)
+    proc, rows = release(release_env=guarded)
+    check("a private authoring source permits public files and stays out of commands and logs",
+          proc.returncode == 0 and any(row.startswith("gh release upload ") for row in rows)
+          and source.stem not in (proc.stdout + proc.stderr + "\n".join(rows)))
+    home.lock.write_text(prepared)
 
     filters = REPO_ROOT / "Quarto/_filters"
     qmd = root / "mixed.qmd"
@@ -609,16 +634,16 @@ format:
     forged = json.loads(original)
     forged["videos"][0]["poster_file"] = "restricted-poster.jpg"
     home.lock.write_text(json.dumps(forged))
-    status, rows = release()
-    check("a renamed locked poster cannot enter the upload list", status != 0 and not rows)
+    proc, rows = release()
+    check("a renamed locked poster cannot enter the upload list", proc.returncode != 0 and not rows)
     home.lock.write_text(original)
     # Even a checkout in which the stale lock is newer cannot retain a
     # withdrawn approval. Check the website audit's restricted URL inventory.
     home.manifest.write_text(home.manifest.read_text().replace("redistribution: release",
                                                                "redistribution: classroom"))
     os.utime(home.manifest, (1, 1))
-    status, rows = release()
-    check("a stale approval fails before any gh or curl call", status != 0 and not rows)
+    proc, rows = release()
+    check("a stale approval fails before any gh or curl call", proc.returncode != 0 and not rows)
     check("the independent site audit can detect revoked Release URLs",
           lock["videos"][0]["release_url"] in media_prep.restricted_media_urls(home))
     if quarto:
@@ -626,8 +651,8 @@ format:
         check("public render rejects a revoked approval in a newer lock", result.returncode != 0
               and "videos.json is stale" in result.stderr + result.stdout)
     media_prep.prepare(home, log=logs.append)
-    status, rows = release()
-    check("a classroom-only manifest succeeds with zero network calls", status == 0 and not rows)
+    proc, rows = release()
+    check("a classroom-only manifest succeeds with zero network calls", proc.returncode == 0 and not rows)
 
 print()
 if fail:
