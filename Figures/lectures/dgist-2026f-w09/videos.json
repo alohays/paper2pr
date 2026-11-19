@@ -2,6 +2,7 @@
   "deck": "lectures/dgist-2026f-w09",
   "release_tag": "media-dgist-2026f-w09",
   "generated_by": "scripts/media_prep.py",
+  "manifest_sha1": "98198d9e3367be6080ce21b94b8f65e0053c9b4b",
   "videos": [
     {
       "slug": "coffee-drop",
@@ -10,12 +11,11 @@
       "source_url": "https://website.pi-asset.com/pi06star/portafilter_drop.mp4",
       "published": "2025-11",
       "autonomy": "unknown",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "0-7.146",
-      "source": "../../../../.local/dgist-w09-source-library/projects/recap/fresh/2026-10-10/videos/3ec28f4c60-portafilter_drop.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "coffee-drop.mp4",
       "poster_file": "coffee-drop-poster.jpg",
       "size_mb": 1.53,
@@ -24,7 +24,7 @@
       "cut": {
         "segment": "0-7.146",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/recap/fresh/2026-10-10/videos/3ec28f4c60-portafilter_drop.mp4"
+        "source_id": "f94552ded45d6c0aa65d4e64b7a6e7f1bf41d880e90428b0dcfa4d4489dddd78"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/coffee-drop.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/coffee-drop-poster.jpg"
@@ -36,12 +36,11 @@
       "source_url": "https://ashish-kmr.github.io/rma-legged-robots/mp4/comparison/rma-mattress-2.mp4",
       "published": "2021-07",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "3-8",
-      "source": "../../../../.local/dgist-w09-source-library/projects/rma/fresh/videos/0753580e14-rma-mattress-2.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "rma-mattress.mp4",
       "poster_file": "rma-mattress-poster.jpg",
       "size_mb": 0.38,
@@ -50,7 +49,7 @@
       "cut": {
         "segment": "3-8",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/rma/fresh/videos/0753580e14-rma-mattress-2.mp4"
+        "source_id": "a750cd8d7e3ec5f54f4a369af2ee5e881da8c79918a3ddd611e15f563db0b8a4"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/rma-mattress.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/rma-mattress-poster.jpg"
@@ -62,12 +61,11 @@
       "source_url": "https://yty-sky.github.io/x-navdp-project-page/video/no_collision/1.mp4",
       "published": "2026-07",
       "autonomy": "claimed",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "2-7",
-      "source": "../../../../.local/dgist-w09-source-library/course-flow/refresh-2026/tasks-rl/originals/x-navdp-no-collision-1.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "x-navdp-navigation.mp4",
       "poster_file": "x-navdp-navigation-poster.jpg",
       "size_mb": 1.54,
@@ -76,7 +74,7 @@
       "cut": {
         "segment": "2-7",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/course-flow/refresh-2026/tasks-rl/originals/x-navdp-no-collision-1.mp4"
+        "source_id": "5f58af8a06cc24e08867173f2faa50b96beefde85058acd73bc987520b517c85"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/x-navdp-navigation.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/x-navdp-navigation-poster.jpg"
@@ -88,12 +86,11 @@
       "source_url": "https://videos.ctfassets.net/qx5k8y1u9drj/1cKhxhvotDvkyJx2rfq2IN/94f100629ab7a0bdb37d5b248f8f5760/Kitchen_Tidy_MP4_Compressed.mp4",
       "published": "2026-01",
       "autonomy": "claimed",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "17-25",
-      "source": "../../../../.local/dgist-w09-source-library/projects/helix-02/fresh/videos/cebd89a9cf-Kitchen_Tidy_MP4_Compressed.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "helix-dishes.mp4",
       "poster_file": "helix-dishes-poster.jpg",
       "size_mb": 0.49,
@@ -102,7 +99,7 @@
       "cut": {
         "segment": "17-25",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/helix-02/fresh/videos/cebd89a9cf-Kitchen_Tidy_MP4_Compressed.mp4"
+        "source_id": "be51155b441a26f6097a4af3719eb1493faafab0ce31af214cbc108cdf415c59"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/helix-dishes.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/helix-dishes-poster.jpg"
@@ -114,12 +111,11 @@
       "source_url": "https://www.youtube.com/watch?v=8sO7VS3q8d0",
       "published": "2021-10",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "6-15",
-      "source": "../../../../.local/dgist-w09-source-library/projects/legged-gym/fresh/youtube/8sO7VS3q8d0/8sO7VS3q8d0.f137.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "rl-simulation.mp4",
       "poster_file": "rl-simulation-poster.jpg",
       "size_mb": 8.31,
@@ -128,7 +124,7 @@
       "cut": {
         "segment": "6-15",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/legged-gym/fresh/youtube/8sO7VS3q8d0/8sO7VS3q8d0.f137.mp4"
+        "source_id": "ab1df0ed39994d22ac9ace0d77bccc5408df39a7c42117b3de82ebfa9b0b90d4"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/rl-simulation.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/rl-simulation-poster.jpg"
@@ -140,12 +136,11 @@
       "source_url": "https://www.youtube.com/watch?v=8sO7VS3q8d0",
       "published": "2021-10",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "100-108",
-      "source": "../../../../.local/dgist-w09-source-library/projects/legged-gym/fresh/youtube/8sO7VS3q8d0/8sO7VS3q8d0.f137.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "rl-physical.mp4",
       "poster_file": "rl-physical-poster.jpg",
       "size_mb": 0.79,
@@ -154,7 +149,7 @@
       "cut": {
         "segment": "100-108",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/legged-gym/fresh/youtube/8sO7VS3q8d0/8sO7VS3q8d0.f137.mp4"
+        "source_id": "ab1df0ed39994d22ac9ace0d77bccc5408df39a7c42117b3de82ebfa9b0b90d4"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/rl-physical.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/rl-physical-poster.jpg"
@@ -166,12 +161,11 @@
       "source_url": "https://tonyzhaozh.github.io/aloha/resources/teleop_all.mp4",
       "published": "2023-04",
       "autonomy": "teleop",
+      "redistribution": "release",
       "speed": "10x source",
       "segment": "2-10",
-      "source": "../../../../.local/dgist-w09-source-library/projects/aloha/fresh/videos/7e6bbe5c6f-teleop_all.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "aloha-teleop.mp4",
       "poster_file": "aloha-teleop-poster.jpg",
       "size_mb": 3.14,
@@ -180,7 +174,7 @@
       "cut": {
         "segment": "2-10",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/aloha/fresh/videos/7e6bbe5c6f-teleop_all.mp4"
+        "source_id": "ab9a80ad4901309a8de5bb0b73bbedf222e8a30afcf6f6a3b0035d706f5ef440"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/aloha-teleop.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/aloha-teleop-poster.jpg"
@@ -192,12 +186,11 @@
       "source_url": "https://tonyzhaozh.github.io/aloha/resources/open_lid.mp4",
       "published": "2023-04",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "real-time source",
       "segment": "0-18.001317",
-      "source": "../../../../.local/dgist-w09-source-library/projects/aloha/fresh/videos/9eca954eeb-open_lid.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "act-lid.mp4",
       "poster_file": "act-lid-poster.jpg",
       "size_mb": 3.82,
@@ -206,7 +199,7 @@
       "cut": {
         "segment": "0-18.001317",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/aloha/fresh/videos/9eca954eeb-open_lid.mp4"
+        "source_id": "dd2d1e01e2bae82245a4e2febda38068b85014be68eda9f352ec6af216cd81d3"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/act-lid.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/act-lid-poster.jpg"
@@ -218,12 +211,11 @@
       "source_url": "https://diffusion-policy.cs.columbia.edu/videos/highlight_pusht_process.mp4",
       "published": "2023-03",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "0-8.938667",
-      "source": "../../../../.local/dgist-w09-source-library/projects/diffusion-policy/fresh/videos/655982d802-highlight_pusht_process.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "dp-process.mp4",
       "poster_file": "dp-process-poster.jpg",
       "size_mb": 1.58,
@@ -232,7 +224,7 @@
       "cut": {
         "segment": "0-8.938667",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/diffusion-policy/fresh/videos/655982d802-highlight_pusht_process.mp4"
+        "source_id": "00bac68f656c50b268f1610199d1d03e64c84a8432a1b91710184b6e5d4f7b69"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dp-process.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dp-process-poster.jpg"
@@ -244,12 +236,11 @@
       "source_url": "https://diffusion-policy.cs.columbia.edu/videos/highlight_mug.mp4",
       "published": "2023-03",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "4x source",
       "segment": "0-17.898667",
-      "source": "../../../../.local/dgist-w09-source-library/projects/diffusion-policy/fresh/videos/a4120897bc-highlight_mug.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "dp-mug.mp4",
       "poster_file": "dp-mug-poster.jpg",
       "size_mb": 3.62,
@@ -258,7 +249,7 @@
       "cut": {
         "segment": "0-17.898667",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/diffusion-policy/fresh/videos/a4120897bc-highlight_mug.mp4"
+        "source_id": "c2864a0eb0da16afab7a70b9fb2c234e4837829c3224a16e16acf04c3e940cbc"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dp-mug.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dp-mug-poster.jpg"
@@ -270,12 +261,11 @@
       "source_url": "https://website.pi-asset.com/pi07/clean_desk_interactive_demo_compressed.mp4",
       "published": "2026-04",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x / 2x source",
       "segment": "32.5-44.5",
-      "source": "../../../../.local/dgist-w09-source-library/course-flow/refresh-2026/vla-rlrfm/originals/pi07-clean-desk.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "pi07-desk.mp4",
       "poster_file": "pi07-desk-poster.jpg",
       "size_mb": 0.9,
@@ -284,7 +274,7 @@
       "cut": {
         "segment": "32.5-44.5",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/course-flow/refresh-2026/vla-rlrfm/originals/pi07-clean-desk.mp4"
+        "source_id": "edfb4b18b1cbd80120d9f347e7c8148d9b2968c7017441a6da27a122539673ab"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/pi07-desk.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/pi07-desk-poster.jpg"
@@ -296,12 +286,11 @@
       "source_url": "https://website.pi-asset.com/pi07/coffee_compressed.mp4",
       "published": "2026-04",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "5x source",
       "segment": "15-23",
-      "source": "../../../../.local/dgist-w09-source-library/course-flow/refresh-2026/vla-rlrfm/originals/pi07-coffee.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "pi07-coffee.mp4",
       "poster_file": "pi07-coffee-poster.jpg",
       "size_mb": 1.33,
@@ -310,7 +299,7 @@
       "cut": {
         "segment": "15-23",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/course-flow/refresh-2026/vla-rlrfm/originals/pi07-coffee.mp4"
+        "source_id": "3d4a1d27be9d5928d6b3c47526d88da40193b4430e17661c9794a5118e21749c"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/pi07-coffee.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/pi07-coffee-poster.jpg"
@@ -322,12 +311,11 @@
       "source_url": "https://dreamzero0.github.io/labs/gear/videos/droid/hsl/orient_the_cup%20(AI).m3u8",
       "published": "2026-02",
       "autonomy": "unknown",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "0-9.375",
-      "source": "../../../../.local/dgist-w09-source-library/previews/playback-hls/dreamzero/0169e619d0be5360-orient_the_cup-AI-third-person-crop.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "dreamzero-generated.mp4",
       "poster_file": "dreamzero-generated-poster.jpg",
       "size_mb": 0.8,
@@ -336,7 +324,7 @@
       "cut": {
         "segment": "0-9.375",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/previews/playback-hls/dreamzero/0169e619d0be5360-orient_the_cup-AI-third-person-crop.mp4"
+        "source_id": "819761d76895263e1343a5e590b7cb4c44ae35440ce1ac2818157c2efd7224f6"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dreamzero-generated.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dreamzero-generated-poster.jpg"
@@ -348,12 +336,11 @@
       "source_url": "https://dreamzero0.github.io/labs/gear/videos/droid/hsl/orient_the_cup%20(real).m3u8",
       "published": "2026-02",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "3x source",
       "segment": "0-8.18",
-      "source": "../../../../.local/dgist-w09-source-library/previews/playback-hls/dreamzero/d420ec373eb6b577-orient_the_cup-real-.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "dreamzero-physical.mp4",
       "poster_file": "dreamzero-physical-poster.jpg",
       "size_mb": 0.87,
@@ -362,7 +349,7 @@
       "cut": {
         "segment": "0-8.18",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/previews/playback-hls/dreamzero/d420ec373eb6b577-orient_the_cup-real-.mp4"
+        "source_id": "695908b883bfe9c65fe36558b7c7613cbe340ae413bfc29b1e16a6a082a36971"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dreamzero-physical.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/dreamzero-physical-poster.jpg"
@@ -374,12 +361,11 @@
       "source_url": "https://hi-robot-vla.github.io/video/video2.mp4",
       "published": "2025-02",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "6x source",
       "segment": "0-18.366667",
-      "source": "../../../../.local/dgist-w09-source-library/projects/hi-robot/fresh/videos/7a304730fa-video2.mp4",
       "keep_audio": true,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "hirobot-request.mp4",
       "poster_file": "hirobot-request-poster.jpg",
       "size_mb": 6.43,
@@ -388,7 +374,7 @@
       "cut": {
         "segment": "0-18.366667",
         "keep_audio": true,
-        "source": "../../../../.local/dgist-w09-source-library/projects/hi-robot/fresh/videos/7a304730fa-video2.mp4"
+        "source_id": "d8c39e4a428bd2356870d2f5097d443373e9f562ac369da823b5c2da917f1634"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/hirobot-request.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/hirobot-request-poster.jpg"
@@ -400,12 +386,11 @@
       "source_url": "https://dagroup-pku.github.io/PyRUA-Lean/static/videos/moka-code.mp4",
       "published": "2026-10",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "10x simulator playback",
       "segment": "0-17.933333",
-      "source": "../../../../.local/dgist-w09-source-library/projects/astra-pyrua-lean/fresh/videos/d8729edb7f-moka-code.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "pyrua-moka.mp4",
       "poster_file": "pyrua-moka-poster.jpg",
       "size_mb": 3.8,
@@ -414,7 +399,7 @@
       "cut": {
         "segment": "0-17.933333",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/astra-pyrua-lean/fresh/videos/d8729edb7f-moka-code.mp4"
+        "source_id": "3afdb56d9d0a8f47bf9c7ef5fa36bbc8064de1a36e735601371dd52ea534ca76"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/pyrua-moka.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/pyrua-moka-poster.jpg"
@@ -426,12 +411,11 @@
       "source_url": "https://media.luminis-sim.com/robodojo_eval_videos/insert_key/KAI/arx_x5/0_ckpt_name=KAI,action_type=joint/2026-09-24_02-36-05/episode_0000001_cam_head_success.mp4",
       "published": "2026-09",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "0-11.56",
-      "source": "../../../../.local/dgist-w09-source-library/selection-2026-10-12/videos/physicalrsi-key-official.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official successful simulation rollout, selected for teaching. Full source playback with no extra acceleration; not wall-clock inference or physical-robot timing. Original source bytes and provenance remain in the local archive.",
       "file": "physicalrsi-key.mp4",
       "poster_file": "physicalrsi-key-poster.jpg",
       "size_mb": 1.34,
@@ -440,7 +424,7 @@
       "cut": {
         "segment": "0-11.56",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/selection-2026-10-12/videos/physicalrsi-key-official.mp4"
+        "source_id": "efdd1c5dde2a7d093a3fe289450bed86c8d32c51a0daa57ea1a682a607f2c92e"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/physicalrsi-key.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/physicalrsi-key-poster.jpg"
@@ -452,12 +436,11 @@
       "source_url": "https://media.luminis-sim.com/media/roboprobe/astra/press_by_number/71118199251f1ed82610/head.mp4",
       "published": "2026-09",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "0-12.24",
-      "source": "../../../../.local/dgist-w09-source-library/selection-2026-10-12/videos/astra-buttons-official.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official successful simulation rollout, selected for teaching. Full source playback with no extra acceleration; not wall-clock inference or physical-robot timing. Original source bytes and provenance remain in the local archive.",
       "file": "astra-buttons.mp4",
       "poster_file": "astra-buttons-poster.jpg",
       "size_mb": 1.69,
@@ -466,7 +449,7 @@
       "cut": {
         "segment": "0-12.24",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/selection-2026-10-12/videos/astra-buttons-official.mp4"
+        "source_id": "382028b778b035d027c57dd56bf5f4b74b9ff49386276746038afbc5ef91c1a5"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/astra-buttons.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/astra-buttons-poster.jpg"
@@ -478,12 +461,11 @@
       "source_url": "https://media.luminis-sim.com/robodojo_eval_videos/make_toast/VPP2/arx_x5/0_ckpt_name=joint2b_s100000,action_type=ee/2026-10-04_00-12-55/episode_0000000_cam_head_success.mp4",
       "published": "2026-10",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "source playback",
       "segment": "0-37.08",
-      "source": "../../../../.local/dgist-w09-source-library/selection-2026-10-12/videos/vpp2--make_toast--success.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official successful simulation rollout, selected for teaching. Full source playback with no extra acceleration; not wall-clock inference or physical-robot timing. Original source bytes and provenance remain in the local archive.",
       "file": "vpp2-toast.mp4",
       "poster_file": "vpp2-toast-poster.jpg",
       "size_mb": 4.25,
@@ -492,7 +474,7 @@
       "cut": {
         "segment": "0-37.08",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/selection-2026-10-12/videos/vpp2--make_toast--success.mp4"
+        "source_id": "2dc2d176a1f64921d464f29777e0b71b0c97a1fc4ed51772d8414a6925fa5e73"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/vpp2-toast.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/vpp2-toast-poster.jpg"
@@ -504,12 +486,11 @@
       "source_url": "https://storage.googleapis.com/gdm-deepmind-com-prod-public/media/MVCfTE-4h3AwDVPZ/gdm_robotics_six-grid_270726.webm",
       "published": "2026-07",
       "autonomy": "claimed",
+      "redistribution": "release",
       "speed": "1x to 4x source",
       "segment": "0-13.5",
-      "source": "../../../../.local/dgist-w09-source-library/projects/gemini-robotics-2/fresh/videos/b225a856a3-gdm_robotics_six-grid_270726.webm",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Local teaching excerpt. Original publisher rights retained. Source bytes remain unchanged in the source library. Speed is the publisher label, not additional playback acceleration.",
       "file": "gr2-six-grid.mp4",
       "poster_file": "gr2-six-grid-poster.jpg",
       "size_mb": 1.48,
@@ -518,7 +499,7 @@
       "cut": {
         "segment": "0-13.5",
         "keep_audio": false,
-        "source": "../../../../.local/dgist-w09-source-library/projects/gemini-robotics-2/fresh/videos/b225a856a3-gdm_robotics_six-grid_270726.webm"
+        "source_id": "7862138ee75d7d676bb6d6ac25aadd76b3e4ebfaea350295900d3d75d646aaa9"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/gr2-six-grid.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w09/gr2-six-grid-poster.jpg"

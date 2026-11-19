@@ -40,6 +40,7 @@ Usage: python3 scripts/test_media.py
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -47,6 +48,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import browser  # noqa: E402
 import check_site_assets  # noqa: E402
 import deckpath  # noqa: E402
 import media_prep  # noqa: E402
@@ -94,6 +96,7 @@ videos:
 print("1. videos.yml validation")
 expect_error("missing required key (publisher)",
              GOOD.replace("    publisher: Some Lab\n", ""), "publisher")
+expect_error("invalid redistribution", GOOD + "    redistribution: maybe\n", "redistribution must be")
 expect_error("bad autonomy value",
              GOOD.replace("autonomous", "maybe"), "autonomy must be one of")
 expect_error("bad slug (uppercase, underscore)",
@@ -123,6 +126,7 @@ with tempfile.TemporaryDirectory() as td:
     e = media_prep.load_manifest(p)[0]
     check("defaults: speed 1x, caption visible, keep_audio false",
           e["speed"] == "1x" and e["caption"] == "visible" and e["keep_audio"] is False)
+    check("an unspecified policy defaults to classroom", e["redistribution"] == "classroom")
 
 print("2. segment parsing")
 check('"0-2" -> (0, 2)', media_prep.parse_segment("0-2") == (0.0, 2.0))
@@ -210,6 +214,7 @@ else:
         (home_dir / "videos.yml").write_text(f"""\
 videos:
   - slug: one
+    redistribution: release
     title: One <b>bold</b>
     publisher: Lab
     source_url: https://example.org/one
@@ -218,6 +223,7 @@ videos:
     segment: 0-1
     source: {PLACEHOLDER}
   - slug: two
+    redistribution: release
     title: Two
     publisher: Lab
     source_url: https://example.org/two
@@ -248,7 +254,8 @@ videos:
               and lock["videos"][1]["autonomy_label"] == "teleoperated")
         check("no local_only by default", "local_only" not in one)
         check("entry records what the file was cut with",
-              one["cut"] == {"segment": "0-1", "keep_audio": False, "source": str(PLACEHOLDER)},
+              one["cut"] == media_prep.cut_of(media_prep.load_manifest(home.manifest)[0])
+              and str(PLACEHOLDER) not in json.dumps(lock) and str(PLACEHOLDER) not in "\n".join(logs),
               json.dumps(one.get("cut")))
         second = []
         media_prep.prepare(home, log=second.append)
@@ -285,10 +292,10 @@ videos:
         lock_d = json.loads((home_dir / "videos.json").read_text(encoding="utf-8"))
         two = lock_d["videos"][1]
         check("--only carries the skipped entry's old cut record forward",
-              two["segment"] == "1-2" and two["cut"]["segment"] is None
+              two["segment"] == "1-2" and two["cut"]["segment"] is None and two["needs_prep"]
               and not any("two.mp4" in l for l in only_log),
               json.dumps(two))
-        mism = media_prep.lock_mismatches(lock_d)
+        mism = media_prep.lock_mismatches(lock_d, media_prep.load_manifest(yml))
         check("lock_mismatches names the skipped entry",
               len(mism) == 1 and mism[0].startswith("two:") and "segment" in mism[0], repr(mism))
         full_log = []
@@ -296,7 +303,7 @@ videos:
         lock_e = json.loads((home_dir / "videos.json").read_text(encoding="utf-8"))
         check("the next full run re-encodes it and the lock is consistent again",
               any("encode  two.mp4" in l and "segment changed" in l for l in full_log)
-              and media_prep.lock_mismatches(lock_e) == []
+              and media_prep.lock_mismatches(lock_e, media_prep.load_manifest(yml)) == []
               and abs(lock_e["videos"][1]["duration_s"] - 1.0) < 0.2,
               "\n".join(full_log))
         # A lock without a cut record (older format, or deleted) is not trusted.
@@ -363,7 +370,7 @@ with tempfile.TemporaryDirectory() as td:
         'data-background-poster="https://github.com/alohays/paper2pr/releases/download/media-w02/h.jpg"></section>'
         '<video poster="https://github.com/alohays/paper2pr/releases/download/media-w02/p.jpg">'
         '<source data-src="https://github.com/alohays/paper2pr/releases/download/media-w02/hook.mp4"></video>'
-        '<video><source src="../videos/task1.mp4"></video>',
+        '<video><source src="https://cdn.example.org/task1.mp4"><source src="../videos/task1.mp4"></video>',
         encoding="utf-8")
     checked, missing = check_site_assets.check(str(site))
     check("Release URLs and the RoboTTT fallback pass", missing == [], repr(missing))
@@ -415,13 +422,10 @@ check("fixture lock points at the Release, not local files",
       all(v["release_url"].startswith(media_prep.RELEASE_BASE + "/media-fixture-video/")
           and not v.get("local_only") for v in lock["videos"]))
 check("fixture lock records every cut and agrees with its manifest fields",
-      all("cut" in v for v in lock["videos"]) and media_prep.lock_mismatches(lock) == [])
-# media_release.sh refuses a lock older than its manifest. A fresh clone
-# writes both within the same checkout, in either order, so allow a few
-# seconds of slack here; the script itself stays strict.
-check("fixture lock is not older than its manifest",
-      (FIXTURE / "videos.json").stat().st_mtime
-      >= (FIXTURE / "videos.yml").stat().st_mtime - 5)
+      all("cut" in v for v in lock["videos"])
+      and not media_prep.lock_mismatches(lock, media_prep.load_manifest(FIXTURE / "videos.yml")))
+check("fixture release approvals and manifest fingerprint agree",
+      len(media_prep.release_assets(deckpath.find_media(str(FIXTURE)))) == 6)
 
 print("10. render-level: a bad slug or a missing lock aborts the render")
 if not quarto:
@@ -446,7 +450,8 @@ format:
             out = subprocess.run([quarto, "render", str(qmd)], cwd=td,
                                  capture_output=True, text=True)
             log = out.stdout + out.stderr
-            e_lines = [l for l in log.splitlines() if "(E) video-manifest:" in l]
+            # Quarto 1.11 repeats the diagnostic in its final ERROR summary.
+            e_lines = [l for l in log.splitlines() if l.lstrip().startswith("(E) video-manifest:")]
             check(label,
                   out.returncode != 0 and not (Path(td) / "neg.html").exists()
                   and len(e_lines) == 1 and fragment in e_lines[0]
@@ -463,6 +468,150 @@ format:
     render_expect_abort('unknown @slug on .video-full: exit 1, one (E), no html',
                         FIXTURE / "videos.json", '## {.video-full video="@nope"}\n',
                         "no clip with slug 'nope'")
+
+print("11. mixed manifest: public/classroom renders and recording release commands")
+with tempfile.TemporaryDirectory() as td:
+    root = Path(td).resolve() / "mixed"
+    root.mkdir()
+    home = deckpath.MediaHome(slug="test/mixed", name="mixed", manifest=root / "videos.yml")
+    source = root / "private-origin-canary.mp4"
+    shutil.copyfile(PLACEHOLDER, source)
+    def clip(slug, policy):
+        return f"""  - slug: {slug}
+    title: "{slug} in motion"
+    publisher: Example Lab
+    source_url: https://example.org/{slug}
+    published: 2026-05
+    autonomy: claimed
+    source: "{source}"
+    caption: none
+{policy}"""
+    approved = clip("approved", "    redistribution: release\n")
+    restricted = clip("restricted", "    redistribution: classroom\n")
+    legacy = clip("unspecified", "")
+    home.manifest.write_text("videos:\n" + approved + restricted + legacy, encoding="utf-8")
+    logs = []
+    lock = media_prep.prepare(home, local=True, log=logs.append)
+    check("classroom entries have local files and carry no release URLs",
+          all((home.videos_dir / v["file"]).is_file() and (home.videos_dir / v["poster_file"]).is_file()
+              and "release_url" not in v and "poster_url" not in v for v in lock["videos"][1:]))
+    media_prep.prepare(home, force=True, dry_run=True, log=logs.append)
+    check("dry-run, encode logs and lock omit the private source path",
+          source.name not in "\n".join(logs) and source.name not in home.lock.read_text())
+
+    # The stub commands record all calls. Running this suite never needs
+    # credentials and cannot create a Release or make an HTTP request.
+    bin_dir = root / "stub-bin"
+    bin_dir.mkdir()
+    calls = root / "calls"
+    for name in ("gh", "curl"):
+        stub = bin_dir / name
+        stub.write_text('#!/bin/sh\necho "' + name + ' $*" >> "$MEDIA_CALLS"\n' +
+                        ('[ "$2" != view ]\n' if name == "gh" else 'printf 200\n'))
+        stub.chmod(0o755)
+    env = dict(os.environ, PATH=f"{bin_dir}{os.pathsep}{os.environ['PATH']}", MEDIA_CALLS=str(calls))
+    def release(*args):
+        calls.write_text("")
+        proc = subprocess.run(["bash", str(REPO_ROOT / "scripts/media_release.sh"), str(root), *args],
+                              env=env, capture_output=True, text=True)
+        return proc.returncode, calls.read_text().splitlines()
+    status, rows = release()
+    uploads = [r.split() for r in rows if r.startswith("gh release upload")]
+    check("uploader sends exactly the approved MP4/poster from a --local lock",
+          status == 0 and uploads == [["gh", "release", "upload", "media-" + root.name,
+                                       str(home.videos_dir / "approved.mp4"),
+                                       str(home.videos_dir / "approved-poster.jpg"), "--clobber"]]
+          and not any("restricted" in r or "unspecified" in r for r in rows), repr(rows))
+    status, rows = release("--check")
+    check("release --check probes only the approved URLs", status == 0 and len(rows) == 2
+          and all(r.startswith("curl ") and "/approved" in r for r in rows))
+
+    filters = REPO_ROOT / "Quarto/_filters"
+    qmd = root / "mixed.qmd"
+    qmd.write_text(f"""---
+title: Mixed media
+video-manifest: videos.json
+format:
+  revealjs:
+    filters: [{filters / "slide-types.lua"}]
+    shortcodes: [{filters / "video-card.lua"}]
+---
+## Inline
+
+{{{{< video-card approved >}}}}
+
+{{{{< video-card restricted >}}}}
+
+{{{{< video-card unspecified >}}}}
+
+## {{#full .video-full video="@restricted" poster="private-poster-canary.jpg"}}
+
+{{{{< video-caption restricted >}}}}
+
+## {{#empty .video-full video="@unspecified"}}
+""", encoding="utf-8")
+    if quarto:
+        def render(*options):
+            return subprocess.run([quarto, "render", qmd.name, *options], cwd=root,
+                                  capture_output=True, text=True)
+        result = render()
+        html = qmd.with_suffix(".html").read_text() if not result.returncode else ""
+        check("default public render links both restricted cards and both full-slide variants",
+              html.count('href="https://example.org/restricted"') == 2
+              and html.count('href="https://example.org/unspecified"') == 2
+              and html.count('data-video-slug="restricted"') == 2
+              and 'approved.mp4' in html and 'videos/approved.mp4' not in html
+              and all(secret not in html for secret in
+                      (source.name, "restricted.mp4", "restricted-poster.jpg", "unspecified.mp4",
+                       "unspecified-poster.jpg", "private-poster-canary.jpg")), result.stderr[-300:])
+        result = render("-M", "delivery:classroom")
+        html = qmd.with_suffix(".html").read_text() if not result.returncode else ""
+        check("classroom + --local renders playable local cards and full-slide backgrounds",
+              all(f'data-src="videos/{s}.mp4"' in html for s in ("approved", "restricted", "unspecified"))
+              and 'data-background-video="videos/restricted.mp4"' in html
+              and 'data-background-video="videos/unspecified.mp4"' in html, result.stderr[-300:])
+        if result.returncode == 0:
+            shutil.copyfile(home.videos_dir / "restricted-poster.jpg", root / "private-poster-canary.jpg")
+            with browser.browser_page(qmd.with_suffix(".html").as_uri()) as page:
+                page.evaluate("Reveal.slide(1)")
+                page.wait_for("""(() => {
+                    const video = Reveal.getCurrentSlide().querySelector('[data-video-slug="restricted"] video');
+                    return video && video.videoWidth === 1280 && !video.paused && video.currentTime > 0.1;
+                })()""", "classroom card did not play its local clip")
+                page.evaluate("Reveal.slide(2)")
+                page.wait_for("""(() => {
+                    const video = Reveal.getSlideBackground(2).querySelector('video');
+                    return video && video.videoWidth === 1280 && !video.paused && video.currentTime > 0.1;
+                })()""", "classroom background did not play its local clip")
+                check("Chrome decodes and advances both local classroom treatments", True)
+        media_prep.prepare(home, log=logs.append)
+        result = render("-M", "delivery:classroom")
+        html = qmd.with_suffix(".html").read_text() if not result.returncode else ""
+        check("classroom without --local still plays restricted media locally",
+              'data-src="videos/restricted.mp4"' in html and lock["videos"][0]["release_url"] in html)
+    original = home.lock.read_text()
+    forged = json.loads(original)
+    forged["videos"][0]["poster_file"] = "restricted-poster.jpg"
+    home.lock.write_text(json.dumps(forged))
+    status, rows = release()
+    check("a renamed locked poster cannot enter the upload list", status != 0 and not rows)
+    home.lock.write_text(original)
+    # Even a checkout in which the stale lock is newer cannot retain a
+    # withdrawn approval. Check the website audit's restricted URL inventory.
+    home.manifest.write_text(home.manifest.read_text().replace("redistribution: release",
+                                                               "redistribution: classroom"))
+    os.utime(home.manifest, (1, 1))
+    status, rows = release()
+    check("a stale approval fails before any gh or curl call", status != 0 and not rows)
+    check("the independent site audit can detect revoked Release URLs",
+          lock["videos"][0]["release_url"] in media_prep.restricted_media_urls(home))
+    if quarto:
+        result = render("-M", "delivery:public")
+        check("public render rejects a revoked approval in a newer lock", result.returncode != 0
+              and "videos.json is stale" in result.stderr + result.stdout)
+    media_prep.prepare(home, log=logs.append)
+    status, rows = release()
+    check("a classroom-only manifest succeeds with zero network calls", status == 0 and not rows)
 
 print()
 if fail:

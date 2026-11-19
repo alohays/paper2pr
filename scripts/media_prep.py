@@ -1,85 +1,36 @@
 #!/usr/bin/env python3
 """Trim and encode a deck's clips from its videos.yml, then write videos.json.
 
-Every clip a deck shows is declared once, by hand, in
-Figures/<genre>/<deck>/videos.yml (the manifest: slug, title, publisher,
-source_url, published, autonomy, speed, segment, source, keep_audio, caption,
-licence_note). This script turns that manifest into the files the deck
-actually uses:
+The manifest owns the clip's provenance, cut and redistribution decision.
+An explicit redistribution: release permits the MP4 and poster to be uploaded.
+An omitted policy or redistribution: classroom keeps both on the presenter’s
+machine. The public slide links to the publisher for those entries. Use
+quarto render -M delivery:classroom to play their local files; --local also
+plays approved entries locally in that mode. Public rendering uses Release
+URLs for approved entries regardless of the preview setting.
 
-    Figures/<genre>/<deck>/videos/<slug>.mp4         trimmed, 1280 wide, H.264
-    Figures/<genre>/<deck>/videos/<slug>-poster.jpg  the frame at the segment
-                                                     start, 1280 wide
-    Figures/<genre>/<deck>/videos.json               the lock file: every yml
-                                                     field plus file names,
-                                                     size, duration and the
-                                                     GitHub Release URLs
+Run media_prep.py <deck> to encode stale clips and write the lock. --only SLUG
+encodes one entry and carries the other cut records forward. --force recuts
+all selected files. --dry-run describes the encoding without writing files.
+Source paths are relative to the gitignored videos/ directory or absolute.
+The lock fingerprints each source path so a change triggers a recut without
+disclosing that path. Hand-edited external CDN URLs on approved clips survive
+regeneration. The manifest fingerprint ties release and render to this input.
 
-The mp4s and posters are gitignored (Figures/**/videos/); they are uploaded to
-the public Release tagged media-<deck> by scripts/media_release.sh. The URLs
-are deterministic from the tag, so videos.json carries them before the
-release exists, and the shortcodes (Quarto/_filters/video-card.lua) and the
-`@slug` form of `## {.video-full video="@slug"}` read videos.json only.
-
-Encoding preset (the HUFS preset, D7/D8 in the v2 plan): scale=1280:-2,
-libx264 -preset fast -crf 23 -maxrate 8M -bufsize 16M, yuv420p, faststart;
-audio stripped unless keep_audio, then aac 128k. A clip over 30 MB gets a
-warning: trim the segment or lower the speed, do not raise the cap.
-
-Modes:
-    python3 scripts/media_prep.py <Deck>                 encode what is stale
-                                                         (missing, older than
-                                                         its source, or cut
-                                                         with other parameters
-                                                         than the manifest now
-                                                         says; the reason is
-                                                         printed)
-    python3 scripts/media_prep.py <Deck> --only hook     one slug
-    python3 scripts/media_prep.py <Deck> --dry-run       print the ffmpeg plan
-    python3 scripts/media_prep.py <Deck> --force         re-encode everything
-    python3 scripts/media_prep.py <Deck> --local         write videos.json with
-                                                         local_only: true (the
-                                                         shortcodes then point at
-                                                         the local files; for
-                                                         authoring before the
-                                                         release exists; never
-                                                         deploy this state, see
-                                                         check_site_assets.py)
-
-<Deck> is anything deckpath.find_media() accepts: a bare name, genre/name, a
-path to a videos.yml, or the directory holding one (that is how the fixture
-under Quarto/_fixtures/video/ is prepared; its release tag becomes
-media-fixture-video).
-
-When a clip is re-encoded: when <slug>.mp4 is missing, older than its
-source, or was cut with different parameters than the manifest now asks for.
-The lock records, per entry, what the file on disk was actually cut with
-("cut": segment, keep_audio, source); a changed segment, keep_audio or source
-therefore re-encodes even though the old mp4 is newer than the source file
-(the W02 authoring loop: nudge a segment, re-run). An entry without that
-record (a lock from before it existed, or a deleted videos.json) is encoded
-again rather than trusted. The reason is printed next to each "encode" line.
-After `--only <slug>` the other entries keep their previous "cut" record, so
-a later full run still catches their changes, and media_release.sh refuses
-to upload while any entry's "cut" disagrees with its manifest fields.
-
-Hand-edited URLs survive: if an entry's release_url / poster_url in the
-existing videos.json points somewhere other than this repo's Release host
-(another CDN, a publisher's own file), it is kept, not clobbered. Everything
-else in videos.json is regenerated from videos.yml on every run.
-
-Stdlib only, like every Python under scripts/ (scripts/minyaml.py reads the
-manifest). Needs ffmpeg and ffprobe on PATH or at /opt/homebrew/bin.
+The input may also name a videos.yml or its directory. Encoding requires
+ffmpeg and ffprobe. The public render and release checks only read metadata.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -121,7 +72,8 @@ RELEASE_URL_RE = re.compile(r"^https://github\.com/[^/]+/[^/]+/releases/download
 SIZE_WARN_MB = 30.0
 
 REQUIRED = ("slug", "title", "publisher", "source_url", "published", "autonomy")
-OPTIONAL = ("speed", "segment", "source", "keep_audio", "caption", "licence_note")
+OPTIONAL = ("speed", "segment", "source", "keep_audio", "caption", "licence_note", "redistribution")
+REDISTRIBUTION = ("classroom", "release")
 AUTONOMY = ("autonomous", "claimed", "teleop", "unknown")
 CAPTION = ("visible", "fragment", "none")
 SLUG_RE = re.compile(r"^[a-z0-9-]+$")
@@ -171,7 +123,7 @@ def validate_entry(raw, index: int, where: str) -> dict:
     if not isinstance(raw, dict):
         raise ManifestError(f"{tag}: expected a mapping, got {type(raw).__name__}")
     slug = raw.get("slug")
-    if slug is not None:
+    if slug is not None and SLUG_RE.fullmatch(str(slug)):
         tag = f"{where}: videos[{index}] ({slug})"
     missing = [k for k in REQUIRED if raw.get(k) in (None, "")]
     if missing:
@@ -183,8 +135,8 @@ def validate_entry(raw, index: int, where: str) -> dict:
             f"(release_url and poster_url belong in videos.json, not here)")
 
     slug = str(slug)
-    if not SLUG_RE.match(slug):
-        raise ManifestError(f"{tag}: slug must match [a-z0-9-], got {slug!r}")
+    if not SLUG_RE.fullmatch(slug):
+        raise ManifestError(f"{tag}: slug must match [a-z0-9-]+")
     published = str(raw["published"])
     if not PUBLISHED_RE.match(published):
         raise ManifestError(f"{tag}: published must be YYYY-MM, got {published!r}")
@@ -196,6 +148,9 @@ def validate_entry(raw, index: int, where: str) -> dict:
     if caption not in CAPTION:
         raise ManifestError(
             f"{tag}: caption must be one of {', '.join(CAPTION)}, got {raw['caption']!r}")
+    redistribution = raw.get("redistribution", "classroom")
+    if redistribution not in REDISTRIBUTION:
+        raise ManifestError(f"{tag}: redistribution must be classroom or release")
     keep_audio = raw.get("keep_audio", False)
     if not isinstance(keep_audio, bool):
         raise ManifestError(f"{tag}: keep_audio must be true or false, got {keep_audio!r}")
@@ -207,7 +162,7 @@ def validate_entry(raw, index: int, where: str) -> dict:
             f"videos/{slug}.mp4 is taken as final)")
     source_url = str(raw["source_url"])
     if not re.match(r"^https?://", source_url):
-        raise ManifestError(f"{tag}: source_url must be an http(s) URL, got {source_url!r}")
+        raise ManifestError(f"{tag}: source_url must be an http(s) publisher URL")
 
     out = {
         "slug": slug,
@@ -216,6 +171,7 @@ def validate_entry(raw, index: int, where: str) -> dict:
         "source_url": source_url,
         "published": published,
         "autonomy": autonomy,
+        "redistribution": redistribution,
         "speed": speed,
         "segment": None if raw.get("segment") is None else str(raw["segment"]),
         "source": None if raw.get("source") in (None, "") else str(raw["source"]),
@@ -227,13 +183,15 @@ def validate_entry(raw, index: int, where: str) -> dict:
     return out
 
 
-def load_manifest(path: Path) -> list[dict]:
+def load_manifest(path: Path, content: bytes | None = None) -> list[dict]:
     if not path.exists():
         raise ManifestError(f"{path}: no such file (write the manifest first)")
     try:
-        data = minyaml.load_path(path)
-    except minyaml.MinYamlError as e:
-        raise ManifestError(str(e))
+        content = path.read_bytes() if content is None else content
+        data = minyaml.loads(content.decode("utf-8"), name=path.name)
+    except (UnicodeDecodeError, minyaml.MinYamlError):
+        # YAML diagnostics can quote the offending line, including a source path.
+        raise ManifestError("invalid YAML in videos.yml") from None
     where = str(path.relative_to(REPO_ROOT)) if path.is_relative_to(REPO_ROOT) else str(path)
     if not isinstance(data, dict) or "videos" not in data:
         raise ManifestError(f"{where}: expected a top-level 'videos:' list")
@@ -316,14 +274,16 @@ def probe(path: Path) -> tuple[float, float]:
     return round(path.stat().st_size / 1e6, 2), round(duration, 1)
 
 
-# The manifest fields that decide what ffmpeg writes. They are recorded per
-# entry in videos.json under "cut" so a later run can tell a fresh file from a
-# file that is merely newer than its source.
-CUT_KEYS = ("segment", "keep_audio", "source")
+def manifest_id(content: bytes) -> str:
+    # Pandoc exposes SHA-1 in Lua. This is a freshness check on local inputs.
+    return hashlib.sha1(content).hexdigest()
 
 
 def cut_of(entry: dict) -> dict:
-    return {k: entry.get(k) for k in CUT_KEYS}
+    """Parameters affecting the prepared file. The source name stays local."""
+    source = entry.get("source")
+    return {"segment": entry.get("segment"), "keep_audio": entry["keep_audio"],
+            "source_id": hashlib.sha256(source.encode()).hexdigest() if source else None}
 
 
 def _older(dst: Path, src: Path) -> bool:
@@ -339,30 +299,80 @@ def stale_reason(dst: Path, src: Path, want: dict, prev_cut: dict | None) -> str
     if not dst.exists():
         return "missing"
     if dst.stat().st_mtime < src.stat().st_mtime:
-        return f"{src.name} is newer"
+        return "source is newer"
     if prev_cut is None:
         return "no record of the cut in videos.json"
-    changed = [f"{k} changed ({prev_cut.get(k)!r} -> {want[k]!r})"
-               for k in CUT_KEYS if prev_cut.get(k) != want[k]]
+    changed = [f"{k} changed" for k in want if prev_cut.get(k) != want[k]]
     if changed:
         return ", ".join(changed)
     return None
 
 
-def lock_mismatches(lock: dict) -> list[str]:
-    """Entries whose file on disk was cut with other parameters than the
-    manifest fields the same lock carries (left behind by --only). Each
-    string names the slug and the differing key; empty when consistent."""
-    out = []
-    for v in lock.get("videos", []):
-        cut = v.get("cut")
-        if cut is None:
+def lock_mismatches(lock: dict, entries: list[dict]) -> list[str]:
+    """Check that approved files still correspond to their declared cuts."""
+    videos = {v["slug"]: v for v in lock["videos"]}
+    if len(videos) != len(lock["videos"]) or videos.keys() != {e["slug"] for e in entries}:
+        return ["clip list differs from the manifest"]
+    errors = []
+    for e in entries:
+        slug = e["slug"]
+        rec = videos[slug]
+        if rec.get("redistribution", "classroom") != e["redistribution"]:
+            errors.append(f"{slug}: redistribution differs from the manifest")
+        if e["redistribution"] == "release" and e["source"]:
+            recorded = rec.get("cut") or {}
+            for key, value in cut_of(e).items():
+                if recorded.get(key) != value:
+                    errors.append(f"{slug}: {key} differs from the prepared cut")
+    return errors
+
+
+def release_assets(home: deckpath.MediaHome) -> list[tuple[str, str]]:
+    """Build the upload list from current explicit approvals and verified lock records."""
+    content = home.manifest.read_bytes()
+    entries = load_manifest(home.manifest, content)
+    lock = json.loads(home.lock.read_text(encoding="utf-8"))
+    if lock.get("release_tag") != home.release_tag:
+        raise ManifestError("release tag differs from videos.json; run media_prep.py")
+    if lock.get("manifest_sha1") != manifest_id(content):
+        raise ManifestError("videos.json is stale; run media_prep.py")
+    bad = lock_mismatches(lock, entries)
+    if bad:
+        raise ManifestError("; ".join(bad) + "; run media_prep.py")
+    videos = {v["slug"]: v for v in lock["videos"]}
+    assets = []
+    for entry in entries:
+        if entry["redistribution"] != "release":
             continue
-        for k in CUT_KEYS:
-            if cut.get(k) != v.get(k):
-                out.append(f"{v.get('slug')}: {v.get('file')} was cut with {k}={cut.get(k)!r}, "
-                           f"manifest says {v.get(k)!r}")
-    return out
+        slug = entry["slug"]
+        rec = videos[slug]
+        for name_key, url_key, filename in (("file", "release_url", f"{slug}.mp4"),
+                                            ("poster_file", "poster_url", f"{slug}-poster.jpg")):
+            url = rec.get(url_key)
+            if not isinstance(url, str) or not re.fullmatch(r"https?://[^\s|]+", url):
+                raise ManifestError(f"{slug}: invalid {url_key} in videos.json")
+            # The approved slug determines the filename even if someone edits
+            # the lock. Check its mapping before opening any files or calling gh.
+            if rec.get(name_key) != filename:
+                raise ManifestError(f"{slug}: invalid {name_key} in videos.json")
+            assets.append((filename, url))
+    return assets
+
+
+def restricted_media_urls(home: deckpath.MediaHome) -> set[str]:
+    """Release URLs a public deck must never embed, even with a stale lock."""
+    entries = load_manifest(home.manifest)
+    approved = {e["slug"] for e in entries if e["redistribution"] == "release"}
+    restricted = {e["slug"] for e in entries} - approved
+    locked = json.loads(home.lock.read_text(encoding="utf-8"))["videos"] if home.lock.exists() else []
+    urls = set()
+    for video in locked:
+        if video["slug"] not in approved:
+            restricted.add(video["slug"])
+            urls.update(video[k] for k in ("release_url", "poster_url") if video.get(k))
+    for slug in restricted:
+        urls.update(release_url(home.release_tag, slug + suffix) for suffix in (".mp4", "-poster.jpg"))
+    return urls
 
 
 # ----------------------------------------------------------------------------
@@ -376,7 +386,8 @@ def prepare(home: "deckpath.MediaHome", only: str | None = None, dry_run: bool =
     Writes the lock file unless dry_run. `only` restricts encoding to one
     slug; the lock file still lists every entry (it is regenerated whole).
     """
-    entries = load_manifest(home.manifest)
+    content = home.manifest.read_bytes()
+    entries = load_manifest(home.manifest, content)
     if only and only not in {e["slug"] for e in entries}:
         raise ManifestError(f"--only {only}: no such slug in {home.manifest}")
     videos_dir = home.videos_dir
@@ -400,17 +411,17 @@ def prepare(home: "deckpath.MediaHome", only: str | None = None, dry_run: bool =
 
         if e["source"] is None:
             src = None
-            if not mp4.exists() and not dry_run:
+            if do_work and not mp4.exists() and not dry_run:
                 raise ManifestError(
-                    f"{slug}: no source given and {mp4} does not exist")
+                    f"{slug}: place the prepared MP4 in the deck’s videos directory")
         else:
             src = Path(e["source"])
             # normpath, not resolve(): videos/ may not exist yet, and a
             # relative source that climbs out of it ("../../assets/x.mp4")
             # cannot be tested for existence through a missing directory.
             src = Path(os.path.normpath(src if src.is_absolute() else (videos_dir / src)))
-            if not src.exists():
-                raise ManifestError(f"{slug}: source {src} does not exist")
+            if do_work and not src.is_file():
+                raise ManifestError(f"{slug}: source file is missing")
 
         prev = previous.get(slug, {})
         cut = None  # what <slug>.mp4 on disk was cut with, for the lock
@@ -420,23 +431,19 @@ def prepare(home: "deckpath.MediaHome", only: str | None = None, dry_run: bool =
                 reason = "--force" if force else stale_reason(mp4, src, want, prev.get("cut"))
                 if reason:
                     cmd = ffmpeg_cmd(src, mp4, e["_start"], e["_end"], e["keep_audio"])
-                    log(f"  encode  {slug}.mp4  <- {src.name} [{e['segment'] or 'whole'}]"
+                    log(f"  encode  {slug}.mp4 [{e['segment'] or 'whole'}]"
                         f"  ({reason})")
-                    if dry_run:
-                        log("          " + " ".join(cmd))
-                    else:
-                        subprocess.run(cmd, check=True)
+                    if not dry_run:
+                        subprocess.run(cmd, check=True, stderr=subprocess.PIPE)
                 else:
                     log(f"  fresh   {slug}.mp4")
                 # The poster is the frame at the segment start: a changed cut
                 # moves it, so it follows every re-encode.
                 if reason or _older(poster, src):
                     cmd = poster_cmd(src, poster, e["_start"])
-                    log(f"  poster  {slug}-poster.jpg  <- {src.name} @ {e['_start']:g}s")
-                    if dry_run:
-                        log("          " + " ".join(cmd))
-                    else:
-                        subprocess.run(cmd, check=True)
+                    log(f"  poster  {slug}-poster.jpg @ {e['_start']:g}s")
+                    if not dry_run:
+                        subprocess.run(cmd, check=True, stderr=subprocess.PIPE)
                 # After this run the file matches the manifest (encoded now,
                 # or fresh and proven to match); a dry run changes nothing,
                 # so it keeps the previous record.
@@ -446,36 +453,37 @@ def prepare(home: "deckpath.MediaHome", only: str | None = None, dry_run: bool =
                 if force or _older(poster, mp4):
                     cmd = poster_cmd(mp4, poster, 0.0)
                     log(f"  poster  {slug}-poster.jpg  <- {mp4.name} @ 0s")
-                    if dry_run:
-                        log("          " + " ".join(cmd))
-                    else:
-                        subprocess.run(cmd, check=True)
+                    if not dry_run:
+                        subprocess.run(cmd, check=True, stderr=subprocess.PIPE)
         else:
             # --only skipped this slug: the file on disk is whatever the
             # previous run cut, so its record travels unchanged.
             cut = prev.get("cut")
 
-        size_mb, duration_s = (0.0, 0.0)
+        size_mb, duration_s = prev.get("size_mb", 0.0), prev.get("duration_s", 0.0)
         if mp4.exists():
             size_mb, duration_s = probe(mp4)
             if size_mb > SIZE_WARN_MB:
                 log(f"  WARNING {slug}.mp4 is {size_mb} MB (> {SIZE_WARN_MB:g} MB): "
                     f"shorten the segment or raise the speed")
 
-        rec = {k: v for k, v in e.items() if not k.startswith("_")}
+        rec = {k: v for k, v in e.items()
+               if k not in ("source", "licence_note") and not k.startswith("_")}
         rec["file"] = mp4.name
         rec["poster_file"] = poster.name
         rec["size_mb"] = size_mb
         rec["duration_s"] = duration_s
         rec["autonomy_label"] = AUTONOMY_LABEL[e["autonomy"]]
-        if cut is not None:
+        if cut is not None and "source_id" in cut:
             rec["cut"] = cut
-        rec["release_url"] = (prev["release_url"]
-                              if prev.get("release_url") and not is_ours(prev["release_url"])
-                              else release_url(home.release_tag, mp4.name))
-        rec["poster_url"] = (prev["poster_url"]
-                             if prev.get("poster_url") and not is_ours(prev["poster_url"])
-                             else release_url(home.release_tag, poster.name))
+        if src and cut != cut_of(e):
+            rec["needs_prep"] = True
+        if e["redistribution"] == "release":
+            for key, filename in (("release_url", mp4.name), ("poster_url", poster.name)):
+                old = prev.get(key)
+                if old and not re.fullmatch(r"https?://[^\s|]+", str(old)):
+                    raise ManifestError(f"{slug}: invalid {key} in videos.json")
+                rec[key] = old if old and not is_ours(old) else release_url(home.release_tag, filename)
         if local:
             rec["local_only"] = True
         out_videos.append(rec)
@@ -484,10 +492,14 @@ def prepare(home: "deckpath.MediaHome", only: str | None = None, dry_run: bool =
         "deck": home.slug,
         "release_tag": home.release_tag,
         "generated_by": "scripts/media_prep.py",
+        "manifest_sha1": manifest_id(content),
         "videos": out_videos,
     }
     if not dry_run:
-        home.lock.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        with tempfile.TemporaryDirectory(dir=home.lock.parent) as tmp:
+            written = Path(tmp) / "videos.json"
+            written.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+            written.replace(home.lock)
         log(f"wrote {_rel(home.lock)} ({len(out_videos)} clip(s)"
             f"{', local_only' if local else ''})")
     return payload
@@ -507,8 +519,7 @@ def main(argv=None) -> int:
     ap.add_argument("--dry-run", action="store_true", help="print the plan, write nothing")
     ap.add_argument("--force", action="store_true", help="re-encode even when outputs are fresh")
     ap.add_argument("--local", action="store_true",
-                    help="mark every entry local_only (authoring mode; the shortcodes "
-                         "point at the local files instead of the Release)")
+                    help="prefer local files for approved videos in classroom delivery")
     args = ap.parse_args(argv)
 
     try:
@@ -517,6 +528,9 @@ def main(argv=None) -> int:
         prepare(home, only=args.only, dry_run=args.dry_run, force=args.force, local=args.local)
     except (deckpath.DeckNotFound, deckpath.AmbiguousDeck, ManifestError) as e:
         print(f"error: {e}", file=sys.stderr)
+        return 1
+    except OSError as e:
+        print(f"error: media file operation failed ({e.strerror})", file=sys.stderr)
         return 1
     except subprocess.CalledProcessError as e:
         print(f"error: {e.cmd[0]} failed with exit code {e.returncode}", file=sys.stderr)

@@ -1,35 +1,11 @@
 #!/bin/bash
 # Upload a deck's trimmed clips and posters to its GitHub Release, then verify.
 #
-# The media a deck shows never enters git (Figures/**/videos/ is ignored); it
-# lives on a public GitHub Release tagged media-<deck>, the way the SUNY deck's
-# clips live on media-v1. scripts/media_prep.py writes the files and the lock
-# file (videos.json) whose release_url / poster_url already point at this tag;
-# this script makes those URLs true.
 #
-#   bash scripts/media_release.sh <Deck>            create the release if it is
-#                                                   missing, upload every
-#                                                   <slug>.mp4 and
-#                                                   <slug>-poster.jpg listed in
-#                                                   videos.json (--clobber), then
-#                                                   verify each URL answers 200
-#   bash scripts/media_release.sh <Deck> --check    verify only; exit 1 and list
-#                                                   every asset that is missing
-#
-# <Deck> is anything scripts/deckpath.py accepts for the media fields: a bare
-# name, genre/name, a videos.yml path or its directory (the fixture under
-# Quarto/_fixtures/video/ releases as media-fixture-video).
-#
-# Refuses to run when videos.json is older than videos.yml (the manifest
-# changed and media_prep.py has not been run) and when any entry's "cut"
-# record in videos.json disagrees with its manifest fields (media_prep.py
-# --only skipped it after a segment / keep_audio / source change): in both
-# cases the files on disk may not be what the deck will ask for, and the
-# Release must never carry the old cut under the new caption.
-#
-# Releases are public as soon as the media is ready (presenter, 2026-08-19);
-# the notes name the manifest so a reader can find the publisher of every
-# third-party clip. Needs gh (authenticated) and curl.
+# bash scripts/media_release.sh <Deck-or-videos.yml> [--check]
+# Compare the lock to the current manifest, then upload the approved MP4 and
+# poster for each release entry. --check probes those URLs without any writes.
+# An all-classroom deck succeeds without contacting a remote service.
 
 set -euo pipefail
 
@@ -49,53 +25,37 @@ for arg in "$@"; do
   esac
 done
 
-MANIFEST=$(python3 scripts/deckpath.py "$DECK" --field videos-manifest)
-LOCK=$(python3 scripts/deckpath.py "$DECK" --field videos-lock)
 VIDEOS_DIR=$(python3 scripts/deckpath.py "$DECK" --field videos-dir)
 TAG=$(python3 scripts/deckpath.py "$DECK" --field release-tag)
 SLUG=$(python3 scripts/deckpath.py "$DECK" --field media-slug)
 NAME="${TAG#media-}"
 
-[ -f "$MANIFEST" ] || { echo "error: no manifest at $MANIFEST" >&2; exit 1; }
-[ -f "$LOCK" ] || { echo "error: no lock file at $LOCK (run: python3 scripts/media_prep.py $DECK)" >&2; exit 1; }
-if [ "$LOCK" -ot "$MANIFEST" ]; then
-  echo "error: $LOCK is older than $MANIFEST; run: python3 scripts/media_prep.py $DECK" >&2
-  exit 1
-fi
-
-# Every file the lock lists, plus the URL it promises for each, as
-# "file|url" lines (bash 3.2 on macOS has no mapfile; a while-read loop over
-# a temp file keeps the array in the parent shell).
+# Write validated rows before invoking gh. Process substitution would hide
+# the Python process's failure from Bash 3.2.
 ROWS_FILE=$(mktemp)
 trap 'rm -f "$ROWS_FILE"' EXIT
-python3 - "$LOCK" "$DECK" > "$ROWS_FILE" <<'PY'
-import json, sys
+python3 - "$DECK" > "$ROWS_FILE" <<'PYTHON'
+import sys
 sys.path.insert(0, "scripts")
-import media_prep
-lock = json.load(open(sys.argv[1]))
-bad = media_prep.lock_mismatches(lock)
-if bad:
-    print("error: the files on disk were not cut with what the manifest says now:", file=sys.stderr)
-    for line in bad:
-        print("  " + line, file=sys.stderr)
-    print(f"run: python3 scripts/media_prep.py {sys.argv[2]}   (without --only)", file=sys.stderr)
-    sys.exit(1)
-for v in lock["videos"]:
-    print(f"{v['file']}|{v['release_url']}")
-    print(f"{v['poster_file']}|{v['poster_url']}")
-PY
+import deckpath, media_prep
+try:
+    assets = media_prep.release_assets(deckpath.find_media(sys.argv[1]))
+except media_prep.ManifestError as e:
+    sys.exit(f"error: {e}")
+except (OSError, KeyError, ValueError, TypeError):
+    sys.exit("error: invalid or missing media lock; run media_prep.py")
+for filename, url in assets:
+    print(f"{filename}|{url}")
+PYTHON
+if [ ! -s "$ROWS_FILE" ]; then
+  echo "No clips approved for release."
+  exit 0
+fi
 ROWS=()
 while IFS= read -r line; do
   [ -n "$line" ] && ROWS+=("$line")
 done < "$ROWS_FILE"
-[ ${#ROWS[@]} -gt 0 ] || { echo "error: $LOCK lists no videos" >&2; exit 1; }
-
 if [ "$CHECK" -eq 0 ]; then
-  if grep -q '"local_only": true' "$LOCK"; then
-    echo "note: $LOCK was written with --local; uploading anyway, but re-run" >&2
-    echo "      media_prep.py without --local before the deck is deployed." >&2
-  fi
-
   FILES=()
   for row in "${ROWS[@]}"; do
     file="${row%%|*}"
@@ -107,10 +67,9 @@ if [ "$CHECK" -eq 0 ]; then
     echo "release $TAG exists"
   else
     echo "creating release $TAG"
-    MANIFEST_REL=$(python3 -c "import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))" "$MANIFEST" "$REPO_ROOT")
     gh release create "$TAG" \
       --title "Media: $NAME" \
-      --notes "Trimmed clips and posters for the $NAME deck. Third-party clips are quoted from the publishers listed in $MANIFEST_REL for teaching; see the manifest for sources." \
+      --notes "Approved clips and posters for the $NAME deck. See the presentation for publisher credits." \
       --latest=false
   fi
 

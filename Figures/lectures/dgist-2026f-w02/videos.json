@@ -2,6 +2,7 @@
   "deck": "lectures/dgist-2026f-w02",
   "release_tag": "media-dgist-2026f-w02",
   "generated_by": "scripts/media_prep.py",
+  "manifest_sha1": "0c9c6194bc4d17f817cfb91e89778df9de1ddfa4",
   "videos": [
     {
       "slug": "s07a-bd-atlas-bring-me-a-drink",
@@ -10,12 +11,11 @@
       "source_url": "https://www.youtube.com/watch?v=3aQWvdCac9o",
       "published": "2026-05",
       "autonomy": "claimed",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "0-32",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s07a-bd-atlas-bring-me-a-drink.mp4",
       "keep_audio": false,
       "caption": "none",
-      "licence_note": "Boston Dynamics official YouTube; the company describes a simulation-trained policy but does not state that teleoperation was absent.",
       "file": "s07a-bd-atlas-bring-me-a-drink.mp4",
       "poster_file": "s07a-bd-atlas-bring-me-a-drink-poster.jpg",
       "size_mb": 6.18,
@@ -24,7 +24,7 @@
       "cut": {
         "segment": "0-32",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s07a-bd-atlas-bring-me-a-drink.mp4"
+        "source_id": "38a3d7e98fdaefb53ec6ae9af46438cc8c75380889136c9287bd317f62a56fbe"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/s07a-bd-atlas-bring-me-a-drink.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/s07a-bd-atlas-bring-me-a-drink-poster.jpg"
@@ -36,12 +36,11 @@
       "source_url": "https://www.youtube.com/watch?v=24h4FTH7plY",
       "published": "2025-11",
       "autonomy": "teleop",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "10-28",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s08c-unitree-embodied-avatar-teleop.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Unitree official YouTube; the title identifies a teleoperation platform.",
       "file": "s08c-unitree-embodied-avatar-teleop.mp4",
       "poster_file": "s08c-unitree-embodied-avatar-teleop-poster.jpg",
       "size_mb": 6.22,
@@ -50,7 +49,7 @@
       "cut": {
         "segment": "10-28",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s08c-unitree-embodied-avatar-teleop.mp4"
+        "source_id": "28f88e23f151777481cf5b5f52cdb7369d19692457643b2b13660c655253354f"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/s08c-unitree-embodied-avatar-teleop.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/s08c-unitree-embodied-avatar-teleop-poster.jpg"
@@ -62,12 +61,11 @@
       "source_url": "https://www.youtube.com/watch?v=tF4DML7FIWk",
       "published": "2021-08",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "0-30",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s20a-bd-atlas-partners-in-parkour.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Boston Dynamics official YouTube and blog; model-predictive control and pre-planned trajectories, with audio removed.",
       "file": "s20a-bd-atlas-partners-in-parkour.mp4",
       "poster_file": "s20a-bd-atlas-partners-in-parkour-poster.jpg",
       "size_mb": 8.47,
@@ -76,7 +74,7 @@
       "cut": {
         "segment": "0-30",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s20a-bd-atlas-partners-in-parkour.mp4"
+        "source_id": "162e89c3f9d05d86ae8f97a23f50b54af8e5b8f577735a0d63381b73e5fe3ba9"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/s20a-bd-atlas-partners-in-parkour.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/s20a-bd-atlas-partners-in-parkour-poster.jpg"
@@ -88,12 +86,11 @@
       "source_url": "https://robotics-transformer2.github.io/",
       "published": "2023-07",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "0-8",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s26a-rt2-teaser-extinct-animal.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official project-page experiment rollout; the instruction was absent from the robot data and interpreted through web knowledge.",
       "file": "rt2-extinct-animal.mp4",
       "poster_file": "rt2-extinct-animal-poster.jpg",
       "size_mb": 0.55,
@@ -102,7 +99,7 @@
       "cut": {
         "segment": "0-8",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s26a-rt2-teaser-extinct-animal.mp4"
+        "source_id": "39c015e6f3d1d329850f34a6d0521de976de9a0c26e45565610db757699d7365"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/rt2-extinct-animal.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/rt2-extinct-animal-poster.jpg"
@@ -114,12 +111,11 @@
       "source_url": "https://www.pi.website/blog/pi0",
       "published": "2024-10",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "10-50",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s30a-pi0-2min-reel.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official blog reel; retain the on-screen autonomy and playback-speed disclosures.",
       "file": "pi0-laundry.mp4",
       "poster_file": "pi0-laundry-poster.jpg",
       "size_mb": 11.95,
@@ -128,7 +124,7 @@
       "cut": {
         "segment": "10-50",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s30a-pi0-2min-reel.mp4"
+        "source_id": "6143f3779c5e6707db2de355fec251d7e7642733019dcad2edec203d80ed963a"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/pi0-laundry.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/pi0-laundry-poster.jpg"
@@ -140,12 +136,11 @@
       "source_url": "https://www.pi.website/blog/pi05",
       "published": "2025-04",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "91-136",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s30c-pi05-official-youtube.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official 720p video; this unseen-home montage carries a 10x burn-in throughout, so the title discloses it and media preparation must not retime it.",
       "file": "pi05-unseen-bedroom.mp4",
       "poster_file": "pi05-unseen-bedroom-poster.jpg",
       "size_mb": 4.67,
@@ -154,7 +149,7 @@
       "cut": {
         "segment": "91-136",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s30c-pi05-official-youtube.mp4"
+        "source_id": "3baf26cb96b78355a08b7a65935eb7257e5ab4a0ed6a6ecc58cb53ed1bcc1d33"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/pi05-unseen-bedroom.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/pi05-unseen-bedroom-poster.jpg"
@@ -166,12 +161,11 @@
       "source_url": "https://www.figure.ai/news/helix",
       "published": "2025-02",
       "autonomy": "unknown",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "28-68",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s31d-figure-helix-v1-introducing-full.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "The 2025 announcement describes onboard single-policy execution but does not state the autonomy mode.",
       "file": "helix-two-robots.mp4",
       "poster_file": "helix-two-robots-poster.jpg",
       "size_mb": 2.57,
@@ -180,7 +174,7 @@
       "cut": {
         "segment": "28-68",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s31d-figure-helix-v1-introducing-full.mp4"
+        "source_id": "0a3279f43879899f534ea509fa6a14c4f223d30516932a2fcf2eb9104938f7ff"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/helix-two-robots.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/helix-two-robots-poster.jpg"
@@ -192,12 +186,11 @@
       "source_url": "https://www.youtube.com/watch?v=Ykiuz1ZdGBc",
       "published": "2026-02",
       "autonomy": "claimed",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "25-55",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s07c-unitree-spring-festival-gala-details.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Unitree official YouTube; the company calls the choreography autonomous, without an independent no-teleoperation statement.",
       "file": "unitree-gala.mp4",
       "poster_file": "unitree-gala-poster.jpg",
       "size_mb": 7.62,
@@ -206,7 +199,7 @@
       "cut": {
         "segment": "25-55",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s07c-unitree-spring-festival-gala-details.mp4"
+        "source_id": "e0df539a8130e0b1b94bc7a1a8a9a01b919f8ff89010e943437093ca05edad15"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/unitree-gala.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/unitree-gala-poster.jpg"
@@ -218,12 +211,11 @@
       "source_url": "https://www.youtube.com/watch?v=sd8ivhpjI6g",
       "published": "2026-01",
       "autonomy": "unknown",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "35-65",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s32b-bd-atlas-beginning-of-your-tomorrow.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Official product film; this interval is restricted to live action and excludes the computer-generated product-feature sequence.",
       "file": "atlas-tomorrow.mp4",
       "poster_file": "atlas-tomorrow-poster.jpg",
       "size_mb": 8.04,
@@ -232,7 +224,7 @@
       "cut": {
         "segment": "35-65",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s32b-bd-atlas-beginning-of-your-tomorrow.mp4"
+        "source_id": "83a838d7c8cc4c562876af08a6b0d7be6b97d6a424a04acde72092a16a54f3a1"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/atlas-tomorrow.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/atlas-tomorrow-poster.jpg"
@@ -244,12 +236,11 @@
       "source_url": "https://www.youtube.com/watch?v=LTYMWadOW7c",
       "published": "2025-10",
       "autonomy": "unknown",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "480-500",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s08a-1x-neo-keynote.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "The selected promotional interval does not state its mode; the title separately records the CEO-acknowledged launch-demo history without generalizing it to all 1X footage.",
       "file": "neo-home.mp4",
       "poster_file": "neo-home-poster.jpg",
       "size_mb": 0.76,
@@ -258,7 +249,7 @@
       "cut": {
         "segment": "480-500",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s08a-1x-neo-keynote.mp4"
+        "source_id": "fd4749c03435cf0f3e7404d707cf6ddc427281adef6fde782e2959c5f7a5b51e"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/neo-home.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/neo-home-poster.jpg"
@@ -270,12 +261,11 @@
       "source_url": "https://worv-ai.github.io/costnav/",
       "published": "2025-11",
       "autonomy": "unknown",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "0-13",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s35a-worv-costnav-teaser.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Public project-page simulation footage; the clip itself does not document its autonomy mode.",
       "file": "costnav-teaser.mp4",
       "poster_file": "costnav-teaser-poster.jpg",
       "size_mb": 6.36,
@@ -284,7 +274,7 @@
       "cut": {
         "segment": "0-13",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s35a-worv-costnav-teaser.mp4"
+        "source_id": "93dcf13a22f995df0558d9e498296ef9f6ae229673dcb1cc6ea502499b0eb357"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/costnav-teaser.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/costnav-teaser-poster.jpg"
@@ -296,12 +286,11 @@
       "source_url": "https://www.maum.ai/",
       "published": "2026-03",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "0-20",
-      "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s35c-worv-inhouse-bimanual-demo.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "Presenter-owned footage previously published in the media-tta-2026 release; the established TTA deck labels this clip autonomous.",
       "file": "worv-bimanual.mp4",
       "poster_file": "worv-bimanual-poster.jpg",
       "size_mb": 3.46,
@@ -310,7 +299,7 @@
       "cut": {
         "segment": "0-20",
         "keep_audio": false,
-        "source": "/Users/iyunseong/Documents/vault/1-projects/maum/dgist-future-literacy-2026fall/lectures/w02-paradigm-shift/video-candidates/s35c-worv-inhouse-bimanual-demo.mp4"
+        "source_id": "62ecde715e1ace7649b74521c71c8cbcb5b46645cf4b5a8c9fa2e05eb7f47d8c"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/worv-bimanual.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w02/worv-bimanual-poster.jpg"

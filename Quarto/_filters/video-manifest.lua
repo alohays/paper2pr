@@ -12,14 +12,10 @@
 --   * otherwise Quarto/<genre>/<deck>.qmd -> Figures/<genre>/<deck>/videos.json
 --     (scripts/media_prep.py writes that file from videos.yml).
 --
--- What an entry resolves to:
---   entry.src     release_url, or the local relative path when the entry is
---                 marked local_only (media_prep.py --local, authoring before
---                 the Release exists; check_site_assets.py refuses to deploy it)
---   entry.poster  poster_url, or the local poster in the same case
---   entry.label   the plain autonomy wording (table below; scripts/media_prep.py
---                 carries the same table and scripts/test_media.py compares them)
---   entry.month   "Aug 2026" from published "2026-08"
+-- Public mode returns release URLs for approved clips and publisher links
+-- for everything else. Classroom mode always plays restricted clips locally;
+-- media_prep.py --local also selects local copies of approved clips.
+-- The entry's label, month and speed supply the caption in both modes.
 --
 -- A missing lock file or slug is a render error, never an empty card.
 
@@ -123,7 +119,12 @@ local cache = {}
 
 function M.load(meta)
   local path, input_dir = M.manifest_path(meta)
-  if cache[path] then return cache[path] end
+  local delivery = meta and meta.delivery and pandoc.utils.stringify(meta.delivery) or "public"
+  if delivery ~= "classroom" and delivery ~= "public" then
+    fail("video-manifest: delivery must be classroom or public")
+  end
+  local cache_key = path .. "|" .. delivery
+  if cache[cache_key] then return cache[cache_key] end
   local text = read_file(path)
   if not text then
     fail("video-manifest: no lock file at " .. path
@@ -133,6 +134,12 @@ function M.load(meta)
   if not ok or type(data) ~= "table" or type(data.videos) ~= "table" then
     fail("video-manifest: " .. path .. " is not a videos.json written by media_prep.py")
   end
+  if data.manifest_sha1 then
+    local manifest = read_file(dirname(path) .. "/videos.yml")
+    if not manifest or pandoc.utils.sha1(manifest) ~= data.manifest_sha1 then
+      fail("video-manifest: videos.json is stale; run media_prep.py")
+    end
+  end
   local by_slug = {}
   local videos_dir = dirname(path) .. "/videos"
   for _, v in ipairs(data.videos) do
@@ -141,19 +148,32 @@ function M.load(meta)
       v.month = M.month_text(v.published)
       v.speed = v.speed or "1x"
       v.caption = v.caption or "visible"
-      if v.local_only then
+      -- Locks predating the policy carry no release approval.
+      local approved = v.redistribution == "release" and data.manifest_sha1 ~= nil
+      v.link_only = not approved and delivery == "public"
+      if v.needs_prep and not v.link_only then
+        fail("video-manifest: " .. v.slug .. " needs preparation; run media_prep.py")
+      end
+      if v.link_only then
+        if not v.source_url or not v.source_url:match("^https?://") then
+          fail("video-manifest: missing publisher URL for " .. v.slug)
+        end
+      elseif delivery == "classroom" and (not approved or v.local_only) then
         local rel = M.relpath(videos_dir, input_dir)
         v.src = rel .. "/" .. v.file
         v.poster = rel .. "/" .. v.poster_file
       else
         v.src = v.release_url
         v.poster = v.poster_url
+        if not v.src or not v.src:match("^https?://") or not v.poster or not v.poster:match("^https?://") then
+          fail("video-manifest: invalid approved URLs for " .. v.slug)
+        end
       end
       by_slug[v.slug] = v
     end
   end
   local loaded = { path = path, input_dir = input_dir, by_slug = by_slug, data = data }
-  cache[path] = loaded
+  cache[cache_key] = loaded
   return loaded
 end
 
@@ -172,6 +192,12 @@ function M.resolve(meta, slug)
       .. " (known: " .. table.concat(known, ", ") .. ")")
   end
   return entry
+end
+
+-- Always visible, including on a clip whose playback caption is a fragment.
+function M.publisher_link(entry)
+  return '<a href="' .. M.escape(entry.source_url) .. '">' .. M.escape(entry.title)
+    .. ' (' .. M.escape(entry.publisher) .. ')</a>'
 end
 
 -- The caption strip: title left, meta right. `tag` is "figcaption" inside a

@@ -2,6 +2,7 @@
   "deck": "_fixtures/video",
   "release_tag": "media-fixture-video",
   "generated_by": "scripts/media_prep.py",
+  "manifest_sha1": "a0db0cd6caa271ca46a61c52530368202a22e57e",
   "videos": [
     {
       "slug": "hook",
@@ -10,12 +11,11 @@
       "source_url": "https://github.com/alohays/paper2pr",
       "published": "2026-08",
       "autonomy": "autonomous",
+      "redistribution": "release",
       "speed": "1x",
       "segment": "0-2",
-      "source": "../../assets/placeholder-video.mp4",
       "keep_audio": false,
       "caption": "visible",
-      "licence_note": "repo-owned placeholder, no third-party material",
       "file": "hook.mp4",
       "poster_file": "hook-poster.jpg",
       "size_mb": 0.01,
@@ -24,7 +24,7 @@
       "cut": {
         "segment": "0-2",
         "keep_audio": false,
-        "source": "../../assets/placeholder-video.mp4"
+        "source_id": "1435ed2bb9a30d261dde7bb26516ff1317be8289fbc139fc894581ef6bb16756"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/hook.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/hook-poster.jpg"
@@ -36,12 +36,11 @@
       "source_url": "https://github.com/alohays/paper2pr",
       "published": "2026-08",
       "autonomy": "claimed",
+      "redistribution": "release",
       "speed": "2x",
       "segment": "1-3",
-      "source": "../../assets/placeholder-video.mp4",
       "keep_audio": false,
       "caption": "fragment",
-      "licence_note": null,
       "file": "demo.mp4",
       "poster_file": "demo-poster.jpg",
       "size_mb": 0.01,
@@ -50,7 +49,7 @@
       "cut": {
         "segment": "1-3",
         "keep_audio": false,
-        "source": "../../assets/placeholder-video.mp4"
+        "source_id": "1435ed2bb9a30d261dde7bb26516ff1317be8289fbc139fc894581ef6bb16756"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/demo.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/demo-poster.jpg"
@@ -62,12 +61,11 @@
       "source_url": "https://github.com/alohays/paper2pr",
       "published": "2026-08",
       "autonomy": "teleop",
+      "redistribution": "release",
       "speed": "1x",
       "segment": null,
-      "source": "../../assets/placeholder-video.mp4",
       "keep_audio": false,
       "caption": "none",
-      "licence_note": null,
       "file": "montage.mp4",
       "poster_file": "montage-poster.jpg",
       "size_mb": 0.02,
@@ -76,7 +74,7 @@
       "cut": {
         "segment": null,
         "keep_audio": false,
-        "source": "../../assets/placeholder-video.mp4"
+        "source_id": "1435ed2bb9a30d261dde7bb26516ff1317be8289fbc139fc894581ef6bb16756"
       },
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/montage.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-fixture-video/montage-poster.jpg"

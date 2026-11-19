@@ -5,6 +5,7 @@
 # path). Real decks keep this file at Figures/<genre>/<deck>/videos.yml.
 videos:
   - slug: hook
+    redistribution: release
     title: Placeholder clip fills the frame
     publisher: paper2pr fixture
     source_url: https://github.com/alohays/paper2pr
@@ -16,6 +17,7 @@ videos:
     caption: visible
     licence_note: repo-owned placeholder, no third-party material
   - slug: demo
+    redistribution: release
     title: Inline card with a fragment caption
     publisher: paper2pr fixture
     source_url: https://github.com/alohays/paper2pr
@@ -26,6 +28,7 @@ videos:
     source: ../../assets/placeholder-video.mp4
     caption: fragment
   - slug: montage
+    redistribution: release
     title: Second card of the montage
     publisher: paper2pr fixture
     source_url: https://github.com/alohays/paper2pr

@@ -11,12 +11,14 @@
 videos:
   # --- Dyna-2 (Dyna Robotics, 2026-08) ---
   - slug: dyna2-hero
+    redistribution: release
     title: Dyna-2 hero reel
     publisher: Dyna Robotics
     source_url: https://www.dyna.co/dyna-2
     published: 2026-08
     autonomy: claimed
   - slug: dyna2-chopping-dark
+    redistribution: release
     title: Chopping through a blackout
     publisher: Dyna Robotics
     source_url: https://www.dyna.co/dyna-2
@@ -25,6 +27,7 @@ videos:
     source: src/dyna2-chopping-dark.mp4
     segment: 16-46
   - slug: dyna2-fig16-case0
+    redistribution: release
     title: Fig. 16 rollout (egocentric)
     publisher: Dyna Robotics
     source_url: https://www.dyna.co/dyna-2
@@ -33,18 +36,21 @@ videos:
 
   # --- GEN-1.5 (Generalist AI, 2026-08) ---
   - slug: gen15-h2r-icl
+    redistribution: release
     title: Human demo to robot, in context
     publisher: Generalist AI
     source_url: https://generalistai.com/blog/gen-1.5
     published: 2026-08
     autonomy: claimed
   - slug: gen15-compose-prompt
+    redistribution: release
     title: Composing two prompts
     publisher: Generalist AI
     source_url: https://generalistai.com/blog/gen-1.5
     published: 2026-08
     autonomy: claimed
   - slug: gen15-twist-lid-improv
+    redistribution: release
     title: Improvised recovery
     publisher: Generalist AI
     source_url: https://generalistai.com/blog/gen-1.5
@@ -53,6 +59,7 @@ videos:
 
   # --- Skild S1 (Skild AI, 2026-08) ---
   - slug: skild-s1-coffee-prompt
+    redistribution: release
     title: "Prompt: a human makes pour-over"
     publisher: Skild AI
     source_url: https://www.skild.ai/blogs/s1
@@ -61,6 +68,7 @@ videos:
     source: src/skild-s1-coffee-prompt.mp4
     segment: 58-83
   - slug: skild-s1-coffee
+    redistribution: release
     title: "Execution: the robot follows"
     publisher: Skild AI
     source_url: https://www.skild.ai/blogs/s1
@@ -70,6 +78,7 @@ videos:
     source: src/skild-s1-coffee.mp4
     segment: 78-103
   - slug: skild-s1-pancakes-prompt
+    redistribution: release
     title: "Prompt: a human makes a pancake"
     publisher: Skild AI
     source_url: https://www.skild.ai/blogs/s1
@@ -78,6 +87,7 @@ videos:
     source: src/skild-s1-pancakes-prompt.mp4
     segment: 36-62
   - slug: skild-s1-pancake-recovery
+    redistribution: release
     title: Execution under perturbation
     publisher: Skild AI
     source_url: https://www.skild.ai/blogs/s1
@@ -89,6 +99,7 @@ videos:
 
   # --- RoboTTT (NVIDIA GEAR, 2026-07) ---
   - slug: robottt-pup-go-car-1x
+    redistribution: release
     title: One-shot from a human video
     publisher: NVIDIA GEAR
     source_url: https://research.nvidia.com/labs/gear/robottt/
@@ -96,18 +107,21 @@ videos:
     autonomy: claimed
     speed: 1x
   - slug: robottt-on-the-fly-roof
+    redistribution: release
     title: Adapting on the fly
     publisher: NVIDIA GEAR
     source_url: https://research.nvidia.com/labs/gear/robottt/
     published: 2026-07
     autonomy: claimed
   - slug: robottt-perturbation-roof
+    redistribution: release
     title: Perturbation recovery
     publisher: NVIDIA GEAR
     source_url: https://research.nvidia.com/labs/gear/robottt/
     published: 2026-07
     autonomy: claimed
   - slug: robottt-circuit-1x
+    redistribution: release
     title: Long-horizon assembly
     publisher: NVIDIA GEAR
     source_url: https://research.nvidia.com/labs/gear/robottt/
@@ -117,12 +131,14 @@ videos:
 
   # --- Zero-WAM (Robbyant Research, 2026-08) ---
   - slug: zerowam-insert-human
+    redistribution: release
     title: "Prompt: human video"
     publisher: Robbyant Research
     source_url: https://robbyant-research.github.io/Zero-WAM/
     published: 2026-08
     autonomy: unknown
   - slug: zerowam-insert-robot-2x
+    redistribution: release
     title: "Execution: unseen task"
     publisher: Robbyant Research
     source_url: https://robbyant-research.github.io/Zero-WAM/
@@ -130,6 +146,7 @@ videos:
     autonomy: claimed
     speed: 2x
   - slug: zerowam-icl-montage-human
+    redistribution: release
     title: Human prompts
     publisher: Robbyant Research
     source_url: https://robbyant-research.github.io/Zero-WAM/
@@ -137,6 +154,7 @@ videos:
     autonomy: unknown
     caption: none
   - slug: zerowam-dataset-montage-robot
+    redistribution: release
     title: HumanGen robot pairs
     publisher: Robbyant Research
     source_url: https://robbyant-research.github.io/Zero-WAM/
@@ -146,6 +164,7 @@ videos:
 
   # --- Section 1-2 refresh clips ---
   - slug: pi07-shirt-folding
+    redistribution: release
     title: Shirt folding on an unseen UR5e
     publisher: Physical Intelligence
     source_url: https://www.pi.website/blog/pi07
@@ -154,12 +173,14 @@ videos:
     source: src/pi07-shirt-folding.mp4
     segment: 60-88
   - slug: lightwheel-egosuite
+    redistribution: release
     title: EgoSuite-Open100K
     publisher: Lightwheel
     source_url: https://lightwheel.ai/egosuite
     published: 2026-08
     autonomy: unknown
   - slug: dreamdojo-real-time
+    redistribution: release
     title: Real-time interactive world model
     publisher: NVIDIA
     source_url: https://dreamdojo-world.github.io/
@@ -170,48 +191,56 @@ videos:
 
   # --- Carried over from the HUFS deck (R2 backup, pre-encoded) ---
   - slug: rt2-teaser
+    redistribution: release
     title: RT-2
     publisher: Google DeepMind
     source_url: https://robotics-transformer2.github.io/
     published: 2023-07
     autonomy: autonomous
   - slug: pi05-bedroom-cleaning
+    redistribution: release
     title: Cleaning an unseen bedroom
     publisher: Physical Intelligence
     source_url: https://www.pi.website/blog/pi05
     published: 2025-04
     autonomy: autonomous
   - slug: helix-hero-mobile
+    redistribution: release
     title: "Helix: System 1 / System 2"
     publisher: Figure AI
     source_url: https://www.figure.ai/news/helix
     published: 2025-02
     autonomy: claimed
   - slug: aloha-teleop-hero
+    redistribution: release
     title: ALOHA teleoperation
     publisher: Stanford
     source_url: https://tonyzhaozh.github.io/aloha/
     published: 2023-04
     autonomy: teleop
   - slug: umi-in-the-wild
+    redistribution: release
     title: UMI in-the-wild collection
     publisher: Stanford and Columbia
     source_url: https://umi-gripper.github.io/
     published: 2024-02
     autonomy: teleop
   - slug: genie-3-environmental-consistency
+    redistribution: release
     title: "Genie 3: persistent worlds"
     publisher: Google DeepMind
     source_url: https://deepmind.google/blog/genie-3-a-new-frontier-for-world-models/
     published: 2025-08
     autonomy: unknown
   - slug: cosmos-predict-banner
+    redistribution: release
     title: Cosmos world generation
     publisher: NVIDIA
     source_url: https://www.nvidia.com/en-us/ai/cosmos/
     published: 2025-01
     autonomy: unknown
   - slug: cosmos3-reason2gen
+    redistribution: release
     title: "Cosmos 3: reasoning to generation"
     publisher: NVIDIA
     source_url: https://research.nvidia.com/labs/cosmos-lab/cosmos3/
@@ -219,30 +248,35 @@ videos:
     autonomy: unknown
     licence_note: Official Cosmos 3 research-page asset, preserved without trimming.
   - slug: dreamzero-overview
+    redistribution: release
     title: DreamZero
     publisher: NVIDIA
     source_url: https://dreamzero0.github.io/
     published: 2026-02
     autonomy: autonomous
   - slug: dreamzero-yam-teddy
+    redistribution: release
     title: Zero-shot on YAM
     publisher: NVIDIA
     source_url: https://dreamzero0.github.io/
     published: 2026-02
     autonomy: autonomous
   - slug: lapa-teaser
+    redistribution: release
     title: Latent action pretraining
     publisher: KAIST and Microsoft
     source_url: https://latentactionpretraining.github.io/
     published: 2024-10
     autonomy: autonomous
   - slug: worv-rfm-demo
+    redistribution: release
     title: WoRV manipulation
     publisher: MaumAI WoRV
     source_url: https://github.com/alohays/paper2pr/releases/tag/media-tta-2026
     published: 2026-08
     autonomy: unknown
   - slug: worv-costnav-teaser
+    redistribution: release
     title: CostNav
     publisher: MaumAI WoRV
     source_url: https://www.maum.ai/

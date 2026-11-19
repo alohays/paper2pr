@@ -37,8 +37,8 @@
 -- div out as a flex row, 48 percent each). The shortcode pass cannot see its
 -- neighbours, so the row container is the author's, not the shortcode's.
 --
--- SRC / POSTER are the Release URLs from videos.json, or the local relative
--- files when the entry is local_only (media_prep.py --local).
+-- For classroom-only material in a public deck the card contains the
+-- publisher link, with the same slide classes and video slug.
 --
 -- Wired for every deck under Quarto/<genre>/ by Quarto/_quarto.yml
 -- (format.revealjs.shortcodes). Fixtures under Quarto/_fixtures/ are outside
@@ -59,9 +59,14 @@ local function video_card(args, kwargs, meta)
   local classes = "video-card video-inline"
   local extra = arg_string(kwargs["class"])
   if extra ~= "" then classes = classes .. " " .. extra end
+  if entry.link_only then
+    return pandoc.RawBlock("html", '<figure class="' .. manifest.escape(classes)
+      .. '" data-video-slug="' .. manifest.escape(entry.slug) .. '"><p>'
+      .. manifest.publisher_link(entry) .. '</p></figure>')
+  end
   local src, poster = manifest.escape(entry.src), manifest.escape(entry.poster)
   local html = {
-    '<figure class="' .. classes .. '" data-video-slug="' .. manifest.escape(entry.slug) .. '">',
+    '<figure class="' .. manifest.escape(classes) .. '" data-video-slug="' .. manifest.escape(entry.slug) .. '">',
     '<video class="video-inline" poster="' .. poster
       .. '" preload="auto" muted playsinline loop data-autoplay>',
     '<source data-src="' .. src .. '" type="video/mp4">',

@@ -25,11 +25,10 @@
 --   ## {.video-full video="@<slug>"}   -> the clip named <slug> in the deck's
 --                                         videos.json (Figures/<genre>/<deck>/,
 --                                         written by scripts/media_prep.py):
---                                         background-video = its release_url,
---                                         background-image = its poster_url (or
---                                         the local files when the entry is
---                                         local_only). A plain path still works
---                                         as before. The lookup is shared with
+--                                         release URLs, local playback or a
+--                                         publisher link according to the
+--                                         delivery mode and clip's policy.
+--                                         The lookup is shared with
 --                                         the video-card shortcodes through
 --                                         video-manifest.lua; an unknown slug or
 --                                         a missing videos.json fails the render.
@@ -69,6 +68,18 @@ local function header(h, meta)
     local poster = h.attributes["poster"]
     if src and src:sub(1, 1) == "@" then
       local entry = resolve_at(src, meta)
+      if entry.link_only then
+        -- A full-bleed slide can have no body and no caption. Replace the
+        -- background itself so the audience can always reach the publisher.
+        h.classes = h.classes:filter(function(c) return c ~= "video-full" end)
+        for _, key in ipairs({"video", "poster", "background-video", "background-image",
+                              "background-poster", "data-background-video",
+                              "data-background-image", "data-background-poster"}) do
+          h.attributes[key] = nil
+        end
+        h.attributes["video-slug"] = entry.slug
+        return {h, pandoc.RawBlock("html", "<p>" .. manifest.publisher_link(entry) .. "</p>")}
+      end
       src = entry.src
       if not poster or poster == "" then poster = entry.poster end
       h.attributes["video-slug"] = entry.slug   -- pandoc writes data-video-slug
