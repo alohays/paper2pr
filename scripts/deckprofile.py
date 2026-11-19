@@ -55,7 +55,8 @@ then the profile, then the built-in default):
                                  or exam week; a guest counts). A series_index
                                  that is not a session of the series is a
                                  ConfigError, never a silent None.
-    audience.*, delivery         context for the review agents, not the gate
+    audience.*, delivery         context for authoring and review
+    brief.chapters, .demonstrations, .complete_clock    optional presenter requirements checked against the render
 
 Two optional files next to the deck are surfaced as paths when they exist:
 Quarto/<genre>/<deck>.forbidden.txt (forbidden_file) and
@@ -485,6 +486,8 @@ class DeckConfig:
             "profile": self.profile,
             "has_config": self.has_config,
             "publish": self.publish,
+            "audience": {**self.profile_raw.get("audience", {}), **self.raw.get("audience", {})},
+            "brief": self.raw.get("brief", {}),
             "duration_min": self.duration_min,
             "video_min": self.video_min,
             "qa_min": self.qa_min,

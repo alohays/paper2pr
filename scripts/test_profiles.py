@@ -16,6 +16,9 @@ inline documents.
 
 Usage: python3 scripts/test_profiles.py
 """
+import argparse
+import os
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -359,8 +362,9 @@ check("trip's forbidden_file resolves next to the qmd; pass has none",
       trip_cfg.forbidden_file is not None and pass_cfg.forbidden_file is None)
 
 print("11. A level-1 heading is a blocker; dividers and raw html are not")
-check("trip.qmd: exactly one level-1 heading, at line 26",
-      [h["line"] for h in IssueDetector.check_level1_headings(trip_src)] == [26],
+check("trip.qmd reports the actual source line of its single level-1 heading",
+      [h["line"] for h in IssueDetector.check_level1_headings(trip_src)]
+      == [trip_src.splitlines().index("# A level-1 heading") + 1],
       f"got {IssueDetector.check_level1_headings(trip_src)}")
 check("pass.qmd: the ## {.divider} slide is not a level-1 heading",
       not IssueDetector.check_level1_headings(pass_src))
@@ -457,6 +461,118 @@ with _tf.TemporaryDirectory() as _td:
     check("no descendant of the render survives it", not _alive,
           f"still running: {_alive}")
     check("and nothing it would have written appears", not _wrote.exists())
+
+print("14. The brief follows reachable slide IDs, demonstration clips and the teaching clock")
+from slide_brief import RenderedSlides, check_brief
+
+brief = {
+    "complete_clock": True,
+    "chapters": [{"slide": "open", "seconds": 40}, {"slide": "close", "seconds": 20}],
+    "demonstrations": [{"slide": "open", "clip": "turn"}],
+}
+sample = (
+    '<div class="reveal"><div class="slides"><section id="stack">'
+    '<section id="open" data-seconds="40"><a data-video-slug="turn" href="https://example.org">'
+    'Watch the turn</a><aside class="notes"><span data-video-slug="private"></span></aside>'
+    '</section><section id="close"></section></section></div></div>'
+    '<section id="backstage"></section>'
+)
+def matches(html, constraints=brief):
+    return check_brief(constraints, RenderedSlides(html).slides, 60)
+
+check("public links count as the named demonstration on that slide", not matches(sample))
+check("chapter order and slide timing must match the brief",
+      matches(sample.replace('id="open"', 'id="close"', 1).replace(
+          'id="close"></section>', 'id="open"></section>'))
+      and matches(sample.replace('data-seconds="40"', 'data-seconds="45"')))
+check("the full teaching clock must match, including quiet video time",
+      check_brief(brief, RenderedSlides(sample).slides, 61))
+check("a partial allocation can leave the author time for other material",
+      not matches(sample, {"chapters": [{"slide": "close", "seconds": 10}]}))
+check("substituting a different clip on a required slide is detected",
+      matches(sample.replace('data-video-slug="turn"', 'data-video-slug="other"')))
+check("stack containers, speaker notes and elements outside the slides cannot satisfy the brief",
+      matches(sample, {"chapters": ["stack"]}) and matches(sample, {"chapters": ["backstage"]})
+      and matches(sample, {"demonstrations": [{"slide": "open", "clip": "private"}]}))
+check("the author can add slides and choose different examples and layouts",
+      not matches(sample.replace('<section id="close">', '<section id="extra">A different example</section><section id="close">')))
+check("missing and duplicate required slide IDs stop verification",
+      matches(sample.replace('id="open"', 'id="missing"'))
+      and matches(sample.replace('id="close"', 'id="open"')))
+
+print("15. The source grade resolves includes and keeps measurements distinct from estimates")
+from unittest.mock import patch
+from quality_score import QualityScorer
+
+with tempfile.TemporaryDirectory() as td:
+    directory = Path(td)
+    deck = directory / "sample.qmd"
+    child = directory / "shared"
+    child.mkdir()
+    (child / "outer.qmd").write_text("{{< include inner.qmd >}}")
+    included = directory / "inner.qmd"
+    included.write_text("## A sentence -- edited\n\n- " + "words " * 30 + "\n")
+    deck.write_text("---\nformat:\n  revealjs:\n    theme: clean-academic.scss\n---\n\n"
+                    "{{< include shared/outer.qmd >}}")
+    # The HTML argument is intentionally elsewhere. No secondary render can
+    # substitute a stale sibling HTML for the actual audience copy.
+    html = directory / "audience.html"
+    html.write_text(sample)
+    with patch.object(deckprofile, "load_for_path", return_value=pass_cfg):
+        report = QualityScorer(deck, rendered=html).score_quarto()
+        check("punctuation, wrapped text estimates and a callback hint leave the grade unchanged",
+              report["score"] == 100 and len(report["editorial_feedback"]) >= 2)
+        included.write_text("# Unintended stack\n## A slide")
+        report = QualityScorer(deck, rendered=html).score_quarto()
+        check("a heading in a nested include blocks with its own file and line",
+              report["blocked"] and "inner.qmd:1" in report["blockers"][0]["description"])
+    sentinel = "synthetic-audience-probe"
+    deny = directory / "private-list"
+    deny.write_text(sentinel)
+    included.write_text("## A slide")
+    html.write_text(sample.replace("Watch the turn", sentinel.upper()))
+    for mode in ("--summary", "--json"):
+        result = subprocess.run([sys.executable, str(REPO_ROOT / "scripts/quality_score.py"),
+                                 str(deck), "--rendered", str(html), mode],
+                                env={**os.environ, "PAPER2PR_PRIVATE_DENYLIST": str(deny)},
+                                capture_output=True, text=True)
+        check(f"a private match fails {mode} without quoting its value or the denylist path",
+              result.returncode == 1 and sentinel not in (result.stdout + result.stderr).lower()
+              and str(deny) not in result.stdout + result.stderr)
+
+parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+parser.add_argument("--w13-html", type=Path, help="also replay the archived classroom render")
+parser.add_argument("--w13-config", type=Path, help="compare the archived audience and slot to the brief")
+parser.add_argument("--w13-before", type=Path, help="also test the superseded W13 render against the original brief")
+args = parser.parse_args()
+if (args.w13_before or args.w13_config) and not args.w13_html:
+    parser.error("a W13 replay requires --w13-html")
+if args.w13_html:
+    print("16. Archived W13 survey for second-semester first-years")
+    historical = deckprofile._load_yaml(GATES / "w13-brief.yml")
+    plan = historical["brief"]
+    clock = 60 * (historical["duration_min"] - historical["qa_min"])
+    if args.w13_config:
+        config = deckprofile._load_yaml(args.w13_config)
+        audience = config["audience"]["description"].lower()
+        check("the restored metadata preserves the introductory audience and booked slot",
+              config["audience"]["assumes"] == historical["audience"]["assumes"]
+              and all(term in audience for term in ("first-year", "second semester", "no prior mechanics or control"))
+              and all(config[key] == historical[key] for key in ("duration_min", "qa_min", "video_min")))
+    actual = RenderedSlides(args.w13_html.read_text()).slides
+    errors = check_brief(plan, actual, clock)
+    check("10 chapters, 3,000 teaching seconds and eight demonstration requirements",
+          not errors and len(plan["chapters"]) == 10 and clock == 3000
+          and len(plan["demonstrations"]) == 8, "; ".join(errors))
+    check("removing the history chapter fails the original brief",
+          check_brief(plan, [s for s in actual if s.id != "history-asimo"], clock))
+    if args.w13_before:
+        earlier = RenderedSlides(args.w13_before.read_text()).slides
+        missing = check_brief(plan, earlier, clock)
+        check("the superseded course sequence loses required chapter and demonstration coverage",
+              any("#joint-inside" in m for m in missing)
+              and any("#body-quadruped" in m for m in missing))
+        print(f"  Compared {len(earlier)} superseded sections to {len(actual)} restored sections")
 
 print()
 print("PASS" if not fail else "FAIL")

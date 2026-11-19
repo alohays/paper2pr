@@ -1,0 +1,47 @@
+# Historical acceptance case from the November 18 W13 outline and November 19
+# restored hardware survey. These IDs identify obligations within the brief.
+audience:
+  assumes: none
+  description: Second-semester first-year undergraduates with no mechanics or control prerequisite.
+duration_min: 60
+qa_min: 10
+video_min: 1
+brief:
+  complete_clock: true
+  chapters:
+    - slide: survey-route
+      seconds: 170
+    - slide: command-journey
+      seconds: 250
+    - slide: body-dof
+      seconds: 200
+    - slide: joint-inside
+      seconds: 620
+    - slide: joint-encoder
+      seconds: 160
+    - slide: wheel-feedback
+      seconds: 600
+    - slide: history-asimo
+      seconds: 220
+    - slide: warehouse-bodies
+      seconds: 430
+    - slide: demo-label
+      seconds: 260
+    - slide: atlas-return
+      seconds: 90
+  demonstrations:
+    - slide: atlas-opening
+      clip: atlas-warehouse-turn
+    - slide: sensor-delay
+    - slide: body-fixed-arm
+      clip: fanuc-fixed-trays
+    - slide: body-mobile-arm
+      clip: stretch-case-handling
+    - slide: body-quadruped
+      clip: spot-gauge-inspection
+    - slide: body-humanoid
+      clip: box-raise-sonic
+    - slide: body-humanoid
+      clip: box-raise-ctrl-f
+    - slide: atlas-return
+      clip: atlas-gamepad-simulation

@@ -1,44 +1,17 @@
 #!/usr/bin/env python3
-"""
-Quality Scoring System for Academic Course Materials
+"""Grade a Paper2PR QMD and its rendered Reveal slides.
 
-Calculates objective quality scores (0-100) based on defined rubrics.
-Enforces quality gates: 80 (commit), 90 (PR), 95 (excellence).
-
-Usage:
-    python scripts/quality_score.py Quarto/papers/DreamZero.qmd
-    python scripts/quality_score.py Quarto/papers/DreamZero.qmd --summary
-    python scripts/quality_score.py Quarto/*/*.qmd
-
-Which checks run is decided by the deck's profile (scripts/deckprofile.py,
-.claude/rules/slide-profiles/<profile>.yml, `checks:`). Two of them are
-BLOCKERS rather than deductions: any hit forces the score to 0 and a
-non-zero exit, because the deck is either leaking or mis-rendering.
-
-  level1_heading   a line starting with "# " after the front matter (outside
-                   fences and notes). Quarto turns a level-1 heading into a
-                   vertical stack and every following slide nests under it;
-                   section dividers are written as "## {.divider}".
-  forbidden_terms  Quarto/<genre>/<deck>.forbidden.txt exists and a term in
-                   it appears in the visible slide text. File format: one
-                   term per line, "#" starts a comment, blank lines are
-                   ignored, matching is a case-insensitive substring match
-                   on visible text (never on speaker notes). Seed it with
-                   internal project names, unpublished numbers, anything
-                   that must not reach a public page.
-
-Visible text, for every check below, means the slide body outside fenced
-code blocks, outside ::: {.notes} divs, outside the YAML front matter and
-outside HTML comments. A raw block (```{=html} ... ```) is NOT a code block:
-its content goes straight to the screen, so the dash lint, the forbidden-term
-scan and the attribution check read it as visible text (tags, <style> and
-<script> bodies stripped). The level-1 check does not: a "# " inside raw
-HTML is literal text, not a heading, and makes no stack. Deductions
-(dash_lint, attribution) are listed in .claude/rules/quality-gates.md.
+Use --rendered HTML for the exact audience build or --no-render for a
+source-only grade. Includes participate in source checks. Presenter brief
+mismatches, prohibited terms and unintended navigation block the deck.
+Punctuation, estimated line lengths and prior-session keyword hints are
+editorial feedback. The rubric is documented in .claude/rules/quality-gates.md.
 """
 
 import sys
 import argparse
+from contextlib import redirect_stderr, redirect_stdout
+from io import StringIO
 import os
 import signal
 import subprocess
@@ -49,6 +22,10 @@ import json
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import deckprofile  # noqa: E402
+from private_terms import contains_private, private_terms, read_terms
+from qmd_includes import expanded_source
+from slide_brief import RenderedSlides, check_brief
+from strip_qmd_notes import strip_notes
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 # Anchored to the repo, not counted back from the deck. This used to be
@@ -66,7 +43,6 @@ BIB_FILE = REPO_ROOT / 'Bibliography_base.bib'
 QUARTO_RUBRIC = {
     'critical': {
         'compilation_failure': {'points': 100, 'auto_fail': True},
-        'equation_overflow': {'points': 20},
         'broken_citation': {'points': 15},
         'typo_in_equation': {'points': 10},
         'missing_plotly_chart': {'points': 10},
@@ -78,8 +54,6 @@ QUARTO_RUBRIC = {
         'box_density': {'points': 3},          # >1 colored box per slide (new decks)
         'notation_inconsistency': {'points': 3},
         'unexpanded_acronym': {'points': 2},        # profiles with expand_acronyms
-        'missing_prior_session_callback': {'points': 3},  # lecture profile only
-        'dash_expression': {'points': 2, 'cap': 10},      # profiles with dash_lint
         'missing_attribution': {'points': 5, 'cap': 20},  # profiles with attribution
         'missing_box_separation': {'points': 2},
         'color_contrast_low': {'points': 3},
@@ -94,7 +68,7 @@ QUARTO_RUBRIC = {
 
 # Blockers: not deductions. Any hit forces the score to 0 (see the module
 # docstring). Kept out of QUARTO_RUBRIC so nothing sums them as points.
-BLOCKERS = ('level1_heading', 'forbidden_term')
+BLOCKERS = ('level1_heading', 'forbidden_term', 'brief')
 
 THRESHOLDS = {
     'commit': 80,
@@ -647,9 +621,7 @@ class IssueDetector:
 
         Enforces .claude/rules/slide-design-principles.md:
           - bullets ≤5, or ≤3 when a figure shares the slide
-          - a two-line bullet costs one slot (cap drops by 1) and only one
-            such bullet is allowed per slide
-          - no bullet may run to three lines
+          - a two-line bullet costs one slot (cap drops by 1) in the editorial guidance; the browser shows actual wrapping
           - colored boxes ≤1, list nesting ≤1 sub-level
 
         The two-line rules exist because the written budget did not fit the
@@ -682,29 +654,18 @@ class IssueDetector:
 
             base = (profile.bullets_max_with_figure if has_figure
                     else profile.bullets_max) if profile else (3 if has_figure else 5)
-            limit = base - 1 if two_line else base
 
-            if not has_tabset and top_bullets > limit:
-                why = (f'limit {limit} = {base} - 1 because a two-line bullet is present'
-                       if two_line else
-                       f'limit {base}{" with figure" if has_figure else ""}')
+            if not has_tabset and top_bullets > base:
                 violations.append({
                     'type': 'bullet_density', 'slide': title, 'line': start,
-                    'detail': f'{top_bullets} bullets ({why}) — split the slide',
+                    'detail': f'{top_bullets} bullets exceed the profile budget of {base}',
                 })
-            two_line_limit = profile.bullets_max_two_line if profile else 1
-            if not has_tabset and len(two_line) > two_line_limit:
+            allowed_wraps = profile.bullets_max_two_line if profile else 1
+            if not has_tabset and (over_two or len(two_line) > allowed_wraps
+                                   or (two_line and top_bullets == base)):
                 violations.append({
-                    'type': 'bullet_density', 'slide': title, 'line': start,
-                    'detail': f'{len(two_line)} bullets wrap to two lines (limit {two_line_limit}) '
-                              f'— tighten them to one line or split the slide',
-                })
-            if not has_tabset and over_two:
-                violations.append({
-                    'type': 'bullet_density', 'slide': title, 'line': start,
-                    'detail': f'{len(over_two)} bullet(s) run past two lines '
-                              f'({max(over_two)} chars; two lines end at '
-                              f'{IssueDetector.TWO_LINE_CHARS}) — split the slide',
+                    'type': 'estimated_wrap', 'slide': title, 'line': start,
+                    'detail': 'Inspect the wrapped bullets at presentation size',
                 })
             box_limit = profile.box_density if profile else 1
             if boxes > box_limit:
@@ -885,13 +846,11 @@ class IssueDetector:
         (tags stripped, <style>/<script> bodies blanked): the characters in
         them reach the screen exactly as written, entities included.
 
-        One entry per slide (title, count, first snippet); the caller
-        deducts 2 per hit with a cap of 10.
+        One advisory per slide with the location of the first occurrence.
         """
         hits = []
         for title, start, vis in IssueDetector.visible_slides(content):
             count = 0
-            snippet = None
             first_line = None
             in_math = False
             for ln, line in vis:
@@ -908,18 +867,13 @@ class IssueDetector:
                 text = IssueDetector.rendered_text(line)
                 for m in IssueDetector.DASH_RE.finditer(text):
                     count += 1
-                    if snippet is None:
-                        lo = max(0, m.start() - 25)
-                        hi = min(len(text), m.end() + 25)
-                        snippet = text[lo:hi].strip()
+                    if first_line is None:
                         first_line = ln
             if count:
                 hits.append({
                     'type': 'dash_expression', 'slide': title,
                     'line': first_line or start, 'count': count,
-                    'detail': f'{count} dash expression(s) (---, -- or a '
-                              f'literal em/en dash) - write a plain hyphen; '
-                              f'first at line {first_line}: "{snippet}"',
+                    'detail': f'Review punctuation at line {first_line}',
                 })
         return hits
 
@@ -1045,14 +999,7 @@ class IssueDetector:
     def load_forbidden_terms(path: Path) -> List[str]:
         """<deck>.forbidden.txt: one term per line, # comments, blanks
         ignored. Returned in file order, duplicates dropped."""
-        terms = []
-        for raw in path.read_text(encoding='utf-8').splitlines():
-            line = raw.strip()
-            if not line or line.startswith('#'):
-                continue
-            if line not in terms:
-                terms.append(line)
-        return terms
+        return list(read_terms(path))
 
     @staticmethod
     def front_matter_titles(content: str) -> List[Tuple[int, str]]:
@@ -1217,13 +1164,14 @@ class QualityScorer:
     """Calculate quality scores for course materials."""
 
     def __init__(self, filepath: Path, verbose: bool = False,
-                 render: bool = True):
+                 render: bool = True, rendered: Path = None):
         self.filepath = filepath
         self.verbose = verbose
         # Scoring renders the deck, which writes <deck>.html and <deck>_files
         # next to it. --no-render skips that (and with it the compile check),
         # for a read-only pass over a tree you do not want to touch.
-        self.render = render
+        self.render = render and rendered is None
+        self.rendered = rendered
         self.inconclusive = None
         self.score = 100
         self.issues = {
@@ -1231,12 +1179,37 @@ class QualityScorer:
             'major': [],
             'minor': []
         }
+        self.feedback = []
         self.blockers = []      # forced-0 findings; see BLOCKERS
         self.auto_fail = False
 
     def score_quarto(self) -> Dict:
         """Score Quarto lecture slides."""
-        content = self.filepath.read_text(encoding='utf-8')
+        content, origins = expanded_source(self.filepath)
+        private = private_terms()
+        html_file = self.rendered or self.filepath.with_suffix('.html')
+        inspect_html = self.render or self.rendered is not None
+
+        def location(line):
+            path, n = origins[line - 1]
+            label = path.relative_to(REPO_ROOT) if path.is_relative_to(REPO_ROOT) else path.name
+            return f"{label}:{n}"
+
+        def private_failure():
+            self.blockers.append({
+                'type': 'forbidden_term', 'description': 'Private vocabulary match',
+                'details': 'Inspect the deck locally. Matched text is withheld.',
+            })
+            self.score = 0
+            return self._generate_report()
+
+        # Test before starting a render that might echo the offending line.
+        if private:
+            visible = IssueDetector.iter_visible_lines(strip_notes(content))
+            candidates = [IssueDetector.rendered_text(line) for _, line, _, _ in visible]
+            candidates.extend(title for _, title in IssueDetector.front_matter_titles(content))
+            if any(contains_private(line, private) for line in candidates):
+                return private_failure()
 
         # The deck's profile decides the density budget and which extra
         # checks apply. A deck with no config resolves to its genre's
@@ -1266,22 +1239,32 @@ class QualityScorer:
                 self.issues['critical'].append({
                     'type': 'compilation_failure',
                     'description': 'Quarto compilation failed',
-                    'details': error[:200],
+                    'details': 'Run Quarto locally to inspect the error.',
                     'points': 100
                 })
                 self.score = 0
                 return self._generate_report()
 
-        # Check equation overflow (heuristic)
-        equation_overflows = IssueDetector.check_equation_overflow(content)
-        for line in equation_overflows:
-            self.issues['critical'].append({
-                'type': 'equation_overflow',
-                'description': f'Potential equation overflow at line {line}',
-                'details': 'Single equation line >120 chars may overflow slide',
-                'points': 20
-            })
-            self.score -= 20
+        slides = []
+        if inspect_html:
+            html = html_file.read_text(encoding="utf-8")
+            slides = RenderedSlides(html).slides
+            # A presenter HTML may contain private notes. Inspect the audience
+            # text here. The packaging check scans every byte of public text files.
+            if any(contains_private("".join(slide.text), private) for slide in slides):
+                return private_failure()
+            if not slides:
+                raise ValueError("Rendered HTML has no Reveal slides")
+        if profile and "brief" in profile.raw:
+            if not inspect_html:
+                raise ValueError("A presenter brief requires a render or --rendered HTML")
+            for detail in check_brief(profile.raw["brief"], slides,
+                                      60 * (profile.duration_min - profile.qa_min)):
+                self.blockers.append({'type': 'brief', 'description': detail,
+                                      'details': 'Check the agreed presenter brief in deck.yml.'})
+
+        for line in IssueDetector.check_equation_overflow(content):
+            self.feedback.append(f"{location(line)}: inspect the width of the rendered equation")
 
         # Check broken citations (LaTeX-style \cite patterns)
         bib_file = BIB_FILE
@@ -1316,6 +1299,9 @@ class QualityScorer:
                 })
                 self.score -= 5
             for v in IssueDetector.check_design_density(content, profile):
+                if v['type'] == 'estimated_wrap':
+                    self.feedback.append(f"{location(v['line'])}: {v['detail']}")
+                    continue
                 severity = 'minor' if v['type'] == 'deep_nesting' else 'major'
                 points = 1 if v['type'] == 'deep_nesting' else 3
                 self.issues[severity].append({
@@ -1356,32 +1342,11 @@ class QualityScorer:
                             f"{prior['week']} ({prior['short_date']}): "
                             f"\"{prior['title']}\"{who}")
             for v in IssueDetector.check_prior_session_callback(content):
-                self.issues['major'].append({
-                    'type': v['type'],
-                    'description': f"No callback to the previous session (line {v['line']})",
-                    'details': v['detail'] + expected,
-                    'points': 3
-                })
-                self.score -= 3
+                self.feedback.append(f"{location(v['line'])}: check the prior-session connection{expected}")
 
-        # WP2 gates. Each is switched by the profile (see the profile yml,
-        # checks:), so a deck whose profile leaves one off is not touched by
-        # it. The two blockers force the score to 0 below.
         if profile and profile.dash_lint:
-            hits = IssueDetector.check_dash_expressions(content)
-            cap = QUARTO_RUBRIC['major']['dash_expression']['cap']
-            per = QUARTO_RUBRIC['major']['dash_expression']['points']
-            spent = 0
-            for v in hits:
-                points = min(per * v['count'], max(cap - spent, 0))
-                spent += points
-                self.issues['major'].append({
-                    'type': v['type'],
-                    'description': f"Dash expression(s) on slide \"{v['slide']}\" (line {v['line']})",
-                    'details': v['detail'] + ('' if points else ' (cap reached, no further deduction)'),
-                    'points': points
-                })
-                self.score -= points
+            for v in IssueDetector.check_dash_expressions(content):
+                self.feedback.append(f"{location(v['line'])}: review {v['count']} dash expression(s)")
         if profile and profile.attribution and profile.figures_manifest:
             try:
                 hits = IssueDetector.check_attribution(content, profile.figures_manifest)
@@ -1405,20 +1370,26 @@ class QualityScorer:
             for v in IssueDetector.check_forbidden_terms(content, profile.forbidden_file):
                 self.blockers.append({
                     'type': v['type'],
-                    'description': f"{self.filepath}:{v['line']}: forbidden term \"{v['term']}\"",
-                    'details': v['detail'],
+                    'description': f"{location(v['line'])}: prohibited vocabulary",
+                    'details': 'See the public deck vocabulary list.',
                 })
+            terms = IssueDetector.load_forbidden_terms(profile.forbidden_file)
+            for slide in slides:
+                if contains_private("".join(slide.text), terms):
+                    self.blockers.append({
+                        'type': 'forbidden_term', 'description': f"Rendered slide #{slide.id}: prohibited vocabulary",
+                        'details': 'See the public deck vocabulary list.',
+                    })
         if profile and profile.level1_heading != 'off':
             for v in IssueDetector.check_level1_headings(content):
                 self.blockers.append({
                     'type': v['type'],
-                    'description': f"{self.filepath}:{v['line']}: level-1 heading \"{v['heading']}\"",
+                    'description': f"{location(v['line'])}: level-1 heading \"{v['heading']}\"",
                     'details': v['detail'],
                 })
 
         # Check plotly widgets (if HTML exists)
-        html_file = self.filepath.parent.parent / 'docs' / 'slides' / self.filepath.with_suffix('.html').name
-        if html_file.exists():
+        if inspect_html:
             widget_count, _ = IssueDetector.check_plotly_widgets(html_file)
             expected_plotly = content.count('plotly::plot_ly')
             if expected_plotly > 0 and widget_count < expected_plotly:
@@ -1466,13 +1437,15 @@ class QualityScorer:
         total_count = critical_count + major_count + minor_count
 
         return {
-            'filepath': str(self.filepath),
+            'filepath': (str(self.filepath.resolve().relative_to(REPO_ROOT))
+                         if self.filepath.resolve().is_relative_to(REPO_ROOT) else self.filepath.name),
             'score': self.score,
             'status': status,
             'threshold': threshold,
             'auto_fail': self.auto_fail,
             'blocked': bool(self.blockers),
             'blockers': self.blockers,
+            'editorial_feedback': self.feedback,
             'issues': {
                 'critical': self.issues['critical'],
                 'major': self.issues['major'],
@@ -1509,6 +1482,12 @@ class QualityScorer:
             return
 
         print(f"## Overall Score: {report['score']}/100 {status_emoji.get(report['status'], '')}")
+
+        if self.feedback:
+            print(f"Editorial feedback ({len(self.feedback)}, no point deductions)")
+            if not summary_only:
+                for message in self.feedback:
+                    print(f"  {message}")
 
         if report['blockers']:
             # Shown in every mode, summary included: a blocker is the one
@@ -1627,29 +1606,35 @@ Exit Codes:
     parser.add_argument('--summary', action='store_true', help='Show summary only')
     parser.add_argument('--verbose', action='store_true', help='Show all issues including minor')
     parser.add_argument('--json', action='store_true', help='Output as JSON')
-    parser.add_argument('--no-render', action='store_true',
+    rendered = parser.add_mutually_exclusive_group()
+    rendered.add_argument('--rendered', type=Path, metavar='HTML',
+                          help='inspect this exact audience HTML without rendering again')
+    rendered.add_argument('--no-render', action='store_true',
                         help='do not run quarto render (skips the compile '
                              'check; leaves the tree untouched)')
 
     args = parser.parse_args()
 
+    if args.rendered and len(args.filepaths) != 1:
+        parser.error('--rendered requires exactly one QMD')
     results = []
     exit_code = 0
 
     for filepath in args.filepaths:
         if not filepath.exists():
-            print(f"Error: File not found: {filepath}")
+            print(f"Error: File not found: {filepath.name}")
             exit_code = 1
             continue
 
         try:
             scorer = QualityScorer(filepath, verbose=args.verbose,
-                                   render=not args.no_render)
+                                   render=not args.no_render, rendered=args.rendered)
 
             if filepath.suffix == '.qmd':
                 report = scorer.score_quarto()
             else:
                 print(f"Error: Unsupported file type: {filepath.suffix}")
+                exit_code = 1
                 continue
 
             results.append(report)
@@ -1663,15 +1648,34 @@ Exit Codes:
                 exit_code = max(exit_code, 1)
 
         except Exception as e:
-            print(f"Error scoring {filepath}: {e}")
-            import traceback
-            traceback.print_exc()
+            if os.environ.get("PAPER2PR_PRIVATE_DENYLIST") is not None:
+                print("Scoring failed. Check the local denylist and deck configuration.", file=sys.stderr)
+            else:
+                print(f"Error scoring {filepath.name}: {e}", file=sys.stderr)
             exit_code = 1
 
     if args.json:
         print(json.dumps(results, indent=2))
 
-    sys.exit(exit_code)
+    return exit_code
+
 
 if __name__ == '__main__':
-    main()
+    try:
+        protected = private_terms()
+    except ValueError as exc:
+        sys.exit(str(exc))
+    if protected:
+        # Other diagnostics (citation keys, bad config, slide IDs) may
+        # inadvertently quote private wording even when the slide text is safe.
+        stdout, stderr = StringIO(), StringIO()
+        with redirect_stdout(stdout), redirect_stderr(stderr):
+            code = main()
+        for captured, stream in ((stdout, sys.stdout), (stderr, sys.stderr)):
+            message = captured.getvalue()
+            if contains_private(message, protected):
+                print('Diagnostics withheld because they contain private vocabulary.', file=sys.stderr)
+            else:
+                stream.write(message)
+        sys.exit(code)
+    sys.exit(main())

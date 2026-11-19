@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Scaffold a new deck from the answers /new-deck collected.
 
-The interview is conversational and lives in .claude/skills/new-deck. This
+The presenter brief and authoring workflow live in .agents/skills/new-deck. This
 script is the deterministic half: given the answers, it always produces the
 same files, in the right places, with the right relative paths. Splitting it
 that way means the questions can be asked however they need to be asked while
@@ -261,8 +261,7 @@ def deck_yml(v: dict) -> str:
     if v["sources"]:
         lines += [
             "",
-            "# What the fact-check agent compares the slides against: paths or",
-            "# URLs. Add to it as the deck grows.",
+            "# Primary sources suitable for sharing (URLs or repository-relative paths).",
             "sources:",
         ] + [f"  - {json.dumps(src)}" for src in v["sources"]]
     if v["series"]:
@@ -286,7 +285,9 @@ def deck_yml(v: dict) -> str:
         ]
     lines += [
         "",
-        "# Two optional files next to this deck are read when they exist:",
+        "# Optional brief.chapters and brief.demonstrations preserve presenter",
+        "# requirements. See guides/framework.md for the format.",
+        "# These optional public editorial files are read when they exist:",
         f"#   Quarto/{v['genre']}/{v['name']}.forbidden.txt  (one term per line;",
         "#     any hit in visible slide text is a BLOCKER at the gate)",
         f"#   Figures/{v['genre']}/{v['name']}/figures.yml  (file, source, licence,",
