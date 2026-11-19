@@ -31,17 +31,19 @@ is removed whole. An unbalanced notes fence exits non-zero, which makes git
 refuse the add rather than write a half-stripped file.
 
 Setup:
-    git config filter.strip-speaker-notes.clean 'python3 scripts/strip_qmd_notes.py'
-    git config filter.strip-speaker-notes.smudge 'cat'
+    bash scripts/setup-git-filters.sh
 """
 
 import re
+import shlex
 import sys
 
 # A fenced-div line: three or more colons, then the attribute text (empty on
 # a closing fence). Pandoc closes the innermost open div on a bare fence,
 # whatever its length, so the count is not matched against the opener's.
 FENCE_RE = re.compile(r'^(:{3,})\s*(.*?)\s*$')
+CODE_FENCE_RE = re.compile(r'^(`{3,}|~{3,})(.*)$')
+DATA_NOTES_RE = re.compile(r'''^(\s*)(?:data-notes|"data-notes"|'data-notes')\s*:''')
 
 
 def _names_notes(attr: str) -> bool:
@@ -50,10 +52,19 @@ def _names_notes(attr: str) -> bool:
     Accepts `{.notes}`, `{.notes .fragment}`, `{#id .notes}` and the bare
     `notes` form; rejects `{.callout-note}` and anything else.
     """
-    if not attr:
+    # Pandoc allows a trailing row of colons after the attributes.
+    attr = re.sub(r"\s*:{3,}$", "", attr).strip()
+    if not (attr.startswith("{") and attr.endswith("}")):
+        return attr == "notes"
+    if "notes" not in attr:
         return False
-    inner = attr[1:-1] if attr.startswith("{") and attr.endswith("}") else attr
-    return any(token.lstrip(".") == "notes" for token in inner.split())
+    try:
+        tokens = shlex.split(attr[1:-1])
+    except ValueError:
+        raise ValueError("unreadable fenced-div attributes containing a notes marker") from None
+    return any(token == ".notes" or
+               (token.startswith("class=") and "notes" in token[6:].split())
+               for token in tokens)
 
 
 def find_note_divs(content: str) -> list:
@@ -65,13 +76,16 @@ def find_note_divs(content: str) -> list:
     lines = content.split("\n")
     stack = []          # (is_notes, opening line index) per open div
     blocks = []
-    in_fence = False
+    code_fence = ""
     for i, line in enumerate(lines):
         stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fence = not in_fence
+        code = CODE_FENCE_RE.match(stripped)
+        if code_fence:
+            if code and code[1].startswith(code_fence) and not code[2].strip():
+                code_fence = ""
             continue
-        if in_fence:
+        if code and (code[1][0] != "`" or "`" not in code[2]):
+            code_fence = code[1]
             continue
         m = FENCE_RE.match(stripped)
         if not m:
@@ -116,7 +130,7 @@ def strip_title_slide_notes(content: str) -> str:
     out = []
     i = 0
     while i < len(lines):
-        m = re.match(r'^(\s*)data-notes:', lines[i])
+        m = DATA_NOTES_RE.match(lines[i])
         if not m:
             out.append(lines[i])
             i += 1
@@ -140,7 +154,14 @@ def strip_notes(content: str) -> str:
 if __name__ == "__main__":
     text = sys.stdin.read()
     try:
-        sys.stdout.write(strip_notes(text))
+        cleaned = strip_notes(text)
+        if sys.argv[1:] == ["--check"]:
+            if cleaned != text:
+                sys.exit("speaker notes remain after filtering")
+        elif not sys.argv[1:]:
+            sys.stdout.write(cleaned)
+        else:
+            sys.exit("Usage: strip_qmd_notes.py [--check]")
     except ValueError as e:
         # Non-zero here makes git abort the add. Writing the input through
         # would put the notes in the index; writing nothing would empty the

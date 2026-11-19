@@ -30,32 +30,18 @@ check_attr() {
 }
 
 echo "1. Clean filter is configured in this clone, and a gate says so if it is not"
-if [ -n "$(git config --get filter.strip-speaker-notes.clean || true)" ]; then
-  echo "  ok    filter.strip-speaker-notes.clean is set"
+hook="$(git rev-parse --git-path hooks/pre-commit)" || exit 1
+if [[ -n "$(git config --get filter.strip-speaker-notes.clean || true)" &&
+      "$(git config --bool --get filter.strip-speaker-notes.required || true)" == true &&
+      -x "$hook" ]] && cmp -s "$hook" scripts/pre-commit.sh; then
+  echo "  ok    required filter and active hook installed"
 else
-  echo "  FAIL  filter is not configured -- run scripts/setup-git-filters.sh"
-  echo "        Until you do, committing a deck writes its speaker notes to git."
+  echo "  FAIL  run bash scripts/setup-git-filters.sh in this checkout"
   fail=1
 fi
-# The config is per clone, so "it is set here" proves nothing about the next
-# clone. What has to hold is that a clone without it cannot commit. The
-# GIT_CONFIG_* environment override blanks the value for the child processes
-# only, so this never touches the config file on disk.
-if GIT_CONFIG_COUNT=1 \
-   GIT_CONFIG_KEY_0=filter.strip-speaker-notes.clean \
-   GIT_CONFIG_VALUE_0= \
-   bash scripts/check-notes-pre-commit.sh >/dev/null 2>&1; then
-  echo "  FAIL  check-notes-pre-commit.sh passed with no clean filter configured"
-  fail=1
-else
-  echo "  ok    a clone without the filter cannot commit"
-fi
-if [ -x "$REPO_ROOT/.git/hooks/pre-commit" ] \
-   && grep -q "check-notes-pre-commit" "$REPO_ROOT/.git/hooks/pre-commit"; then
-  echo "  ok    the installed hook runs the speaker-note gate"
-else
-  echo "  FAIL  .git/hooks/pre-commit does not run check-notes-pre-commit.sh"
-  echo "        Run scripts/setup-git-filters.sh."
+if GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=filter.strip-speaker-notes.required \
+    GIT_CONFIG_VALUE_0=false bash scripts/check-notes-pre-commit.sh >/dev/null 2>&1; then
+  echo "  FAIL  the gate accepted an optional filter"
   fail=1
 fi
 
@@ -150,6 +136,17 @@ LEAK-afternested
 
 ## G
 
+~~~~markdown
+```
+KEEP-inside-a-tilde-fence
+~~~~
+
+:::: {#id class="fragment notes"} ::::
+LEAK-explicit-class
+::::
+
+## H
+
 ::: {.callout-note}
 KEEP-this-is-not-a-note
 :::
@@ -165,9 +162,9 @@ if printf '%s' "$forms" | grep -q "LEAK-"; then
   printf '%s' "$forms" | grep -n "LEAK-" | sed 's/^/        /'
   fail=1
 else
-  echo "  ok    all six notes spellings removed"
+  echo "  ok    all notes spellings removed"
 fi
-for keep in KEEP-this-is-not-a-note KEEP-inside-a-code-fence; do
+for keep in KEEP-this-is-not-a-note KEEP-inside-a-code-fence KEEP-inside-a-tilde-fence; do
   if printf '%s' "$forms" | grep -q "$keep"; then
     echo "  ok    kept: $keep"
   else
@@ -212,10 +209,13 @@ for p in "Quarto/papers/DreamZero.html" "Quarto/lectures/w02_files/x.js"; do
   fi
 done
 
+echo "5. Normal clones, linked worktrees, staged blobs, rendered notes and the CI fallback"
+python3 scripts/test_note_delivery.py || fail=1
+
 echo
 if [ "$fail" -eq 0 ]; then
   echo "PASS"
 else
-  echo "FAIL -- do not move decks into subdirectories until this passes"
+  echo "FAIL"
 fi
 exit "$fail"

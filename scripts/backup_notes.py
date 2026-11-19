@@ -48,7 +48,7 @@ NOTES_DIR = REPO_ROOT / ".speaker-notes"
 # the two disagreeing is exactly how five of pandoc's six notes spellings
 # reached git. A backup records the block's lines verbatim, opening and
 # closing fence included, so a restore reproduces whatever the author wrote.
-DATA_NOTES_RE = re.compile(r'^(\s*)data-notes:')
+DATA_NOTES_RE = strip_qmd_notes.DATA_NOTES_RE
 BACKUP_FORMAT = 3
 
 
@@ -296,8 +296,7 @@ def restore(name: str, missing_ok: bool = False) -> None:
     content = qmd_path.read_text(encoding="utf-8")
 
     # Check if notes already exist
-    if strip_qmd_notes.find_note_divs(content) or re.search(
-            r'^\s*data-notes:', content, re.MULTILINE):
+    if strip_qmd_notes.strip_notes(content) != content:
         print(f"{qmd_path.name} already has notes. Skipping restore.")
         return
 

@@ -1,58 +1,100 @@
 #!/usr/bin/env python3
-"""Strip speaker notes from RevealJS HTML for public deployment.
-
-Removes both forms RevealJS understands:
-  - <aside class="notes"> ... </aside>, one per slide
-  - a data-notes="..." attribute on a <section>, which is how the
-    Quarto-generated title slide carries its notes (a notes div placed
-    before the first `##` becomes its own slide instead of attaching)
-
-Usage:
-    python3 scripts/strip_speaker_notes.py path/to/slides.html
-    python3 scripts/strip_speaker_notes.py docs/slides/*.html
-"""
-
+"""Remove presenter notes from public copies of Reveal HTML, preserving other bytes."""
+import argparse
 import re
-import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
-NOTES_PATTERN = re.compile(
-    r'<aside class="notes">\s*.*?\s*</aside>',
-    re.DOTALL
+
+# Match whole attributes, including quoted values containing '>' or strings
+# that look like other attributes. HTMLParser supplies the parsed names. The
+# original spelling matters to the rest of a Quarto tag (SVG and inline JS).
+ATTRIBUTE = re.compile(
+    r"""\s+([^\s=/>]+)(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?"""
 )
 
-# Quarto HTML-escapes the value, so a quote never appears raw inside it.
-DATA_NOTES_PATTERN = re.compile(r'\sdata-notes=(?:"[^"]*"|\'[^\']*\')')
+
+class NoteSpans(HTMLParser):
+    """Locate private ranges, ignoring CSS, JavaScript and escaped examples."""
+
+    def __init__(self, html):
+        super().__init__(convert_charrefs=False)
+        self.html = html
+        self.lines = [0] + [m.end() for m in re.finditer("\n", html)]
+        self.spans = []
+        self.note_tag = None
+        self.depth = 0
+        self.feed(html)
+        self.close()
+        if self.note_tag is not None:
+            raise ValueError("unclosed speaker-note element in rendered HTML")
+
+    def source_offset(self):
+        line, column = self.getpos()
+        return self.lines[line - 1] + column
+
+    def handle_starttag(self, tag, attrs):
+        if self.note_tag is not None:
+            if tag == self.note_tag:
+                self.depth += 1
+            return
+        if tag in {"aside", "div"} and any(
+                key == "class" and "notes" in (value or "").split() for key, value in attrs):
+            self.note_tag = tag
+            self.note_start = self.source_offset()
+            self.depth = 1
+            return
+
+        expected = sum(key == "data-notes" for key, _ in attrs)
+        if expected:
+            start = self.source_offset()
+            matches = [m for m in ATTRIBUTE.finditer(self.get_starttag_text())
+                       if m.group(1).lower() == "data-notes"]
+            if len(matches) != expected:
+                raise ValueError("cannot locate a data-notes attribute in rendered HTML")
+            self.spans.extend((start + m.start(), start + m.end()) for m in matches)
+
+    def handle_endtag(self, tag):
+        if tag == self.note_tag:
+            self.depth -= 1
+            if not self.depth:
+                end = self.html.index(">", self.source_offset()) + 1
+                self.spans.append((self.note_start, end))
+                self.note_tag = None
+
+    def handle_startendtag(self, tag, attrs):
+        # A self-closing slash does not close a non-void HTML note container.
+        self.handle_starttag(tag, attrs)
+
+
+def count_notes(html_path: Path) -> int:
+    return len(NoteSpans(html_path.read_bytes().decode("utf-8")).spans)
 
 
 def strip_notes(html_path: Path) -> int:
-    """Remove speaker notes from HTML file in-place. Returns count removed."""
-    content = html_path.read_text(encoding="utf-8")
-    new_content, count = NOTES_PATTERN.subn("", content)
-    new_content, attr_count = DATA_NOTES_PATTERN.subn("", new_content)
-    count += attr_count
-    if count > 0:
-        html_path.write_text(new_content, encoding="utf-8")
-    return count
+    """Strip a public copy in place. A parse failure leaves the file intact."""
+    html = html_path.read_bytes().decode("utf-8")
+    spans = NoteSpans(html).spans
+    if spans:
+        kept = []
+        previous = 0
+        for start, end in spans:
+            kept.append(html[previous:start])
+            previous = end
+        kept.append(html[previous:])
+        html_path.write_bytes("".join(kept).encode("utf-8"))
+    return len(spans)
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: strip_speaker_notes.py <html_file> [...]", file=sys.stderr)
-        sys.exit(1)
-
-    total = 0
-    for arg in sys.argv[1:]:
-        path = Path(arg)
-        if not path.exists():
-            print(f"  Skip (not found): {path}", file=sys.stderr)
-            continue
-        count = strip_notes(path)
-        if count > 0:
-            print(f"  Stripped {count} note blocks from {path.name}")
-        total += count
-
-    print(f"  Total: {total} note blocks stripped")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("pages", type=Path, nargs="+")
+    args = parser.parse_args()
+    try:
+        count = sum(strip_notes(page) for page in args.pages)
+    except (OSError, ValueError) as error:
+        parser.exit(1, f"error: {error}\n")
+    print(f"Removed {count} speaker-note block(s) or attribute(s).")
 
 
 if __name__ == "__main__":
