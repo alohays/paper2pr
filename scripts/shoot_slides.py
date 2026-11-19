@@ -141,6 +141,7 @@ RESOURCES = """(() => {
 
 # A caption's outer box is the title and source label the audience must see.
 # Use the scaled Reveal canvas at caption-room size, including its letterbox.
+AUDIENCE_BOUNDS = Path(__file__).with_name("audience_bounds.js").read_text(encoding="utf-8")
 CAPTIONS = """(() => {
   const slide = Reveal.getCurrentSlide();
   const canvas = Reveal.getSlidesElement().getBoundingClientRect();
@@ -191,6 +192,7 @@ def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
     out_dir.mkdir(parents=True, exist_ok=True)
     shots = []
     captions = {}
+    off_canvas = {}
     digest = hashlib.sha256(html.read_bytes()).hexdigest()
     with local_url(html, url) as address:
         with urllib.request.urlopen(address, timeout=12) as response:
@@ -228,6 +230,9 @@ def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
                 boxes = page.evaluate(CAPTIONS)
                 if boxes:
                     captions[ids[index]] = boxes
+                lost = page.evaluate(AUDIENCE_BOUNDS)
+                if lost:
+                    off_canvas[ids[index]] = lost
                 if index + 1 < len(ids):
                     state = step(page, "n")
                     ensure_state(state, index + 1, -1)
@@ -251,13 +256,16 @@ def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
     report = {"html_sha256": digest, "width": width, "height": 720,
               "total_slides": len(ids), "captured_ids": ids[start:stop],
               "forward_steps": steps, "reverse_steps": steps,
-              "captions": captions}
+              "captions": captions, "off_canvas": off_canvas}
     (out_dir / "browser.json").write_text(json.dumps(report, indent=2) + "\n")
     print(f"{len(shots)}/{len(ids)} final slide frames, {steps} clicker actions per direction "
           f"at {width}x720 -> {out_dir}")
     clipped = [name for name, boxes in captions.items() if any(b["outside"] > 1 for b in boxes)]
     if clipped:
         raise ValueError(f"caption clipped on {', '.join(clipped)} (see {out_dir / 'browser.json'})")
+    if off_canvas:
+        raise ValueError(f"visible content outside the canvas on {', '.join(off_canvas)} "
+                         f"(see {out_dir / 'browser.json'})")
     return shots
 
 
