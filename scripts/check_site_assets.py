@@ -1,166 +1,270 @@
 #!/usr/bin/env python3
-"""Fail the build if a deployed page references a local file that is not there.
+"""Validate the assembled runtime files, presentation privacy and local references."""
 
-The assemble step in .github/workflows/deploy.yml hand-picks what goes into
-_site. Anything a deck references by relative path but nobody thought to copy
-becomes a silent 404 -- the page still loads and looks fine, so the break only
-shows up when someone interacts with it. That is exactly how
-`robottt-stepper.js` shipped missing: every slide rendered correctly and only
-the arrow-key stepping was dead.
+from __future__ import annotations
 
-Two kinds of failure:
-  * a local reference whose file is not under the site root (the original
-    case above);
-  * a reference into Figures/**/videos/ -- a deck's trimmed clips and posters
-    live on a GitHub Release (scripts/media_release.sh), never in git and
-    never in the deployed tree, so a page that still points there was built
-    from a videos.json written with `media_prep.py --local` (authoring mode).
-    That fails even when the file happens to exist in a local preview, which
-    it never will on CI.
-
-Usage:  python3 scripts/check_site_assets.py _site
-
-Self-test of the rules (what scripts/test_media.py asserts):
-  >>> LOCAL_MEDIA.search("../../Figures/lectures/w02/videos/hook.mp4") is not None
-  True
-  >>> LOCAL_MEDIA.search("../../Figures/lectures/w02/hook-poster.jpg") is None
-  True
-  >>> any(p.match("../videos/task1.mp4") for p in ALLOW_MISSING)
-  True
-  >>> is_external("https://github.com/alohays/paper2pr/releases/download/media-x/a.mp4")
-  True
-"""
-import os
+import argparse
+import html
+import posixpath
 import re
 import sys
-from urllib.parse import unquote, urlparse
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
-# `<source src>` in the task-video blocks lists NVIDIA's CDN first and a local
-# copy second. The local copy is deliberately not deployed (the media is not in
-# git), so a missing videos/*.mp4 is by design, not an oversight.
-ALLOW_MISSING = (
-    # The `../` prefix appeared when decks moved into Quarto/<genre>/; the
-    # reference is still the same deliberately-undeployed local fallback.
-    re.compile(r"^(?:\.\./)*videos/.*\.mp4$"),
-)
+import deckpath
+from private_terms import contains_private, private_terms
+from strip_speaker_notes import count_notes
 
-# Local media of a deck: Figures/<genre>/<deck>/videos/<slug>.mp4 and the
-# posters beside it. Gitignored, hosted on the Release; a deployed page must
-# reference the Release URL (external) instead. Matched on the raw reference
-# so a `../../Figures/...` from slides/<genre>/ is caught before resolution.
+# RoboTTT supplies a local fallback after an external primary <source>.
+ALLOW_MISSING = (re.compile(r"^(?:\.\./)*videos/[^/]+\.mp4$"),)
 LOCAL_MEDIA = re.compile(r"(?:^|/)Figures/[^/]+/[^/]+/videos/")
-
-# src/href covers <script>, <link>, <img>, <source>. RevealJS also pulls media
-# in through data-background-* attributes (and data-src, its lazy-load hook
-# that the video-card shortcode uses for <source>), <video> through poster
-# and data-background-poster, and stylesheets through url() -- a 404 in any
-# of them is just as invisible as the one this script was written for.
-REF = re.compile(
-    r'(?:(?:src|data-src|href|poster|data-background-image|data-background-video'
-    r'|data-background-poster|data-background-iframe)\s*=\s*"([^"]+)"'
-    r'|url\(\s*["\']?([^"\')]+?)["\']?\s*\))'
+REFERENCE_ATTRS = frozenset({
+    "src", "href", "xlink:href", "data-src", "data-hls", "poster",
+    "data-background-image", "data-background-video", "data-background-poster",
+    "data-background-iframe",
+})
+RUNTIME_SUFFIXES = frozenset({
+    ".html", ".css", ".js", ".mjs", ".json", ".svg", ".png", ".webp", ".jpg",
+    ".jpeg", ".avif", ".gif", ".ico", ".woff", ".woff2", ".otf", ".ttf",
+    ".eot", ".mp4", ".webm", ".mp3", ".ogg", ".wav", ".vtt", ".wasm",
+})
+FONT_SUFFIXES = {".eot", ".ttf", ".otf", ".woff", ".woff2"}
+FONT_NOTICES = {"LICENSE", "LICENSE.txt", "OFL.txt"}
+TEXT_SUFFIXES = {".html", ".css", ".js", ".mjs", ".json", ".svg", ".vtt"}
+SCAN_REFS = {".html", ".css", ".svg"}
+AUTHORING_NAMES = {"videos.json", "series.json", "figures.json", "package.json",
+                   "package-lock.json"}
+LOCAL_PATH = re.compile(
+    r"""(?:file:///(?!/)|(?<![\w/])(?:/Users/|/home/|/private/var/|/var/folders/|/Volumes/|[A-Z]:[\\/]Users[\\/]))""",
+    re.I,
 )
+CSS_URL = re.compile(
+    r"""(?:\burl\(\s*(?:"([^"]*)"|'([^']*)'|([^)'"]+?))\s*\)|@import\s*["']([^"']+)["'])""",
+    re.I,
+)
+
+
+def css_refs(value):
+    for match in CSS_URL.finditer(re.sub(r"/\*.*?\*/", "", value, flags=re.S)):
+        yield next((part.strip() for part in match.groups() if part is not None), "")
+
+
+def srcset_refs(value):
+    # A candidate URL extends to the next whitespace. An embedded data-URL
+    # comma belongs to that URL. Trailing commas separate descriptorless URLs.
+    while value.strip(" \t\r\n,"):
+        value = value.lstrip(" \t\r\n,")
+        words = value.split(None, 1)
+        url = words[0]
+        yield url.rstrip(",")
+        value = words[1] if len(words) > 1 else ""
+        if not url.endswith(","):
+            value = value.partition(",")[2]
+
+
+class RuntimeRefs(HTMLParser):
+    """Read actual markup, including HTML-escaped attributes and inline styles."""
+
+    def __init__(self):
+        super().__init__()
+        self.urls = []
+        self.in_style = False
+        self.video_primary = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "style":
+            self.in_style = True
+        if tag == "video":
+            self.video_primary = False
+        for key, value in attrs.items():
+            if not value:
+                continue
+            if key in REFERENCE_ATTRS or (tag == "object" and key == "data"):
+                if tag == "source" and key == "src" and self.video_primary is not None:
+                    if self.video_primary and any(p.match(value) for p in ALLOW_MISSING):
+                        continue
+                    if value.startswith(("https://", "http://")):
+                        self.video_primary = True
+                self.urls.append(value)
+            elif key in {"srcset", "data-srcset"}:
+                self.urls.extend(srcset_refs(value))
+            elif key in {"style", "fill", "stroke", "filter", "mask", "clip-path",
+                         "marker", "marker-start", "marker-mid", "marker-end"}:
+                self.urls.extend(css_refs(value))
+            elif tag == "iframe" and key == "srcdoc":
+                embedded = RuntimeRefs()
+                embedded.feed(value)
+                embedded.close()
+                self.urls.extend(embedded.urls)
+
+    def handle_endtag(self, tag):
+        if tag == "style":
+            self.in_style = False
+        if tag == "video":
+            self.video_primary = None
+
+    def handle_data(self, data):
+        if self.in_style:
+            self.urls.extend(css_refs(data))
 
 
 def is_external(url):
-    return (url.startswith(("data:", "#", "mailto:", "javascript:"))
-            or bool(urlparse(url).scheme) or url.startswith("//"))
-
-
-def resolve(site_root, page_dir, rel):
-    """Where the browser would look, or None if it escapes the site.
-
-    A root-relative `/x` means the site root to a browser, not the filesystem
-    root, and a `../../x` that climbs out of _site would resolve against the CI
-    workspace here and pass while 404ing once deployed. Both have to be handled
-    explicitly or the gate lies in one direction or the other.
-    """
-    base = site_root if rel.startswith("/") else page_dir
-    target = os.path.normpath(os.path.join(base, rel.lstrip("/")))
-    root = os.path.normpath(site_root)
-    if os.path.commonpath([root, target]) != root:
-        return None
-    return target
+    return url.startswith(("#", "//")) or bool(urlsplit(url).scheme)
 
 
 def refs_in(path):
-    """-> the local paths a page or stylesheet asks the browser to fetch."""
-    with open(path, encoding="utf-8", errors="replace") as f:
-        text = f.read()
-    out = []
-    for m in REF.findall(text):
-        for raw in m:
-            raw = raw.strip()
-            if not raw or is_external(raw):
-                continue
-            rel = unquote(raw.split("#")[0].split("?")[0]).strip()
+    path = Path(path)
+    text = path.read_text(encoding="utf-8")
+    if path.suffix.lower() == ".css":
+        urls = css_refs(text)
+    else:
+        parser = RuntimeRefs()
+        parser.feed(text)
+        parser.close()
+        urls = parser.urls
+    refs = set()
+    for raw in urls:
+        raw = raw.strip()
+        if raw.lower().startswith("file:") or "\\" in raw:
+            raise ValueError("a runtime reference uses a local filesystem path")
+        if raw and not is_external(raw):
+            rel = unquote(urlsplit(raw).path)
             if rel:
-                out.append(rel)
-    return sorted(set(out))
+                refs.add(rel)
+    return sorted(refs)
 
 
-def check(site_root):
-    """Walk pages, then only the stylesheets those pages actually link.
+def site_target(page, ref):
+    """Return a site-relative path using browser URL resolution at the site root."""
+    rel = posixpath.normpath(posixpath.join(posixpath.dirname(page), ref)
+                             if not ref.startswith("/") else ref.lstrip("/"))
+    if rel == ".." or rel.startswith("../") or "\\" in rel or "\0" in rel:
+        raise ValueError("a reference escapes the site root")
+    return Path(rel)
 
-    Scanning every .css on disk sounds more thorough but is wrong here:
-    <name>_files accumulates hashed bundles from earlier renders, and those
-    orphans carry stale paths nobody ever requests. Following links from the
-    HTML checks what actually ships to a reader.
-    """
-    pages = [os.path.join(d, n)
-             for d, _sub, names in os.walk(site_root)
-             for n in names if n.endswith(".html")]
 
-    missing = []
+def runtime_path(path, classroom=False):
+    path = Path(path)
+    if any(part.startswith(".") for part in path.parts):
+        return False
+    if path.name in FONT_NOTICES:
+        return True
+    if path.suffix.lower() not in RUNTIME_SUFFIXES or path.name.lower() in AUTHORING_NAMES:
+        return False
+    local_clip = path.suffix.lower() in {".mp4", ".webm"}
+    fixture_asset = path.parts[:3] == ("slides", "_fixtures", "assets")
+    if not classroom and (LOCAL_MEDIA.search(path.as_posix()) or (local_clip and not fixture_asset)):
+        return False
+    return True
+
+
+def check(site_root, classroom=False):
+    """Check files as served. Never include the raw failing URL in diagnostics."""
+    root = Path(site_root)
     checked = 0
-    queue = [(p, False) for p in pages]
-    scanned = set()
-    while queue:
-        page, _ = queue.pop()
-        if page in scanned:
+    missing = []
+    for file in sorted(root.rglob("*")):
+        if file.suffix.lower() not in SCAN_REFS or not file.is_file():
             continue
-        scanned.add(page)
-        here = os.path.dirname(page)
-        for rel in refs_in(page):
-            if any(p.match(rel) for p in ALLOW_MISSING):
-                continue
+        page = file.relative_to(root)
+        for ref in refs_in(file):
             checked += 1
-            if LOCAL_MEDIA.search(rel):
-                missing.append((os.path.relpath(page, site_root),
-                                rel + "   (local media: never deployed; re-run "
-                                      "media_prep.py without --local)"))
-                continue
-            target = resolve(site_root, here, rel)
-            if target is None:
-                missing.append((os.path.relpath(page, site_root),
-                                rel + "   (escapes the site root)"))
-            elif not os.path.exists(target):
-                missing.append((os.path.relpath(page, site_root), rel))
-            elif target.endswith(".css"):
-                queue.append((target, True))
+            target = site_target(page, ref)
+            if LOCAL_MEDIA.search(target.as_posix()) and not classroom:
+                missing.append((page.as_posix(), "local media in public output"))
+            elif not runtime_path(target, classroom):
+                missing.append((page.as_posix(), "reference to an authoring or private file"))
+            elif not (root / target).is_file():
+                missing.append((page.as_posix(), "missing local runtime asset"))
     return checked, missing
 
 
-def main():
-    site_root = sys.argv[1] if len(sys.argv) > 1 else "_site"
-    if not os.path.isdir(site_root):
-        print(f"no such directory: {site_root}", file=sys.stderr)
-        return 2
-
-    checked, missing = check(site_root)
+def validate(site_root, classroom=False):
+    """Verify contents as well as references; private values never enter diagnostics."""
+    root = Path(site_root)
+    terms = private_terms()
+    count, missing = check(root, classroom)
     if missing:
-        print(f"{len(missing)} referenced file(s) are not in {site_root}:",
-              file=sys.stderr)
-        for page, rel in missing:
-            print(f"   {page}  ->  {rel}", file=sys.stderr)
-        print("\nAdd them to the 'Assemble site' step in "
-              ".github/workflows/deploy.yml -- or, for local media, point the "
-              "deck at its Release (python3 scripts/media_prep.py <deck>, "
-              "without --local).", file=sys.stderr)
-        return 1
+        page, reason = missing[0]
+        label = "a runtime file" if contains_private(page, terms) else page
+        raise ValueError(f"{label}: {reason} ({len(missing)} failing references)")
+    from media_prep import ManifestError, load_manifest, restricted_media_urls
+    restricted = set()
+    source_paths = set()
+    for deck in deckpath.all_decks():
+        if deck.videos_manifest.is_file():
+            try:
+                restricted.update(restricted_media_urls(deck.media))
+                for entry in load_manifest(deck.videos_manifest):
+                    source = entry.get("source")
+                    if source and ("/" in source or "\\" in source):
+                        source_paths.add(source)
+            except (ManifestError, OSError, ValueError, KeyError, TypeError):
+                raise ValueError("could not validate media redistribution metadata") from None
+    binary_private = re.compile(LOCAL_PATH.pattern.encode("ascii"), re.I)
+    binary_terms = [term.encode("utf-8") for term in (*terms, *source_paths)]
+    for path in root.rglob("*"):
+        rel = path.relative_to(root)
+        if path.is_symlink():
+            raise ValueError("the audience artifact contains a symbolic link")
+        if path.is_dir():
+            continue
+        if rel == Path(".nojekyll"):
+            if path.read_text(encoding="utf-8").strip() not in {"", "Generated by Paper2PR."}:
+                raise ValueError("unexpected content in the Pages marker")
+            continue
+        if not runtime_path(rel, classroom) or contains_private(rel.as_posix(), terms):
+            raise ValueError("the audience artifact contains a private or authoring file")
+        if path.suffix.lower() not in TEXT_SUFFIXES and path.name not in FONT_NOTICES:
+            # Raw strings can also reach image or font metadata. Classroom
+            # videos live only in the ignored preview and can be much larger.
+            if not classroom:
+                payload = path.read_bytes()
+                if binary_private.search(payload) or any(term in payload for term in binary_terms):
+                    raise ValueError("private metadata in a packaged binary asset")
+            continue
+        text = path.read_text(encoding="utf-8")
+        if contains_private(text, terms):
+            raise ValueError("private denylist match in the audience artifact")
+        decoded = unquote(html.unescape(text))
+        if LOCAL_PATH.search(decoded) or any(source in decoded for source in source_paths):
+            raise ValueError("a local filesystem path appears in the audience artifact")
+        if any(url in decoded for url in restricted):
+            raise ValueError("a classroom-only clip has a release reference in the audience artifact")
+        if path.suffix.lower() == ".html" and count_notes(path):
+            raise ValueError("presenter notes remain in the audience artifact")
+    return count
 
-    print(f"all {checked} local references resolve under {site_root}")
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("site", type=Path, nargs="?", default=Path("_site"))
+    parser.add_argument("--classroom", action="store_true",
+                        help="allow local playback assets in an ignored classroom preview")
+    args = parser.parse_args()
+    if not args.site.is_dir():
+        parser.exit(2, "the audience output directory does not exist\n")
+    if args.classroom and not args.site.resolve().is_relative_to(deckpath.REPO_ROOT / "exports"):
+        parser.exit(2, "a classroom preview must reside in exports/\n")
+    try:
+        count = validate(args.site, args.classroom)
+    except (ValueError, OSError) as exc:
+        # OSError filenames and parser input can include private project paths.
+        parser.exit(1, "asset check failed: " + safe_error(exc) + "\n")
+    print(f"all {count} local references resolve; audience privacy checks passed")
     return 0
+
+
+def safe_error(exc):
+    try:
+        terms = private_terms()
+    except ValueError:
+        return "cannot read a private denylist outside the checkout"
+    if type(exc) is not ValueError or LOCAL_PATH.search(str(exc)) or contains_private(str(exc), terms):
+        return "could not read a runtime asset or its metadata"
+    return str(exc)
 
 
 if __name__ == "__main__":

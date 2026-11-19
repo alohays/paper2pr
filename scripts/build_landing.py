@@ -72,10 +72,10 @@ STYLE = """    body {
     }"""
 
 
-def rows_for(genre: str) -> list[str]:
+def rows_for(genre: str, decks) -> list[str]:
     """Rows for the decks of a genre that are not in a series."""
     out = []
-    for deck in deckprofile.publishable_decks():
+    for deck in decks:
         if deck.genre != genre:
             continue
         cfg = deckprofile.load(deck)
@@ -94,13 +94,13 @@ def rows_for(genre: str) -> list[str]:
     return out
 
 
-def series_groups(genre: str) -> list[tuple[str, str, list[str]]]:
+def series_groups(genre: str, decks) -> list[tuple[str, str, list[str]]]:
     """-> [(series name, heading, rows)] for the decks of a genre that
     declare a series, rows ordered by series_index. The heading is
     "<course> (<code>, <institution>, <term>)" from the series data that
     deckprofile resolves (lock, or the yml when the lock is absent)."""
     groups: dict[str, dict] = {}
-    for deck in deckprofile.publishable_decks():
+    for deck in decks:
         if deck.genre != genre:
             continue
         cfg = deckprofile.load(deck)
@@ -136,7 +136,9 @@ def series_groups(genre: str) -> list[tuple[str, str, list[str]]]:
     return out
 
 
-def build() -> str:
+def build(decks=None) -> str:
+    if decks is None:
+        decks = deckprofile.publishable_decks()
     parts = [
         "<!DOCTYPE html>",
         '<html lang="en">',
@@ -155,8 +157,8 @@ def build() -> str:
 
     for genre in deckpath.genres():
         heading, note = GENRE_HEADING.get(genre, (genre.title(), ""))
-        rows = rows_for(genre)
-        groups = series_groups(genre)
+        rows = rows_for(genre, decks)
+        groups = series_groups(genre, decks)
         parts.append(f"\n  <h2>{html.escape(heading)}</h2>")
         if note:
             parts.append(f'  <p class="section-note">{html.escape(note)}</p>')

@@ -29,17 +29,7 @@ echo
 echo "=== Assembling docs/ ==="
 bash scripts/assemble_site.sh "$DOCS_DIR"
 
-# Strip speaker notes from the assembled copy only. The rendered HTML next to
-# each qmd keeps its notes -- that copy is the presenter view, and it is
-# gitignored. CI strips in place because nothing there needs the notes.
-echo
-echo "=== Stripping speaker notes from the assembled copy ==="
-bash scripts/strip_notes.sh "$DOCS_DIR/slides"
-
-echo
-echo "=== Checking every referenced asset made it ==="
-python3 scripts/check_site_assets.py "$DOCS_DIR"
-
+# Assembly strips notes from the audience copy and validates its assets.
 echo
 echo "=== Sync complete ==="
 echo "Open: $DOCS_DIR/slides/"

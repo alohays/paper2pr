@@ -119,3 +119,6 @@ Quarto/_fixtures/**/shots/
 /node_modules/
 /.venv/
 /.tools/
+
+# Audience sites are stripped and verified in a temporary sibling before replacement.
+.build-site-*/
