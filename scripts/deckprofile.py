@@ -538,15 +538,16 @@ def profiles() -> list[str]:
     return sorted(p.stem for p in PROFILE_DIR.glob("*.yml"))
 
 
-def genre_defaults() -> dict:
+def genre_defaults(names=None, read_yaml=_load_yaml) -> dict:
     """genre -> profile, from each profile yml's own `genre_default:`.
 
     Two profiles claiming one genre is a contradiction with no safe answer,
     so it raises rather than picking the one that sorts first.
     """
+    names = profiles() if names is None else names
     out: dict = {}
-    for name in profiles():
-        genre = _load_yaml(PROFILE_DIR / f"{name}.yml").get("genre_default")
+    for name in names:
+        genre = read_yaml(PROFILE_DIR / f"{name}.yml").get("genre_default")
         if not genre:
             continue
         genre = str(genre)
@@ -558,10 +559,11 @@ def genre_defaults() -> dict:
     return out
 
 
-def load(deck: "deckpath.Deck") -> DeckConfig:
-    raw = _load_yaml(deck.config)
-    name = raw.get("profile") or genre_defaults().get(deck.genre)
-    if name not in profiles():
+def load(deck: "deckpath.Deck", *, read_yaml=_load_yaml, names=None) -> DeckConfig:
+    names = profiles() if names is None else names
+    raw = read_yaml(deck.config)
+    name = raw.get("profile") or genre_defaults(names, read_yaml).get(deck.genre)
+    if name not in names:
         if name:
             print(f"warning: unknown profile {name!r} for {deck.slug}, "
                   f"using built-in defaults", file=sys.stderr)
@@ -570,12 +572,12 @@ def load(deck: "deckpath.Deck") -> DeckConfig:
             # nobody chose for it.
             print(f"warning: no profile for genre {deck.genre!r} ({deck.slug}); "
                   f"add `genre_default: {deck.genre}` to one of "
-                  f"{', '.join(profiles()) or '(no profiles found)'}, or set "
+                  f"{', '.join(names) or '(no profiles found)'}, or set "
                   f"`profile:` in the deck config. Using built-in defaults",
                   file=sys.stderr)
         return DeckConfig(deck=deck, profile=name or "unknown", raw=raw)
     return DeckConfig(deck=deck, profile=name, raw=raw,
-                      profile_raw=_load_yaml(PROFILE_DIR / f"{name}.yml"))
+                      profile_raw=read_yaml(PROFILE_DIR / f"{name}.yml"))
 
 
 def publishable_decks() -> list["deckpath.Deck"]:

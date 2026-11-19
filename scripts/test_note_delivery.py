@@ -105,11 +105,13 @@ def test_delivery(tmp, speaker):
     seed.mkdir()
     (seed / "scripts").mkdir()
     for name in ("setup-git-filters.sh", "check-notes-pre-commit.sh",
-                 "pre-commit.sh", "check-korean-pre-commit.sh", "strip_qmd_notes.py"):
+                 "pre-commit.sh", "check-korean-pre-commit.sh", "strip_qmd_notes.py",
+                 "check_korean_index.py", "deckprofile.py", "deckpath.py", "minyaml.py", "series_assets.py"):
         shutil.copy2(ROOT / "scripts" / name, seed / "scripts" / name)
     filters = seed / "Quarto/_filters"
     filters.mkdir(parents=True)
     shutil.copy2(ROOT / "Quarto/_filters/slide-types.lua", filters)
+    shutil.copy2(ROOT / "Quarto/_genres.txt", seed / "Quarto")
     shutil.copy2(ROOT / ".gitattributes", seed)
     run(seed, "git", "init", "-q")
     run(seed, "git", "add", ".")
@@ -119,6 +121,7 @@ def test_delivery(tmp, speaker):
     run(repo, "bash", "scripts/check-notes-pre-commit.sh", fails=True)
     run(repo, "bash", "scripts/setup-git-filters.sh")
     stage(repo)
+    run(repo, "git", "commit", "-qm", "Clean fixture commit")
     print("  ok    normal clone keeps local notes, stages clean text and rejects a broken add")
 
     linked = tmp / "linked"
@@ -166,7 +169,8 @@ def test_delivery(tmp, speaker):
 
     run(linked, "git", "-c", "filter.strip-speaker-notes.clean=cat",
         "add", "--renormalize", "--", PROBE)
-    run(linked, "git", "commit", "-qm", "Unfiltered fixture", fails=True)
+    refused = run(linked, "git", "commit", "-qm", "Unfiltered fixture", fails=True)
+    assert "speaker notes remain" in refused
     run(linked, "git", "commit", "--no-verify", "-qm", "Bypassed local hooks in fixture")
     run(linked, "bash", "scripts/check-notes-pre-commit.sh", "--all", fails=True)
     print("  ok    installed hook rejects raw notes and the full-index CI check detects a bypass")

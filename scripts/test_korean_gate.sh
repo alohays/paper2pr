@@ -126,6 +126,17 @@ language:
 YML
 stage "$PROBE_QMD" "$PROBE_CFG"
 expect "language.slides: ko allows it" 0 "$(run_hook)"
+stage "$PROBE_QMD"
+expect "an unstaged ko declaration cannot exempt a staged English deck" 1 "$(run_hook)"
+stage "$PROBE_QMD" "$PROBE_CFG"
+printf 'language:\n  slides: en\n' > "$PROBE_CFG"
+expect "the staged ko declaration wins over a working-copy edit" 0 "$(run_hook)"
+# An unreferenced synthetic base lets the PR test change only the config.
+# Neither the caller's index nor its branch moves.
+base=$(git -c user.name=Fixture -c user.email=fixture@example.org \
+    commit-tree "$(git write-tree)" -m "Language fixture")
+stage "$PROBE_QMD" "$PROBE_CFG"
+expect "a config-only PR removing ko rechecks unchanged slide text" 1 "$(run_hook "$base")"
 
 echo "3. Declaring English again puts the deck back under the gate"
 cat > "$PROBE_CFG" <<'YML'
