@@ -125,15 +125,21 @@ Robot world models plateau at [**observed setups**]{.negative} and are [**unresp
 
 ## The Human Video Insight
 
+:::: {.columns}
+::: {.column width="39%"}
 ::: {.quotebox}
 Despite the embodiment gap, the underlying physics during interactions is largely consistent between humans and robots, enabling effective knowledge transfer.
 :::
 
 [--- @gao2026dreamdojo]{style="display: block; text-align: right;"}
 
-![](../../Figures/papers/DreamDojo/dataset_compressed.svg){fig-align="center" width="82%"}
-
 [**Key idea:**]{.hi} Human videos capture the same physics --- contact, gravity, deformation, tool use --- just with different end-effectors.
+:::
+
+::: {.column width="59%"}
+![](../../Figures/papers/DreamDojo/dataset_compressed.svg){fig-align="center" width="100%"}
+:::
+::::
 
 
 
@@ -143,6 +149,8 @@ Despite the embodiment gap, the underlying physics during interactions is largel
 
 ## DreamDojo-HV: The Largest WM Dataset
 
+:::: {.columns}
+::: {.column width="51%"}
 ::: {.resultbox}
 **Dataset Scale**
 
@@ -154,7 +162,11 @@ Despite the embodiment gap, the underlying physics during interactions is largel
 
 [**vs. prior largest (AgiBot World):**]{.hi} [**15x**]{.positive} duration, [**96x**]{.positive} skills, [**2,000x**]{.positive} scenes
 
-![](../../Figures/papers/DreamDojo/mecka_compressed.svg){fig-align="center" width="70%"}
+:::
+::: {.column width="47%"}
+![](../../Figures/papers/DreamDojo/mecka_compressed.svg){fig-align="center" width="100%"}
+:::
+::::
 
 
 
@@ -192,12 +204,12 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 
 :::: {.columns}
 ::: {.column width="48%"}
-![](../../Figures/papers/DreamDojo/egodex.png){fig-align="center" width="82%"}
+![](../../Figures/papers/DreamDojo/egodex.png){fig-align="center" style="max-height:310px; width:auto;"}
 
 [EgoDex sample]{style="font-size: 0.75em;"}
 :::
 ::: {.column width="48%"}
-![](../../Figures/papers/DreamDojo/inlab.png){fig-align="center" width="82%"}
+![](../../Figures/papers/DreamDojo/inlab.png){fig-align="center" style="max-height:310px; width:auto;"}
 
 [In-lab PSNR curves]{style="font-size: 0.75em;"}
 :::
@@ -211,7 +223,7 @@ Crowdsourced, 6,015 skills, 1.1M scenes
 
 ## System Overview: Three-Phase Pipeline
 
-![](../../Figures/papers/DreamDojo/overview_compressed.svg){fig-align="center" width="90%"}
+![](../../Figures/papers/DreamDojo/overview_compressed.svg){fig-align="center" width="69%"}
 
 [**Phase 1:**]{.hi} Pretrain on human videos with [**latent actions**]{.hi-gold}
 
@@ -261,7 +273,7 @@ Actionless pretraining wastes interaction knowledge. Ground-truth actions requir
 
 ## Latent Action Model (LAM)
 
-![](../../Figures/papers/DreamDojo/lam_compressed.svg){fig-align="center" width="88%"}
+![](../../Figures/papers/DreamDojo/lam_compressed.svg){fig-align="center" style="max-height:290px; width:auto;"}
 
 ::: {.eqbox}
 [**VAE with information bottleneck:**]{.hi}
@@ -344,6 +356,8 @@ Latent actions achieve [**near-parity**]{.positive} with ground-truth action lab
 
 ## Cosmos-Predict2.5 Backbone
 
+:::: {.columns}
+::: {.column width="59%"}
 ::: {.methodbox}
 **Foundation**
 
@@ -353,12 +367,16 @@ Latent actions achieve [**near-parity**]{.positive} with ground-truth action lab
 - Trained with [**flow matching**]{.hi} loss
 - Two variants: [**2B**]{.hi-gold} and [**14B**]{.hi-gold} parameters
 :::
+:::
 
+::: {.column width="39%"}
 [**Training setup:**]{.hi}
 
 - 140K steps pretrain (256 H100s), 50K steps post-train (128 H100s)
 - Resolution: $640 \times 480$, sequences of 13 latent frames
 - EMA maintained throughout
+:::
+::::
 
 
 
@@ -399,14 +417,20 @@ where $\mathbf{v}_t = \epsilon - \mathbf{x}$ (velocity = noise $-$ clean data)
 
 ## Two Key Innovations for Controllability
 
-![](../../Figures/papers/DreamDojo/design_compressed.svg){fig-align="center" width="80%"}
+:::: {.columns}
+::: {.column width="54%"}
+![](../../Figures/papers/DreamDojo/design_compressed.svg){fig-align="center" width="100%"}
+:::
 
+::: {.column width="44%"}
 ::: {.methodbox}
 **Design Choices**
 
 1. [**Relative actions:**]{.hi} Rebaseline every 4 timesteps --- concentrates action space $\rightarrow$ better generalization to compositions
 2. [**Chunked injection:**]{.hi} 4 consecutive actions $a^{t:t+4}$ sent to matching latent frame --- respects causality $\rightarrow$ future actions do not leak
 :::
+:::
+::::
 
 
 
@@ -492,8 +516,12 @@ $\mathcal{L}_{\text{final}} = \mathcal{L}_{\text{flow}} + \lambda\,\mathcal{L}_{
 
 ## Post-Training: Adapting to Target Robots
 
-![](../../Figures/papers/DreamDojo/pretrain_compressed.svg){fig-align="center" width="80%"}
+:::: {.columns}
+::: {.column width="50%"}
+![](../../Figures/papers/DreamDojo/pretrain_compressed.svg){fig-align="center" width="100%"}
+:::
 
+::: {.column width="48%"}
 ::: {.methodbox}
 **Post-Training Recipe**
 
@@ -503,6 +531,8 @@ $\mathcal{L}_{\text{final}} = \mathcal{L}_{\text{flow}} + \lambda\,\mathcal{L}_{
 :::
 
 Embodiments: GR-1, G1, AgiBot, YAM --- each post-trained separately. CFG disabled (no benefit).
+:::
+::::
 
 
 
@@ -599,6 +629,8 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 
 ## Distillation Results {.smallest}
 
+:::: {.columns}
+::: {.column width="36%"}
 ::: {.resultbox}
 **Speed vs. Quality**
 
@@ -608,15 +640,15 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 | Student | 13.15 | 0.379 | 0.485 | [**~10**]{.positive} | 4 | 12 |
 :::
 
-<video preload="metadata" data-src="https://dreamdojo-world.github.io/real_time.mp4" muted data-autoplay loop playsinline style="max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+<video preload="metadata" data-src="https://dreamdojo-world.github.io/real_time.mp4" muted data-autoplay loop playsinline style="max-width: 100%; max-height: 180px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
 
-:::: {.columns}
-::: {.column width="48%"}
+:::
+::: {.column width="30%"}
 ![](../../Figures/papers/DreamDojo/long_compressed.svg){fig-align="center" width="100%"}
 
 [1-minute rollouts]{style="font-size: 0.75em;"}
 :::
-::: {.column width="48%"}
+::: {.column width="30%"}
 ![](../../Figures/papers/DreamDojo/context_compressed.svg){fig-align="center" width="100%"}
 
 [Context advantage]{style="font-size: 0.75em;"}
@@ -645,8 +677,12 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 
 ## Benchmark Construction: 6 OOD Eval Sets
 
-![](../../Figures/papers/DreamDojo/benchmark_compressed.svg){fig-align="center" width="85%"}
+:::: {.columns}
+::: {.column width="47%"}
+![](../../Figures/papers/DreamDojo/benchmark_compressed.svg){fig-align="center" width="100%"}
+:::
 
+::: {.column width="51%"}
 ::: {.methodbox}
 **6 Evaluation Sets on GR-1**
 
@@ -656,6 +692,8 @@ $s_{\text{real}}$: score from real (teacher-generated) data | $s_{\text{fake}}$:
 
 Metrics: PSNR, SSIM, LPIPS (auto); human preference for novel scenes.
 :::
+:::
+::::
 
 
 
@@ -740,13 +778,19 @@ Adding more human data [**consistently improves**]{.positive} all OOD benchmarks
 Post-trained on GR-1, G1, AgiBot, and YAM --- each with separate post-training runs using the same pretrained foundation.
 :::
 
-<video preload="metadata" data-src="https://dreamdojo-world.github.io/g1/g1_0024_pred.mp4" muted data-autoplay loop playsinline style="max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+:::: {.columns}
+::: {.column width="46%"}
+<video preload="metadata" data-src="https://dreamdojo-world.github.io/g1/g1_0024_pred.mp4" muted data-autoplay loop playsinline style="max-width:100%; max-height: 300px; border-radius: 8px; display: block; margin: 0 auto;">Your browser does not support video. See dreamdojo-world.github.io for demos.</video>
+:::
 
+::: {.column width="52%"}
 [**Per-embodiment adaptation:**]{.hi}
 
 - Reset action MLP first layer for new action space
 - Finetune all weights (50K steps)
 - Same pretrained physics transfers across all platforms
+:::
+::::
 
 
 
@@ -807,12 +851,12 @@ DreamDojo can reliably rank policies without deploying on a real robot.
 - PICO VR controller $\rightarrow$ G1 actions
 - Distilled model on RTX 5090
 - Real-time interactive simulation
-:::
-::::
 
 ::: {.keybox}
 World models as [**simulators**]{.hi} unlock planning, evaluation, and teleoperation --- all from a single foundation.
 :::
+:::
+::::
 
 
 
