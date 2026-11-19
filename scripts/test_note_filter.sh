@@ -8,7 +8,7 @@
 # runs and speaker notes get committed. That is a privacy leak that fails
 # silently, so it gets a test.
 #
-# Usage: bash scripts/test_note_filter.sh
+# Usage: bash scripts/test_note_filter.sh [--speaker]
 
 set -u
 
@@ -210,7 +210,7 @@ for p in "Quarto/papers/DreamZero.html" "Quarto/lectures/w02_files/x.js"; do
 done
 
 echo "5. Normal clones, linked worktrees, staged blobs, rendered notes and the CI fallback"
-python3 scripts/test_note_delivery.py || fail=1
+python3 scripts/test_note_delivery.py "$@" || fail=1
 
 echo
 if [ "$fail" -eq 0 ]; then

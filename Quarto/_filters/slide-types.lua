@@ -172,6 +172,14 @@ function Pandoc(doc)
   local meta = doc.meta
   local blocks = doc.blocks:walk({
     Header = function(h) return header(h, meta) end,
+    Div = function(div)
+      -- Reveal ignores an aside that is itself a fragment. A note for a
+      -- visible fragment is an aside inside that fragment and stays there.
+      if div.classes:includes("notes") and div.classes:includes("fragment") then
+        div.classes = div.classes:filter(function(c) return c ~= "fragment" end)
+        return div
+      end
+    end,
   })
   if needs_poster_script and quarto.doc.is_format("revealjs") then
     quarto.doc.include_text("after-body", POSTER_SCRIPT)

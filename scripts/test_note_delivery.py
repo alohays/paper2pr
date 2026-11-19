@@ -1,5 +1,8 @@
 """Exercise Git's actual clean conversion, hook dispatch and public HTML output."""
+import argparse
+import json
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -12,7 +15,9 @@ PROBE = Path("Quarto/lectures/note probe.qmd")
 CANARY = "PRIVATE-SYNTHETIC-NOTE"
 DECK = """---
 title: Note filter fixture
-format: revealjs
+format:
+  revealjs:
+    filters: [../_filters/slide-types.lua]
 title-slide-attributes:
   "data-notes": |
     PRIVATE-SYNTHETIC-NOTE title.
@@ -22,7 +27,7 @@ title-slide-attributes:
 
 Keep this audience sentence.
 
-:::: {#script .notes .fragment} ::::
+:::: {#script .notes .fragment .extra} ::::
 PRIVATE-SYNTHETIC-NOTE introduction.
 
 ::: {.group}
@@ -68,13 +73,43 @@ def stage(repo):
     path.write_text(DECK, encoding="utf-8")
 
 
-def test_delivery(tmp):
+def check_speaker_window(html, has_notes):
+    from browser import browser_page
+    from shoot_slides import local_url
+
+    with local_url(html) as url, browser_page(url) as page:
+        # Keep a reference to the real window opened by a trusted S keypress.
+        page.evaluate("""(() => {
+          const open = window.open.bind(window);
+          window.open = (...args) => (window.speakerProbe = open(...args));
+        })()""")
+        page.key("s")
+        doc = "window.speakerProbe?.document"
+        frame = doc + ".querySelector('#current-slide iframe')?.contentWindow.Reveal"
+        pane = doc + ".querySelector('.speaker-controls-notes .value')"
+        for slide, note in [("title-slide", "title."), ("audience", "introduction.")]:
+            if slide == "audience":
+                page.key("n")
+            page.wait_for(f"{frame}?.getCurrentSlide()?.id === '{slide}' && !!{pane}",
+                          f"speaker preview did not reach {slide}")
+            marker = json.dumps(f"{CANARY} {note}")
+            visible = f"{pane}.textContent.includes({marker})"
+            if has_notes:
+                page.wait_for(visible, f"missing presenter note on {slide}")
+            else:
+                assert page.evaluate(f"{pane}.textContent.trim() === ''"), "public speaker pane has text"
+
+
+def test_delivery(tmp, speaker):
     seed = tmp / "seed"
     seed.mkdir()
     (seed / "scripts").mkdir()
     for name in ("setup-git-filters.sh", "check-notes-pre-commit.sh",
                  "pre-commit.sh", "check-korean-pre-commit.sh", "strip_qmd_notes.py"):
         shutil.copy2(ROOT / "scripts" / name, seed / "scripts" / name)
+    filters = seed / "Quarto/_filters"
+    filters.mkdir(parents=True)
+    shutil.copy2(ROOT / "Quarto/_filters/slide-types.lua", filters)
     shutil.copy2(ROOT / ".gitattributes", seed)
     run(seed, "git", "init", "-q")
     run(seed, "git", "add", ".")
@@ -99,13 +134,20 @@ def test_delivery(tmp):
     presenter = (linked / PROBE).with_suffix(".html")
     local_html = presenter.read_bytes()
     assert CANARY.encode() in local_html and count_notes(presenter) >= 2
-    public = tmp / "public.html"
+    note = re.search(rb'<aside\b[^>]*\bid="script"[^>]*>', local_html)
+    assert note and b"fragment" not in note[0] and b"extra" in note[0]
+    public = presenter.with_name("public.html")
     shutil.copyfile(presenter, public)
     assert strip_notes(public) >= 2 and count_notes(public) == 0
     public_html = public.read_bytes()
     assert CANARY.encode() not in public_html and b"Keep this audience sentence." in public_html
     assert presenter.read_bytes() == local_html
     print("  ok    Quarto presenter copy retains title and slide notes. Public copy has neither")
+
+    if speaker:
+        check_speaker_window(presenter, True)
+        check_speaker_window(public, False)
+        print("  ok    both live S windows advance. Two local notes appear and both public panes are empty")
 
     # check-attr must inspect the attributes that Git will commit.
     attributes = linked / ".gitattributes"
@@ -152,6 +194,9 @@ def test_html(tmp):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--speaker", action="store_true", help="exercise real Chrome speaker windows")
+    args = parser.parse_args()
     with tempfile.TemporaryDirectory() as temp:
-        test_delivery(Path(temp))
+        test_delivery(Path(temp), args.speaker)
         test_html(Path(temp))
