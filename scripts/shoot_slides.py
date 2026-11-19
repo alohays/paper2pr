@@ -239,13 +239,21 @@ def shoot(html: Path, out_dir: Path, prefix: str, max_slides=None, *,
                 ensure_state(state, expected["index"], expected["fragment"])
                 if state.get("caption") != expected.get("caption"):
                     raise ValueError(f"widget caption did not rewind on {ids[state['index']]}")
+            steps = len(states) - 1
+            if slide_id and start == len(slides) - 1 and start > 0:
+                # A copy edit to the last slide still gets a real re-entry check.
+                previous = step(page, "p")
+                if previous["index"] != start - 1 or previous["remaining"]:
+                    raise ValueError("backward navigation skipped the neighboring final state")
+                ensure_state(step(page, "n"), start, -1)
+                steps += 1
 
     report = {"html_sha256": digest, "width": width, "height": 720,
               "total_slides": len(ids), "captured_ids": ids[start:stop],
-              "forward_steps": len(states) - 1, "reverse_steps": len(states) - 1,
+              "forward_steps": steps, "reverse_steps": steps,
               "captions": captions}
     (out_dir / "browser.json").write_text(json.dumps(report, indent=2) + "\n")
-    print(f"{len(shots)}/{len(ids)} final slide frames, {len(states)-1} steps each way "
+    print(f"{len(shots)}/{len(ids)} final slide frames, {steps} clicker actions per direction "
           f"at {width}x720 -> {out_dir}")
     clipped = [name for name, boxes in captions.items() if any(b["outside"] > 1 for b in boxes)]
     if clipped:
