@@ -23,6 +23,14 @@ figures:
     source: Original teaching illustration
     licence: Repository
     third_party: false
+  - file: marked-cart.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: wheel-turn-record.svg
+    source: Original teaching illustration of a cumulative encoder reading
+    licence: Repository
+    third_party: false
   - file: wheel-travel-check.svg
     source: Original teaching illustration
     licence: Repository

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-marked-cart" viewBox="0 0 680 238" role="img" aria-labelledby="w13-marked-title w13-marked-desc">
+  <title id="w13-marked-title">A cart with a mark at the top of its front wheel</title>
+  <desc id="w13-marked-desc">A small electric cart rests on a level floor. An orange stripe sits at twelve o'clock on the front wheel. This is the starting position.</desc>
+  <g fill="none" stroke="#607788" stroke-width="3"><path d="M64 207 H603"/></g>
+  <g stroke="#173f58" stroke-width="5" stroke-linejoin="round">
+    <rect x="171" y="39" width="259" height="65" rx="9" fill="#eaf0f2"/>
+    <path d="M212 105 V169 M362 104 V139" fill="none"/>
+    <circle cx="212" cy="168" r="38" fill="#fff"/>
+    <circle cx="362" cy="139" r="67" fill="#fff"/>
+    <circle cx="212" cy="168" r="5" fill="#173f58"/>
+    <circle cx="362" cy="139" r="8" fill="#173f58"/>
+  </g>
+  <path d="M362 83 V112" stroke="#af5526" stroke-width="12" stroke-linecap="round"/>
+  <path d="M369 88 L435 49 H466" fill="none" stroke="#80502f" stroke-width="2.5"/>
+  <text x="477" y="56" font-size="25" font-weight="600" fill="#824524" style="font-family:inherit">Starting mark</text>
+</svg>

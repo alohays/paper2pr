@@ -15,13 +15,15 @@ format:
 bibliography: ../../Bibliography_base.bib
 ---
 
-## Where we left off {#survey-route data-chapter="0"}
+## How does a robot turn a corner? {#survey-route data-chapter="0"}
 
+A robot sees the aisle ahead and chooses a direction.
+
+**What has to move for it to make the turn?**
+
+::: {.footnote}
 Last week ({{< series-session prior_week >}}) · {{< series-session prior_title >}}
-
-W11 guest lecture · Finding the same point in different images
-
-**Today** · Bodies and drives → sensing and control → platforms in the field
+:::
 
 
 {{< include _series/dgist-2026f/semester-map.qmd >}}
@@ -45,48 +47,36 @@ What can we see? Who chose the direction?
 
 <!-- Chapter 1: Command -->
 
-## 01 · What turns the wheel after a command? {#command-journey data-chapter="1" data-seconds="65"}
+## 01 · Give this wheel a job {#command-journey data-chapter="1" data-seconds="50"}
 
-W06 · “Move 2 cm right.” How far did the hand actually go?
+“Turn the front wheel **once every second**.”
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/command-journey.svg width="100%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/marked-cart.svg width="72%" >}}
 
-
-## What does 0.5 ask each robot to do? {#action-interface data-chapter="1" data-seconds="45"}
-
-| Command field | Meaning of 0.5 in this example |
-|:---|:---|
-| Spot · forward body speed | Move forward at 0.5 m/s |
-| Franka · one of seven joint angles | Aim for an angle of 0.5 radians |
-
-::: {.footnote}
-Illustrative values · [Spot velocity command](https://dev.bostondynamics.com/python/bosdyn-client/src/bosdyn/client/robot_command.html#bosdyn.client.robot_command.RobotCommandBuilder.synchro_velocity_command) · [Franka joint targets](https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1JointPositions.html)
-:::
+After one full turn, where should the orange mark be?
 
 
-## How fast did the wheel turn on average? {#command-clocks data-chapter="1" data-seconds="65"}
+## What turns the wheel? What measures it? {#action-interface data-chapter="1" data-seconds="60"}
 
-Target wheel speed · **1 turn/s**
-
-| Time | Encoder reading since the start |
-|:---|---:|
-| 0 s | 0 turns |
-| 1 s | ¾ turn |
-
-[The wheel averaged **¾ turn/s** over that second.]{.fragment}
-
-::: {.footnote}
-Illustrative wheel-axle readings
-:::
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/command-journey.svg width="96%" >}}
 
 
-## How far did the cart travel? {#four-questions data-chapter="1" data-seconds="75"}
+## Did the wheel make a full turn in one second? {#command-clocks data-chapter="1" data-seconds="65"}
 
-The axle turned **¾ of a turn**. What else would you measure?
+The target was **1 turn per second**.
 
-::: {.fragment}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/wheel-turn-record.svg width="83%" >}}
+
+[It averaged **¾ turn per second** over this second.]{.fragment}
+
+
+## How far did the cart go? {#four-questions data-chapter="1" data-seconds="75"}
+
+Both front wheels turned **¾ of a turn**. Where would you put a ruler?
+
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/wheel-travel-check.svg width="96%" >}}
-:::
+
+[Measure where the cart started and ended against marks on the floor.]{.fragment}
 
 
 <!-- Chapter 2: Body -->

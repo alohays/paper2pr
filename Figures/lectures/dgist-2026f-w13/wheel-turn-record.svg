@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-turn-record" viewBox="0 0 920 251" role="img" aria-labelledby="w13-record-title w13-record-desc">
+  <title id="w13-record-title">One second of wheel-axle encoder readings</title>
+  <desc id="w13-record-desc">At zero seconds the running count is zero. During the next second the measured rotation traces a clockwise three-quarter turn, from the top through the right and bottom to the left. These are illustrative readings.</desc>
+  <defs>
+    <g id="w13-record-wheel" stroke="#173f58">
+      <circle r="60" fill="#fff" stroke-width="5"/>
+      <circle r="7" fill="#173f58" stroke-width="2"/>
+    </g>
+  </defs>
+  <style>
+    #w13-turn-record text{font-family:inherit;text-anchor:middle;fill:#173f58}
+    #w13-turn-record .time{font-size:28px}
+    #w13-turn-record .count{font-size:32px;font-weight:700}
+  </style>
+  <path d="M460 13 V233" fill="none" stroke="#c0ccd3" stroke-width="2"/>
+  <g transform="translate(230 125)">
+    <use href="#w13-record-wheel"/>
+    <path d="M0 -48 V-27" stroke="#af5526" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(690 125)">
+    <use href="#w13-record-wheel"/>
+    <path d="M0 -48 V-27" stroke="#9baeb5" stroke-width="4" stroke-dasharray="4 4"/>
+    <path d="M-48 0 H-27" stroke="#af5526" stroke-width="9" stroke-linecap="round"/>
+    <path d="M0 -77 A77 77 0 1 1 -77 0" fill="none" stroke="#307465" stroke-width="5"/>
+    <path d="M-85 8 L-77 -4 L-69 8" fill="none" stroke="#307465" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text class="time" x="230" y="31">Start · 0 seconds</text>
+  <text class="time" x="690" y="31">1 second later</text>
+  <text class="count" x="230" y="240">0 turns counted</text>
+  <text class="count" x="690" y="240">¾ turn counted</text>
+</svg>
