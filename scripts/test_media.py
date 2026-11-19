@@ -140,6 +140,22 @@ for bad in ("2-0", "abc", "1:30-2:00", "-5"):
     except media_prep.ManifestError:
         check(f"rejects {bad!r}", True)
 
+# A library link can change more recently than the prepared clip even when
+# its new target is an older original. Use explicit times on both filesystems.
+with tempfile.TemporaryDirectory() as td:
+    root = Path(td)
+    original = root / "older-original.mp4"
+    prepared = root / "prepared.mp4"
+    link = root / "source.mp4"
+    original.touch()
+    prepared.touch()
+    link.symlink_to(original)
+    os.utime(original, (1, 1))
+    os.utime(prepared, (2, 2))
+    os.utime(link, (3, 3), follow_symlinks=False)
+    check("a retargeted library link invalidates the previous cut",
+          media_prep.stale_reason(prepared, link, {}, {}) == "source is newer")
+
 print("3. autonomy label mapping")
 check("four labels, plain wording",
       media_prep.AUTONOMY_LABEL == {

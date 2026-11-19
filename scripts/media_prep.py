@@ -287,7 +287,11 @@ def cut_of(entry: dict) -> dict:
 
 
 def _older(dst: Path, src: Path) -> bool:
-    return not dst.exists() or dst.stat().st_mtime < src.stat().st_mtime
+    if not dst.exists():
+        return True
+    # Authors can retarget a videos/src link to an older library original.
+    source_time = max(src.stat().st_mtime_ns, src.lstat().st_mtime_ns)
+    return dst.stat().st_mtime_ns < source_time
 
 
 def stale_reason(dst: Path, src: Path, want: dict, prev_cut: dict | None) -> str | None:
@@ -298,7 +302,7 @@ def stale_reason(dst: Path, src: Path, want: dict, prev_cut: dict | None) -> str
     """
     if not dst.exists():
         return "missing"
-    if dst.stat().st_mtime < src.stat().st_mtime:
+    if _older(dst, src):
         return "source is newer"
     if prev_cut is None:
         return "no record of the cut in videos.json"
