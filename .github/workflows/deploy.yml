@@ -1,67 +1,79 @@
-name: Deploy slides to GitHub Pages
+name: Verify and publish slides
 
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - id: quarto
+        name: Read the local Quarto pin
+        run: echo "version=$(cat .quarto-version)" >> "$GITHUB_OUTPUT"
 
       - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: ${{ steps.quarto.outputs.version }}
 
-      # Every step below is a script, so the whole pipeline can be run locally
-      # before pushing. Only directories listed in Quarto/_genres.txt are
-      # eligible, and a deck with `publish: false` in its .deck.yml is left
-      # out of the Pages render and landing page. This is why the theme
-      # regression fixture in Quarto/_fixtures/ cannot ship to /slides/ by
-      # being forgotten about.
-      #
-      # Inline shell here has failed twice in ways nothing local could catch:
-      # loose runtime assets silently not copied, and a loop that returned 1
-      # because a genre directory was empty. A step that only ever executes on
-      # CI is a step nobody can test before pushing.
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.11'
 
-      - name: Render decks
-        run: bash scripts/render_decks.sh
+      - name: Install verification dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg poppler-utils qrencode
+          python -m pip install -r requirements-qa.txt
+          npm ci
+          bash scripts/setup-git-filters.sh
 
-      - name: Strip speaker notes from HTML (safety net)
-        run: bash scripts/strip_notes.sh Quarto
+      - name: Verify the pull request
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REVISION: ${{ github.event.pull_request.base.sha }}
+        run: ./verify --changed-from "$BASE_REVISION" --regressions --site _site
 
-      - name: Assemble site
-        run: bash scripts/assemble_site.sh _site
+      - name: Verify the full site
+        if: github.event_name != 'pull_request'
+        run: ./verify --all --regressions --site _site
 
-      - name: Check every referenced local asset made it into the site
-        run: python3 scripts/check_site_assets.py _site
-
-      # The asset check above skips external URLs by design, so the one state
-      # it cannot see is a page whose Release URLs are well-formed and answer
-      # 404 because media_release.sh was never run. For every deck selected
-      # for Paper2PR Pages, merging publishes it here, and a missing release
-      # reaches the room as a black slide.
-      - name: Check the Release media the pages point at actually exists
-        run: python3 scripts/check_release_media.py _site
-
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
+      - name: Archive the checked audience site
+        if: hashFiles('_site/index.html') != ''
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
+  publish:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/configure-pages@v5
       - id: deployment
         uses: actions/deploy-pages@v4
