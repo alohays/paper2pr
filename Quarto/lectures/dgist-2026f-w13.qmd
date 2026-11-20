@@ -4,6 +4,9 @@ author: Yunsung Lee
 institute: WoRV / MaumAI
 date: "2026-11-20"
 series: dgist-2026f
+# The films play from the public media Release. The flag name dates from the
+# period when they were kept to the classroom copy.
+w13-local-clips: true
 w13-agenda:
   - "Learning and the robot body"
   - "Commands and motion"
