@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-pixel-body" viewBox="0 0 900 398" role="img" aria-labelledby="w13-pixel-title w13-pixel-desc">
+  <title id="w13-pixel-title">Pixel's arms and wheeled base</title>
+  <desc id="w13-pixel-desc">Front view of the research platform. Two jointed arms end in orange grippers. A vertical lift connects the torso to a box-shaped mobile base, with its near wheels shown below the chassis.</desc>
+  <style>
+    #w13-pixel-body .label { font: 650 42px var(--r-main-font, Helvetica, Arial, sans-serif); fill: #203752 }
+    #w13-pixel-body .leader { fill: none; stroke: #778b9e; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round }
+    #w13-pixel-body .rim { stroke: #273b50; stroke-width: 3; stroke-linejoin: round }
+    #w13-pixel-body .arm { fill: none; stroke: #28394b; stroke-width: 17; stroke-linecap: round; stroke-linejoin: round }
+    #w13-pixel-body .shell { fill: none; stroke: #b3c2ce; stroke-width: 9; stroke-linecap: round }
+    #w13-pixel-body .jaw { fill: none; stroke: #c77c23; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round }
+  </style>
+
+  <path d="M121 375H487" stroke="#b4c3ce" stroke-width="3" stroke-linecap="round"/>
+  <g class="rim">
+    <rect x="238" y="347" width="25" height="26" rx="9" fill="#374c61"/>
+    <rect x="349" y="347" width="25" height="26" rx="9" fill="#374c61"/>
+    <path d="M226 316L242 297H367L385 316Z" fill="#64778b"/>
+    <rect x="226" y="315" width="159" height="44" rx="3" fill="#314459"/>
+    <rect x="285" y="185" width="40" height="125" fill="#adbcc9"/>
+    <path d="M290 186H319V217H290Z" fill="#677d90"/>
+    <path d="M292 201H317M292 206H317" fill="none"/>
+    <path d="M254 96Q256 87 267 84L286 80H326L348 85Q358 87 360 97L343 142L329 192H282L271 143Z" fill="#26394b"/>
+    <path d="M267 95L280 111H335L345 95L332 149H281Z" fill="#34495b" stroke="none"/>
+    <rect x="296" y="66" width="20" height="18" rx="4" fill="#43576b"/>
+    <path d="M275 20Q275 12 283 12H328Q337 12 338 21L343 45L337 66Q336 72 329 73H282Q275 73 275 67L270 45Z" fill="#d5dfe6"/>
+    <rect x="277" y="35" width="59" height="30" rx="6" fill="#344354"/>
+  </g>
+  <path d="M286 50Q291 46 296 50M315 50Q320 46 325 50" fill="none" stroke="#d7e4ea" stroke-width="3.5" stroke-linecap="round"/>
+
+  <path class="arm" d="M252 100L227 161L214 192L193 223M359 100L384 160L416 132L438 111"/>
+  <path class="shell" d="M243 124L234 151M214 198L202 214M368 121L379 149M399 145L416 131"/>
+  <g fill="#75899a" class="rim">
+    <circle cx="251" cy="100" r="12"/><circle cx="227" cy="163" r="10"/>
+    <circle cx="193" cy="224" r="8"/><circle cx="359" cy="100" r="12"/>
+    <circle cx="385" cy="161" r="10"/><circle cx="439" cy="110" r="8"/>
+  </g>
+  <g transform="translate(188 233) rotate(27)">
+    <rect x="-11" y="-5" width="22" height="18" rx="5" fill="#2d4051"/>
+    <path class="jaw" d="M-7 13L-20 21L-25 43L-16 39L-12 26M7 13L20 21L25 43L16 39L12 26"/>
+  </g>
+  <g transform="translate(448 101) rotate(-128)">
+    <rect x="-11" y="-5" width="22" height="18" rx="5" fill="#2d4051"/>
+    <path class="jaw" d="M-7 13L-20 21L-25 43L-16 39L-12 26M7 13L20 21L25 43L16 39L12 26"/>
+  </g>
+
+  <path class="leader" d="M404 162L465 148H524"/>
+  <circle cx="401" cy="163" r="3.8" fill="#778b9e"/>
+  <text class="label" x="545" y="162">Two arms</text>
+  <path class="leader" d="M389 340H524"/>
+  <circle cx="389" cy="340" r="3.8" fill="#778b9e"/>
+  <text class="label" x="545" y="354">Wheeled base</text>
+</svg>

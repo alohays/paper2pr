@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-hand-contact" viewBox="0 0 1000 278"
+     role="img" aria-labelledby="w13-hand-contact-title w13-hand-contact-desc">
+  <title id="w13-hand-contact-title">A two-jaw lift and an in-hand turn</title>
+  <desc id="w13-hand-contact-desc">At left, two parallel jaws pinch a cup whose base is visibly above the table. At right, linked fingers turn a marked block within their grip; the dashed outline shows its earlier orientation.</desc>
+  <style>
+    #w13-hand-contact text { font-family: inherit; fill: #183451; text-anchor: middle; }
+    #w13-hand-contact .label { font-size: 33px; font-weight: 650; }
+    #w13-hand-contact .detail { font-size: 31px; }
+    #w13-hand-contact .outline { stroke: #254967; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+    #w13-hand-contact .leader { stroke: #607d93; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #w13-hand-contact .gold { stroke: #ac761e; stroke-width: 6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <path d="M500 15 V260" stroke="#d5dfe6" stroke-width="2"/>
+  <!-- A cup suspended clear of the table, with two parallel contact pads. -->
+  <path class="leader" d="M109 210 H374"/>
+  <rect x="177" y="32" width="131" height="36" rx="7" class="outline" fill="#c0d5e4"/>
+  <g class="outline" fill="#d7e5ef">
+    <path d="M178 66 H192 V119 H205 V146 H172 V78 Q172 66 178 66 Z"/>
+    <path d="M294 66 H307 Q313 66 313 78 V146 H280 V119 H294 Z"/>
+  </g>
+  <path d="M200 114 Q242 102 285 114 L276 167 Q274 180 243 180 Q213 180 210 167 Z"
+        class="outline" fill="#e6eff5"/>
+  <ellipse cx="242.5" cy="114" rx="42.5" ry="8.5" class="outline" fill="white"/>
+  <g stroke="#ac761e" stroke-width="6" stroke-linecap="round"><path d="M204 124 L206 138 M282 124 L280 138"/></g>
+  <path class="gold" d="M297 181 H314 M306 181 V207 M297 207 H314"/>
+  <text class="label fragment" data-fragment-index="0" x="242" y="259">Parallel-jaw gripper</text>
+
+  <!-- The dashed starting pose and the marked face make an in-hand turn visible. -->
+  <rect x="714" y="78" width="69" height="68" rx="3" fill="none" stroke="#829aaa" stroke-width="3" stroke-dasharray="6 5"/>
+  <g transform="rotate(24 749 111)">
+    <rect x="715" y="78" width="68" height="67" rx="4" class="outline" fill="#edd5a8"/>
+    <path d="M723 91 H749" stroke="#93651c" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <path class="gold" d="M706 67 Q744 34 787 64 M782 49 L787 64 L772 63"/>
+  <path class="outline" fill="#bcd1e0" d="M710 173 Q747 160 783 173 L794 204 Q761 220 720 210 Z"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M725 184 L687 162 L681 130 L707 119 M750 177 L731 150 L728 141 M778 185 L813 156 L812 123 L791 111"
+          stroke="#254967" stroke-width="17"/>
+    <path d="M725 184 L687 162 L681 130 L707 119 M750 177 L731 150 L728 141 M778 185 L813 156 L812 123 L791 111"
+          stroke="#c8dbe8" stroke-width="10"/>
+  </g>
+  <g fill="#345772">
+    <circle cx="687" cy="162" r="5"/><circle cx="681" cy="130" r="5"/><circle cx="731" cy="150" r="5"/>
+    <circle cx="813" cy="156" r="5"/><circle cx="812" cy="123" r="5"/>
+  </g>
+  <text class="label fragment" data-fragment-index="0" x="753" y="259">Articulated fingers</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-cart-travel" viewBox="0 0 1080 294" role="img" aria-labelledby="w13-travel-title w13-travel-desc">
+  <title id="w13-travel-title">Two carts with the same encoder reading</title>
+  <desc id="w13-travel-desc">The marked front wheel turns three quarters of a revolution in each case. The cart rolling on the floor moves past its starting mark. The supported cart spins its wheel clear of the floor and stays over its starting mark.</desc>
+  <defs>
+    <g id="w13-cart-profile" stroke="currentColor" stroke-width="4" stroke-linejoin="round">
+      <rect x="-90" y="-72" width="131" height="41" rx="5" fill="#edf3f5"/>
+      <path d="M-65 -29 V18 M0 -29 V0" fill="none"/>
+      <circle cx="-65" cy="18" r="24" fill="#fff"/>
+      <circle r="42" fill="#fff"/>
+      <circle r="6" fill="currentColor" stroke="none"/>
+    </g>
+  </defs>
+  <style>
+    #w13-cart-travel text {font-family:inherit;text-anchor:middle;fill:#17344f}
+    #w13-cart-travel .scene {font-size:31px;font-weight:700}
+    #w13-cart-travel .result {font-size:25px}
+  </style>
+  <path d="M540 15 V276" stroke="#c0ccd3" stroke-width="2"/>
+  <text class="scene" x="270" y="38">Rolling on the floor</text>
+  <text class="scene" x="810" y="38">Spinning on a stand</text>
+  <g stroke="#526e80" fill="none" stroke-width="4">
+    <path d="M41 210 H500 M580 210 H1040"/>
+  </g>
+  <g fill="#b66a36">
+    <path d="M150 212 l-8 13 h16 Z"/>
+    <path d="M835 212 l-8 13 h16 Z"/>
+  </g>
+  <g transform="translate(150 168)" opacity=".52" color="#607482" stroke-dasharray="5 5">
+    <use href="#w13-cart-profile"/>
+    <path d="M0 -36 V-13" stroke="#607482" stroke-width="5"/>
+  </g>
+  <g transform="translate(348 168)" color="#173f58">
+    <use href="#w13-cart-profile"/>
+    <path d="M-35 0 H-13" stroke="#b66a36" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g stroke="#548276" fill="none" stroke-width="5" stroke-linejoin="round">
+    <path d="M745 107 H733 V210 H716 M875 107 H888 V210 H905"/>
+  </g>
+  <g transform="translate(835 139)" color="#173f58">
+    <use href="#w13-cart-profile"/>
+    <path d="M-35 0 H-13" stroke="#b66a36" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <text class="result" x="270" y="266">The cart passes its starting mark.</text>
+  <text class="result" x="810" y="266">The cart stays above its starting mark.</text>
+</svg>

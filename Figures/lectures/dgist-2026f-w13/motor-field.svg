@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-motor-field" viewBox="0 0 1000 280"
+     role="img" aria-labelledby="w13-motor-field-title w13-motor-field-desc">
+  <title id="w13-motor-field-title">A motor seen from the end of its shaft</title>
+  <desc id="w13-motor-field-desc">A stationary housing holds two wound coils on iron poles. A permanent magnet and the shaft at its center can turn within the gap between the poles.</desc>
+  <style>
+    #w13-motor-field text { font-family: inherit; fill: #183451; text-anchor: middle; }
+    #w13-motor-field .label { font-size: 33px; font-weight: 650; }
+    #w13-motor-field .detail { font-size: 31px; }
+    #w13-motor-field .outline { stroke: #254967; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+    #w13-motor-field .leader { stroke: #607d93; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #w13-motor-field .gold { stroke: #ac761e; stroke-width: 6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <!-- The steel return path, pole stems and shoes stay fixed to the housing. -->
+  <circle cx="500" cy="140" r="116" fill="#e5edf3" stroke="#254967" stroke-width="5"/>
+  <circle cx="500" cy="140" r="99" fill="white" stroke="#758ea2" stroke-width="3"/>
+  <g class="outline" fill="#cbd9e3">
+    <path d="M399 124 H421 V113 H432 V167 H421 V156 H399 Z"/>
+    <path d="M601 124 H579 V113 H568 V167 H579 V156 H601 Z"/>
+  </g>
+  <!-- Turns of wire wrap each pole rather than the moving shaft. -->
+  <g fill="none" stroke="#ac761e" stroke-width="6" stroke-linecap="round">
+    <path d="M399 119 L404 161 M407 119 L412 161 M415 119 L420 161"/>
+    <path d="M580 119 L585 161 M588 119 L593 161 M596 119 L601 161"/>
+  </g>
+  <g transform="rotate(-38 500 140)">
+    <path d="M448 118 H500 V162 H448 Q440 162 440 154 V126 Q440 118 448 118 Z" fill="#386683"/>
+    <path d="M500 118 H552 Q560 118 560 126 V154 Q560 162 552 162 H500 Z" fill="#e8bb73"/>
+    <rect x="440" y="118" width="120" height="44" rx="8" fill="none" class="outline"/>
+    <text x="469" y="150" class="detail" style="fill:white">S</text>
+    <text x="532" y="150" class="detail">N</text>
+  </g>
+  <circle cx="500" cy="140" r="12" fill="white" stroke="#254967" stroke-width="4"/>
+  <path class="gold" d="M475 66 A79 79 0 0 1 547 77 M533 76 L547 77 L543 63"/>
+  <text class="label" x="209" y="108">Fixed coils</text>
+  <path class="leader" d="M301 108 H358 L419 128"/>
+  <circle cx="419" cy="128" r="4" fill="#607d93"/>
+  <text class="label" x="790" y="199">Magnet on the shaft</text>
+  <path class="leader" d="M641 194 H606 L534 140"/>
+  <circle cx="534" cy="140" r="4" fill="#607d93"/>
+</svg>

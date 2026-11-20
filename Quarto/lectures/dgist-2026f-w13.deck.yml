@@ -1,0 +1,131 @@
+# Written by /new-deck. These are the premises the deck was built on;
+# every downstream tool reads them from here rather than guessing.
+#   quality_score.py  -> bullet budget and the profile's extra checks
+#   the Korean gate   -> whether non-English slides are allowed here,
+#                        and how much Hangul an English deck may carry
+#   write-speaker-notes -> which language the notes are in, and the
+#                        speaking minutes the script is budgeted on
+#   slide-excellence  -> audience, delivery, sources (review context)
+# Changing a value here changes how the deck is graded, so change it
+# when the premise changes, not to make a warning go away.
+profile: lecture
+title: "Foundations of Robot Hardware, Control, and Modern Platforms"
+
+# audience.assumes, audience.size, audience.prior and delivery are
+# context for the review agents (slide-excellence reads them), not
+# consumed by the gate; the gate's budget and checks come from the
+# profile above.
+audience:
+  assumes: none    # none | practitioner | expert
+  size: "about 90"
+  description: "Returning first-year undergraduates in their second semester. Open directly from the course work on robot learning and data collection. Give the opening film its answer on the same screen. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Use the original English technical name in the slides, Korean notes and visual guide. At first teaching use, explain it in plain Korean with a physical example. Teach each example from the scene on screen. A short reminder may follow a new example. Assume no recall of earlier examples and no mechanics or control course."
+  prior: [W02 embodied AI and policy, W06 drawer commands and timestamped robot state, W09 timed action targets and inference delay]
+delivery: in-person    # in-person | remote | hybrid
+
+# Wall-clock minutes. video_min (clips playing without narration) and
+# qa_min (questions) are subtracted: the speaker-notes budget runs on
+# speaking_min = duration_min - video_min - qa_min.
+duration_min: 60
+video_min: 1  # Rounded quiet viewing time within the 50-minute teaching slot.
+qa_min: 10
+
+language:
+  slides: en
+  notes: ko
+  # korean_allowance: <n>  -- max Hangul characters on English slides
+  # (term glosses, Wooclap instructions). Omit to take the profile's
+  # default (lecture 300, others 0). Slides declared ko are not counted.
+
+# What the fact-check agent compares the slides against: paths or
+# URLs. Add to it as the deck grows.
+sources:
+  - "https://www.youtube.com/watch?v=3Y8aq_ofEVs&t=699s"
+  - "https://research.nvidia.com/labs/gear/egoscale/"
+  - "https://www.youtube.com/watch?v=TIg9Z_6u79U&t=411s"
+  - "https://www.youtube.com/watch?v=1Or0kym2uic&t=10s"
+  - "https://www.manus-meta.com/use-cases/wonik-robotics"
+  - "https://www.youtube.com/watch?v=AZOxeJOYpXA"
+  - "https://xr-robotics.github.io/"
+  - "https://www.youtube.com/watch?v=g6QJX2s-RCo&t=2s"
+  - "https://cocacola-lab.github.io/Recursia-website/#demos"
+  - "https://hello-robot.com/stretch-4/"
+  - "https://www.agilityrobotics.com/videos/digits-first-day-of-work-at-gxo"
+  - "https://www.chinanews.com/sh/shipin/cns/2026/11-04/news1073816.shtml"
+  - "https://ocw.mit.edu/courses/2-12-introduction-to-robotics-fall-2005/pages/syllabus/"
+  - "https://www.cs.cmu.edu/~16311/current/labs/labsindex.html"
+  - "https://khatib.stanford.edu/teaching/cs223a/"
+  - "https://pages.github.berkeley.edu/EECS-106/sp22-site/calendar/"
+  - "https://bostondynamics.com/blog/atlas-on-a-roll/"
+  - "https://dev.bostondynamics.com/docs/concepts/robot_services.html"
+  - "https://dev.bostondynamics.com/python/bosdyn-client/src/bosdyn/client/robot_command.html#bosdyn.client.robot_command.RobotCommandBuilder.synchro_velocity_command"
+  - "https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1JointPositions.html"
+  - "https://frankarobotics.github.io/docs/overview.html"
+  - "https://franka.de/hubfs/Datasheet_FrankaResearch3_R02212_2.4.pdf"
+  - "https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf"
+  - "https://bostondynamics.com/products/spot/"
+  - "https://bostondynamics.com/wp-content/uploads/2026/01/atlas-spec-sheet.pdf"
+  - "https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/"
+  - "https://www.hds.co.jp/english/products/hd_theory/"
+  - "https://www.youtube.com/watch?v=1ijFove42Kw"
+  - "https://biomimetics.mit.edu/research/1a9ba04b-d200-4743-b8fc-bf231f3231f0/"
+  - "https://fab.cba.mit.edu/classes/865.15/people/rebecca.kleinberger/assets/papers/SEA_Pratt.pdf"
+  - "https://www.cubemars.com/product/ak80-6-kv100-robotic-actuator.html"
+  - "https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/"
+  - "https://www.usdigital.com/support/resources/reference/technical-docs/white-papers/resolution-accuracy-and-precision-of-encoders/"
+  - "https://dev.bostondynamics.com/docs/concepts/joint_control/readme"
+  - "https://www.figure.ai/news/helix-02"
+  - "https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1Gripper.html"
+  - "https://bostondynamics.com/blog/robot-hands-for-modern-ai-and-real-work/"
+  - "https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html"
+  - "https://www.youtube.com/watch?v=lZvPslCIQZY"
+  - "https://dspace.mit.edu/entities/publication/bc8c7e1e-5830-443f-a879-787947111fcf"
+  - "https://docs.odriverobotics.com/v/latest/manual/control.html"
+  - "https://www.youtube.com/watch?v=QE0pC-hY__4"
+  - "https://global.honda/en/newsroom/news/2005/c051213-asimo-eng.html"
+  - "https://www.youtube.com/watch?v=xNeZWP5Mx9s"
+  - "https://news.mit.edu/2019/mit-mini-cheetah-first-four-legged-robot-to-backflip-0304"
+  - "https://bostondynamics.com/blog/electric-new-era-for-atlas/"
+  - "https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/"
+  - "https://forcectrl.github.io/#hardware"
+  - "https://arxiv.org/abs/2611.05507"
+  - "https://arxiv.org/html/2611.03168v1"
+  - "https://beneath-the-policy.github.io/"
+  - "https://tonyzhaozh.github.io/aloha/"
+  - "https://www.trossenrobotics.com/stationary-ai"
+  - "https://www.youtube.com/watch?v=NL65Awuv8gU"
+  - "https://franka.de/hubfs/Product%20Manual%20Franka%20Research%203_R02210_1.5.2_EN.pdf"
+  - "https://www.youtube.com/watch?v=479Xay-Ulrs"
+  - "https://docs.robotis.com/docs/systems/op3/introduction/"
+  - "https://en.robotis.com/model/page.php?co_id=prd_op3"
+  - "https://emanual.robotis.com/docs/en/platform/op3/quick_start/#id-map"
+  - "https://robotis.us/products/dynamixel-xm430-w350-r"
+  - "https://www.linkedin.com/posts/sungho-woo-4693aa198_robotis-aiworker-imitationlearning-activity-7417019492272201729-EJRS"
+  - "https://docs.robotis.com/docs/software/cyclo/intelligence/legacy/physical_ai_tools/imitation_learning/"
+  - "https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/"
+  - "https://www.youtube.com/watch?v=PomkJ4l9CMU&t=439"
+  - "https://www.darpa.mil/research/programs/darpa-robotics-challenge"
+  - "https://rainbow-robotics.com/en/company/heritage-story/"
+  - "https://www.galbot.com/g1/"
+  - "https://tonyzhaozh.github.io/aloha/resources/teleop_all.mp4"
+  - "https://www.youtube.com/watch?v=m5__1M6gYwM"
+  - "https://www.rainbow-robotics.com/en/products/rb-y1"
+  - "https://www.youtube.com/watch?v=JAlZ3QpPgIU"
+  - "https://opengalaxea.github.io/GalaxeaVLA/"
+  - "https://arxiv.org/abs/2509.00576"
+  - "https://agibot.com/news/newsroom/post-134"
+  - "https://www.youtube.com/watch?v=NL65Awuv8gU&t=84"
+
+# The course series (Quarto/lectures/_series/<series>.yml) and this
+# deck's session in it. deckprofile.py resolves the session date,
+# title and the previous session from the series lock; the gate
+# names that session when the callback slide is missing;
+# build_landing.py groups the deck under the course.
+series: dgist-2026f
+series_index: 13
+
+# Two optional files next to this deck are read when they exist:
+#   Quarto/lectures/dgist-2026f-w13.forbidden.txt  (one term per line;
+#     any hit in visible slide text is a BLOCKER at the gate)
+#   Figures/lectures/dgist-2026f-w13/figures.yml  (file, source, licence,
+#     third_party per figure; third-party figures need their source on
+#     the slide)

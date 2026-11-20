@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-rotary-joint-parts" viewBox="0 0 1050 306" role="img" aria-labelledby="w13-rotary-joint-parts-title w13-rotary-joint-parts-desc">
+  <title id="w13-rotary-joint-parts-title">Inside an electric joint actuator</title>
+  <desc id="w13-rotary-joint-parts-desc">Four schematic symbols identify the drive electronics, electric motor, gearbox and angle sensor. Actual arrangements and sensor locations differ between actuators.</desc>
+  <style>
+    #w13-rotary-joint-parts text { font-family: inherit; fill: #142b4f; text-anchor: middle }
+    #w13-rotary-joint-parts .head { font-size: 33px; font-weight: 700 }
+    #w13-rotary-joint-parts .sub { font-size: 27px }
+  </style>
+  <path d="M90 158 H921" stroke="#c9d3db" stroke-width="6"/>
+  <text class="head" x="132" y="38">Motor drive</text>
+  <text class="head" x="386" y="38">Motor</text>
+  <text class="head" x="646" y="38">Gearbox</text>
+  <text class="head" x="918" y="38">Encoder</text>
+  <rect x="66" y="97" width="130" height="102" rx="10" fill="#e4edf3" stroke="#233f66" stroke-width="5"/>
+  <path d="M78 160 H94 V139 H108 V166 H124 V119 H140 V150 H170 V131 H182" fill="none" stroke="#ae7927" stroke-width="5"/>
+  <circle cx="386" cy="150" r="62" fill="#e4edf3" stroke="#233f66" stroke-width="5"/>
+  <rect x="376" y="97" width="20" height="18" rx="4" fill="#ae7927" transform="rotate(0 386 150)"/>
+  <rect x="376" y="97" width="20" height="18" rx="4" fill="#ae7927" transform="rotate(60 386 150)"/>
+  <rect x="376" y="97" width="20" height="18" rx="4" fill="#ae7927" transform="rotate(120 386 150)"/>
+  <rect x="376" y="97" width="20" height="18" rx="4" fill="#ae7927" transform="rotate(180 386 150)"/>
+  <rect x="376" y="97" width="20" height="18" rx="4" fill="#ae7927" transform="rotate(240 386 150)"/>
+  <rect x="376" y="97" width="20" height="18" rx="4" fill="#ae7927" transform="rotate(300 386 150)"/>
+  <path d="M361 163 L397 125 L410 137 L375 175 Z" fill="#233f66"/>
+  <circle cx="386.00" cy="150.00" r="6" fill="white" stroke="none" stroke-width="0"/>
+  <polygon points="665.0,142.0 664.9,145.2 671.6,147.5 670.2,154.2 663.0,153.6 661.0,158.3 659.4,161.0 664.3,166.2 659.9,171.5 653.8,167.6 649.9,170.8 647.2,172.5 649.2,179.4 642.8,182.0 639.2,175.8 634.2,176.7 631.0,177.0 629.6,184.0 622.7,183.4 622.4,176.2 617.6,174.7 614.6,173.4 610.1,179.0 604.3,175.2 607.4,168.8 603.8,165.2 601.8,162.7 595.2,165.5 591.8,159.5 597.6,155.2 596.0,150.4 595.4,147.2 588.3,146.7 588.1,139.8 595.2,138.6 596.0,133.6 596.9,130.5 590.9,126.7 593.9,120.5 600.7,122.8 603.8,118.8 606.0,116.5 602.5,110.3 608.0,106.2 613.0,111.4 617.6,109.3 620.6,108.3 620.3,101.1 627.2,100.1 629.2,107.0 634.2,107.3 637.4,107.8 640.4,101.3 647.0,103.6 645.5,110.6 649.9,113.2 652.4,115.1 658.2,110.8 662.9,115.9 658.3,121.4 661.0,125.7 662.4,128.6 669.4,127.5 671.3,134.1 664.6,136.9" fill="#e4edf3" stroke="#233f66" stroke-width="2.5" stroke-linejoin="round"/>
+  <polygon points="710.0,183.0 709.8,186.0 715.6,188.2 713.8,194.6 707.6,193.6 705.2,197.7 703.3,200.0 706.6,205.2 701.4,209.3 697.0,204.9 692.7,206.8 689.8,207.5 689.5,213.7 682.9,213.9 681.9,207.8 677.3,206.8 674.5,205.7 670.6,210.4 665.1,206.8 667.9,201.2 664.8,197.7 663.2,195.2 657.2,196.7 654.9,190.5 660.4,187.7 660.0,183.0 660.2,180.0 654.4,177.8 656.2,171.4 662.4,172.4 664.8,168.3 666.7,166.0 663.4,160.8 668.6,156.7 673.0,161.1 677.3,159.2 680.2,158.5 680.5,152.3 687.1,152.1 688.1,158.2 692.7,159.2 695.5,160.3 699.4,155.6 704.9,159.2 702.1,164.8 705.2,168.3 706.8,170.8 712.8,169.3 715.1,175.5 709.6,178.3" fill="#e4edf3" stroke="#233f66" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="630.00" cy="142.00" r="7" fill="#ae7927" stroke="none" stroke-width="0"/>
+  <circle cx="685.00" cy="183.00" r="5" fill="#ae7927" stroke="none" stroke-width="0"/>
+  <circle cx="918.00" cy="150.00" r="58" fill="white" stroke="#233f66" stroke-width="4"/>
+  <path d="M959.00 150.00 L970.00 150.00" stroke="#233f66" stroke-width="4"/>
+  <path d="M956.53 164.02 L966.86 167.79" stroke="#233f66" stroke-width="4"/>
+  <path d="M949.41 176.35 L957.83 183.42" stroke="#233f66" stroke-width="4"/>
+  <path d="M938.50 185.51 L944.00 195.03" stroke="#233f66" stroke-width="4"/>
+  <path d="M925.12 190.38 L927.03 201.21" stroke="#233f66" stroke-width="4"/>
+  <path d="M910.88 190.38 L908.97 201.21" stroke="#233f66" stroke-width="4"/>
+  <path d="M897.50 185.51 L892.00 195.03" stroke="#233f66" stroke-width="4"/>
+  <path d="M886.59 176.35 L878.17 183.42" stroke="#233f66" stroke-width="4"/>
+  <path d="M879.47 164.02 L869.14 167.79" stroke="#233f66" stroke-width="4"/>
+  <path d="M877.00 150.00 L866.00 150.00" stroke="#233f66" stroke-width="4"/>
+  <path d="M879.47 135.98 L869.14 132.21" stroke="#233f66" stroke-width="4"/>
+  <path d="M886.59 123.65 L878.17 116.58" stroke="#233f66" stroke-width="4"/>
+  <path d="M897.50 114.49 L892.00 104.97" stroke="#233f66" stroke-width="4"/>
+  <path d="M910.88 109.62 L908.97 98.79" stroke="#233f66" stroke-width="4"/>
+  <path d="M925.12 109.62 L927.03 98.79" stroke="#233f66" stroke-width="4"/>
+  <path d="M938.50 114.49 L944.00 104.97" stroke="#233f66" stroke-width="4"/>
+  <path d="M949.41 123.65 L957.83 116.58" stroke="#233f66" stroke-width="4"/>
+  <path d="M956.53 135.98 L966.86 132.21" stroke="#233f66" stroke-width="4"/>
+  <path d="M918 150 L943 121" stroke="#ae7927" stroke-width="6"/>
+  <circle cx="918.00" cy="150.00" r="5" fill="#233f66" stroke="none" stroke-width="0"/>
+  <text class="sub" x="132" y="268">Sets current</text>
+  <text class="sub" x="386" y="268">Produces torque</text>
+  <text class="sub" x="646" y="268">Trades speed for torque</text>
+  <text class="sub" x="918" y="268">Reads angle</text>
+</svg>

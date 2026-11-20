@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-sensor-scenes" viewBox="0 0 1000 255"
+     role="img" aria-labelledby="w13-sensor-scenes-title w13-sensor-scenes-desc">
+  <title id="w13-sensor-scenes-title">Three places a robot might take a measurement</title>
+  <desc id="w13-sensor-scenes-desc">A stair has a visible edge. The robot body rotates away from its earlier outline. At right, a solid object presses against a fingertip at the highlighted patch.</desc>
+  <style>
+    #w13-sensor-scenes text { font-family: inherit; fill: #183451; text-anchor: middle; }
+    #w13-sensor-scenes .label { font-size: 33px; font-weight: 650; }
+    #w13-sensor-scenes .detail { font-size: 31px; }
+    #w13-sensor-scenes .outline { stroke: #254967; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+    #w13-sensor-scenes .leader { stroke: #607d93; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #w13-sensor-scenes .gold { stroke: #ac761e; stroke-width: 6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <g stroke="#d5dfe6" stroke-width="2"><path d="M331 24 V242 M666 24 V242"/></g>
+  <!-- A side view with depth makes each stair edge visible. -->
+  <path class="outline" fill="#cedce7" d="M41 187 H85 V153 H139 V119 H193 V85 H250 V187 Z"/>
+  <g class="outline" fill="#eff4f7">
+    <path d="M85 153 L111 136 H165 L139 153 Z"/>
+    <path d="M139 119 L165 102 H219 L193 119 Z"/>
+    <path d="M193 85 L219 68 H277 L250 85 Z"/>
+  </g>
+  <path class="outline" fill="#b7ccdc" d="M250 85 L277 68 V169 L250 187 Z"/>
+  <path class="gold" d="M85 153 H138"/>
+  <text class="label" x="158" y="234">Stair edge</text>
+
+  <!-- Earlier body pose is dashed. Feet remain on the ground as the body turns. -->
+  <path d="M442 92 H554 Q562 92 562 100 V126 Q562 134 554 134 H442 Q434 134 434 126 V100 Q434 92 442 92 Z"
+        fill="none" stroke="#839aaa" stroke-width="3" stroke-dasharray="7 6"/>
+  <path class="outline" fill="none" d="M449 136 L432 160 L428 184 H415 M545 117 L566 146 L574 184 H590"/>
+  <g transform="rotate(-15 497 116)">
+    <rect x="435" y="93" width="125" height="47" rx="12" class="outline" fill="#cadce8"/>
+    <circle cx="449" cy="127" r="6" fill="#254967"/>
+    <circle cx="545" cy="127" r="6" fill="#254967"/>
+  </g>
+  <path class="gold" d="M467 70 Q493 40 532 57 M520 47 L532 57 L516 62"/>
+  <path class="leader" d="M398 190 H604"/>
+  <text class="label" x="500" y="234">Turning body</text>
+
+  <!-- An articulated fingertip presses into the side of an object. -->
+  <rect x="862" y="74" width="72" height="109" rx="10" class="outline" fill="#e1e9ef"/>
+  <path d="M713 166 L753 133 L803 133" stroke="#254967" stroke-width="30" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M713 166 L753 133 L803 133" stroke="#bad1e1" stroke-width="21" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M801 119 H833 Q850 119 859 130 V141 Q850 150 835 150 H801 Z" class="outline" fill="#cbdde8"/>
+  <circle cx="753" cy="133" r="6" fill="#365774"/>
+  <circle cx="805" cy="135" r="6" fill="#365774"/>
+  <path class="gold" d="M860 127 V145"/>
+  <text class="label" x="828" y="234">Finger contact</text>
+</svg>

@@ -1,0 +1,7 @@
+# DGIST W13 hardware survey and instructor guide
+
+Restored the November 18 ten-chapter outline and its exact 50-minute teaching clock. The November 20 lecture proceeds from commands, body quantities, actuators, sensing and control to history, four ground platforms, deployment evidence and the opening Atlas clip revisited. A second-semester first-year can enter each topic through a different physical observation. The slide source and instructor notes use a grasp as a short contact example.
+
+The course vault holds `hardware-survey-2026-11-20.md`, `survey-course-sources-2026-11-19.md`, and the editable sources for the Korean offline reader. The compiled private file on the presenter's Mac is `.local/w13-design-guide/lecture-design-guide.html` in the W13 checkout. It includes ten chapters, a fifty-screen index, embedded diagrams, clips and first-principles interactions. The course handoff identifies the current plan and distinguishes earlier alternatives.
+
+Verification covered the ordering of all 50 rendered sections, the four platform cases, the notes filter, visual evidence, local clips and the chapter clock. Each manifest entry appears in the classroom deck. The single-file reader was opened with networking disabled: all ten embedded videos decoded and all fifty slide cues were available. The five review reports and their resolution are in the [combined review](../reviews/dgist-2026f-w13-2026-11-19.md).

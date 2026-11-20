@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-wheel-loops" viewBox="0 0 1000 279"
+     role="img" aria-labelledby="w13-wheel-loops-title w13-wheel-loops-desc">
+  <title id="w13-wheel-loops-title">Two ways to drive the same loaded wheel</title>
+  <desc id="w13-wheel-loops-desc">Both controllers send a motor command to a wheel. Only the second receives an angle reading from the wheel along a return path. A gold mark on each wheel has reached three quarters of a turn clockwise from the top.</desc>
+  <style>
+    #w13-wheel-loops text { font-family: inherit; fill: #183451; text-anchor: middle; }
+    #w13-wheel-loops .label { font-size: 33px; font-weight: 650; }
+    #w13-wheel-loops .detail { font-size: 31px; }
+    #w13-wheel-loops .outline { stroke: #254967; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+    #w13-wheel-loops .leader { stroke: #607d93; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #w13-wheel-loops .gold { stroke: #ac761e; stroke-width: 6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <path d="M498 24 V256" stroke="#d5dfe6" stroke-width="2"/>
+  <text class="label" x="245" y="45">Stop at the timer</text>
+  <text class="label" x="752" y="45">Read the mark again</text>
+
+  <g class="outline" fill="#e4edf3">
+    <rect x="34" y="102" width="188" height="67" rx="12"/>
+    <rect x="535" y="102" width="188" height="67" rx="12"/>
+  </g>
+  <text class="detail" x="128" y="145">Controller</text>
+  <text class="detail" x="629" y="145">Controller</text>
+  <!-- Blue commands run from each controller to the wheel. -->
+  <g stroke="#406d8f" stroke-width="6" fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M231 135 H308 M296 125 L308 135 L296 145"/>
+    <path d="M732 135 H809 M797 125 L809 135 L797 145"/>
+  </g>
+
+  <g class="outline" fill="#e4edf3">
+    <circle cx="374" cy="135" r="53"/><circle cx="875" cy="135" r="53"/>
+  </g>
+  <g fill="none" stroke="#7894a9" stroke-width="3" stroke-linecap="round">
+    <path d="M374 92 V178 M331 135 H417 M344 105 L404 165 M344 165 L404 105"/>
+    <path d="M875 92 V178 M832 135 H918 M845 105 L905 165 M845 165 L905 105"/>
+  </g>
+  <g fill="#254967">
+    <circle cx="374" cy="135" r="9"/><circle cx="875" cy="135" r="9"/>
+  </g>
+  <g stroke="#ac761e" stroke-width="9" stroke-linecap="round">
+    <path d="M321 135 H337 M822 135 H838"/>
+  </g>
+
+  <!-- The measured shaft angle returns to the controller, closing only this loop. -->
+  <path class="gold" d="M875 194 V220 H629 V178 M619 190 L629 178 L639 190"/>
+  <text class="detail" x="752" y="261">Angle reading</text>
+</svg>

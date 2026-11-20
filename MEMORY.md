@@ -73,6 +73,12 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 
 ## Course Architecture
 
+[LEARN:course-continuity] W13 introduced policy, feedback and inference delay again after students had worked examples in W02, W06 and W09 → check the delivered slides and recordings before adding a recap. Name the familiar example in one sentence and give the student a new physical quantity to measure.
+
+[LEARN:w13-breadth] Promoting the presenter's choice of a recurring grasp example into the W13 structure displaced history, actuation, sensing and whole-body control → the November 18 ten-chapter hardware survey governs the lecture. Adjust the depth of each explanation for freshmen. Rotate examples across arms, mobile manipulators, quadrupeds and humanoids, and use a grasp only where it teaches contact.
+
+[LEARN:w13-audience] A mixed first- and second-year audience and a joint-design syllabus were assumed for W13 → teach first-years in their second semester. Draw on the presenter's computer-vision and robot-learning expertise to explain what a policy can observe and command, how the body responds and which evidence would explain an outcome.
+
 [LEARN:course-architecture] Put hardware foundations early as the bridge into robot learning → teach the robot-learning sequence first, then use hardware, control, and mechanical engineering as a late special module that synthesizes the physical stack.
 
 [LEARN:authoring] Shortened personal-site labels can silently change an explicitly supplied public identity reference → when the presenter supplies exact author URLs, preserve the scheme and trailing slash in visible copy unless they ask for display aliases.
@@ -90,3 +96,14 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:naming] Calling the DGIST HSS118 course "Future Literacy" (a gloss of the Korean course name) → its official English name is "Seminar for Comprehensive Competency Cultivation" (SCCC; DGIST portal, confirmed 2026-09-13): write it in full on first use and SCCC after, let the series `course:` field be the single source for slide subtitles and the landing page, and keep "Physical AI for Everyone" as the term's theme title only, never as the course name.
 
 [LEARN:publishing] Checking only the visible page after a course rename → also check document titles, descriptions, Open Graph and Twitter metadata, preview images, generated search indexes, series locks, roadmap slides, and linked external decks; a current page does not prove that a third-party preview cache has refreshed.
+[LEARN:pedagogy] Opening a first-year class with several scenes from earlier weeks made students depend on memory → establish a new scene and define the idea in everyday words first. Mention one earlier example in a complete sentence, and keep the rest of the prior-course evidence in instructor references.
+
+[LEARN:terminology] Translating industry terms differently across the W13 plan, diagrams and speaker notes obscured the words students will find on real spec sheets → use the original English term, give a plain Korean explanation at first teaching use, and retain Korean names for glossary searches.
+
+[LEARN:lecture-opening] Reintroducing the lecturer and recapping unrelated guest talks interrupted a returning class → open from the AI and data topics the students have studied, state today's hardware question directly, and give the answer to the first film during its own screen.
+
+[LEARN:lecture-navigation] Unconnected component lessons and repeated rhetorical questions obscured the course structure → show the complete agenda with the current chapter highlighted, explain the practical reason to study each part, and reserve prediction time for questions the students can actually resolve.
+
+[LEARN:hardware-examples] A single manufacturer's films dominated a cross-platform survey → choose Chinese, Korean and research platforms for their specific physical jobs, data collection methods and measured results, with a source beside each visual.
+
+[LEARN:hardware-motion] A product still made it hard to see how a person controls a robot → show the input and response in the same short film, and let students watch the different interfaces together. Use actual task footage for comparisons whose meaning depends on motion.

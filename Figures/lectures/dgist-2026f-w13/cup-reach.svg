@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-cup-reach" viewBox="0 0 1152 420" role="img" aria-labelledby="w13-reach-title w13-reach-desc">
+  <title id="w13-reach-title">Holding the same filled cup at two reaches</title>
+  <desc id="w13-reach-desc">A two-link arm holds a lidded cup still at the same height in both panels. Near and far poses place the cup's center 20 and 40 centimeters horizontally from the shoulder. Equal downward arrows represent the weight of the cup and its contents. The arm's own weight is omitted.</desc>
+  <style>
+    #w13-cup-reach text { font-family: inherit; fill: #142b4f; text-anchor: middle }
+    #w13-cup-reach .pose { font-size: 36px; font-weight: 700 }
+    #w13-cup-reach .label { font-size: 26px }
+    #w13-cup-reach .distance { font-size: 32px; font-weight: 700 }
+    #w13-cup-reach .guide { fill: none; stroke: #8996a5; stroke-width: 2; stroke-dasharray: 6 7 }
+    #w13-cup-reach .dimension { fill: none; stroke: #425772; stroke-width: 3 }
+    #w13-cup-reach .link { fill: none; stroke: #233f66; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round }
+    #w13-cup-reach .elbow { fill: white; stroke: #233f66; stroke-width: 5 }
+  </style>
+  <defs>
+    <g id="w13-reach-load">
+      <path d="M-31 87 H31 L23 154 Q0 160 -23 154 Z" fill="#faebc9" stroke="#76531d" stroke-width="4"/>
+      <path d="M-34 87 L-31 79 H31 L34 87 Z" fill="#fff7e7" stroke="#76531d" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M-28 106 V130" fill="none" stroke="#233f66" stroke-width="8" stroke-linecap="round"/>
+      <circle cy="121" r="5" fill="#986416"/>
+      <path d="M0 121 V211 M-9 198 L0 211 L9 198" fill="none" stroke="#986416" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+    </g>
+    <g id="w13-reach-shoulder">
+      <circle r="15" fill="white" stroke="#233f66" stroke-width="5"/>
+      <circle r="5" fill="#233f66"/>
+    </g>
+  </defs>
+  <path d="M576 16 V360" stroke="#d3dae3" stroke-width="2"/>
+  <g>
+    <text class="pose" x="288" y="43">Near</text>
+    <text class="label" x="77" y="82">Shoulder</text>
+    <path class="guide" d="M77 137 V301 M251 219 V301"/>
+    <path class="link" d="M77 120 L150.5 273.29 L224 120"/>
+    <circle class="elbow" cx="150.5" cy="273.29" r="10"/>
+    <use href="#w13-reach-shoulder" x="77" y="120"/>
+    <use href="#w13-reach-load" x="251"/>
+    <path class="dimension" d="M77 303 H251 M77 295 V311 M251 295 V311"/>
+    <text class="distance" x="164" y="349">20 cm</text>
+  </g>
+  <g transform="translate(576 0)">
+    <text class="pose" x="288" y="43">Far</text>
+    <text class="label" x="77" y="82">Shoulder</text>
+    <path class="guide" d="M77 137 V301 M425 219 V301"/>
+    <path class="link" d="M77 120 L237.5 176.03 L398 120"/>
+    <circle class="elbow" cx="237.5" cy="176.03" r="10"/>
+    <use href="#w13-reach-shoulder" x="77" y="120"/>
+    <use href="#w13-reach-load" x="425"/>
+    <path class="dimension" d="M77 303 H425 M77 295 V311 M425 295 V311"/>
+    <text class="distance" x="251" y="349">40 cm</text>
+  </g>
+  <text class="label" x="576" y="400">Gold arrows show the weight of the filled cup.</text>
+</svg>

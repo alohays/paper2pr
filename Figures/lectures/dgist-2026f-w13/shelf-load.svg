@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-shelf-load" viewBox="0 0 1152 420" role="img" aria-labelledby="w13-shelf-title w13-shelf-desc">
+  <title id="w13-shelf-title">The same parcel at two horizontal distances</title>
+  <desc id="w13-shelf-desc">A two-link arm holds a parcel still at the same height in both panels. Near and far poses place the parcel's center 20 and 40 centimeters horizontally from the shoulder. Equal downward arrows represent the weight of the parcel. The arm's own weight is omitted.</desc>
+  <style>
+    #w13-shelf-load text { font-family: inherit; fill: #142b4f; text-anchor: middle }
+    #w13-shelf-load .pose { font-size: 36px; font-weight: 700 }
+    #w13-shelf-load .label { font-size: 26px }
+    #w13-shelf-load .distance { font-size: 32px; font-weight: 700 }
+    #w13-shelf-load .guide { fill: none; stroke: #8996a5; stroke-width: 2; stroke-dasharray: 6 7 }
+    #w13-shelf-load .dimension { fill: none; stroke: #425772; stroke-width: 3 }
+    #w13-shelf-load .link { fill: none; stroke: #233f66; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round }
+    #w13-shelf-load .elbow { fill: white; stroke: #233f66; stroke-width: 5 }
+  </style>
+  <defs>
+    <g id="w13-shelf-parcel-symbol">
+      <rect x="-28" y="87" width="56" height="68" rx="3" fill="#faebc9" stroke="#76531d" stroke-width="4"/>
+      <path d="M-5 88 V103 L0 100 L5 103 V88" fill="#cfa559" stroke="#76531d" stroke-width="2"/>
+      <path d="M-28 106 V130" fill="none" stroke="#233f66" stroke-width="8" stroke-linecap="round"/>
+      <circle cy="121" r="5" fill="#986416"/>
+      <path d="M0 121 V211 M-9 198 L0 211 L9 198" fill="none" stroke="#986416" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+    </g>
+    <g id="w13-shelf-shoulder">
+      <circle r="15" fill="white" stroke="#233f66" stroke-width="5"/>
+      <circle r="5" fill="#233f66"/>
+    </g>
+  </defs>
+  <path d="M576 16 V360" stroke="#d3dae3" stroke-width="2"/>
+  <g>
+    <text class="pose" x="288" y="43">Near</text>
+    <text class="label" x="77" y="82">Shoulder</text>
+    <path class="guide" d="M77 137 V301 M251 219 V301"/>
+    <path class="link" d="M77 120 L150.5 273.29 L224 120"/>
+    <circle class="elbow" cx="150.5" cy="273.29" r="10"/>
+    <use href="#w13-shelf-shoulder" x="77" y="120"/>
+    <use href="#w13-shelf-parcel-symbol" x="251"/>
+    <path class="dimension" d="M77 303 H251 M77 295 V311 M251 295 V311"/>
+    <text class="distance" x="164" y="349">20 cm</text>
+  </g>
+  <g transform="translate(576 0)">
+    <text class="pose" x="288" y="43">Far</text>
+    <text class="label" x="77" y="82">Shoulder</text>
+    <path class="guide" d="M77 137 V301 M425 219 V301"/>
+    <path class="link" d="M77 120 L237.5 176.03 L398 120"/>
+    <circle class="elbow" cx="237.5" cy="176.03" r="10"/>
+    <use href="#w13-shelf-shoulder" x="77" y="120"/>
+    <use href="#w13-shelf-parcel-symbol" x="425"/>
+    <path class="dimension" d="M77 303 H425 M77 295 V311 M425 295 V311"/>
+    <text class="distance" x="251" y="349">40 cm</text>
+  </g>
+  <text class="label" x="576" y="400">Both arrows show the weight of the same parcel.</text>
+</svg>

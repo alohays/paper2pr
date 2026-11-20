@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-foot-support" viewBox="0 0 1100 304" role="img" aria-labelledby="w13-foot-support-title w13-foot-support-desc">
+  <title id="w13-foot-support-title">A quiet stance with four feet or three feet on level ground</title>
+  <desc id="w13-foot-support-desc">A top view marks feet touching the ground. Lifting one foot changes a quadrilateral support area into a triangle. The center-of-mass projection shown lies inside both shaded regions.</desc>
+  <style>
+    #w13-foot-support text {font-family:inherit;fill:#183451}
+    #w13-foot-support .heading {font-size:34px;font-weight:700}
+    #w13-foot-support .label {font-size:28px}
+    #w13-foot-support .line {fill:none;stroke:#233f66;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+  <text class="heading" x="225" y="40" text-anchor="middle">Four feet down</text>
+  <text class="heading" x="726" y="40" text-anchor="middle">One foot lifts</text>
+  <path d="M110 85 H340 V207 H110 Z" fill="#e1ebf3" stroke="#4b7697" stroke-width="4"/>
+  <path d="M611 85 L841 207 H611 Z" fill="#e1ebf3" stroke="#4b7697" stroke-width="4"/>
+  <g fill="#204565"><circle cx="110" cy="85" r="10"/><circle cx="340" cy="85" r="10"/><circle cx="110" cy="207" r="10"/><circle cx="340" cy="207" r="10"/><circle cx="611" cy="85" r="10"/><circle cx="611" cy="207" r="10"/><circle cx="841" cy="207" r="10"/></g>
+  <circle cx="841" cy="85" r="11" fill="white" stroke="#677684" stroke-dasharray="5 4" stroke-width="3"/>
+  <g fill="#af7218" stroke="#77531d" stroke-width="2"><circle cx="199" cy="163" r="10"/><circle cx="700" cy="163" r="10"/></g>
+  <path d="M409 146 H515 M503 134 L515 146 L503 158" class="line"/>
+  <rect x="152" y="258" width="25" height="17" rx="2" fill="#e1ebf3" stroke="#4b7697" stroke-width="2"/>
+  <text class="label" x="190" y="277">Support area</text>
+  <circle cx="505" cy="265" r="9" fill="#af7218"/>
+  <text class="label" x="528" y="277">Center of mass projected onto the ground</text>
+</svg>

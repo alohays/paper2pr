@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-wheel-chain" viewBox="0 0 1100 315" role="img" aria-labelledby="w13-cmd-title w13-cmd-desc">
+  <title id="w13-cmd-title">The motor turns the wheel and the encoder measures rotation</title>
+  <desc id="w13-cmd-desc">The computer requests one turn per second. The controller compares the requested and measured speeds. The drive supplies current to the motor, which turns the wheel. An encoder reads rotation at the axle and sends its readings back to the controller.</desc>
+  <defs>
+    <marker id="w13-cmd-forward" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#496780" stroke-width="1.6"/></marker>
+    <marker id="w13-cmd-return" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#307465" stroke-width="1.6"/></marker>
+  </defs>
+  <style>
+    #w13-wheel-chain text{font-family:inherit;text-anchor:middle;fill:#17344f}
+    #w13-wheel-chain .name{font-size:35px;font-weight:700}
+    #w13-wheel-chain .sub{font-size:26px}
+    #w13-wheel-chain .wire{fill:none;stroke:#496780;stroke-width:4;marker-end:url(#w13-cmd-forward)}
+    #w13-wheel-chain .return{fill:none;stroke:#307465;stroke-width:4;marker-end:url(#w13-cmd-return)}
+  </style>
+  <g fill="#f1f5f6" stroke="#b5c6cd" stroke-width="2">
+    <rect x="265" y="48" width="213" height="116" rx="12"/>
+    <rect x="559" y="48" width="250" height="116" rx="12"/>
+  </g>
+  <text class="name" x="104" y="103">Target</text><text class="sub" x="104" y="140">1 turn/s</text>
+  <text class="name" x="371" y="101">Controller</text><text class="sub" x="371" y="140">Compares speeds</text>
+  <text class="name" x="684" y="101">Drive + motor</text><text class="sub" x="684" y="140">Turn the wheel</text>
+  <path class="wire" d="M188 106 H251"/>
+  <path class="wire" d="M486 106 H546"/>
+  <path class="wire" d="M818 106 H898"/>
+  <g transform="translate(969 106)" stroke="#173f58">
+    <circle r="61" fill="#fff" stroke-width="5"/><circle r="7" fill="#173f58"/>
+    <path d="M0 -49 V-28" stroke="#af5526" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <path class="return" d="M969 178 V216 H371 V173"/>
+  <text class="name" x="670" y="264" style="fill:#256656">Encoder</text>
+  <text class="sub" x="670" y="300">Measures how far the wheel turned</text>
+</svg>
