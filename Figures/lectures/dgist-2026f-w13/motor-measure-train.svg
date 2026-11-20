@@ -18,7 +18,8 @@
     <text class="caption" y="288">respond under load?</text>
   </g>
   <path class="signal" d="M344 147 H394 M380 135 L394 147 L380 159"/>
-  <g transform="translate(577 0)">
+  <text class="label fragment fade-out" data-fragment-index="0" x="577" y="156">What should change?</text>
+  <g class="fragment" data-fragment-index="0" transform="translate(577 0)">
     <text class="label" y="45">Model and train</text>
     <rect x="-90" y="91" width="180" height="115" rx="8" fill="#edf3f6" stroke="#284963" stroke-width="6"/>
     <path class="edge" d="M-69 111 V185 H71 M0 208 V223 M-32 223 H32" style="stroke-width:4"/>

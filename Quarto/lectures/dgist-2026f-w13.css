@@ -14,7 +14,7 @@
 }
 
 .reveal #body-humanoid .two-up figure.video-card video {
-  height: 310px;
+  height: 360px;
   width: 100%;
 }
 
@@ -28,4 +28,316 @@
 
 .reveal #gear-families .r-stack figure {
   margin-inline: auto;
+}
+
+/* The cover uses stills and credits from the local classroom clips. */
+.reveal #title-slide .w13-cover-views {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 16px 0 0;
+}
+.reveal .w13-cover-views figure {
+  margin: 0;
+}
+.reveal .w13-cover-views img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  margin: 0;
+  border-radius: 4px;
+}
+.reveal .w13-cover-views figcaption {
+  margin: 4px 0 0;
+  color: #405269;
+  font-weight: 500;
+  line-height: 1.2;
+  font-family: inherit;
+  font-size: 23px;
+  font-style: normal;
+}
+.reveal #title-slide:has(.w13-cover-views) .date {
+  margin-top: 0.25em;
+}
+.reveal .w13-equation {
+  color: #183451;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45em;
+  white-space: nowrap;
+}
+.reveal .w13-equation sub {
+  vertical-align: sub;
+  font-size: 65%;
+}
+.reveal .slides section .r-stack {
+  width: 100%;
+}
+.reveal .slides section .r-stack p {
+  text-align: center;
+  margin: 0.15em 0;
+}
+.reveal .slides section .footnote {
+  color: #3e5161;
+  font-size: 22px;
+}
+.reveal .slides section figure.video-card figcaption.video-caption .video-caption-title {
+  font-size: 25px;
+}
+.reveal .slides section figure.video-card figcaption.video-caption .video-caption-meta {
+  color: #495865;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+/* A chapter opens on the complete agenda. The first advance exposes its lesson. */
+.reveal .slides section .w13-agenda-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 32px 56px;
+  margin: 0;
+  background: white;
+}
+.reveal .slides section .w13-agenda-overlay:has(.w13-agenda-exit.visible),
+.reveal .slides section:has(> .w13-agenda-overlay .w13-agenda-exit:not(.visible)) > :not(.w13-agenda-overlay, aside) {
+  display: none !important;
+}
+.reveal .w13-agenda-exit,
+.reveal .w13-count-run {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.reveal .slides section:has(> .w13-agenda-overlay) > :nth-last-child(1 of :not(.footnote, aside, .notes, .w13-agenda-overlay)) {
+  margin-bottom: auto;
+}
+.reveal .slides section .w13-agenda-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(5, auto);
+  grid-auto-flow: column;
+  column-gap: 50px;
+  row-gap: 8px;
+  width: 100%;
+  padding: 0;
+  margin: auto 0;
+  list-style: none;
+  text-align: left;
+}
+.reveal .w13-agenda-list li {
+  display: grid;
+  grid-template-columns: 2.1ch 1fr;
+  align-items: baseline;
+  gap: 0.55em;
+  margin: 0;
+  padding: 8px 0;
+  color: #666b72;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.reveal .w13-agenda-list li[aria-current="step"] {
+  color: #111214;
+  font-weight: 700;
+}
+.reveal .w13-chapter-number { font-variant-numeric: tabular-nums; }
+.reveal .w13-agenda-page { width: 100%; }
+.reveal .slides section .w13-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+.reveal .w13-picture-case, .reveal .w13-picture-case p {
+  text-align: center;
+}
+.reveal .w13-picture-case p { margin: 0.24em 0; }
+.reveal .w13-photo img {
+  display: block;
+  width: 100%;
+  height: 320px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.reveal .w13-facts, .reveal .w13-facts p { text-align: left; }
+.reveal .w13-facts p { margin: 0.6em 0; }
+.reveal .w13-facts strong { color: #183451; }
+.reveal .w13-film-entry { width: 100%; }
+
+.reveal .slides #lecture-agenda > h2,
+.reveal .slides .w13-agenda-only > h2,
+.reveal .slides .w13-agenda-overlay h2 {
+  color: #535961;
+  border-bottom-color: #ced1d5;
+}
+.reveal .slides section .w13-pair:has(> .w13-picture-case:empty) {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.reveal .w13-picture-case:empty { display: none; }
+
+.reveal .w13-study-number { text-align: center; }
+.reveal .w13-study-number p { margin: 0; }
+.reveal .w13-study-number strong {
+  font-size: 2.2em;
+  line-height: 1.05;
+  color: #183451;
+  font-variant-numeric: tabular-nums;
+}
+.reveal #survey-route .w13-study-number + p { margin-top: 1.05em; }
+
+.reveal .slides section .w13-film-grid,
+.reveal .slides section .w13-film-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 36px;
+  width: 100%;
+  align-items: start;
+}
+.reveal .slides section .w13-film-grid {
+  max-width: 1050px;
+  margin-inline: auto;
+}
+.reveal .w13-film-panel p {
+  margin: 5px 0 0;
+  text-align: center;
+  line-height: 1.16;
+}
+.reveal .w13-film-grid .w13-film-panel p { font-size: 32px; }
+.reveal .w13-film-pair .w13-film-panel p { font-size: 34px; }
+.reveal .w13-film-panel strong { color: #183451; }
+.reveal section[data-chapter] .w13-film-grid figure.video-card video.video-inline { height: 210px; }
+.reveal section[data-chapter] .w13-film-pair figure.video-card video.video-inline { height: 305px; }
+.reveal .slides section .w13-film-panel figure.video-card figcaption { display: none; }
+
+.reveal .slides section .w13-field-case {
+  display: grid;
+  grid-template-columns: minmax(0, 1.36fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 34px;
+}
+.reveal .w13-field-case .w13-facts p { font-size: 32px; line-height: 1.22; }
+.reveal section[data-chapter] .w13-field-case video.video-inline { width: 100%; height: auto; }
+.reveal .slides section .w13-field-case:not(:has(figure)) { grid-template-columns: 1fr; justify-items: center; }
+.reveal #body-hybrid-rby1 figure.video-card video { height: 395px; }
+
+.reveal #gear-tradeoff:not(.w13-turns-finished) .w13-after-turns {
+  visibility: hidden;
+  opacity: 0;
+}
+.reveal #gear-tradeoff:not(.w13-turns-finished) .w13-turn-guide {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Keep the cover source intact. Frame its full-body view for the knee callout. */
+.reveal .w13-op3-board {
+  position: relative;
+  width: 1000px;
+  height: 433px;
+  margin-inline: auto;
+}
+.reveal .w13-op3-board .w13-op3-body,
+.reveal .w13-op3-board .w13-op3-part {
+  position: absolute;
+  overflow: hidden;
+}
+.reveal .w13-op3-body { left: 56px; top: 10px; width: 210px; height: 371px; }
+.reveal .w13-op3-part { left: 335px; top: 56px; width: 255px; height: 285px; }
+.reveal .w13-op3-board .w13-photo img { position: absolute; max-width: none; margin: 0; }
+.reveal .w13-op3-body .w13-photo img { right: 0; top: 0; width: 700px; height: 371px; }
+.reveal .w13-op3-part .w13-photo img { left: -151px; top: -12px; width: 560px; height: 308px; }
+.reveal .w13-knee-leader {
+  position: absolute; top: 0; left: 0; width: 1000px; height: 408px;
+  pointer-events: none;
+}
+.reveal .w13-op3-board .w13-op3-body-caption,
+.reveal .w13-op3-board .w13-op3-part-caption {
+  position: absolute; top: 382px; font-size: 31px; text-align: center;
+}
+.reveal .w13-op3-body-caption { left: 0; width: 322px; }
+.reveal .w13-op3-part-caption { left: 314px; width: 295px; }
+.reveal .w13-op3-registers {
+  position: absolute; left: 636px; top: 89px; width: 355px; text-align: left;
+}
+.reveal .w13-op3-registers p { margin: 0 0 0.65em; }
+.reveal .w13-op3-board strong { color: #183451; }
+.reveal #read-new-robot figure.video-card video.video-inline { height: 466px; max-height: none; }
+.reveal #read-new-robot > p { margin-top: 4px; }
+
+/* The September recap reads left to right. Today's topic arrives on its own advance. */
+.reveal .slides section .w13-recap-label p {
+  margin: 4px 0 16px;
+  color: #535961;
+  font-size: 27px;
+  font-weight: 600;
+  text-align: center;
+}
+.reveal .slides section .w13-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 58px;
+  width: 100%;
+  align-items: stretch;
+}
+.reveal .w13-flow-step {
+  position: relative;
+  box-sizing: border-box;
+  padding: 20px 14px 18px;
+  background: #f1f5f6;
+  border: 2px solid #b5c6cd;
+  border-radius: 12px;
+}
+.reveal .slides section .w13-flow-step p {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.22;
+  text-align: center;
+}
+.reveal .slides section .w13-flow-step p:first-child {
+  margin-bottom: 10px;
+  font-size: 35px;
+}
+.reveal .w13-flow-step strong { color: #183451; }
+.reveal .w13-flow-step + .w13-flow-step::before {
+  content: "";
+  position: absolute;
+  left: -44px;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  border-top: 4px solid #496780;
+  border-right: 4px solid #496780;
+  transform: translate(-6px, -50%) rotate(45deg);
+}
+.reveal .slides section .w13-flow-step .w13-flow-note {
+  display: block;
+  margin-top: 10px;
+  color: #405269;
+  font-size: 25px;
+}
+.reveal .slides section .w13-flow-today {
+  margin-top: 40px;
+  text-align: center;
+}
+.reveal .slides section .w13-flow-today p {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.25;
+  text-align: center;
+  text-wrap: balance;
+}
+.reveal .w13-flow-today strong { color: #183451; }
+.reveal .w13-flow-today strong:first-child { color: #9c4a1e; }
+
+/* The answer waits for the mark to finish its one-second turn. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal #command-journey .w13-turn-answer.visible { transition-delay: 1s; }
 }

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-encoder-count" viewBox="0 0 1100 330" role="img" aria-labelledby="w13-count-title w13-count-desc">
+  <title id="w13-count-title">A fixed sensor counts the marks on a disc that turns with the wheel</title>
+  <desc id="w13-count-desc">A disc with eight evenly spaced marks is fixed to the wheel axle. A sensor fixed to the cart sits above the rim. During one second the disc turns clockwise by three quarters of a turn, six marks pass the sensor and the counter reaches six. These are illustrative values.</desc>
+  <style>
+    #w13-encoder-count text { font-family: inherit; fill: #17344f; text-anchor: middle }
+    #w13-encoder-count .label { font-size: 27px }
+    #w13-encoder-count .head { font-size: 30px; font-weight: 600 }
+    #w13-encoder-count .enc-count { font-size: 118px; font-weight: 700; font-variant-numeric: tabular-nums }
+    #w13-encoder-count .enc-clock { font-weight: 700; fill: #256656; font-variant-numeric: tabular-nums }
+    #w13-encoder-count .enc-sensor { fill: #e9eef1; stroke: #173f58; stroke-width: 3 }
+    #w13-encoder-count .enc-sensor.lit { fill: #e3a43f }
+  </style>
+  <defs>
+    <marker id="w13-count-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#307465" stroke-width="1.6"/></marker>
+    <marker id="w13-count-spin" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#607788" stroke-width="1.6"/></marker>
+    <path id="w13-count-mark" d="M0 -100 V-78" stroke-linecap="round"/>
+  </defs>
+
+  <!-- The sensor is bolted to the cart. It stays still while the disc turns. -->
+  <path d="M96 30 H240 V44" fill="none" stroke="#607788" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M96 18 V42" stroke="#607788" stroke-width="5" stroke-linecap="round"/>
+  <path class="enc-sensor lit" d="M224 44 H256 V66 L240 76 L224 66 Z"/>
+  <text class="label" x="98" y="76">Fixed sensor</text>
+
+  <g transform="translate(240 190)">
+    <circle r="108" fill="#fff" stroke="#173f58" stroke-width="5"/>
+    <g class="enc-rotor">
+      <g stroke="#345973" stroke-width="9">
+        <use href="#w13-count-mark" transform="rotate(45)"/>
+        <use href="#w13-count-mark" transform="rotate(90)"/>
+        <use href="#w13-count-mark" transform="rotate(135)"/>
+        <use href="#w13-count-mark" transform="rotate(180)"/>
+        <use href="#w13-count-mark" transform="rotate(225)"/>
+        <use href="#w13-count-mark" transform="rotate(270)"/>
+        <use href="#w13-count-mark" transform="rotate(315)"/>
+      </g>
+      <use href="#w13-count-mark" stroke="#af5526" stroke-width="12"/>
+    </g>
+    <circle r="9" fill="#173f58"/>
+    <path d="M131 -52 A141 141 0 0 1 131 52" fill="none" stroke="#607788" stroke-width="4" marker-end="url(#w13-count-spin)"/>
+  </g>
+  <text class="label" x="240" y="326">Disc with 8 marks</text>
+
+  <path d="M264 56 H506" fill="none" stroke="#307465" stroke-width="4" marker-end="url(#w13-count-arrow)"/>
+  <text class="label" x="392" y="42" style="fill:#256656">One signal per mark</text>
+
+  <rect x="520" y="22" width="540" height="286" rx="12" fill="#f1f5f6" stroke="#b5c6cd" stroke-width="2"/>
+  <text class="head" x="790" y="68">Marks counted</text>
+  <text class="enc-count" x="790" y="188">0</text>
+  <text class="label" x="790" y="236">8 marks = 1 full turn</text>
+  <text class="label" x="790" y="284">Time · <tspan class="enc-clock">0.0 s</tspan></text>
+</svg>

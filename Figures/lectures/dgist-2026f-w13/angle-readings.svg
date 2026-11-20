@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-angles" viewBox="0 0 1020 236" role="img" aria-labelledby="w13-angles-title w13-angles-desc">
+  <title id="w13-angles-title">Two encoder readings on one angular scale</title>
+  <desc id="w13-angles-desc">Each row has the same zero and target at 30 degrees. A filled dot marks 20 degrees in A and 28 degrees in B.</desc>
+  <style>
+    #w13-angles text { font-family: inherit; fill: #183451; font-weight: 600; font-size: 35px }
+    #w13-angles .rail { stroke: #c2d1dd; stroke-width: 7; stroke-linecap: round }
+    #w13-angles .reading { stroke: #346689; stroke-width: 9; stroke-linecap: round }
+    #w13-angles .target { fill: #92500e }
+  </style>
+  <text x="238" y="43" text-anchor="middle">0°</text>
+  <text class="target" x="885" y="43" text-anchor="middle">Target 30°</text>
+  <path d="M238 66v143" stroke="#aabdc9" stroke-width="2"/>
+  <path d="M885 62v154" stroke="#b16614" stroke-width="5" stroke-dasharray="8 7"/>
+  <path class="rail" d="M238 102h647 M238 185h647"/>
+  <path class="reading" d="M238 102h431.3 M238 185h603.9"/>
+  <g fill="#183451" stroke="white" stroke-width="3"><circle cx="669.3" cy="102" r="13"/><circle cx="841.9" cy="185" r="13"/></g>
+  <text x="16" y="112">A · 20°</text><text x="16" y="195">B · 28°</text>
+</svg>

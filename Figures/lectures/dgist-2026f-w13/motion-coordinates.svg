@@ -21,6 +21,6 @@
   <circle cx="689.00" cy="205.00" r="14" fill="white" stroke="#ae7927" stroke-width="6"/>
   <circle cx="760.00" cy="118.00" r="14" fill="white" stroke="#ae7927" stroke-width="6"/>
   <path d="M891 142 L918 147 M885 159 L912 169" stroke="#233f66" stroke-width="6" stroke-linecap="round"/>
-  <text class="sub" x="270" y="267">One angle</text>
-  <text class="sub" x="808" y="267">Two independent angles</text>
+  <text class="sub fragment" data-fragment-index="1" x="270" y="267">One angle</text>
+  <text class="sub fragment" data-fragment-index="1" x="808" y="267">Two independent angles</text>
 </svg>

@@ -1,21 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="w13-encoder-reading" viewBox="0 0 1100 322" role="img" aria-labelledby="w13-encoder-reading-title w13-encoder-reading-desc">
-  <title id="w13-encoder-reading-title">From shaft rotation to an encoder reading</title>
-  <desc id="w13-encoder-reading-desc">As a marked shaft rotates, the fixed reader produces a pulse at each passing mark. Counting pulses from a known reference measures the change in angle.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-encoder-reading" viewBox="0 0 1100 322" role="img" aria-labelledby="w13-encoder-title w13-encoder-desc">
+  <title id="w13-encoder-title">Four marks passing a fixed reader produce four pulses</title>
+  <desc id="w13-encoder-desc">The disc turns clockwise. Each gold mark reaching the reader raises the output once. The trace returns low when that mark clears the reader and stops after the fourth pulse.</desc>
   <style>
-    #w13-encoder-reading text {font-family:inherit;fill:#183451}
-    #w13-encoder-reading .heading {font-size:34px;font-weight:700}
-    #w13-encoder-reading .label {font-size:28px}
-    #w13-encoder-reading .line {fill:none;stroke:#233f66;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+    #w13-encoder-reading text { font-family: inherit; fill: #183451; text-anchor: middle }
+    #w13-encoder-reading .heading { font-size: 35px; font-weight: 650 }
+    #w13-encoder-reading .label { font-size: 28px }
+    #w13-encoder-reading .rotor { transform: rotate(72deg); transform-origin: 0 0 }
+    #w13-encoder-reading .trace-window { transform-origin: 0 0 }
+    @keyframes w13-encoder-turn { from { transform: rotate(0deg) } to { transform: rotate(72deg) } }
+    @keyframes w13-encoder-trace { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+    @keyframes w13-keep-counting { from, to { opacity: 1; visibility: visible } }
+    @keyframes w13-wait-for-pulses { from { opacity: 0 } to { opacity: 1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      #joint-encoder { --w13-pulse-duration: 4s }
+      #joint-encoder.present:has(.w13-agenda-exit.visible) .rotor { animation: w13-encoder-turn var(--w13-pulse-duration) linear both }
+      #joint-encoder.present:has(.w13-agenda-exit.visible) .trace-window { animation: w13-encoder-trace var(--w13-pulse-duration) linear both }
+      #joint-encoder.present:has(.w13-agenda-exit.visible) .w13-encoder-prompt { animation: w13-keep-counting var(--w13-pulse-duration) }
+      #joint-encoder.present:has(.w13-agenda-exit.visible) p:has(.w13-encoder-answer) { animation: w13-wait-for-pulses var(--w13-pulse-duration) step-end both }
+    }
   </style>
-  <text class="heading" x="255" y="38" text-anchor="middle">Shaft turns</text>
-  <circle cx="255" cy="150" r="89" stroke="#8193a5" stroke-width="3" fill="#eff4f8"/>
-  <path d="M329.0 150.0 l14.0 0.0 M325.4 172.9 l13.3 4.3 M314.9 193.5 l11.3 8.2 M298.5 209.9 l8.2 11.3 M277.9 220.4 l4.3 13.3 M255.0 224.0 l0.0 14.0 M232.1 220.4 l-4.3 13.3 M211.5 209.9 l-8.2 11.3 M195.1 193.5 l-11.3 8.2 M184.6 172.9 l-13.3 4.3 M181.0 150.0 l-14.0 0.0 M184.6 127.1 l-13.3 -4.3 M195.1 106.5 l-11.3 -8.2 M211.5 90.1 l-8.2 -11.3 M232.1 79.6 l-4.3 -13.3 M255.0 76.0 l-0.0 -14.0 M277.9 79.6 l4.3 -13.3 M298.5 90.1 l8.2 -11.3 M314.9 106.5 l11.3 -8.2 M325.4 127.1 l13.3 -4.3" fill="none" stroke="#244c72" stroke-width="6"/>
-  <circle cx="255" cy="150" r="15" fill="#234766"/>
-  <path d="M248 101 Q303 98 305 151 M293 139 L305 151 L314 135" fill="none" stroke="#94651b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M349 136 H393 V164 H349 Z" fill="#c99642" stroke="#77531d" stroke-width="3"/>
-  <text class="label" x="255" y="290" text-anchor="middle">Marks pass a fixed reader.</text>
-  <path d="M456 152 H565 M551 140 L565 152 L551 164" class="line"/>
-  <text class="heading" x="806" y="38" text-anchor="middle">Pulses arrive</text>
-  <path d="M630 180 H657 V112 H689 V180 H731 V112 H763 V180 H805 V112 H837 V180 H879 V112 H911 V180 H959" class="line"/>
-  <text class="label" x="806" y="290" text-anchor="middle">Count from a known angle.</text>
+  <defs>
+    <path id="w13-encoder-mark" d="M64 -2.25 L86 -3 L86 3 L64 2.25 Z"/>
+    <clipPath id="w13-encoder-window" clipPathUnits="userSpaceOnUse">
+      <rect class="trace-window" x="0" y="0" width="360" height="112"/>
+    </clipPath>
+  </defs>
+  <text class="heading" x="261" y="41">Shaft turns</text>
+  <text class="heading" x="800" y="41">Sensor output</text>
+  <g transform="translate(260 153)">
+    <circle r="88" fill="#eef4f7" stroke="#526f84" stroke-width="3"/>
+    <g class="rotor">
+      <g fill="#9c5517">
+        <use href="#w13-encoder-mark" transform="rotate(-9)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-27)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-45)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-63)"/>
+      </g>
+      <g fill="#345973">
+        <use href="#w13-encoder-mark" transform="rotate(-81)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-99)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-117)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-135)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-153)"/>
+        <use href="#w13-encoder-mark" transform="rotate(-171)"/>
+        <use href="#w13-encoder-mark" transform="rotate(171)"/>
+        <use href="#w13-encoder-mark" transform="rotate(153)"/>
+        <use href="#w13-encoder-mark" transform="rotate(135)"/>
+        <use href="#w13-encoder-mark" transform="rotate(117)"/>
+        <use href="#w13-encoder-mark" transform="rotate(99)"/>
+        <use href="#w13-encoder-mark" transform="rotate(81)"/>
+        <use href="#w13-encoder-mark" transform="rotate(63)"/>
+        <use href="#w13-encoder-mark" transform="rotate(45)"/>
+        <use href="#w13-encoder-mark" transform="rotate(27)"/>
+        <use href="#w13-encoder-mark" transform="rotate(9)"/>
+      </g>
+      <path d="M0 0 L52 -8" fill="none" stroke="#a46324" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <circle r="12" fill="#254967"/>
+  </g>
+  <path d="M347 153 L363 140 H403 V166 H363 Z" fill="#d69c48" stroke="#70471e" stroke-width="3"/>
+  <text class="label" x="276" y="287">Marks pass a fixed reader.</text>
+  <path d="M455 151 H550 M536 139 L550 151 L536 163" fill="none" stroke="#345973" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(625 107)">
+    <path d="M0 82 H360" fill="none" stroke="#bccbd4" stroke-width="3"/>
+    <g clip-path="url(#w13-encoder-window)">
+      <path d="M0 82 H35 V12 H55 V82 H125 V12 H145 V82 H215 V12 H235 V82 H305 V12 H325 V82 H360" fill="none" stroke="#244f70" stroke-width="6" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text class="label" x="805" y="287">Count from a known angle.</text>
 </svg>

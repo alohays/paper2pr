@@ -18,8 +18,8 @@ title: "Foundations of Robot Hardware, Control, and Modern Platforms"
 audience:
   assumes: none    # none | practitioner | expert
   size: "about 90"
-  description: "First-year undergraduates in their second semester. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Use the original English technical name in the slides, Korean notes and visual guide. At first teaching use, explain it in plain Korean with a physical example. Teach each example from the scene on screen. A short reminder may follow a new example. Assume no recall of earlier examples and no mechanics or control course."
-  prior: [W02 embodied AI and policy, W03 video and world models, W06 drawer commands and timestamped robot state, W09 timed action targets and inference delay, W11 Spatial AI to Physical AI, W12 Leadership talk]
+  description: "Returning first-year undergraduates in their second semester. Open directly from the course work on robot learning and data collection. Give the opening film its answer on the same screen. Survey arms, mobile manipulators, quadrupeds and humanoids from the perspective of a robot-learning researcher. Introduce each term through an observable action. Use the original English technical name in the slides, Korean notes and visual guide. At first teaching use, explain it in plain Korean with a physical example. Teach each example from the scene on screen. A short reminder may follow a new example. Assume no recall of earlier examples and no mechanics or control course."
+  prior: [W02 embodied AI and policy, W06 drawer commands and timestamped robot state, W09 timed action targets and inference delay]
 delivery: in-person    # in-person | remote | hybrid
 
 # Wall-clock minutes. video_min (clips playing without narration) and
@@ -39,7 +39,18 @@ language:
 # What the fact-check agent compares the slides against: paths or
 # URLs. Add to it as the deck grows.
 sources:
-  - "https://www.youtube.com/watch?v=esGtbGTmHW8"
+  - "https://www.youtube.com/watch?v=3Y8aq_ofEVs&t=699s"
+  - "https://research.nvidia.com/labs/gear/egoscale/"
+  - "https://www.youtube.com/watch?v=TIg9Z_6u79U&t=411s"
+  - "https://www.youtube.com/watch?v=1Or0kym2uic&t=10s"
+  - "https://www.manus-meta.com/use-cases/wonik-robotics"
+  - "https://www.youtube.com/watch?v=AZOxeJOYpXA"
+  - "https://xr-robotics.github.io/"
+  - "https://www.youtube.com/watch?v=g6QJX2s-RCo&t=2s"
+  - "https://cocacola-lab.github.io/Recursia-website/#demos"
+  - "https://hello-robot.com/stretch-4/"
+  - "https://www.agilityrobotics.com/videos/digits-first-day-of-work-at-gxo"
+  - "https://www.chinanews.com/sh/shipin/cns/2026/11-04/news1073816.shtml"
   - "https://ocw.mit.edu/courses/2-12-introduction-to-robotics-fall-2005/pages/syllabus/"
   - "https://www.cs.cmu.edu/~16311/current/labs/labsindex.html"
   - "https://khatib.stanford.edu/teaching/cs223a/"
@@ -71,20 +82,38 @@ sources:
   - "https://docs.odriverobotics.com/v/latest/manual/control.html"
   - "https://www.youtube.com/watch?v=QE0pC-hY__4"
   - "https://global.honda/en/newsroom/news/2005/c051213-asimo-eng.html"
-  - "https://www.darpa.mil/about/innovation-timeline/bigdog"
-  - "https://www.darpa.mil/research/programs/darpa-robotics-challenge-a"
   - "https://www.youtube.com/watch?v=xNeZWP5Mx9s"
   - "https://news.mit.edu/2019/mit-mini-cheetah-first-four-legged-robot-to-backflip-0304"
   - "https://bostondynamics.com/blog/electric-new-era-for-atlas/"
-  - "https://www.youtube.com/watch?v=bmRYgXO0qgE"
-  - "https://www.flexiv.com/news/Flexiv_IROS%202026"
-  - "https://bostondynamics.com/news/boston-dynamics-launches-next-generation-stretch-robot/"
   - "https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/"
   - "https://forcectrl.github.io/#hardware"
   - "https://arxiv.org/abs/2611.05507"
-  - "https://pixel-robot.com/pixel/"
   - "https://arxiv.org/html/2611.03168v1"
   - "https://beneath-the-policy.github.io/"
+  - "https://tonyzhaozh.github.io/aloha/"
+  - "https://www.trossenrobotics.com/stationary-ai"
+  - "https://www.youtube.com/watch?v=NL65Awuv8gU"
+  - "https://franka.de/hubfs/Product%20Manual%20Franka%20Research%203_R02210_1.5.2_EN.pdf"
+  - "https://www.youtube.com/watch?v=479Xay-Ulrs"
+  - "https://docs.robotis.com/docs/systems/op3/introduction/"
+  - "https://en.robotis.com/model/page.php?co_id=prd_op3"
+  - "https://emanual.robotis.com/docs/en/platform/op3/quick_start/#id-map"
+  - "https://robotis.us/products/dynamixel-xm430-w350-r"
+  - "https://www.linkedin.com/posts/sungho-woo-4693aa198_robotis-aiworker-imitationlearning-activity-7417019492272201729-EJRS"
+  - "https://docs.robotis.com/docs/software/cyclo/intelligence/legacy/physical_ai_tools/imitation_learning/"
+  - "https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/"
+  - "https://www.youtube.com/watch?v=PomkJ4l9CMU&t=439"
+  - "https://www.darpa.mil/research/programs/darpa-robotics-challenge"
+  - "https://rainbow-robotics.com/en/company/heritage-story/"
+  - "https://www.galbot.com/g1/"
+  - "https://tonyzhaozh.github.io/aloha/resources/teleop_all.mp4"
+  - "https://www.youtube.com/watch?v=m5__1M6gYwM"
+  - "https://www.rainbow-robotics.com/en/products/rb-y1"
+  - "https://www.youtube.com/watch?v=JAlZ3QpPgIU"
+  - "https://opengalaxea.github.io/GalaxeaVLA/"
+  - "https://arxiv.org/abs/2509.00576"
+  - "https://agibot.com/news/newsroom/post-134"
+  - "https://www.youtube.com/watch?v=NL65Awuv8gU&t=84"
 
 # The course series (Quarto/lectures/_series/<series>.yml) and this
 # deck's session in it. deckprofile.py resolves the session date,

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-spring-deflection" viewBox="0 0 1000 277"
+     role="img" aria-labelledby="w13-spring-deflection-title w13-spring-deflection-desc">
+  <title id="w13-spring-deflection-title">A spring compressed between a pusher and a held joint</title>
+  <desc id="w13-spring-deflection-desc">Two rows share the same motor housing and fixed output position. Under load the motor-side rod advances and the same spring shortens. A dashed line retains the old end position.</desc>
+  <style>
+    #w13-spring-deflection text { font-family: inherit; fill: #183451; text-anchor: middle; }
+    #w13-spring-deflection .label { font-size: 33px; font-weight: 650; }
+    #w13-spring-deflection .detail { font-size: 31px; }
+    #w13-spring-deflection .outline { stroke: #254967; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+    #w13-spring-deflection .leader { stroke: #607d93; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #w13-spring-deflection .gold { stroke: #ac761e; stroke-width: 6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <text class="label" x="294" y="40">Motor side</text>
+  <text class="label" x="789" y="40">Joint held still</text>
+  <text class="detail" x="102" y="112">At rest</text>
+  <text class="detail" x="107" y="224">Pushing</text>
+
+  <!-- The cylinder and right stop are aligned in both rows. Only the rod and spring change. -->
+  <g class="outline" fill="#cfdee8">
+    <rect x="220" y="78" width="103" height="49" rx="8"/>
+    <rect x="220" y="190" width="103" height="49" rx="8"/>
+  </g>
+  <g stroke="#547a98" stroke-width="12">
+    <path d="M323 102 H378 M323 214 H472"/>
+  </g>
+  <path d="M378 132 V242" stroke="#91a4b2" stroke-width="3" stroke-dasharray="6 6"/>
+  <g stroke="#254967" stroke-width="7" stroke-linecap="round">
+    <path d="M378 76 V128 M472 188 V240"/>
+    <path d="M779 70 V135 M779 181 V247"/>
+  </g>
+  <g class="outline" fill="#e3ebf0">
+    <rect x="781" y="77" width="40" height="50" rx="4"/>
+    <rect x="781" y="189" width="40" height="50" rx="4"/>
+  </g>
+  <!-- Eight identical coils, drawn at their two lengths. -->
+  <g class="gold">
+    <path d="M381 102 H399 L410 80 L432 124 L454 80 L476 124 L498 80 L520 124 L542 80 L564 124 L586 80 L608 124 L630 80 L652 124 L674 80 L696 124 L718 80 L740 124 L751 102 H776"/>
+    <path d="M475 214 H490 L498 192 L514 236 L530 192 L546 236 L562 192 L578 236 L594 192 L610 236 L626 192 L642 236 L658 192 L674 236 L690 192 L706 236 L722 192 L738 236 L746 214 H776"/>
+  </g>
+  <path class="leader" d="M379 258 H470 M388 251 L379 258 L388 265 M461 251 L470 258 L461 265"/>
+</svg>

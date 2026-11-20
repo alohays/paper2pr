@@ -4,115 +4,298 @@ author: Yunsung Lee
 institute: WoRV / MaumAI
 date: "2026-11-20"
 series: dgist-2026f
+w13-agenda:
+  - "Learning and the robot body"
+  - "Commands and motion"
+  - "Joints, reach, payload and power"
+  - "Motors and gears"
+  - "Sensors and contact"
+  - "Feedback and control"
+  - "How robot bodies changed"
+  - "Choosing a body for a job"
+  - "Demos, trials and field work"
+  - "Back to wheeled Atlas"
 # Full-bleed title gradient as a reveal background (fills the viewport at any
 # aspect ratio; the theme drops its own section gradient when this is set).
 title-slide-attributes:
+  data-chapter: "0"
+  data-seconds: "25"
   data-background-gradient: "linear-gradient(180deg, #ffffff 0%, #E8EDF5 100%)"
 format:
   revealjs:
     theme: [default, ../clean-academic.scss]
     css: dgist-2026f-w13.css
+    shortcodes: [_w13/lecture.lua]
+    default-timing: 60
+    transition: none
+    html-math-method: mathml
+    include-after-body:
+      - text: |
+          <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            for (const [id, chapter, seconds] of [
+              ["ask-anytime", "0", 15], ["your-questions", "qa", 502]
+            ]) {
+              const slide = document.getElementById(id);
+              slide.dataset.chapter = chapter;
+              slide.dataset.seconds = seconds;
+            }
+            document.querySelectorAll("section[data-seconds]").forEach(slide => {
+              slide.dataset.timing = slide.dataset.seconds;
+            });
+            const title = document.querySelector("#title-slide");
+            const views = [
+              ["#atlas-opening video", "Wheeled Atlas", "Boston Dynamics"],
+              ["#body-fixed-arm video", "ALOHA", "Zhao et al."],
+              ["#body-mobile-arm video", "Galbot G1", "Galbot"],
+              ['[data-w13-photo="robotis-op3"] img', "OP3", "ROBOTIS"]
+            ];
+            const gallery = document.createElement("div");
+            gallery.className = "w13-cover-views";
+            for (const [selector, name, credit] of views) {
+              const reference = document.querySelector(selector);
+              if (!reference) continue;
+              const figure = document.createElement("figure");
+              const image = document.createElement("img");
+              image.src = reference.getAttribute("poster") || reference.getAttribute("src");
+              image.alt = name;
+              const caption = document.createElement("figcaption");
+              const label = document.createElement("strong");
+              label.textContent = name;
+              caption.append(label, document.createElement("br"), credit);
+              figure.append(image, caption);
+              gallery.append(figure);
+            }
+            if (gallery.childElementCount) title.querySelector("h1").after(gallery);
+            // Students can pick a different panel on each pass through a four-way comparison.
+            for (const clip of document.querySelectorAll(".video-card video")) {
+              clip.loop = Boolean(clip.closest(".w13-film-grid"));
+              const panel = clip.closest(".w13-film-panel");
+              if (panel) clip.setAttribute("aria-label", panel.querySelector("p").textContent.trim());
+            }
+          });
+          </script>
+      - _w13/gear-motion.inc
+      - _w13/encoder-count.inc
 bibliography: ../../Bibliography_base.bib
 ---
 
-## How does a robot turn a corner? {#survey-route data-chapter="0"}
+## Ask anytime {#ask-anytime .qr-slide data-chapter="0" data-seconds="15"}
 
-A robot sees the aisle ahead and chooses a direction.
+{{< series-qr >}}
 
-**What has to move for it to make the turn?**
+Questions go on the wall any time; we answer them in the last 10 minutes.
+
+
+## Today’s lecture {#lecture-agenda data-chapter="0" data-seconds="50"}
+
+{{< w13-agenda 0 >}}
 
 ::: {.footnote}
-Last week ({{< series-session prior_week >}}) · {{< series-session prior_title >}}
+So far we have studied how a policy chooses an action. Today we follow its command to the motor.
 :::
 
 
-{{< include _series/dgist-2026f/semester-map.qmd >}}
+## Why is Physical AI taking off? {#survey-route data-chapter="0" data-seconds="50"}
 
-{{< include _series/dgist-2026f/course-runs.qmd >}}
+::: {.w13-recap-label}
+Sept 4 · The Paradigm Shift Toward Embodied AI
+:::
 
-{{< include _series/dgist-2026f/ask-anytime.qmd >}}
+:::::: {.w13-flow}
+::: {.w13-flow-step}
+**Language models**
 
-## What made the wheels turn? {#atlas-opening data-chapter="0"}
+More data made better models
+:::
+
+::: {.w13-flow-step}
+**Robots**
+
+Early signs of the same scaling
+:::
+
+::: {.w13-flow-step}
+**Scaling the data**
+
+Robot data and first-person video
+
+[20,854 hours of video for EgoScale]{.w13-flow-note}
+:::
+::::::
+
+::: {.fragment .w13-flow-today}
+**Today** · The **robot hardware** that collects this data and carries out the action
+:::
+
+::: {.footnote}
+[Jim Fan · Human video, 11:39](https://www.youtube.com/watch?v=3Y8aq_ofEVs&t=699s) · [EgoScale · Training data](https://research.nvidia.com/labs/gear/egoscale/)
+:::
+
+
+## Collecting robot data takes hardware {#teaching-a-motion data-chapter="0" data-seconds="40"}
+
+:::::: {.w13-film-grid}
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card teleop-leader >}}
+:::
+
+**Leader-follower** · Move the handle
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card direct-hand-guiding >}}
+:::
+
+**Hand-guiding** · Grasp the wrist
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card teleop-glove >}}
+:::
+
+**Data glove** · Open the fingers
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card teleop-vr >}}
+:::
+
+**VR controllers** · Steer both arms
+:::::
+::::::
+
+::: {.footnote}
+[Trossen Robotics](https://www.youtube.com/watch?v=TIg9Z_6u79U&t=411s) · [KUKA](https://www.youtube.com/watch?v=1Or0kym2uic&t=10s) · [MANUS and WONIK Robotics](https://www.youtube.com/watch?v=AZOxeJOYpXA) · [PICO controllers · XRoboToolkit](https://www.youtube.com/watch?v=g6QJX2s-RCo&t=2s)
+:::
+
+
+<!-- Chapter 1: Command -->
+
+## Today’s lecture {#agenda-commands .w13-agenda-only data-chapter="1" data-seconds="8"}
+
+{{< w13-agenda 1 >}}
+
+
+## 01 · Atlas turns on motor-driven wheels {#atlas-opening data-chapter="1" data-seconds="50"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card atlas-warehouse-turn >}}
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-[Atlas on a Roll: warehouse turn · Boston Dynamics](https://bostondynamics.com/blog/atlas-on-a-roll/)
+[Watch the warehouse turn · Boston Dynamics](https://bostondynamics.com/blog/atlas-on-a-roll/)
 ::::
 
-What can we see? Who chose the direction?
+A learned controller balances Atlas through the turn.
+
+::: {.footnote}
+[Boston Dynamics · Warehouse film, 0:00 to 0:16](https://www.youtube.com/watch?v=NL65Awuv8gU) · [Controls engineer’s account · Nov 9, 2026](https://bostondynamics.com/blog/atlas-on-a-roll/)
+:::
 
 
-<!-- Chapter 1: Command -->
-
-## 01 · Give this wheel a job {#command-journey data-chapter="1" data-seconds="50"}
+## One turn of a marked wheel {#command-journey data-chapter="1" data-seconds="45"}
 
 “Turn the front wheel **once every second**.”
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/marked-cart.svg width="72%" >}}
 
-After one full turn, where should the orange mark be?
+:::: {.r-stack}
+[After one full turn, where should the orange mark be?]{.fragment .fade-out fragment-index="0"}
+
+[Back at the top after **1 second**.]{.fragment .w13-turn-answer fragment-index="0"}
+::::
 
 
-## What turns the wheel? What measures it? {#action-interface data-chapter="1" data-seconds="60"}
+## Sending and measuring a wheel command {#action-interface data-chapter="1" data-seconds="50"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/command-journey.svg width="96%" >}}
 
 
-## Did the wheel make a full turn in one second? {#command-clocks data-chapter="1" data-seconds="65"}
+## An encoder counts marks as the wheel turns {#wheel-encoder data-chapter="1" data-seconds="90"}
 
-The target was **1 turn per second**.
+A disc with **8 marks** turns with the wheel. A fixed sensor counts each mark that passes.
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/wheel-turn-record.svg width="83%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/encoder-count.svg width="90%" >}}
 
-[It averaged **¾ turn per second** over this second.]{.fragment}
+```{=html}
+<span class="fragment w13-count-run" data-fragment-index="0" aria-hidden="true"></span>
+```
+
+[**6 of 8 marks** in one second: **¾ turn per second**. The target was 1.]{.fragment fragment-index="1"}
 
 
-## How far did the cart go? {#four-questions data-chapter="1" data-seconds="75"}
+## How far did the cart go? {#four-questions data-chapter="1" data-seconds="95"}
 
 Both front wheels turned **¾ of a turn**. Where would you put a ruler?
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/wheel-travel-check.svg width="96%" >}}
 
-[Measure where the cart started and ended against marks on the floor.]{.fragment}
+:::: {.r-stack}
+[Measure where the cart started and ended against marks on the floor.]{.fragment .fade-in-then-out fragment-index="0"}
+
+[**Proprioception**, sensing your own body’s motion, takes more than one encoder.]{.fragment fragment-index="1"}
+::::
 
 
 <!-- Chapter 2: Body -->
 
-## 02 · Count the degrees of freedom (DoF) {#body-dof data-chapter="2"}
+## 02 · Count the angles you can change {#body-dof data-chapter="2" data-seconds="45"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motion-coordinates.svg width="96%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motion-coordinates.svg width="93%" >}}
+
+[Count the independent angles to get the **degrees of freedom (DoF)**.]{.fragment}
+
+{{< w13-agenda 2 overlay >}}
 
 
-## How far from the shoulder? {#body-reach data-chapter="2"}
+## Where is the same box harder to hold? {#body-reach data-chapter="2" data-seconds="55"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/shelf-load.svg width="97%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/shelf-load.svg width="91%" >}}
+
+[At 40 cm the box exerts **twice the torque** about the shoulder.]{.fragment}
 
 
-## How long can each body work? {#body-runtime data-chapter="2"}
+## Where does the power come from? {#body-runtime data-chapter="2" data-seconds="45"}
 
-| Robot | Power or quoted battery life |
-|:--|:--|
-| Franka Research 3 · fixed arm | External power |
-| Hello Robot Stretch 4 · wheeled arm | 8 h under light computing load |
-| Spot · quadruped | 90 min on average |
-| Atlas · humanoid | 4 h, or 2 h with heavy lifting |
+:::::: {.w13-film-pair}
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card franka-bench >}}
+:::
+
+**Franka Research 3**\
+Wall power through the control box
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card stretch-battery >}}
+:::
+
+**Stretch 4**\
+8 h on battery under light CPU load
+:::::
+::::::
 
 ::: {.footnote}
-Manufacturer figures · [Franka](https://franka.de/hubfs/Datasheet_FrankaResearch3_R02212_2.4.pdf) · [Hello Robot](https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf) · [Spot](https://bostondynamics.com/products/spot/) · [Atlas](https://bostondynamics.com/wp-content/uploads/2026/01/atlas-spec-sheet.pdf)
+[CoLa Lab · FR3 film](https://cocacola-lab.github.io/Recursia-website/#demos) · [Franka · Control box](https://franka.de/hubfs/Product%20Manual%20Franka%20Research%203_R02210_1.5.2_EN.pdf) · [Hello Robot · Battery and dock](https://hello-robot.com/stretch-4/) · [Stretch 4 datasheet](https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf)
 :::
 
 
-## How much payload can this arm carry? {#body-payload data-chapter="2"}
+## Can Stretch 4 lift this 3 kg box? {#body-payload data-chapter="2" data-seconds="55"}
 
-The **rated payload** tells us how much mass the arm can carry in a given pose.
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/rated-arm-load.svg width="96%" >}}
 
-| Hello Robot Stretch 4 | Rated arm payload |
-|:--|:--|
-| Arm extended | 2.5 kg |
-| Arm retracted | 4 kg |
+:::: {.r-stack}
+[Predict which pose is within the rating.]{.fragment .fade-out fragment-index="0"}
+
+[The **retracted** arm is within its rated payload.]{.fragment fragment-index="0"}
+::::
 
 ::: {.footnote}
 [Hello Robot · Stretch 4 datasheet, rev. 5](https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf)
@@ -121,33 +304,40 @@ The **rated payload** tells us how much mass the arm can carry in a given pose.
 
 <!-- Chapter 3: Actuators -->
 
-## 03 · What is inside a joint actuator? {#joint-inside data-chapter="3"}
-
-An **actuator** converts energy into force or motion.
+## 03 · Inside an electric joint {#joint-inside data-chapter="3" data-seconds="80"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/rotary-joint-parts.svg width="98%" >}}
 
+[An **actuator** converts energy into force or motion.]{.fragment}
 
-## How does electricity turn a shaft? {#motor-field data-chapter="3"}
-
-Current in the coils creates a magnetic field.
-
-The motor drive changes the field as the rotor turns.
+{{< w13-agenda 3 overlay >}}
 
 
-## A gear trades speed for torque {#gear-tradeoff data-chapter="3"}
+## From electric current to rotation {#motor-field data-chapter="3" data-seconds="65"}
 
-| Ideal 3:1 reduction | Motor shaft | Joint shaft |
-|:--|:--:|:--:|
-| Turns per second | 3 | 1 |
-| Torque | 1 N·m | 3 N·m |
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motor-field.svg width="95%" >}}
+
+[Current in the fixed coils creates a field that turns the **rotor**.]{.fragment}
+
+
+## How many times does each mark come around? {#gear-tradeoff data-chapter="3" data-seconds="100"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/count-gear-turns.svg width="96%" >}}
+
+:::: {.r-stack}
+[Watch the small mark return to the top.]{.fragment .fade-out .w13-turn-guide fragment-index="3"}
+
+[The joint turns more slowly. What happens to its **torque**?]{.fragment .current-visible .w13-after-turns fragment-index="3"}
+
+[Ideal 3:1 reduction · **1 N·m in → 3 N·m out**]{.fragment .w13-after-turns fragment-index="4"}
+::::
 
 ::: {.footnote}
 [Lynch & Park · Modern Robotics §8.9](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
 :::
 
 
-## Three ways to reduce speed {#gear-families data-chapter="3"}
+## Three ways to reduce speed {#gear-families data-chapter="3" data-seconds="80"}
 
 ::::: {.content-visible when-meta="w13-local-clips"}
 :::: {.r-stack}
@@ -166,91 +356,131 @@ The motor drive changes the field as the rotor turns.
 :::
 
 ::: {.footnote}
-[Strain wave · Harmonic Drive Systems](https://www.hds.co.jp/english/products/hd_theory/) · [Cycloidal · Sumitomo](https://www.youtube.com/watch?v=1ijFove42Kw)
+[Harmonic Drive SE · Animation](https://www.youtube.com/watch?v=479Xay-Ulrs) · [Strain-wave principle](https://www.hds.co.jp/english/products/hd_theory/) · [Cycloidal · Sumitomo](https://www.youtube.com/watch?v=1ijFove42Kw)
 :::
 
 
-## Can the foot move the motor? {#backdrive-qdd data-chapter="3"}
+## Can the foot turn the motor? {#backdrive-qdd data-chapter="3" data-seconds="75"}
 
-A bump moves the foot. Can that motion turn the motor shaft?
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/backdrive-path.svg width="95%" >}}
 
-**Quasi-direct drive (QDD)** pairs a high-torque motor with a small reduction ratio.
+:::: {.r-stack}
+[**Backdrivability** · Can a push at the foot turn the motor?]{.fragment .current-visible fragment-index="0"}
+
+[**Quasi-direct drive (QDD)** · High motor torque, low reduction.]{.fragment fragment-index="1"}
+::::
 
 ::: {.footnote}
 [MIT Biomimetic Robotics Lab · Actuator design for legged robots](https://biomimetics.mit.edu/research/1a9ba04b-d200-4743-b8fc-bf231f3231f0/)
 :::
 
 
-## Why put a spring in a joint? {#elastic-spring data-chapter="3"}
+## A spring between motor and joint {#elastic-spring data-chapter="3" data-seconds="70"}
 
-**Motor → spring → joint**
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/spring-deflection.svg width="95%" >}}
 
-In a **series elastic actuator (SEA)**, spring deflection helps estimate torque.
+[A **series elastic actuator (SEA)** uses spring deflection to estimate load.]{.fragment}
 
 ::: {.footnote}
 [Pratt & Williamson · Series Elastic Actuators, IROS 1995](https://fab.cba.mit.edu/classes/865.15/people/rebecca.kleinberger/assets/papers/SEA_Pratt.pdf)
 :::
 
 
-## How long can a motor pull that hard? {#motor-heat data-chapter="3"}
+## Which torque rating fits an hour of lifting? {#motor-heat data-chapter="3" data-seconds="80"}
 
-| CubeMars AK80-6 KV100 | Output torque |
-|:--|:--:|
-| Rated | 6 N·m |
-| Peak | 12 N·m |
+| CubeMars AK80-6 KV100 | Output shaft |
+|:--|:--|
+| Rated torque | **6 N·m** |
+| Peak torque | **12 N·m** |
+
+[Check temperature, cooling and rest time over the shift.]{.fragment}
 
 ::: {.footnote}
 [CubeMars · AK80-6 KV100 actuator specifications](https://www.cubemars.com/product/ak80-6-kv100-robotic-actuator.html)
 :::
 
 
-## Atlas changed its source of joint motion {#atlas-power data-chapter="3"}
+## A knee joint inside the ROBOTIS OP3 {#robotis-op3-joints data-chapter="3" data-seconds="70"}
 
-**Hydraulic Atlas** used pressurized fluid to move its joints.
+:::::: {.content-visible when-meta="w13-local-clips"}
+::::: {.w13-op3-board}
+::: {.w13-op3-body}
+{{< w13-photo robotis-op3 "ROBOTIS OP3. The outlined joint is its left knee." >}}
+:::
+::: {.w13-op3-part}
+{{< w13-photo xm430-w350-r "The DYNAMIXEL XM430-W350-R actuator used in the OP3 knee." >}}
+:::
 
-**Electric Atlas** uses motors to turn its joints.
+<svg class="w13-knee-leader" viewBox="0 0 1000 408" aria-hidden="true"><path d="M193 262 H262 L323 192 H367" fill="none" stroke="white" stroke-width="10"/><path d="M193 262 H262 L323 192 H367" fill="none" stroke="#995014" stroke-width="4"/><circle cx="193" cy="262" r="17" fill="none" stroke="white" stroke-width="8"/><circle cx="193" cy="262" r="17" fill="none" stroke="#995014" stroke-width="4"/></svg>
+
+::: {.w13-op3-body-caption}
+**OP3** · 20 DoF
+:::
+::: {.w13-op3-part-caption}
+**XM430-W350-R**
+:::
+::: {.w13-op3-registers}
+**Goal Position**\
+Requested angle
+
+**Present Position**\
+Measured angle
+:::
+:::::
+::::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+**OP3 knee · DYNAMIXEL XM430-W350-R**
+
+Goal Position · Requested angle\
+Present Position · Measured angle
+::::
 
 ::: {.footnote}
-[Boston Dynamics · Atlas from research robot to industrial humanoid](https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/)
+[ROBOTIS · OP3 body](https://docs.robotis.com/docs/systems/op3/introduction/) · [Actuator ID map](https://emanual.robotis.com/docs/en/platform/op3/quick_start/#id-map) · [XM430-W350-R](https://robotis.us/products/dynamixel-xm430-w350-r) · [Position registers](https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/)
 :::
 
 
 <!-- Chapter 4: Sensors -->
 
-## 04 · How does a joint know its angle? {#joint-encoder data-chapter="4"}
+## 04 · Measuring the joint angle {#joint-encoder data-chapter="4" data-seconds="40"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/encoder-reading.svg width="100%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/encoder-reading.svg width="93%" >}}
+
+:::: {.r-stack}
+[How many pulses can you count?]{.fragment .fade-out .w13-encoder-prompt fragment-index="1"}
+
+[An **incremental encoder** counts changes from a known angle.]{.fragment .w13-encoder-answer fragment-index="1"}
+::::
 
 ::: {.footnote}
 [US Digital · Incremental and absolute encoders](https://www.usdigital.com/support/resources/reference/technical-docs/white-papers/resolution-accuracy-and-precision-of-encoders/)
 :::
 
+{{< w13-agenda 4 overlay >}}
 
-## What can each sensor tell us? {#body-and-world data-chapter="4"}
 
-| Sensor | A measurement we can use |
-|:---|:---|
-| Inertial measurement unit (IMU) | How fast the body is turning |
-| Camera | Where the next stair appears in the image |
-| Fingertip pressure sensor | Where an object presses on the finger |
+## What would you measure in each scene? {#body-and-world data-chapter="4" data-seconds="40"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/sensor-scenes.svg width="98%" >}}
+
+[**Camera** · **Gyroscope** · **Fingertip pressure sensor**]{.fragment}
 
 ::: {.footnote}
-[Spot · Inertial and foot-contact data](https://dev.bostondynamics.com/docs/concepts/joint_control/readme) · [Figure 03 · Palm cameras and fingertip sensing](https://www.figure.ai/news/helix-02)
+[Spot · Inertial measurement unit (IMU) and foot contact](https://dev.bostondynamics.com/docs/concepts/joint_control/readme) · [Figure 03 · Palm cameras and fingertip sensing](https://www.figure.ai/news/helix-02)
 :::
 
 
-## Which hand fits the job? {#hand-design data-chapter="4"}
+## Has the cup left the table? {#hand-design data-chapter="4" data-seconds="35"}
 
-A **parallel-jaw gripper** closes its two jaws to hold a part.
-
-**Articulated fingers** can reposition an object within the hand.
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/hand-contact.svg width="95%" >}}
 
 ::: {.footnote}
 [Franka · Gripper interface](https://frankarobotics.github.io/libfranka/0.15.0/classfranka_1_1Gripper.html) · [Boston Dynamics · Atlas hand design](https://bostondynamics.com/blog/robot-hands-for-modern-ai-and-real-work/)
 :::
 
 
-## What changes with hand sensing? {#hand-sensing data-chapter="4"}
+## Watch what happens to the bottle cap {#hand-sensing data-chapter="4" data-seconds="45"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card figure-hand-sensing >}}
@@ -260,129 +490,161 @@ A **parallel-jaw gripper** closes its two jaws to hold a part.
 [Opening a bottle with hand sensing · Figure AI](https://www.figure.ai/news/helix-02)
 ::::
 
-Palm cameras and fingertip sensors · Watch the cap in each run.
+Watch the cap · Hand sensing on (left) and off (right).
+
+::: {.footnote}
+[Figure · Helix 02 hand-sensing comparison · Jan 2026](https://www.figure.ai/news/helix-02)
+:::
 
 
 <!-- Chapter 5: Control -->
 
-## 05 · How does a wheel reach its target? {#wheel-feedback data-chapter="5"}
+## 05 · Closing the loop on a wheel {#wheel-feedback data-chapter="5" data-seconds="85"}
 
-**Open loop** · Send a timed command.
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/wheel-loops.svg width="97%" >}}
 
-**Closed loop** · Read the wheel angle and correct the motion.
+:::: {.r-stack}
+[Which controller detects the shortfall?]{.fragment .fade-out fragment-index="1"}
 
-::: {.fragment}
-If the wheel slows under load, which controller notices?
+[Timer only · **Open loop**. Angle feedback · **Closed loop**.]{.fragment fragment-index="1"}
+::::
+
+{{< w13-agenda 5 overlay >}}
+
+
+## Which reading calls for a larger correction? {#proportional-correction data-chapter="5" data-seconds="110"}
+
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/angle-readings.svg width="96%" >}}
+
+:::: {.r-stack}
+[Same gain for both readings. **A or B?**]{.fragment .fade-out fragment-index="0"}
+
+[A has **10°** left. B has **2°** left.]{.fragment .current-visible fragment-index="0"}
+
+::: {.fragment fragment-index="1"}
+[<var>u</var> = <var>K</var><sub>p</sub>(<var>r</var> − <var>y</var>)]{.w13-equation}
+
+Correction = gain × (target − reading)
 :::
-
-
-## How much correction is left? {#proportional-correction data-chapter="5"}
-
-Target **30°**. At **20°**, the gap is **10°**. At **28°**, it is **2°**.
-
-::: {.fragment}
-$$u = K_p(r-y)$$
-
-Correction = gain × remaining gap.
-:::
+::::
 
 ::: {.footnote}
-[Stanford CS123 · One joint, one measured angle · Fall 2026 Lab 1](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
+[Stanford CS123 · Measuring one joint · Fall 2026](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
 :::
 
 
-## What changes when a reading arrives late? {#sensor-delay data-chapter="5"}
+## Which curve travels farther past the target? {#sensor-delay data-chapter="5" data-seconds="105"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/feedback-delay.svg width="100%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/feedback-delay.svg width="98%" >}}
+
+[**Overshoot** above 1 m · 0.16 m now, 0.32 m with a late reading.]{.fragment}
 
 ::: {.footnote}
 W13 Robot Body Lab simulation · [Stanford CS123 · Lab 1, step 7](https://cs123-stanford.readthedocs.io/en/latest/schedule/labs/fall-26/lab-1.html)
 :::
 
 
-## Why would an arm give way? {#arm-compliance data-chapter="5"}
+## A robot arm yields to a push {#arm-compliance data-chapter="5" data-seconds="90"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card kuka-compliance >}}
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-[A person pushes a compliant arm · KUKA](https://www.youtube.com/watch?v=lZvPslCIQZY)
+[KUKA · A person pushes the arm](https://www.youtube.com/watch?v=lZvPslCIQZY)
 ::::
 
-Watch how far the arm yields when a person pushes it.
+:::: {.r-stack}
+[Which setting lets the arm move farther?]{.fragment .fade-out fragment-index="0"}
+
+[**Stiffness setting** · 5,000 → 300 N/m]{.fragment fragment-index="0"}
+::::
+
+::: {.footnote}
+[KUKA demonstration · Apr 2015](https://www.youtube.com/watch?v=lZvPslCIQZY)
+:::
 
 
-## Which feet can push on the floor? {#foot-support data-chapter="5"}
+## Which feet can push on the floor? {#foot-support data-chapter="5" data-seconds="110"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/foot-support.svg width="100%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/foot-support.svg width="97%" >}}
+
+[**Model predictive control (MPC)** plans foot forces, then updates the plan.]{.fragment}
 
 ::: {.footnote}
 [MIT Cheetah 3 · Planning ground forces over a short horizon](https://dspace.mit.edu/entities/publication/bc8c7e1e-5830-443f-a879-787947111fcf)
 :::
 
 
-## Who handles each part of a step? {#control-stack data-chapter="5"}
+## From a walking goal to motor current {#control-stack data-chapter="5" data-seconds="100"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/control-layers.svg width="100%" >}}
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/control-layers.svg width="97%" >}}
+
+[Who chose to **turn left**? Which record would you check first?]{.fragment}
 
 ::: {.footnote}
-Illustrative control stack · [Figure · Whole-body control](https://www.figure.ai/news/helix-02) · [ODrive · Motor control loops](https://docs.odriverobotics.com/v/latest/manual/control.html)
+Example architecture · [Figure · Whole-body control (WBC)](https://www.figure.ai/news/helix-02) · [ODrive · Motor control loops](https://docs.odriverobotics.com/v/latest/manual/control.html)
 :::
 
 
 <!-- Chapter 6: History -->
 
-## 06 · ASIMO could run in 2005 {#history-asimo data-chapter="6"}
+## 06 · When both feet leave the floor {#history-asimo data-chapter="6" data-seconds="45"}
 
-**6 km/h** in a straight line. Both feet briefly leave the floor.
-
+::::::: {.fragment .w13-film-entry fragment-index="0"}
 :::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card asimo-run >}}
 ::::
+:::::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
 [ASIMO runs on stage in 2005 · AP Archive](https://www.youtube.com/watch?v=QE0pC-hY__4)
 ::::
 
+[Honda reported **6 km/h** in a straight line in 2005.]{.fragment}
+
 ::: {.footnote}
-[Honda · Dec 2005](https://global.honda/en/newsroom/news/2005/c051213-asimo-eng.html) · [AP archive footage of the 2005 demonstration](https://www.youtube.com/watch?v=QE0pC-hY__4)
+[Honda · Dec 2005](https://global.honda/en/newsroom/news/2005/c051213-asimo-eng.html) · [AP Archive · footage of the 2005 demonstration](https://www.youtube.com/watch?v=QE0pC-hY__4)
 :::
 
+{{< w13-agenda 6 overlay >}}
 
-## What if the floor or the job changes? {#history-bigdog-hubo data-chapter="6"}
 
-**BigDog** crossed uneven ground. **DRC-HUBO** used tools in a human-supervised competition in 2015.
+## DRC-HUBO puts a drill to work {#history-hubo data-chapter="6" data-seconds="55"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
-{{< video-card bigdog-ice >}}
+{{< video-card hubo-wall >}}
 ::::
 
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Watch Team KAIST at the 2015 DARPA Robotics Challenge final](https://www.youtube.com/watch?v=PomkJ4l9CMU&t=439)
+::::
+
+**2015 final** · One arm holds the drill against the wall.
+
 ::: {.footnote}
-[DARPA · BigDog](https://www.darpa.mil/about/innovation-timeline/bigdog) · [DARPA Robotics Challenge · Jun 2015](https://www.darpa.mil/research/programs/darpa-robotics-challenge-a)
+[Team KAIST · Contest footage provided by DARPA, 18×](https://www.youtube.com/watch?v=PomkJ4l9CMU&t=439) · [DARPA Robotics Challenge](https://www.darpa.mil/research/programs/darpa-robotics-challenge) · [Rainbow Robotics · Team history](https://rainbow-robotics.com/en/company/heritage-story/)
 :::
 
 
-## Electric joints that teams could change {#history-electric data-chapter="6"}
-
-**Mini Cheetah, 2019** · Modular electric legs
-
-**Atlas, 2024** · An all-electric humanoid
+## Mini Cheetah’s modular electric legs {#history-electric data-chapter="6" data-seconds="55"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card mini-cheetah-flip >}}
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-[Mini Cheetah backflips · MIT](https://www.youtube.com/watch?v=xNeZWP5Mx9s)
+[MIT · Mini Cheetah backflips](https://www.youtube.com/watch?v=xNeZWP5Mx9s)
 ::::
 
+[**2019** · Modular electric legs on Mini Cheetah. **2024** · Electric Atlas.]{.fragment}
+
 ::: {.footnote}
-Video includes 8× and 0.3× playback · [MIT · Mar 2019](https://news.mit.edu/2019/mit-mini-cheetah-first-four-legged-robot-to-backflip-0304) · [Boston Dynamics · Apr 2024](https://bostondynamics.com/blog/electric-new-era-for-atlas/)
+Edited playback includes 8× and 0.3× · [MIT](https://news.mit.edu/2019/mit-mini-cheetah-first-four-legged-robot-to-backflip-0304) · [Boston Dynamics](https://bostondynamics.com/blog/electric-new-era-for-atlas/)
 :::
 
 
-## The real motor changed the virtual robot {#history-measure-train data-chapter="6"}
+## How Atlas learned with a measured motor model {#history-measure-train data-chapter="6" data-seconds="65"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/motor-measure-train.svg width="98%" >}}
 
@@ -393,63 +655,103 @@ Video includes 8× and 0.3× playback · [MIT · Mar 2019](https://news.mit.edu/
 
 <!-- Chapter 7: Platforms -->
 
-## 07 · Which body fits the job? {#warehouse-bodies data-chapter="7"}
+## 07 · Matching the body to the job {#warehouse-bodies data-chapter="7" data-seconds="55"}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/warehouse-bodies.svg width="100%" >}}
-
-
-## A fixed arm works inside one cell {#body-fixed-arm data-chapter="7"}
-
-A tray comes within reach. The base stays in place.
-
-:::: {.content-visible when-meta="w13-local-clips"}
-{{< video-card fanuc-fixed-trays >}}
-::::
-
-::: {.content-visible unless-meta="w13-local-clips"}
-[Watch the tray-handling workcell · FANUC and CILYX](https://www.youtube.com/watch?v=esGtbGTmHW8)
+::::::: {.fragment .w13-film-entry fragment-index="0"}
+:::::: {.w13-film-grid}
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card aloha-unboxing >}}
 :::
+
+**Fixed arms** · One holds, one pulls
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card galbot-retail >}}
+:::
+
+**Mobile arm** · The base turns
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card unitree-inspection >}}
+:::
+
+**Quadruped** · Sensor on its back
+:::::
+
+::::: {.w13-film-panel}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card digit-tote >}}
+:::
+
+**Humanoid** · Both hands on the tote
+:::::
+::::::
+:::::::
 
 ::: {.footnote}
-[FANUC Europe · CILYX tray handling · Nov 3, 2026](https://www.youtube.com/watch?v=esGtbGTmHW8)
+[ALOHA · 10×](https://tonyzhaozh.github.io/aloha/) · [Galbot G1](https://www.galbot.com/g1/) · [Unitree · Inspection](https://www.youtube.com/watch?v=m5__1M6gYwM&t=3s) · [Agility Digit at GXO](https://www.youtube.com/watch?v=AJpTpUqjgrY&t=63s)
 :::
 
+{{< w13-agenda 7 overlay >}}
 
-## Inside a trailer, move the base as boxes disappear {#body-mobile-arm data-chapter="7"}
+
+## ALOHA opens a package with two hands {#body-fixed-arm data-chapter="7" data-seconds="60"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
-{{< video-card stretch-case-handling >}}
+{{< video-card aloha-unboxing >}}
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/trailer-unload.svg width="96%" >}}
+[Original ALOHA teleoperation film · Zhao et al.](https://tonyzhaozh.github.io/aloha/resources/teleop_all.mp4)
 ::::
 
+[**One hand holds the package while the other opens it.**]{.fragment}
+
 ::: {.footnote}
-2021 prototype footage · [Boston Dynamics · Gen 2 update, Nov 3, 2026](https://bostondynamics.com/news/boston-dynamics-launches-next-generation-stretch-robot/)
+[Zhao et al. · Original ALOHA at RSS 2023](https://tonyzhaozh.github.io/aloha/) · [Teleoperated demonstration, 10×](https://tonyzhaozh.github.io/aloha/resources/teleop_all.mp4)
 :::
 
 
-## On an inspection route, bring the sensor to the machine {#body-quadruped data-chapter="7"}
-
-**Spot** brings a sensor to the same inspection points.
+## Galbot G1 brings its arm to the shelf {#body-mobile-arm data-chapter="7" data-seconds="75"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
-{{< video-card spot-gauge-inspection >}}
+{{< video-card galbot-retail >}}
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-Which gauges can the camera see from each stop?
+[Galbot G1 · Supermarket Retail film](https://www.galbot.com/g1/)
 ::::
 
+The base brings the gripper within reach of the next item.
+
 ::: {.footnote}
-Gauge-reading demonstration · [Boston Dynamics · Spot inspection payloads](https://bostondynamics.com/products/spot/)
+[Galbot · G1 Supermarket Retail](https://www.galbot.com/g1/) · Edited manufacturer demonstration · Steering source unspecified
 :::
 
 
-## With two hands, how hard should the robot press? {#body-humanoid data-chapter="7"}
+## Four legs carry the inspection sensor {#body-quadruped data-chapter="7" data-seconds="65"}
 
-Berkeley Ctrl-F · **9 of 10 lifts** with 2 kg added to the box.
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card unitree-inspection >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Unitree Robotics · Smart Power Inspection film](https://www.youtube.com/watch?v=m5__1M6gYwM)
+::::
+
+[The legs reach the inspection point. The sensor needs a clear view.]{.fragment}
+
+::: {.footnote}
+[Unitree Robotics · Substation demonstration, 0:03 to 0:15 · Apr 2023](https://www.youtube.com/watch?v=m5__1M6gYwM)
+:::
+
+
+## Which box leaves the floor? {#body-humanoid data-chapter="7" data-seconds="105"}
 
 :::: {.content-visible when-meta="w13-local-clips"}
 ::: {.two-up}
@@ -460,7 +762,13 @@ Berkeley Ctrl-F · **9 of 10 lifts** with 2 kg added to the box.
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-[Ctrl-F: motion and force · UC Berkeley](https://forcectrl.github.io/#hardware)
+[Watch the two G1 lifts · Berkeley Ctrl-F](https://forcectrl.github.io/#hardware)
+::::
+
+:::: {.r-stack}
+[Unitree G1 · One attempt per clip · **2 kg added** in both.]{.fragment .fade-out fragment-index="0"}
+
+[Berkeley reported **9 of 10** Ctrl-F lifts with **2 kg added**.]{.fragment fragment-index="0"}
 ::::
 
 ::: {.footnote}
@@ -468,33 +776,47 @@ Berkeley Ctrl-F · **9 of 10 lifts** with 2 kg added to the box.
 :::
 
 
-## What if the upper body has wheels? {#body-hybrid-pixel data-chapter="7"}
+## RB-Y1 puts two arms on a wheeled base {#body-hybrid-rby1 data-chapter="7" data-seconds="70"}
 
-**CMU Pixel** pairs a wheeled base with two arms.
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card rainbow-palletizing >}}
+::::
 
-Matched camera views and gripper shapes help it learn from people.
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Watch Rainbow Robotics move a box with RB-Y1](https://www.youtube.com/watch?v=JAlZ3QpPgIU&t=77s)
+::::
+
+The wheels position the base. The torso sets the height of both hands.
 
 ::: {.footnote}
-[Carnegie Mellon · Pixel system and labeled demonstrations · Nov 2026](https://pixel-robot.com/pixel/)
+[Rainbow Robotics · RB-Y1](https://www.rainbow-robotics.com/en/products/rb-y1) · [Palletizing demonstration, 1:17 to 1:25 · Wide shot at 10×](https://www.youtube.com/watch?v=JAlZ3QpPgIU&t=77s)
 :::
 
 
 <!-- Chapter 8: Deployment -->
 
-## 08 · Read the label on a demo {#demo-label data-chapter="8"}
+## 08 · Who supplied the commands? {#demo-label data-chapter="8" data-seconds="45"}
 
-| Label | What it tells you |
-|:---|:---|
-| Teleoperated | A person supplied commands |
-| Autonomous rollout | The robot controlled this recorded attempt |
-| 2× playback | Screen time is half the recorded time |
+::::::: {.fragment .w13-film-entry fragment-index="0"}
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card galaxea-bed >}}
+::::
+
+:::: {.content-visible unless-meta="w13-local-clips"}
+[OpenGalaxea · Galaxea G0 study and research film](https://opengalaxea.github.io/GalaxeaVLA/)
+::::
+:::::::
+
+**“Autonomous, 10X”** · Galaxea R1 Lite running the G0 policy.
 
 ::: {.footnote}
-[CMU Pixel · Teleoperation and policy demonstrations](https://pixel-robot.com/pixel/)
+[OpenGalaxea · R1 Lite hardware and G0 policy demonstration](https://opengalaxea.github.io/GalaxeaVLA/) · [Aug 2025 preprint](https://arxiv.org/abs/2509.00576)
 :::
 
+{{< w13-agenda 8 overlay >}}
 
-## Where are the other attempts? {#trial-count data-chapter="8"}
+
+## Where are the other attempts? {#trial-count data-chapter="8" data-seconds="55"}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w13/block-stack-trials.svg width="91%" >}}
 
@@ -503,61 +825,87 @@ Matched camera views and gripper shapes help it learn from people.
 :::
 
 
-## Field work or a future trial? {#field-evidence data-chapter="8"}
+## What did the teams actually count? {#field-evidence data-chapter="8" data-seconds="55"}
 
-**Spot** · Two robots completed over 90,000 inspections in Singapore.
+::::: {.w13-field-case}
+::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card agibot-store >}}
+:::
 
-**Atlas** · Onsite testing at GlobalFoundries was planned for early 2027.
+::: {.w13-facts}
+**Shanghai store trial**\
+6 AGIBOT G2 robots\
+**1,730 tasks** in 24 hours
+
+**Singapore fab operations**\
+2 Spot robots\
+**90,000+ inspections** since April
+:::
+:::::
 
 ::: {.footnote}
-[Boston Dynamics and GlobalFoundries · Joint announcement · Nov 17, 2026](https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/)
+[China News Service · Store footage](https://www.chinanews.com/sh/shipin/cns/2026/11-04/news1073816.shtml) · [AGIBOT · Nov 6 trial report](https://agibot.com/news/newsroom/post-134) · [GlobalFoundries and Boston Dynamics · Nov 17](https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/)
 :::
 
 
-## What happens on the next shift? {#field-failure data-chapter="8"}
+## A pallet blocks the next shift. What would you log? {#field-failure data-chapter="8" data-seconds="50"}
 
-A pallet blocks a mobile robot's usual route.
+{{< inline-svg ../../Figures/lectures/dgist-2026f-w13/blocked-aisle.svg width="95%" >}}
 
-What would you record before sending it back into the aisle?
-
-::: {.fragment}
-Load and surface · Stops and recovery · Human interventions
-:::
+[Where it stopped · When it restarted · Who helped]{.fragment}
 
 
-## Why does hardware matter to Physical AI now? {#why-now data-chapter="8"}
+## What hardware contributed to robot learning this month {#why-now data-chapter="8" data-seconds="55"}
 
-- Affordable arms can record failures alongside successes.
-- A policy can request how hard the hands should push.
-- Measured motors make simulated practice more realistic.
+| November 2026 | What the hardware made possible |
+|:--|:--|
+| **Nov 2** · SO-101 arm | Replay failed stacks with the commands and joint readings. |
+| **Nov 3** · G1 hands | Ask for a squeezing force as well as a hand position. |
+| **Nov 9** · Atlas ankle | Tune a simulated motor to the measured response. |
 
 ::: {.footnote}
-[ArmnetBench](https://arxiv.org/html/2611.03168v1) · [Ctrl-F](https://forcectrl.github.io/#hardware) · [Atlas](https://bostondynamics.com/blog/atlas-on-a-roll/) · [CoRL workshop, Nov 12](https://beneath-the-policy.github.io/)
+[ArmnetBench · Table 2](https://arxiv.org/html/2611.03168v1) · [Berkeley Ctrl-F](https://forcectrl.github.io/#hardware) · [Boston Dynamics · Atlas](https://bostondynamics.com/blog/atlas-on-a-roll/)
 :::
 
 
 <!-- Chapter 9: Return -->
 
-## 09 · Read the wheeled robot again {#atlas-return data-chapter="9"}
+## 09 · Back to wheeled Atlas {#atlas-return data-chapter="9" data-seconds="55"}
 
+::::::: {.fragment .w13-film-entry fragment-index="0"}
 :::: {.content-visible when-meta="w13-local-clips"}
 {{< video-card atlas-gamepad-simulation >}}
 ::::
 
 :::: {.content-visible unless-meta="w13-local-clips"}
-[Atlas on a Roll: gamepad and simulation · Boston Dynamics](https://bostondynamics.com/blog/atlas-on-a-roll/)
+[Boston Dynamics · Gamepad and simulator, 1:24 to 1:36](https://www.youtube.com/watch?v=NL65Awuv8gU&t=84)
+::::
+:::::::
+
+[**The team tuned the simulated motor to measurements from the real ankle.**]{.fragment}
+
+::: {.footnote}
+[Boston Dynamics · Film, 1:24 to 1:36](https://www.youtube.com/watch?v=NL65Awuv8gU&t=84) · [Atlas engineering account · Nov 9, 2026](https://bostondynamics.com/blog/atlas-on-a-roll/)
+:::
+
+{{< w13-agenda 9 overlay >}}
+
+
+## ROBOTIS AI Worker follows the operator’s hands {#read-new-robot data-chapter="9" data-seconds="35"}
+
+:::: {.content-visible when-meta="w13-local-clips"}
+{{< video-card ai-worker-ces-heart >}}
 ::::
 
-Whose command set the direction of the warehouse turn?
+:::: {.content-visible unless-meta="w13-local-clips"}
+[Watch the operator and the AI Worker form a heart](https://www.linkedin.com/posts/sungho-woo-4693aa198_robotis-aiworker-imitationlearning-activity-7417019492272201729-EJRS)
+::::
 
+**Teleoperated** · CES 2026
 
-## What would you ask about a new robot? {#read-new-robot data-chapter="9"}
-
-**A command is not motion.**
-
-What was commanded? Which body moved?
-
-What was measured? What still needs evidence?
+::: {.footnote}
+[CES 2026 · Sungho Woo · Demonstration and operator setup](https://www.linkedin.com/posts/sungho-woo-4693aa198_robotis-aiworker-imitationlearning-activity-7417019492272201729-EJRS) · [ROBOTIS · Recording demonstrations](https://docs.robotis.com/docs/software/cyclo/intelligence/legacy/physical_ai_tools/imitation_learning/)
+:::
 
 
 {{< include _series/dgist-2026f/qa.qmd >}}

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="w13-rated-arm" viewBox="0 0 1060 282" role="img" aria-labelledby="w13-rated-title w13-rated-desc">
+  <title id="w13-rated-title">The same three-kilogram box at two arm extensions</title>
+  <desc id="w13-rated-desc">Two simplified side views of a telescoping arm. On advance, the rated arm payload appears for each pose.</desc>
+  <style>
+    #w13-rated-arm text { font-family: inherit; fill: #183451; text-anchor: middle; font-weight: 600; font-size: 34px }
+    #w13-rated-arm .rating { fill: #865012; font-size: 33px }
+  </style>
+  <defs>
+    <g id="w13-rated-base">
+      <path d="M-32 202H85" stroke="#b4c4d1" stroke-width="3"/>
+      <rect x="14" y="63" width="20" height="115" rx="5" fill="#284c6a"/>
+      <rect x="-11" y="166" width="83" height="23" rx="6" fill="#284c6a"/>
+      <g fill="#183451"><circle cx="4" cy="191" r="10"/><circle cx="56" cy="191" r="10"/></g>
+    </g>
+    <g id="w13-rated-box" stroke="#8b581c" stroke-width="3">
+      <rect x="-24" width="48" height="38" rx="2" fill="#f4dcaf"/><path d="M-5 0v13H5V0" fill="#e8bf78"/>
+    </g>
+  </defs>
+  <text x="267" y="44">Arm extended</text><text x="775" y="44">Arm retracted</text>
+  <use href="#w13-rated-base" transform="translate(130)"/>
+  <use href="#w13-rated-base" transform="translate(700)"/>
+  <g stroke="#42728f" stroke-linecap="round" fill="none">
+    <path d="M155 98h228 M725 98h88" stroke-width="12"/>
+    <path d="M383 98v17 M813 98v17" stroke-width="6"/>
+  </g>
+  <use href="#w13-rated-box" transform="translate(383 116)"/><use href="#w13-rated-box" transform="translate(813 116)"/>
+  <g class="fragment" data-fragment-index="0">
+    <text class="rating" x="267" y="256">Rated payload · 2.5 kg</text><text class="rating" x="775" y="256">Rated payload · 4 kg</text>
+  </g>
+</svg>

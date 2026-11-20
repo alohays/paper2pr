@@ -31,6 +31,10 @@ figures:
     source: Original teaching illustration of a cumulative encoder reading
     licence: Repository
     third_party: false
+  - file: encoder-count.svg
+    source: Original teaching illustration of an encoder counting marks
+    licence: Repository
+    third_party: false
   - file: wheel-travel-check.svg
     source: Original teaching illustration
     licence: Repository
@@ -71,3 +75,55 @@ figures:
     source: Original teaching illustration
     licence: Repository
     third_party: false
+  - file: count-gear-turns.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: angle-readings.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: rated-arm-load.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: motor-field.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: backdrive-path.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: spring-deflection.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: sensor-scenes.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: hand-contact.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: wheel-loops.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: pixel-body.svg
+    source: Original schematic based on the CMU Pixel system overview
+    licence: Repository
+    third_party: false
+  - file: blocked-aisle.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: videos/stills/robotis-op3.jpg
+    source: "https://docs.robotis.com/docs/systems/op3/introduction/"
+    licence: "Publisher or research-team material. Local classroom use with attribution."
+    third_party: true
+  - file: videos/stills/xm430-w350-r.jpg
+    source: "https://robotis.us/products/dynamixel-xm430-w350-r"
+    licence: "ROBOTIS product photograph. Local classroom use with attribution."
+    third_party: true

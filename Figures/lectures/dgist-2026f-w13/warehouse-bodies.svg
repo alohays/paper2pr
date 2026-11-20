@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="w13-warehouse-bodies" viewBox="0 0 1152 302" role="img" aria-labelledby="w13-warehouse-title w13-warehouse-desc">
   <title id="w13-warehouse-title">Four bodies for jobs around a warehouse</title>
-  <desc id="w13-warehouse-desc">A fixed arm reaches a cup at a packing bench. A wheeled arm travels between shelves on a level aisle. A quadruped carries a sensor up stairs. A humanoid reaches for a door lever designed for people.</desc>
+  <desc id="w13-warehouse-desc">A fixed arm reaches a parcel at a packing bench. A wheeled arm travels between shelves on a level aisle. A quadruped carries a sensor up stairs. A humanoid reaches for a door lever designed for people.</desc>
   <style>
     #w13-warehouse-bodies text { font-family: inherit; fill: #142b4f; text-anchor: middle }
     #w13-warehouse-bodies .name { font-size: 30px; font-weight: 700 }
@@ -12,9 +12,9 @@
     #w13-warehouse-bodies .floor { fill: none; stroke: #9ba7b4; stroke-width: 3 }
   </style>
   <defs>
-    <g id="w13-warehouse-cup" fill="#faebc9" stroke="#805e22" stroke-width="3" stroke-linejoin="round">
-      <path d="M-12 0 H12 L9 29 H-9 Z"/>
-      <path d="M-14 0 L-12 -3 H12 L14 0 Z"/>
+    <g id="w13-warehouse-parcel" fill="#faebc9" stroke="#805e22" stroke-width="3" stroke-linejoin="round">
+      <rect x="-15" y="3" width="30" height="26" rx="2"/>
+      <path d="M-3 3V13H3V3" fill="#d3ac6c"/>
     </g>
   </defs>
   <path d="M288 17 V279 M576 17 V279 M864 17 V279" stroke="#d3dae3" stroke-width="2"/>
@@ -22,7 +22,7 @@
     <text class="name" x="144" y="40">Fixed arm</text>
     <path class="floor" d="M20 218 H269"/>
     <path class="scene" d="M131 164 H259 M143 165 V216 M248 165 V216"/>
-    <use href="#w13-warehouse-cup" x="203" y="133"/>
+    <use href="#w13-warehouse-parcel" x="203" y="133"/>
     <path fill="#233f66" d="M39 216 L47 189 H89 L97 216 Z"/>
     <path class="link" d="M68 189 L103 98 L179 116"/>
     <circle class="joint" cx="68" cy="189" r="10"/>
@@ -34,7 +34,7 @@
     <text class="name" x="144" y="40">Wheeled arm</text>
     <path class="floor" d="M20 218 H269"/>
     <path class="scene" d="M194 101 H257 M194 163 H257 M255 86 V216"/>
-    <use href="#w13-warehouse-cup" x="218" y="132"/>
+    <use href="#w13-warehouse-parcel" x="218" y="132"/>
     <rect x="44" y="170" width="100" height="32" rx="8" fill="#233f66"/>
     <circle cx="65" cy="204" r="12" fill="#233f66"/>
     <circle cx="123" cy="204" r="12" fill="#233f66"/>
