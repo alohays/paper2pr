@@ -1,0 +1,30 @@
+## DGIST W13 classroom films
+
+The November 20 lecture has 49 teaching screens across ten chapters. The teaching timer runs for 50 minutes. Screen 50 opens the ten-minute question period at 13:50 KST.
+
+| Screen | What students see | Evidence |
+| --- | --- | --- |
+| 2 | EgoScale's 20,854 hours of first-person video anchor one sentence about learning from people and practicing in simulated worlds. | Fan discusses human video at 11:39 and scanning objects into a simulator at 14:55. These are two examples in his talk. [Recording at 11:39](https://www.youtube.com/watch?v=3Y8aq_ofEVs&t=699s) · [Recording at 14:55](https://www.youtube.com/watch?v=3Y8aq_ofEVs&t=895s) · [EgoScale research team](https://research.nvidia.com/labs/gear/egoscale/) |
+| 4 | Four simultaneous films show a Trossen leader handle and follower arm, a person guiding a KUKA wrist, a MANUS glove driving WONIK's Allegro Hand and two PICO controllers guiding real robot arms. | Students can follow one operator at a time as the four excerpts repeat. KUKA shows a person touching the working arm. The other three show separate input devices. [Trossen](https://www.youtube.com/watch?v=TIg9Z_6u79U&t=411s) · [KUKA](https://www.youtube.com/watch?v=1Or0kym2uic&t=10s) · [MANUS and WONIK](https://www.manus-meta.com/use-cases/wonik-robotics) · [XRoboToolkit](https://xr-robotics.github.io/) |
+| 13 | A Franka Research 3 moves a carton on a fixed bench. In the adjacent film, a person inserts a battery into Stretch 4 and the robot moves to its charging dock. Both films last 13 seconds. | The FR3 manual establishes the AC supply. The Stretch datasheet specifies eight hours under light CPU load. [CoLa Lab film](https://cocacola-lab.github.io/Recursia-website/#demos) · [FR3 manual](https://franka.de/hubfs/Product%20Manual%20Franka%20Research%203_R02210_1.5.2_EN.pdf) · [Stretch 4 film](https://hello-robot.com/stretch-4/) · [Stretch 4 datasheet](https://hello-robot.com/wp-content/uploads/2026/05/HelloRobot-DataSheet-Stretch-4-Rev5_AsLaunched.pdf) |
+| 37 | After the chapter agenda, four films show ALOHA opening a package, Galbot G1 reaching into a freezer, a Unitree quadruped carrying an inspection sensor and Digit carrying a tote at GXO. | The overview gives the humanoid a distinct carrying job so students can still predict the outcome of the paired Berkeley experiment on screen 41. The ALOHA source labels its footage 10×. [ALOHA](https://tonyzhaozh.github.io/aloha/) · [Galbot](https://www.galbot.com/g1/) · [Unitree](https://www.youtube.com/watch?v=m5__1M6gYwM&t=3s) · [Agility Robotics](https://www.agilityrobotics.com/videos/digits-first-day-of-work-at-gxo) |
+| 42 | Rainbow Robotics' RB-Y1 holds a carton with two arms, moves its wheeled base and brings the carton to pallet height. | The wide shot carries the manufacturer's 10× playback label. [RB-Y1 film at 1:17](https://www.youtube.com/watch?v=JAlZ3QpPgIU&t=77s) |
+| 45 | A reporter in a Shanghai store watches an AGIBOT G2 lift a packaged item from a basket. The neighboring figures name the store trial and the Singapore fab operations separately. | China News Service filmed the Shanghai scene. AGIBOT reported 1,730 tasks across six robots in 24 hours. GlobalFoundries and Boston Dynamics reported over 90,000 inspections by two Spots since April. [Store footage](https://www.chinanews.com/sh/shipin/cns/2026/11-04/news1073816.shtml) · [AGIBOT's November 6 trial report](https://agibot.com/news/newsroom/post-134) · [November 17 fab report](https://bostondynamics.com/news/boston-dynamics-globalfoundries-expand-robotics-collaboration/) |
+
+### Local delivery
+
+Open the [presenter deck](http://127.0.0.1:4317/slides/lectures/dgist-2026f-w13-classroom.html?rev=3#/title-slide) and press **S** for the Korean notes. The [student deck](http://127.0.0.1:4315/slides/lectures/dgist-2026f-w13.html?rev=3#/title-slide) plays the same classroom films. After a reboot, run the existing local launcher from the W13 worktree.
+
+```sh
+python3 .local/w13-final/playback/start.py
+```
+
+The classroom files contain 23 silent H.264 videos across 26 players on 18 screens. One pass through the longest concurrent film on each of those screens totals approximately 3 minutes 23 seconds. The two four-way comparisons repeat during the existing explanation and student-response time. All other films hold their final frame. The original RB-Y1 and Shanghai footage retains short Korean or Chinese captions. The lecture's explanations and sourcing on those screens are in English.
+
+Chrome displayed all 50 slides and 45 incremental reveals at 1280 × 720 and 896 × 720. The 190 captured states include the chapter agendas, three gear turns and the two angle readings before the equation. Each small film occupied approximately 261 × 147 pixels beside captions. On screen 37, all four players waited for the agenda click and stopped when the presenter returned to the agenda. The intro sentence and its three references each fit their own line at both sizes.
+
+All 26 players ran on both the presenter and classroom audience URLs with external requests blocked. The eight gallery players crossed a loop boundary, and the other 18 reached the end. All players paused on leaving their slide. Both audience exports contain zero note elements, title-note attributes and Hangul characters in the HTML. Pressing S opened the private Korean script on all 50 presenter screens and empty notes panes on both audience copies. The native speaker clock gave 10 minutes of Q&A after 50 minutes of teaching. The question QR decoded on both question screens at both widths and opened the live participation form.
+
+The private backups from before and after the edit restored exactly. The clean filter and the installed pre-commit hook passed on a temporary index. The repository gate scored **100/100** and all 393 local references in the standard site resolved.
+
+Check the four-way comparison from the back row with live captions in E7-233, scan the course QR on a phone and rehearse the 13:50 transition at the lecturer's speaking pace. The course's shared Wooclap form still displays October 23.

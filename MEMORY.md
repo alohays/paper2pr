@@ -99,3 +99,11 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:pedagogy] Opening a first-year class with several scenes from earlier weeks made students depend on memory → establish a new scene and define the idea in everyday words first. Mention one earlier example in a complete sentence, and keep the rest of the prior-course evidence in instructor references.
 
 [LEARN:terminology] Translating industry terms differently across the W13 plan, diagrams and speaker notes obscured the words students will find on real spec sheets → use the original English term, give a plain Korean explanation at first teaching use, and retain Korean names for glossary searches.
+
+[LEARN:lecture-opening] Reintroducing the lecturer and recapping unrelated guest talks interrupted a returning class → open from the AI and data topics the students have studied, state today's hardware question directly, and give the answer to the first film during its own screen.
+
+[LEARN:lecture-navigation] Unconnected component lessons and repeated rhetorical questions obscured the course structure → show the complete agenda with the current chapter highlighted, explain the practical reason to study each part, and reserve prediction time for questions the students can actually resolve.
+
+[LEARN:hardware-examples] A single manufacturer's films dominated a cross-platform survey → choose Chinese, Korean and research platforms for their specific physical jobs, data collection methods and measured results, with a source beside each visual.
+
+[LEARN:hardware-motion] A product still made it hard to see how a person controls a robot → show the input and response in the same short film, and let students watch the different interfaces together. Use actual task footage for comparisons whose meaning depends on motion.
