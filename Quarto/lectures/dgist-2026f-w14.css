@@ -1,13 +1,29 @@
-/* W14: Ethics, Safety, and Social Responsibility in the Age of Embodied AI */
+/* W14: Ethics, Safety, and Social Responsibility in the Age of Embodied AI
+   Layout follows the W13 decks: one centered visual, one centered sentence,
+   no bullet lists. Sizes are px on the 1280x720 stage so a line never
+   depends on an inherited em. */
 
-/* Fact / My view tags: every Part 2 slide says which it is. */
+.reveal .slides section .footnote {
+  color: #3e5161;
+  font-size: 21px;
+}
+.reveal .slides section figure.video-card figcaption.video-caption .video-caption-title {
+  font-size: 24px;
+}
+.reveal .slides section figure.video-card figcaption.video-caption .video-caption-meta {
+  color: #495865;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+/* ---- Fact / My view tags: every Part 2 slide says which it is. */
 .reveal .slides section .w14-tag {
   position: absolute;
-  top: 22px;
-  right: 34px;
-  font-size: 20px;
+  top: 24px;
+  right: 56px;
+  font-size: 19px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   padding: 5px 14px;
   border-radius: 5px;
@@ -23,120 +39,416 @@
   color: #9a4a12;
   border: 2px solid #c2611b;
 }
-
-/* Date stamp for fast-moving news. */
+/* Date stamp for fast-moving news, left of the tag. */
 .reveal .slides section .w14-asof {
   position: absolute;
-  top: 30px;
-  right: 150px;
-  font-size: 17px;
-  color: #6b7785;
+  top: 31px;
+  right: 160px;
+  font-size: 19px;
+  color: #56677a;
+  white-space: nowrap;
+}
+/* The tag paragraph holds only absolutely placed spans. */
+.reveal .slides section > p:has(> .w14-tag) {
+  margin-bottom: 0;
+  line-height: 0;
 }
 
-/* One-sentence claim slides. */
-.reveal .w14-claim {
-  font-size: 1.32em;
-  font-weight: 650;
-  line-height: 1.28;
-  color: #17344f;
-  margin: 0.9em 0 0 0;
+/* ---- One centered sentence under the visual. */
+.reveal .slides section .w14-lede {
+  width: 100%;
+  margin-top: 28px;
 }
-.reveal .w14-claim strong { color: #b2541f; }
+.reveal .slides section .w14-lede p {
+  margin: 0;
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 1.25;
+  text-align: center;
+  text-wrap: balance;
+}
+.reveal .w14-lede strong { color: #183451; font-weight: 700; }
+/* A lede that opens the slide keeps the theme's centering margin. */
+.reveal .slides section.level2 > h2 + .w14-lede { margin-top: auto; }
+.reveal .slides section.level2 > p:has(> .w14-tag) + .w14-lede { margin-top: 0; }
+.reveal .slides section .w14-lede.first { margin-bottom: 30px; }
+.reveal .slides section .w14-lede + .w14-lede { margin-top: 8px; }
+.reveal .slides section .w14-lede.ask p { font-weight: 700; color: #9c4a1e; }
+.reveal .slides section .w14-lede.ask strong { color: #9c4a1e; }
+.reveal .slides section .w14-note {
+  width: 100%;
+  margin-top: 16px;
+}
+.reveal .slides section .w14-note p {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: #495865;
+  text-align: center;
+  text-wrap: balance;
+}
 
-/* Number tiles. */
-.reveal .w14-tiles {
+/* ---- Cards: a number or a word, and one short line under it. */
+.reveal .slides section .w14-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  margin-top: 0.6em;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+  width: 100%;
+  align-items: stretch;
 }
-.reveal .w14-tiles.two { grid-template-columns: repeat(2, 1fr); }
-.reveal .w14-tiles.four { grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.reveal .w14-tile {
-  background: #f1f5f8;
-  border: 1.5px solid #c9d6de;
+.reveal .slides section .w14-cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px; }
+.reveal .slides section .w14-cards.four { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.reveal .slides section .w14-cards.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 34px; }
+.reveal .w14-card {
+  position: relative;
+  box-sizing: border-box;
+  padding: 22px 22px 24px;
+  background: #f1f5f6;
+  border: 2px solid #b5c6cd;
   border-radius: 12px;
-  padding: 18px 20px 16px;
-  font-size: 0.72em;
-  line-height: 1.35;
-  text-align: left;
 }
-.reveal .w14-tile .w14-label {
+.reveal .slides section .w14-card p {
+  margin: 0;
+  font-size: 29px;
+  font-weight: 300;
+  line-height: 1.26;
+  text-align: center;
+  text-wrap: balance;
+}
+.reveal .w14-card .w14-kicker {
   display: block;
-  font-size: 0.85em;
+  margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #405269;
+}
+.reveal .w14-card .w14-big {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 52px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #56708a;
-  margin-bottom: 4px;
-}
-.reveal .w14-tile .w14-num {
-  display: block;
-  font-size: 1.85em;
-  font-weight: 750;
-  color: #17344f;
-  line-height: 1.08;
-  margin-bottom: 6px;
+  line-height: 60px;
+  color: #183451;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.reveal .w14-tile.warm { background: #fdf3e8; border-color: #e7c4a0; }
-.reveal .w14-tile.warm .w14-num { color: #a34b16; }
-
-/* Positions map and other compact tables. */
-.reveal .w14-map table {
-  font-size: 0.64em;
+.reveal .w14-cards.two .w14-card .w14-big { font-size: 66px; line-height: 72px; }
+/* A word in the number slot keeps the number's line box. */
+.reveal .w14-cards .w14-card .w14-big.w14-w { font-size: 42px; }
+.reveal .w14-cards.four .w14-card { padding: 22px 14px 24px; }
+.reveal .w14-cards.four .w14-card .w14-word { font-size: 36px; }
+.reveal .slides section .w14-cards.four .w14-card p { font-size: 26px; }
+.reveal .slides section .w14-cards.two .w14-card p,
+.reveal .slides section .w14-cards.grid .w14-card p { font-size: 31px; }
+/* One sentence per row. */
+.reveal .slides section .w14-cards.w14-stack { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.reveal .slides section .w14-cards.w14-stack.w14-say .w14-card { padding: 20px 28px 22px; }
+.reveal .slides section .w14-cards.w14-stack.w14-say .w14-card p { font-size: 34px; }
+.reveal .w14-cards.w14-long .w14-card .w14-word { font-size: 34px; }
+/* Cards that carry a sentence instead of a number. */
+.reveal .slides section .w14-cards.w14-say .w14-card { padding: 26px 28px 30px; }
+.reveal .slides section .w14-cards.w14-say .w14-card p {
+  font-size: 31px;
+  font-weight: 400;
   line-height: 1.3;
-  margin-top: 0.4em;
 }
-.reveal .w14-map table td:first-child { font-weight: 700; white-space: nowrap; color: #17344f; }
-.reveal .w14-map table tr.w14-mine td { background: #fdf3e8; }
-
-/* Quotation blocks. */
-.reveal .w14-quote {
-  border-left: 6px solid #2f6f8f;
-  background: #f1f5f8;
-  padding: 14px 22px;
-  margin: 0.5em 0;
-  font-size: 0.74em;
-  line-height: 1.4;
-}
-.reveal .w14-quote .w14-who {
+.reveal .w14-card .w14-word {
   display: block;
-  margin-top: 6px;
-  font-size: 0.8em;
-  color: #56708a;
+  margin-bottom: 10px;
+  font-size: 43px;
+  font-weight: 700;
+  line-height: 1.12;
+  color: #183451;
+}
+.reveal .w14-card strong { color: #183451; font-weight: 700; }
+.reveal .w14-card.warm { background: #fdf3e8; border-color: #e2b98d; }
+.reveal .w14-card.warm .w14-big,
+.reveal .w14-card.warm .w14-word,
+.reveal .w14-card.warm strong { color: #9c4a1e; }
+.reveal .w14-card.warm .w14-kicker { color: #8a4a1c; }
+
+/* Cards that read left to right get a chevron between them. */
+.reveal .slides section .w14-cards.flow { gap: 0 58px; }
+.reveal .w14-cards.flow .w14-card + .w14-card::before {
+  content: "";
+  position: absolute;
+  left: -44px;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  border-top: 4px solid #496780;
+  border-right: 4px solid #496780;
+  transform: translate(-6px, -50%) rotate(45deg);
 }
 
-/* Loop diagrams. */
-.reveal .w14-loop svg { width: 100%; height: auto; max-height: 430px; }
-.reveal .w14-loop text { font-family: inherit; }
-
-/* Image rows. */
-.reveal .w14-row {
-  display: flex;
-  gap: 22px;
-  align-items: flex-end;
-  justify-content: center;
-  margin-top: 0.4em;
+/* Quotation cards read as text, so they align left. */
+.reveal .slides section .w14-card.quote { padding: 26px 30px 28px; }
+.reveal .slides section .w14-card.quote p {
+  font-size: 31px;
+  font-weight: 400;
+  line-height: 1.32;
+  text-align: left;
+  text-wrap: pretty;
+  color: #183451;
 }
-.reveal .w14-row figure { margin: 0; flex: 1 1 0; text-align: center; font-size: 0.55em; color: #4a5866; }
-.reveal .w14-row img { max-height: 300px; width: auto; max-width: 100%; border-radius: 8px; }
+.reveal .slides section .w14-card.quote p + p {
+  margin-top: 16px;
+  font-size: 24px;
+  font-weight: 400;
+  color: #495865;
+}
 
-.reveal img.w14-page {
-  border: 1.5px solid #c9d6de;
+/* A card pair with a picture between them. */
+.reveal .slides section .w14-cards.fig {
+  grid-template-columns: minmax(0, 1fr) 210px minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+.reveal .slides section .w14-cards.fig > p,
+.reveal .slides section .w14-cards.fig > .quarto-figure,
+.reveal .slides section .w14-cards.fig figure { margin: 0; }
+.reveal .slides section .w14-cards.fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+/* ---- One quotation, centered. */
+.reveal .slides section .w14-quote {
+  width: 100%;
+  max-width: 1060px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 34px;
+}
+.reveal .slides section .w14-quote p {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1.22;
+  color: #183451;
+  text-align: center;
+  text-wrap: balance;
+}
+.reveal .slides section .w14-quote .w14-who {
+  display: block;
+  margin-top: 14px;
+  font-size: 24px;
+  font-weight: 400;
+  color: #495865;
+}
+
+/* ---- Statement slides: one claim, centered, lines broken by hand. */
+.reveal .slides section .w14-claim {
+  width: 100%;
+}
+.reveal .slides section .w14-claim p {
+  margin: 0;
+  font-size: 54px;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: #183451;
+  text-align: center;
+  text-wrap: balance;
+}
+.reveal .slides section .w14-claim p + p { margin-top: 26px; }
+.reveal .w14-claim strong { color: #9c4a1e; font-weight: 700; }
+.reveal .slides section .w14-claim p:has(> .w14-sub) { line-height: 1.25; }
+.reveal .w14-claim .w14-sub {
+  font-size: 38px;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: #2b3a48;
+}
+.reveal .slides section .w14-claim.w14-thesis p:not(:has(> .w14-sub)) { font-size: 74px; line-height: 1.1; }
+.reveal .w14-claim .w14-eyebrow {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #56677a;
+}
+
+/* ---- A picture or clip beside two or three short facts. */
+.reveal .slides section .w14-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 44px;
+  width: 100%;
+}
+.reveal .slides section .w14-pair.even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.reveal .slides section .w14-pair.narrow { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); }
+.reveal .slides section .w14-pair figure.video-card { width: 100%; margin: 0; }
+.reveal .slides section .w14-pair figure.video-card video.video-inline {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+.reveal .slides section .w14-pair p:has(> img) { margin: 0; }
+.reveal .slides section .w14-pair img:not(.video-poster-print) {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 440px;
+  margin: 0 auto;
+  object-fit: contain;
   border-radius: 6px;
+}
+.reveal .slides section .w14-pair img.w14-page {
+  border: 2px solid #c9d6de;
   box-shadow: 0 3px 12px rgba(23, 52, 79, 0.12);
 }
-
-.reveal img.w14-crop-top {
-  width: 100%;
-  height: 330px;
+.reveal .slides section .w14-pair img.w14-crop-top {
+  height: 430px;
   object-fit: cover;
   object-position: top center;
 }
+.reveal .slides section .w14-facts p {
+  margin: 0 0 26px;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1.26;
+  text-align: left;
+  text-wrap: pretty;
+}
+.reveal .slides section .w14-facts p:last-child { margin-bottom: 0; }
+.reveal .w14-facts strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #183451;
+}
 
-/* The theme gives every column the same share; in this deck the width
-   written on a column is meant. */
-.reveal .columns > .column[style*="width"] {
-  flex: 0 1 auto;
+/* ---- A clip alone on the slide, with one sentence under it. */
+.reveal .slides section .w14-film { width: 100%; }
+.reveal .slides section .w14-film figure.video-card video.video-inline {
+  height: 356px;
+  width: auto;
+  max-height: none;
+}
+
+/* ---- Three pictures in a row. */
+.reveal .slides section .w14-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  width: 100%;
+}
+.reveal .w14-row figure { margin: 0; }
+.reveal .slides section .w14-row img {
+  display: block;
+  width: 100%;
+  height: 310px;
+  max-height: none;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.reveal .slides section .w14-row img.contain { object-fit: contain; }
+.reveal .slides section .w14-row figcaption {
+  margin-top: 12px;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 600;
+  color: #183451;
+  text-align: center;
+}
+
+/* ---- Diagrams drawn inline. */
+.reveal .slides section .w14-diagram { width: 100%; text-align: center; }
+.reveal .slides section .w14-diagram svg {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.reveal .w14-diagram text { font-family: inherit; }
+
+/* ---- Bostrom's ladder. */
+.reveal .slides section .w14-ladder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 30px;
+}
+.reveal .w14-ladder .w14-lab {
+  margin-right: 8px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #495865;
+}
+.reveal .w14-ladder .w14-step {
+  padding: 10px 30px;
+  background: #f1f5f6;
+  border: 2px solid #b5c6cd;
+  border-radius: 999px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #183451;
+}
+.reveal .w14-ladder .w14-step.on {
+  background: #fdf3e8;
+  border-color: #e2b98d;
+  color: #9c4a1e;
+}
+.reveal .w14-ladder .w14-arrow {
+  width: 16px;
+  height: 16px;
+  border-top: 4px solid #496780;
+  border-right: 4px solid #496780;
+  transform: rotate(45deg);
+}
+
+/* ---- Positions map. */
+.reveal .slides section .w14-map { width: 100%; }
+.reveal .slides section .w14-map table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 29px;
+  line-height: 1.22;
+}
+.reveal .slides section .w14-map th {
+  padding: 4px 18px 8px;
+  border-bottom: 2px solid #183451;
+  font-size: 22px;
+  font-weight: 600;
+  color: #405269;
+  text-align: left;
+}
+.reveal .slides section .w14-map td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #d3dce2;
+  font-weight: 300;
+  text-align: left;
+  vertical-align: middle;
+}
+.reveal .slides section .w14-map td:first-child {
+  font-weight: 700;
+  color: #183451;
+  white-space: nowrap;
+}
+.reveal .slides section .w14-map td:nth-child(2) { font-size: 29px; }
+.reveal .slides section .w14-map td:last-child { font-size: 25px; color: #2b3a48; white-space: nowrap; }
+.reveal .slides section .w14-map tr.mine td { background: #fdf3e8; border-bottom-color: #e2b98d; }
+.reveal .slides section .w14-map tr.mine td:first-child { color: #9c4a1e; }
+.reveal .w14-map .w14-here {
+  margin-left: 12px;
+  padding: 2px 10px;
+  border: 2px solid #c2611b;
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9a4a12;
+  vertical-align: middle;
 }
