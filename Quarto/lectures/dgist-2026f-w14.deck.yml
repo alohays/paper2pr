@@ -32,9 +32,8 @@ qa_min: 8
 language:
   slides: en
   notes: ko
-  # Part 2 doubles as a standalone video for Korean viewers, so each claim
-  # slide carries its Korean sentence under the English one.
-  korean_allowance: 900
+  # Slides are English only; Korean lives in the speaker notes.
+  korean_allowance: 0
   # korean_allowance: <n>  -- max Hangul characters on English slides
   # (term glosses, Wooclap instructions). Omit to take the profile's
   # default (lecture 300, others 0). Slides declared ko are not counted.

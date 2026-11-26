@@ -147,8 +147,8 @@ Robey et al., RoboPAIR, 2024: a Go2 driven through a language-model planner, lab
 ## Work: who decides how robots enter {#work}
 
 ::: {.w14-quote}
-"노사합의 없이는 단 1대의 로봇도 현장에 들어올 수 없다."
-[Hyundai Motor union, 22 Jan 2026, on the plan to deploy the Atlas humanoid]{.w14-who}
+"Without a labor-management agreement, not a single robot can enter the shop floor."
+[Hyundai Motor union, 22 Jan 2026, on the plan to deploy the Atlas humanoid (translated from Korean)]{.w14-who}
 :::
 
 ::: {.w14-tiles .two}
@@ -236,7 +236,7 @@ Restraining AI Is Not Enough
 :::
 
 ::: {.divider-sub}
-AI를 묶는 것만으로는 부족하다 · My own view, as of 27 Nov 2026
+My own view, as of 27 Nov 2026
 :::
 
 
@@ -298,8 +298,6 @@ L. Alpöge, 20 Nov 2026. Lean FRO and Mathlib Initiative, 21 Nov 2026. Not yet p
 
 ::: {.w14-claim}
 When AI knows better than we do, **where should humans stand?**
-
-[AI가 우리보다 잘 알 때, 사람은 어디에 서야 할까요?]{.w14-ko}
 :::
 
 
@@ -336,8 +334,6 @@ HIRA drug-utilization review counts via SBS Biz, 29 July 2026. HIRA data from th
 
 ::: {.w14-claim}
 Whether to augment is already a past question. What remains is **for whom, and on what terms.**
-
-[증강을 할지 말지는 이미 지나간 질문입니다. 남은 질문은 누구에게, 어떤 조건으로입니다.]{.w14-ko}
 :::
 
 
@@ -421,8 +417,6 @@ UK AI Security Institute, August 2026.
 
 ::: {.w14-claim}
 What takes a goal and finds its own way is **not a tool.** AI will hardly stay a tool, and it can become truly dangerous.
-
-[목표를 받고 스스로 길을 찾는 것은 도구가 아닙니다. AI는 도구로 남기 힘들고, 자칫하면 정말 위험해질 수 있습니다.]{.w14-ko}
 :::
 
 
@@ -465,8 +459,6 @@ One company's capability progress against its 2024-25 pace (METR estimate, Nov 2
 
 ::: {.w14-claim}
 Today's response is **passive** next to the speed at which AI grows. It is not enough.
-
-[지금의 대응은 AI가 커지는 속도에 비해 소극적입니다. 이것만으로는 부족합니다.]{.w14-ko}
 :::
 
 
@@ -498,8 +490,6 @@ W. Ross Ashby, An Introduction to Cybernetics, Chapman and Hall, 1956, p. 207. A
 Shrinking AI's range makes it safer. But that range is why we use AI.
 
 The regulating side is teams, institutions and verification tools. **I say: put the human in there too.**
-
-[조절하는 쪽은 팀, 제도, 검증 도구 전체입니다. 저는 그 안에 사람 자신도 넣자는 것입니다.]{.w14-ko}
 :::
 
 
@@ -592,8 +582,6 @@ Neuralink, 2026. Willett et al., Nature, 2023. Metzger et al., Nature, 2023.
 
 ::: {.w14-claim}
 Restraining AI is not enough. **Humans have to grow too.** Humans should become cyborgs connected to AI.
-
-[AI를 묶는 것만으로는 부족합니다. 사람도 함께 커져야 합니다. 사람이 AI와 연결된 cyborg가 되어야 합니다.]{.w14-ko}
 :::
 
 
@@ -660,8 +648,6 @@ Posthumanism in the humanities mostly opposes transhumanism. Transhuman: "an int
 
 ::: {.w14-claim}
 Humans should hold superintelligence themselves. What I want in the end: beings born human, **keeping their selves**, growing until they themselves become superintelligence.
-
-[제가 끝내 바라는 것은 사람으로 태어난 존재가 자아를 지키면서 자라서 스스로 superintelligence가 되어 가는 것입니다.]{.w14-ko}
 :::
 
 
@@ -735,8 +721,6 @@ Natural turnover replaces like with like; augmentation adds new kinds of parts. 
 
 ::: {.w14-claim}
 If these two conditions break, I oppose it too.
-
-[이 두 조건이 깨지면 저도 반대합니다.]{.w14-ko}
 :::
 
 
@@ -787,7 +771,7 @@ Lee et al., Nature Machine Intelligence, 2025: non-invasive EEG with an AI copil
 ::: {.w14-claim}
 Physical AI for Everyone. **Augmentation should be for everyone too.**
 
-[증강도 모두를 위한 것이어야 합니다. 여러분은 어느 칸에 서시겠습니까?]{.w14-ko}
+Where on the map will you stand?
 :::
 
 

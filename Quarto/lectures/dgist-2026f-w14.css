@@ -33,16 +33,6 @@
   color: #6b7785;
 }
 
-/* Korean line under an English statement. */
-.reveal .w14-ko {
-  display: block;
-  margin-top: 0.55em;
-  font-size: 0.62em;
-  font-weight: 500;
-  color: #4a5866;
-  line-height: 1.45;
-}
-
 /* One-sentence claim slides. */
 .reveal .w14-claim {
   font-size: 1.32em;
