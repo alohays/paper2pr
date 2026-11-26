@@ -1,0 +1,32 @@
+/* Local Source Sans Pro for a room or a machine without network access. The
+   theme asks Google Fonts for weights 300 and 700; without it the browser
+   falls back to synthesized weights and line lengths shift. The files are
+   the ones the W06 deck already ships. */
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-300.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-600.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(../../Figures/lectures/dgist-2026f-w06/fonts/source-sans-pro-700.ttf) format('truetype');
+}

@@ -11,7 +11,7 @@ title-slide-attributes:
 format:
   revealjs:
     theme: [default, ../clean-academic.scss]
-    css: dgist-2026f-w14.css
+    css: [dgist-2026f-w14-fonts.css, dgist-2026f-w14.css]
     default-timing: 60
     transition: none
 bibliography: ../../Bibliography_base.bib
