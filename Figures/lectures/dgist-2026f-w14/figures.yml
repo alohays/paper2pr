@@ -98,3 +98,83 @@ figures:
     origin: "Yosemite and Belbury, Ship of Theseus diagram, Wikimedia Commons"
     licence: CC BY 4.0
     third_party: true
+  - file: rules-timeline.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: average-tail.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: robot-density.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: liability-split.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: human-loop.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: two-people.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: study-bypass.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: riemann-check.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: already-buying.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: tool-agent.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: paperclips.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: recursion-contingency.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: aisi-runs.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: report-card.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: ashby-variety.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: speech-rate.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: four-outcomes.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: ladder.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: three-paths.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: symbiosis-cyborg.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
