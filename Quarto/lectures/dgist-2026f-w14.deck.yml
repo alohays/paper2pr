@@ -1,0 +1,81 @@
+# Written by /new-deck. These are the premises the deck was built on;
+# every downstream tool reads them from here rather than guessing.
+#   quality_score.py  -> bullet budget and the profile's extra checks
+#   the Korean gate   -> whether non-English slides are allowed here,
+#                        and how much Hangul an English deck may carry
+#   write-speaker-notes -> which language the notes are in, and the
+#                        speaking minutes the script is budgeted on
+#   slide-excellence  -> audience, delivery, sources (review context)
+# Changing a value here changes how the deck is graded, so change it
+# when the premise changes, not to make a warning go away.
+profile: lecture
+title: "Ethics, Safety, and Social Responsibility in the Age of Embodied AI"
+
+# audience.assumes, audience.size, audience.prior and delivery are
+# context for the review agents (slide-excellence reads them), not
+# consumed by the gate; the gate's budget and checks come from the
+# profile above.
+audience:
+  assumes: none    # none | practitioner | expert
+  size: "about 90"
+  description: "Returning first- and second-year undergraduates of all majors, in the last lecture of this lecturer's series. Part 1 (20 min) is a conventional ethics overview, one case per question. Part 2 (30 min) is the lecturer's own argument, marked as his view on every slide, and is also published as a standalone video for a Korean-speaking public."
+  prior: [W02 embodied AI and teleoperation, W06 learning from human activity, W09 policies and reinforcement learning, W13 commands, motors and control]
+delivery: in-person    # in-person | remote | hybrid
+
+# Wall-clock minutes. video_min (clips playing without narration) and
+# qa_min (questions) are subtracted: the speaker-notes budget runs on
+# speaking_min = duration_min - video_min - qa_min.
+duration_min: 60
+video_min: 2
+qa_min: 8
+
+language:
+  slides: en
+  notes: ko
+  # Part 2 doubles as a standalone video for Korean viewers, so each claim
+  # slide carries its Korean sentence under the English one.
+  korean_allowance: 900
+  # korean_allowance: <n>  -- max Hangul characters on English slides
+  # (term glosses, Wooclap instructions). Omit to take the profile's
+  # default (lecture 300, others 0). Slides declared ko are not counted.
+
+# What the fact-check agent compares the slides against.
+sources:
+  - "https://alpo.ge/remark.pdf"
+  - "https://leanprover-community.github.io/blog/posts/riemann-hypothesis/"
+  - "https://www.nature.com/articles/d41586-026-03812-7"
+  - "https://weekly.khan.co.kr/article/202611130152001"
+  - "https://biz.sbs.co.kr/amp/article/20000325218"
+  - "https://www.cs.umd.edu/users/gasarch/BLOGPAPERS/moral.pdf"
+  - "https://nickbostrom.com/ethics/ai"
+  - "https://nickbostrom.com/views/transhumanist.pdf"
+  - "https://nickbostrom.com/posthuman.pdf"
+  - "https://consc.net/papers/singularity.pdf"
+  - "https://www.e-flux.com/journal/102/282271/cybernetics-for-the-twenty-first-century-an-interview-with-philosopher-yuk-hui/"
+  - "https://cyberneticzoo.com/wp-content/uploads/2012/01/cyborgs-Astronautics-sep1960.pdf"
+  - "https://groups.csail.mit.edu/medg/people/psz/Licklider.html"
+  - "https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment"
+  - "https://www.anthropic.com/research/alignment-faking"
+  - "https://waymo.com/safety/impact"
+  - "https://spectrum.ieee.org/unitree-robot-exploit"
+  - "https://ifr.org/ifr-press-releases/news/robot-density-surges-in-europe-asia-and-americas"
+  - "https://www.aljazeera.com/gallery/2026/6/11/photos-indias-workers-are-training-ai-robots-to-take-their-jobs"
+  - "https://arxiv.org/abs/2506.01353"
+  - "https://newsroom.ucla.edu/releases/ai-brain-computer-interface-interprets-user-intent-ucla"
+  - "https://pmc.ncbi.nlm.nih.gov/articles/PMC2248710"
+  - "https://www.pewresearch.org/internet/2022/03/17/public-cautious-about-enhancing-cognitive-function-using-computer-chip-implants-in-the-brain"
+
+# The course series (Quarto/lectures/_series/<series>.yml) and this
+# deck's session in it. deckprofile.py resolves the session date,
+# title and the previous session from the series lock; the gate
+# names that session when the callback slide is missing;
+# build_landing.py groups the deck under the course.
+series: dgist-2026f
+series_index: 14
+
+# Two optional files next to this deck are read when they exist:
+#   Quarto/lectures/dgist-2026f-w14.forbidden.txt  (one term per line;
+#     any hit in visible slide text is a BLOCKER at the gate)
+#   Figures/lectures/dgist-2026f-w14/figures.yml  (file, source, licence,
+#     third_party per figure; third-party figures need their source on
+#     the slide)

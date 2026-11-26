@@ -1,0 +1,100 @@
+figures:
+  - file: asimov-three-laws.jpg
+    source: "Isaac Asimov, 1956, New York World-Telegram and Sun, Library of Congress"
+    origin: "Isaac Asimov portrait, Phillip Leonian, New York World-Telegram & Sun, 1956, Library of Congress via Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Isaac.Asimov01.jpg)"
+    licence: Public domain
+    third_party: true
+  - file: autort-layers.png
+    source: "Figure 1 (system diagram), Ahn et al., AutoRT, arXiv:2401.12963, Google DeepMind, 2024 (page 4 crop)"
+    licence: arXiv non-exclusive distribution licence; figure shown with credit
+    third_party: true
+  - file: ifr-robot-density.png
+    source: "International Federation of Robotics, Robot density in the manufacturing industry 2024, press release 8 Apr 2026 (https://ifr.org/ifr-press-releases/news/robot-density-surges-in-europe-asia-and-americas)"
+    licence: IFR press graphic, press use with source credit
+    third_party: true
+  - file: hyundai-atlas-ces2026.jpg
+    source: "Hyundai Motor Group and Boston Dynamics, CES 2026 press photo"
+    origin: "Hyundai Motor Group / Boston Dynamics, CES 2026 press photo, Hyundai newsroom, 5 Jan 2026"
+    licence: Press photo, no open licence stated
+    third_party: true
+  - file: alpoge-remark.png
+    source: "L. Alpöge, 20 Nov 2026"
+    origin: "L. Alpoge, statement on the Riemann Hypothesis, 20 Nov 2026 (https://alpo.ge/remark.pdf), top of page 1"
+    licence: Not stated; short excerpt with credit
+    third_party: true
+  - file: lean-certification.png
+    source: "Lean FRO and Mathlib Initiative, Lean verification of the Riemann Hypothesis, Lean community blog, 21 Nov 2026 (https://leanprover-community.github.io/blog/posts/riemann-hypothesis/), rendered from the saved page"
+    licence: Not stated; short excerpt with credit
+    third_party: true
+  - file: wiener-1960.png
+    source: "N. Wiener, Some Moral and Technical Consequences of Automation, Science 131(3410), 6 May 1960, pp. 1355-1358, first page (JSTOR-stamped copy, footer cropped)"
+    licence: Copyright AAAS; short excerpt with credit
+    third_party: true
+  - file: bostrom-2003.png
+    source: "N. Bostrom, Ethical Issues in Advanced Artificial Intelligence, 2003 (https://nickbostrom.com/ethics/ai), rendered from the author's HTML page"
+    licence: Not stated; short excerpt with credit
+    third_party: true
+  - file: ashby-variety.png
+    source: "W. Ross Ashby, An Introduction to Cybernetics, Chapman and Hall, 1956, p. 207"
+    origin: "W. R. Ashby, An Introduction to Cybernetics, Chapman & Hall, 1956, p. 207 (Principia Cybernetica electronic edition)"
+    licence: Estate of W. R. Ashby; non-profit educational reproduction permitted with the copyright statement
+    third_party: true
+  - file: cyborgs-and-space.png
+    source: "M. Clynes and N. Kline, \"Cyborgs and Space\", Astronautics, Sept 1960"
+    origin: "M. Clynes and N. Kline, Cyborgs and Space, Astronautics, September 1960, p. 26 (scan from cyberneticzoo.com)"
+    licence: Unknown; scan of a 1960 magazine page, shown with credit
+    third_party: true
+  - file: licklider-1960.png
+    source: "J. C. R. Licklider, Man-Computer Symbiosis, IRE Transactions on Human Factors in Electronics HFE-1, March 1960 (MIT CSAIL copy), rendered from the saved page"
+    licence: Unknown; short excerpt with credit
+    third_party: true
+  - file: engelbart-1968.jpg
+    source: "Still from the 1968 FJCC demo highlight reel, SRI International / Doug Engelbart Institute, Internet Archive (https://archive.org/details/XD300-23_68HighlightsAResearchCntAugHumanIntellect); 320x240 source upscaled"
+    licence: No licence stated; still shown with credit
+    third_party: true
+  - file: eyeglasses.jpg
+    source: "Glasses: Yapparina, CC0"
+    origin: "Black Titanium Frame Eyeglasses, JINS MTF-16S-151B, Yapparina, Wikimedia Commons"
+    licence: CC0 1.0
+    third_party: true
+  - file: cochlear-implant.png
+    source: "Cochlear implant: BruceBlaus, CC BY 3.0"
+    origin: "Blausen 0244 CochlearImplant 01, BruceBlaus, Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Blausen_0244_CochlearImplant_01.png)"
+    licence: CC BY 3.0
+    third_party: true
+  - file: smartphone.jpg
+    source: "Phone: Dennis Cortes, CC0"
+    origin: "Black smartphone in hand, Dennis Cortes (Unsplash), Wikimedia Commons"
+    licence: CC0
+    third_party: true
+  - file: hugh-herr.jpg
+    source: "Hugh Herr, TED 2014, Steve Jurvetson, Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Hugh_Herr,_TED_2014.jpg)"
+    licence: CC BY 2.0
+    third_party: true
+  - file: chalmers-2010.png
+    source: "D. J. Chalmers, The Singularity: A Philosophical Analysis, Journal of Consciousness Studies 17, 2010, p. 33 of the author-hosted PDF (https://consc.net/papers/singularity.pdf)"
+    licence: Not stated; short excerpt with credit
+    third_party: true
+  - file: egobrain-fig1.png
+    source: "Lin et al., EgoBrain, arXiv 2506.01353, ICLR 2026"
+    origin: "Figure 1, Lin et al., EgoBrain, ICLR 2026, arXiv:2506.01353 (v3 HTML)"
+    licence: arXiv non-exclusive distribution licence; figure shown with credit
+    third_party: true
+  - file: metr-time-horizon.png
+    source: "METR, Task-Completion Time Horizons of Frontier AI Models, 2026 (https://metr.org/time-horizons)"
+    licence: CC BY 4.0, attribute to METR
+    third_party: true
+  - file: pew-2022-brain-chip.png
+    source: "Pew Research Center, Public cautious about enhancing cognitive function using computer chip implants in the brain, 17 Mar 2022"
+    licence: Pew terms of use, reuse with attribution
+    third_party: true
+  - file: hydra.jpg
+    source: "Hydra viridissima, Obsidian Soul, Wikimedia Commons, CC0"
+    origin: "Hydra viridissima in freshwater aquarium 01, Obsidian Soul, Wikimedia Commons, cropped (https://commons.wikimedia.org/wiki/File:Hydra_viridissima_in_freshwater_aquarium_(also_visible_are_a_rhabdocoelan_and_albino_planorbid_ramshorn_snail)_01.jpg)"
+    licence: CC0
+    third_party: true
+  - file: ship-of-theseus.svg
+    source: "Yosemite and Belbury, Wikimedia Commons, CC BY 4.0"
+    origin: "Yosemite and Belbury, Ship of Theseus diagram, Wikimedia Commons"
+    licence: CC BY 4.0
+    third_party: true

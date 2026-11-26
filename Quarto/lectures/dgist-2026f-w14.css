@@ -1,0 +1,152 @@
+/* W14: Ethics, Safety, and Social Responsibility in the Age of Embodied AI */
+
+/* Fact / My view tags: every Part 2 slide says which it is. */
+.reveal .slides section .w14-tag {
+  position: absolute;
+  top: 22px;
+  right: 34px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 5px;
+  line-height: 1.2;
+}
+.reveal .slides section .w14-tag.fact {
+  background: #e6eef7;
+  color: #1d3d5c;
+  border: 2px solid #1d3d5c;
+}
+.reveal .slides section .w14-tag.view {
+  background: #fdeedd;
+  color: #9a4a12;
+  border: 2px solid #c2611b;
+}
+
+/* Date stamp for fast-moving news. */
+.reveal .slides section .w14-asof {
+  position: absolute;
+  top: 30px;
+  right: 150px;
+  font-size: 17px;
+  color: #6b7785;
+}
+
+/* Korean line under an English statement. */
+.reveal .w14-ko {
+  display: block;
+  margin-top: 0.55em;
+  font-size: 0.62em;
+  font-weight: 500;
+  color: #4a5866;
+  line-height: 1.45;
+}
+
+/* One-sentence claim slides. */
+.reveal .w14-claim {
+  font-size: 1.32em;
+  font-weight: 650;
+  line-height: 1.28;
+  color: #17344f;
+  margin: 0.9em 0 0 0;
+}
+.reveal .w14-claim strong { color: #b2541f; }
+
+/* Number tiles. */
+.reveal .w14-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 0.6em;
+}
+.reveal .w14-tiles.two { grid-template-columns: repeat(2, 1fr); }
+.reveal .w14-tiles.four { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.reveal .w14-tile {
+  background: #f1f5f8;
+  border: 1.5px solid #c9d6de;
+  border-radius: 12px;
+  padding: 18px 20px 16px;
+  font-size: 0.72em;
+  line-height: 1.35;
+  text-align: left;
+}
+.reveal .w14-tile .w14-label {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #56708a;
+  margin-bottom: 4px;
+}
+.reveal .w14-tile .w14-num {
+  display: block;
+  font-size: 1.85em;
+  font-weight: 750;
+  color: #17344f;
+  line-height: 1.08;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.reveal .w14-tile.warm { background: #fdf3e8; border-color: #e7c4a0; }
+.reveal .w14-tile.warm .w14-num { color: #a34b16; }
+
+/* Positions map and other compact tables. */
+.reveal .w14-map table {
+  font-size: 0.64em;
+  line-height: 1.3;
+  margin-top: 0.4em;
+}
+.reveal .w14-map table td:first-child { font-weight: 700; white-space: nowrap; color: #17344f; }
+.reveal .w14-map table tr.w14-mine td { background: #fdf3e8; }
+
+/* Quotation blocks. */
+.reveal .w14-quote {
+  border-left: 6px solid #2f6f8f;
+  background: #f1f5f8;
+  padding: 14px 22px;
+  margin: 0.5em 0;
+  font-size: 0.74em;
+  line-height: 1.4;
+}
+.reveal .w14-quote .w14-who {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8em;
+  color: #56708a;
+}
+
+/* Loop diagrams. */
+.reveal .w14-loop svg { width: 100%; height: auto; max-height: 430px; }
+.reveal .w14-loop text { font-family: inherit; }
+
+/* Image rows. */
+.reveal .w14-row {
+  display: flex;
+  gap: 22px;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 0.4em;
+}
+.reveal .w14-row figure { margin: 0; flex: 1 1 0; text-align: center; font-size: 0.55em; color: #4a5866; }
+.reveal .w14-row img { max-height: 300px; width: auto; max-width: 100%; border-radius: 8px; }
+
+.reveal img.w14-page {
+  border: 1.5px solid #c9d6de;
+  border-radius: 6px;
+  box-shadow: 0 3px 12px rgba(23, 52, 79, 0.12);
+}
+
+.reveal img.w14-crop-top {
+  width: 100%;
+  height: 330px;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* The theme gives every column the same share; in this deck the width
+   written on a column is meant. */
+.reveal .columns > .column[style*="width"] {
+  flex: 0 1 auto;
+}
