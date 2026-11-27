@@ -439,7 +439,7 @@ MIT Media Lab · the clip shows a 2007 prototype
 [So the order is **wearable first**, then non-invasive, then implants.]{.fragment}
 
 ::: {.footnote}
-Willett et al.; Metzger et al., Nature, 2023 · results from one or two patients each
+Card et al., Nature Medicine, 2026, one patient · lab peaks of 62 to 78 in 2023 (Willett; Metzger)
 :::
 
 
