@@ -52,10 +52,11 @@ figures:
     source: "Still from the 1968 FJCC demo highlight reel, SRI International / Doug Engelbart Institute, Internet Archive (https://archive.org/details/XD300-23_68HighlightsAResearchCntAugHumanIntellect); 320x240 source upscaled"
     licence: No licence stated; still shown with credit
     third_party: true
-  - file: exam-silhouette.svg
-    source: Original teaching illustration
-    licence: Repository
-    third_party: false
+  - file: exam-candidate.png
+    source: "Photo: Yonhap"
+    origin: "Yonhap news photo as published by Kyunghyang Shinmun on 18 Nov 2026 (https://www.khan.co.kr/article/202611180600061). The face is blurred in the published photo and the person wears a mask. Supplied by the presenter."
+    licence: "Wire-agency news photo, all rights reserved. Shown with credit and a link to the article, for teaching."
+    third_party: true
   - file: riemann.png
     source: "Riemann: Wikimedia"
     origin: "Engraved portrait of Bernhard Riemann, as reproduced in Chosun Ilbo, 21 Nov 2026 (https://www.chosun.com/economy/science/2026/11/21/EIBR47HSIBBSDBGW73KPAKA554/), which credits Wikipedia. Supplied by the presenter."
