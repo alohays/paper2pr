@@ -218,6 +218,33 @@
       "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w14/engelbart-demo.mp4",
       "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w14/engelbart-demo-poster.jpg",
       "local_only": true
+    },
+    {
+      "slug": "egoscale-20k-hours",
+      "title": "First-person work video recorded to train robots",
+      "publisher": "NVIDIA GEAR Lab, EgoScale",
+      "source_url": "https://research.nvidia.com/labs/gear/egoscale/",
+      "published": "2026-02",
+      "autonomy": "unknown",
+      "speed": "source playback",
+      "segment": null,
+      "source": "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-physical-ai-bridge/p2-physical-ai-bridge-egoscale-20khrs/20khrs.mp4",
+      "keep_audio": false,
+      "caption": "none",
+      "licence_note": "Project-page clip, 10 s, no licence stated on the page (the paper, arXiv 2602.16710, is CC BY 4.0). People at work in shops, stalls and workshops, filmed from their own point of view with hand-pose overlays. Shown as an example of first-person video recorded to train robots; it is not footage of the workers in the AFP report cited on the slide. Local classroom playback.",
+      "file": "egoscale-20k-hours.mp4",
+      "poster_file": "egoscale-20k-hours-poster.jpg",
+      "size_mb": 8.07,
+      "duration_s": 10.0,
+      "autonomy_label": "autonomy not stated",
+      "cut": {
+        "segment": null,
+        "keep_audio": false,
+        "source": "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-physical-ai-bridge/p2-physical-ai-bridge-egoscale-20khrs/20khrs.mp4"
+      },
+      "release_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w14/egoscale-20k-hours.mp4",
+      "poster_url": "https://github.com/alohays/paper2pr/releases/download/media-dgist-2026f-w14/egoscale-20k-hours-poster.jpg",
+      "local_only": true
     }
   ]
 }

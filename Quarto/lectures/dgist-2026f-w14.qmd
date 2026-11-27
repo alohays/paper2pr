@@ -97,19 +97,33 @@ Waymo Safety Impact, company data to June 2026 · US DOJ and NHTSA on Cruise, 20
 If language is the input, **language is the attack path.**
 
 ::: {.footnote}
-Robey et al., RoboPAIR, 2024, lab demo · Makris and Finisterre, UniPwn, 2025
+Robey et al., RoboPAIR, 2024, lab demo
 :::
 
 
 
-## Privacy and hidden labor {#privacy-labor}
+## Privacy: a camera inside the home {#privacy-home}
 
 {{< video-card neo-dishwasher >}}
 
-The person being filmed is **not only the wearer.**
+When the robot gets stuck, **a remote operator sees your home.**
 
 ::: {.footnote}
-1X NEO, Oct 2025 · AFP, June 2026
+1X NEO, Oct 2025
+:::
+
+
+
+## Hidden labor: who films the training data {#hidden-labor}
+
+{{< video-card egoscale-20k-hours >}}
+
+India, 2026: about **$2.60** for an hour of video like this.
+
+[The person being filmed is **not only the wearer.**]{.fragment}
+
+::: {.footnote}
+AFP, June 2026 · Clip: EgoScale, NVIDIA GEAR Lab, 2026
 :::
 
 

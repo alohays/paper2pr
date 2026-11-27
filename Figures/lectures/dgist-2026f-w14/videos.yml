@@ -87,3 +87,14 @@ videos:
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-cybernetics-lineage/p2-cybernetics-lineage-engelbart-1968-demo-reel1/p2-cybernetics-lineage-engelbart-1968-demo-reel1-s290-340.mp4"
     keep_audio: false
     licence_note: "Internet Archive item, no licence stated. Source resolution is 320x240. Segment 8-18 s of an excerpt cut from 4:50-5:40 of the highlight reel. Local classroom playback."
+  - slug: egoscale-20k-hours
+    title: "First-person work video recorded to train robots"
+    publisher: "NVIDIA GEAR Lab, EgoScale"
+    source_url: "https://research.nvidia.com/labs/gear/egoscale/"
+    published: "2026-02"
+    autonomy: unknown
+    speed: source playback
+    source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-physical-ai-bridge/p2-physical-ai-bridge-egoscale-20khrs/20khrs.mp4"
+    keep_audio: false
+    caption: none
+    licence_note: "Project-page clip, 10 s, no licence stated on the page (the paper, arXiv 2602.16710, is CC BY 4.0). People at work in shops, stalls and workshops, filmed from their own point of view with hand-pose overlays. Shown as an example of first-person video recorded to train robots; it is not footage of the workers in the AFP report cited on the slide. Local classroom playback."
