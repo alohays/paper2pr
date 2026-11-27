@@ -252,13 +252,33 @@ Today's position on the map, in one breath.
 :::
 ```
 
+### Advance Cues (every press of the right arrow)
+
+The presenter reads the note while driving the deck, so the note marks every
+press of the right arrow, each cue on a line of its own:
+
+- `[→ k/n · what appears]` before the sentence that goes with fragment k of
+  the slide's n. Name what appears in the words on screen. A list revealed
+  inside one sentence is split at the commas, one cue per item.
+- `[→ 다음 장]` (`[→ next slide]` in an English script) as the last line of
+  every note except the last slide's.
+- The title slide's `data-notes` ends with the first `[→ 다음 장]` and says
+  when to press it.
+
+Count the fragments in the rendered deck, not in the qmd: a figure placed
+with `inline-svg` brings its own fragments. After rendering, run
+`python3 scripts/check_advance_cues.py Quarto/<genre>/<deck>.html` (add
+`--list` to see every step); it fails when a slide's cues and fragments
+differ. A clip placed with `video-card` plays by itself and takes no cue.
+
 ### What NOT to Include in Notes
 
 - Slide numbers or "Slide X:" prefixes
-- Stage directions like "[click]", "[advance]", "[pause]" - the presenter
-  controls pacing. The only labels allowed are the moment labels of a
-  lecture's video and question notes (`Before play:` / `During:`, and the
-  per-outcome follow-ups), which organize the note without being read aloud
+- Stage directions like "[pause]" or "[look up]" - the presenter controls
+  pacing. The labels allowed are the advance cues above and the moment
+  labels of a lecture's video and question notes (`Before play:` /
+  `During:`, and the per-outcome follow-ups), which organize the note
+  without being read aloud
 - Markdown formatting (bold, italic, links) - notes are plain spoken text
 - References to "this slide" or "as you can see" excessively - the audience is already looking
 
