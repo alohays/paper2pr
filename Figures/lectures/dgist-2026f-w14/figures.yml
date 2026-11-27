@@ -52,6 +52,20 @@ figures:
     source: "Still from the 1968 FJCC demo highlight reel, SRI International / Doug Engelbart Institute, Internet Archive (https://archive.org/details/XD300-23_68HighlightsAResearchCntAugHumanIntellect); 320x240 source upscaled"
     licence: No licence stated; still shown with credit
     third_party: true
+  - file: exam-silhouette.svg
+    source: Original teaching illustration
+    licence: Repository
+    third_party: false
+  - file: riemann.png
+    source: "Riemann: Wikimedia"
+    origin: "Engraved portrait of Bernhard Riemann, as reproduced in Chosun Ilbo, 21 Nov 2026 (https://www.chosun.com/economy/science/2026/11/21/EIBR47HSIBBSDBGW73KPAKA554/), which credits Wikipedia. Supplied by the presenter."
+    licence: Public domain (19th-century portrait)
+    third_party: true
+  - file: alpoge.png
+    source: "Alpöge: MFO"
+    origin: "Photo of Levent Alpöge from the Mathematisches Forschungsinstitut Oberwolfach, as reproduced in Chosun Ilbo, 21 Nov 2026. Supplied by the presenter; the licence of the Oberwolfach original was not checked."
+    licence: "Not verified. Credit MFO; check the Oberwolfach Photo Collection terms before a public release."
+    third_party: true
   - file: eyeglasses.jpg
     source: "Glasses: Yapparina, CC0"
     origin: "Black Titanium Frame Eyeglasses, JINS MTF-16S-151B, Yapparina, Wikimedia Commons"

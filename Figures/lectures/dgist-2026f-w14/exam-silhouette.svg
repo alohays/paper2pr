@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 366 330" role="img" aria-labelledby="t d">
+<title id="t">A masked person facing two microphones</title>
+<desc id="d">A plain silhouette of a person in a mask and a padded jacket, with two reporters' microphones held up from either side.</desc>
+<rect width="366" height="330" rx="8" fill="#eaf0f2"/>
+<path d="M58 330 C58 248 96 214 150 204 L216 204 C270 214 308 248 308 330 Z" fill="#173f58"/>
+<path d="M150 204 C150 176 216 176 216 204 L204 222 L162 222 Z" fill="#102d40"/>
+<circle cx="183" cy="124" r="52" fill="#c9d2da"/>
+<path d="M131 112 C128 64 238 64 235 112 C214 92 152 92 131 112 Z" fill="#102d40"/>
+<path d="M139 128 L227 128 L221 162 C207 176 159 176 145 162 Z" fill="#102d40"/>
+<path d="M139 132 L128 122 M227 132 L238 122" stroke="#102d40" stroke-width="4" stroke-linecap="round" fill="none"/>
+<g fill="#af5526">
+<rect x="58" y="226" width="26" height="46" rx="6" transform="rotate(24 71 249)"/>
+<rect x="282" y="226" width="26" height="46" rx="6" transform="rotate(-24 295 249)"/>
+</g>
+<g stroke="#9c4a1e" stroke-width="6" stroke-linecap="round">
+<path d="M56 276 L20 318"/>
+<path d="M310 276 L346 318"/>
+</g>
+</svg>

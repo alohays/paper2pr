@@ -31,7 +31,7 @@
 .reveal .slides section figure.chart-figure + p { margin-top: 0.7em; }
 .reveal .slides section > p strong { color: #183451; font-weight: 700; }
 
-/* ---- Fact / My view tags: every Part 2 slide says which it is. */
+/* ---- My view tag: only on the few slides that state the lecturer's own claim. */
 .reveal .slides section .w14-tag {
   position: absolute;
   top: 24px;
@@ -57,12 +57,13 @@
 .reveal .slides section .w14-asof {
   position: absolute;
   top: 31px;
-  right: 160px;
+  right: 56px;
   font-size: 19px;
   color: #56677a;
   white-space: nowrap;
 }
-.reveal .slides section > p:has(> .w14-tag) {
+.reveal .slides section > p:has(> .w14-tag),
+.reveal .slides section > p:has(> .w14-asof) {
   margin-bottom: 0;
   line-height: 0;
 }
@@ -114,6 +115,45 @@
   width: 100%;
 }
 .reveal .w14-row figure { margin: 0; }
+/* ---- Two events side by side: one picture, then a pair that belongs together. */
+.reveal .slides section .w14-events {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  column-gap: 96px;
+  width: 100%;
+}
+.reveal .w14-events figure { margin: 0; }
+.reveal .w14-events figure + figure { position: relative; }
+.reveal .w14-events figure + figure::before {
+  content: "";
+  position: absolute;
+  left: -48px;
+  top: 0;
+  bottom: 0;
+  border-left: 2px solid #c9d2da;
+}
+.reveal .w14-events .w14-twin {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.reveal .slides section .w14-events img {
+  display: block;
+  width: 100%;
+  height: 330px;
+  max-height: none;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.reveal .slides section .w14-events figcaption {
+  margin-top: 14px;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  color: #183451;
+  text-align: center;
+}
 .reveal .slides section .w14-row img {
   display: block;
   width: 100%;

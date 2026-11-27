@@ -205,19 +205,22 @@ Ethics and philosophy for the age of AI
 
 ## November 2026: two people {#two-people}
 
-[Fact]{.w14-tag .fact} [As of 27 Nov 2026]{.w14-asof}
+[As of 27 Nov 2026]{.w14-asof}
 
-{{< inline-svg ../../Figures/lectures/dgist-2026f-w14/two-people.svg width="100%" >}}
+```{=html}
+<div class="w14-events">
+<figure><img src="../../Figures/lectures/dgist-2026f-w14/exam-silhouette.svg" alt="A plain silhouette of a masked person facing two microphones"><figcaption>Tax exam · 15 Nov</figcaption></figure>
+<figure class="fragment"><div class="w14-twin"><img src="../../Figures/lectures/dgist-2026f-w14/riemann.png" alt="Engraved portrait of Bernhard Riemann"><img src="../../Figures/lectures/dgist-2026f-w14/alpoge.png" alt="Levent Alpöge standing outdoors"></div><figcaption>Riemann Hypothesis proof · 20 Nov</figcaption></figure>
+</div>
+```
 
 ::: {.footnote}
-Weekly Kyunghyang, Nov 2026, under investigation · L. Alpöge; Lean FRO and Mathlib Initiative, Nov 2026
+[Kyunghyang, 18 Nov](https://www.khan.co.kr/article/202611180600061), case under investigation · [Chosun, 21 Nov](https://www.chosun.com/economy/science/2026/11/21/EIBR47HSIBBSDBGW73KPAKA554/) · Riemann: Wikimedia · Alpöge: MFO
 :::
 
 
 
 ## What everyone saw {#what-everyone-saw}
-
-[My view]{.w14-tag .view}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/study-bypass.svg width="100%" >}}
 
@@ -227,7 +230,7 @@ Weekly Kyunghyang, Nov 2026, under investigation · L. Alpöge; Lean FRO and Mat
 
 ## A proof no human has explained yet {#riemann}
 
-[Fact]{.w14-tag .fact} [As of 27 Nov 2026]{.w14-asof}
+[As of 27 Nov 2026]{.w14-asof}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/riemann-check.svg width="100%" >}}
 
@@ -241,16 +244,12 @@ L. Alpöge, Nov 2026 · Lean FRO and Mathlib Initiative · not yet peer reviewed
 
 ## {#q-where-stand}
 
-[My view]{.w14-tag .view}
-
 [When AI knows better than we do,\
 **where should humans stand?**]{.statement .w14-big}
 
 
 
 ## We already buy it {#already-buying}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/already-buying.svg width="100%" >}}
 
@@ -262,8 +261,6 @@ HIRA data via SBS Biz, July 2026 · National Assembly audit, 2024
 
 ## {#q-already-past}
 
-[My view]{.w14-tag .view}
-
 Whether to augment is already a past question.
 
 [What remains is\
@@ -273,15 +270,11 @@ Whether to augment is already a past question.
 
 ## Calculator, thermostat, agent {#tool-or-agent}
 
-[Fact]{.w14-tag .fact}
-
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/tool-agent.svg width="100%" >}}
 
 
 
 ## The warning is 66 years old {#wiener-bostrom}
-
-[Fact]{.w14-tag .fact}
 
 ["We had better be quite sure that the purpose put into the machine is the purpose which we really desire."]{.statement}
 
@@ -290,8 +283,6 @@ Whether to augment is already a past question.
 
 
 ## The paperclip maximizer {#paperclip}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/paperclips.svg width="100%" >}}
 
@@ -302,8 +293,6 @@ Whether to augment is already a past question.
 
 
 ## Yuk Hui: machines are becoming organic {#yuk-hui}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/recursion-contingency.svg width="100%" >}}
 
@@ -316,8 +305,6 @@ Yuk Hui, Recursivity and Contingency, 2019 · Hui himself criticizes transhumani
 
 
 ## 2026: agents step outside their instructions {#aisi-2026}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/aisi-runs.svg width="100%" >}}
 
@@ -342,8 +329,6 @@ UK AI Security Institute, August 2026
 
 ## Safety research exists {#safety-research}
 
-[Fact]{.w14-tag .fact}
-
 **Alignment** · make the AI's goal match ours
 
 **Frameworks** · each frontier lab publishes one
@@ -356,7 +341,7 @@ UK AI Security Institute, August 2026
 
 ## The report card {#report-card}
 
-[Fact]{.w14-tag .fact} [As of 27 Nov 2026]{.w14-asof}
+[As of 27 Nov 2026]{.w14-asof}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/report-card.svg width="100%" >}}
 
@@ -364,7 +349,7 @@ UK AI Security Institute, August 2026
 
 ## Promises and speed {#promises-speed}
 
-[Fact]{.w14-tag .fact} [As of 27 Nov 2026]{.w14-asof}
+[As of 27 Nov 2026]{.w14-asof}
 
 A promise to pause became **the company's own choice.**
 
@@ -389,8 +374,6 @@ today's response is **passive.**]{.statement .w14-big}
 
 ## Only variety can destroy variety {#ashby}
 
-[Fact]{.w14-tag .fact}
-
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/ashby-variety.svg width="100%" >}}
 
 **Ashby, 1956:** a regulator needs as much variety as what it regulates.
@@ -403,8 +386,6 @@ W. Ross Ashby, An Introduction to Cybernetics, 1956 · applied to AI as an analo
 
 ## {#q-put-the-human-in}
 
-[My view]{.w14-tag .view}
-
 The regulator is teams, institutions and verification tools.
 
 [I say: **put the human in there too.**]{.statement .w14-big .fragment}
@@ -412,8 +393,6 @@ The regulator is teams, institutions and verification tools.
 
 
 ## 1960: symbiosis and the cyborg {#year-1960}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/symbiosis-cyborg.svg width="100%" >}}
 
@@ -426,8 +405,6 @@ Licklider, "Man-Computer Symbiosis", 1960 · Clynes and Kline, "Cyborgs and Spac
 
 
 ## We are already cyborgs {#already-cyborgs}
-
-[My view]{.w14-tag .view}
 
 ```{=html}
 <div class="w14-row">
@@ -445,8 +422,6 @@ Glasses: Yapparina, CC0 · Cochlear implant: BruceBlaus, CC BY 3.0 · Phone: Den
 
 ## Hugh Herr {#hugh-herr}
 
-[Fact]{.w14-tag .fact}
-
 {{< video-card herr-powered-ankle >}}
 
 He lost both legs in 1982. **Now he builds the ankle he walks on.**
@@ -458,8 +433,6 @@ MIT Media Lab · the clip shows a 2007 prototype
 
 
 ## Honest numbers {#honest-numbers}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/speech-rate.svg width="100%" >}}
 
@@ -485,8 +458,6 @@ Restraining AI is not enough.
 
 ## Who says what {#pos-stop .top-align .w14-pos}
 
-[My map]{.w14-tag .view}
-
 ```{=html}
 <div class="w14-strip"><span class="on">Stop</span><span>Restrain</span><span>Hand over</span><span>Merge</span><span>Beware</span></div>
 ```
@@ -500,8 +471,6 @@ until it is known to be safe.]{.statement .w14-big}
 
 ## Who says what {#pos-restrain .top-align .w14-pos}
 
-[My map]{.w14-tag .view}
-
 ```{=html}
 <div class="w14-strip"><span>Stop</span><span class="on">Restrain</span><span>Hand over</span><span>Merge</span><span>Beware</span></div>
 ```
@@ -513,8 +482,6 @@ until it is known to be safe.]{.statement .w14-big}
 
 
 ## Who says what {#pos-hand-over .top-align .w14-pos}
-
-[My map]{.w14-tag .view}
 
 ```{=html}
 <div class="w14-strip"><span>Stop</span><span>Restrain</span><span class="on">Hand over</span><span>Merge</span><span>Beware</span></div>
@@ -529,8 +496,6 @@ Accept it.]{.statement .w14-big}
 
 ## Who says what {#pos-merge .top-align .w14-pos}
 
-[My map]{.w14-tag .view}
-
 ```{=html}
 <div class="w14-strip"><span>Stop</span><span>Restrain</span><span>Hand over</span><span class="on">Merge</span><span>Beware</span></div>
 ```
@@ -543,8 +508,6 @@ together with AI.]{.statement .w14-big}
 
 
 ## Who says what {#pos-beware .top-align .w14-pos}
-
-[My map]{.w14-tag .view}
 
 ```{=html}
 <div class="w14-strip"><span>Stop</span><span>Restrain</span><span>Hand over</span><span>Merge</span><span class="on">Beware</span></div>
@@ -559,8 +522,6 @@ what makes us human and equal.]{.statement .w14-big}
 
 ## Who says what {#positions-map .top-align .w14-pos}
 
-[My map]{.w14-tag .view}
-
 ```{=html}
 <div class="w14-strip w14-all"><span>Stop</span><span class="on">Restrain</span><span>Hand over</span><span class="on">Merge</span><span>Beware</span></div>
 ```
@@ -570,8 +531,6 @@ I stand in **Restrain** and **Merge** together.
 
 
 ## Chalmers: four ways it can end for us {#chalmers-four}
-
-[Fact]{.w14-tag .fact}
 
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/four-outcomes.svg width="100%" >}}
 
@@ -584,8 +543,6 @@ David Chalmers, "The Singularity: A Philosophical Analysis", 2010
 
 
 ## The words {#the-words}
-
-[Fact]{.w14-tag .fact}
 
 **Transhumanism** · improve the human condition through technology
 
@@ -615,8 +572,6 @@ become superintelligence.]{.statement .w14-big .fragment}
 
 ## Keeping "me" {#keeping-me}
 
-[My view]{.w14-tag .view}
-
 {{< inline-svg ../../Figures/lectures/dgist-2026f-w14/three-paths.svg width="100%" >}}
 
 [We are already close to a **Ship of Theseus.**]{.fragment}
@@ -624,8 +579,6 @@ become superintelligence.]{.statement .w14-big .fragment}
 
 
 ## Nature already replaces its parts {#nature-theseus}
-
-[Fact]{.w14-tag .fact}
 
 :::: {.w14-pair}
 ![](../../Figures/lectures/dgist-2026f-w14/hydra.jpg)
@@ -647,15 +600,11 @@ Schaible 2015 · Blackiston 2008 · Spalding 2005 · Photo: Hydra viridissima, O
 
 ## Objection 1 {#objection-1}
 
-[Objection]{.w14-tag .fact}
-
 ["Even if we merge, the alignment problem remains. And it is too late."]{.statement .w14-objection}
 
 
 
 ## Objection 1: my answer {#answer-1}
-
-[My view]{.w14-tag .view}
 
 [True. So augmentation is\
 the **partner** of safety research.]{.statement .w14-big}
@@ -666,15 +615,11 @@ the **partner** of safety research.]{.statement .w14-big}
 
 ## Objection 2 {#objection-2}
 
-[Objection]{.w14-tag .fact}
-
 ["After all those changes, is it still me?"]{.statement .w14-objection}
 
 
 
 ## Objection 2: my answer {#answer-2}
-
-[My view]{.w14-tag .view}
 
 ::: {.w14-photo .w14-small}
 ![](../../Figures/lectures/dgist-2026f-w14/ship-of-theseus.svg)
@@ -692,15 +637,11 @@ Diagram: Yosemite and Belbury, Wikimedia Commons, CC BY 4.0
 
 ## Objection 3 {#objection-3}
 
-[Objection]{.w14-tag .fact}
-
 ["If others grow and I refuse, I fall behind. So it is forced on me."]{.statement .w14-objection}
 
 
 
 ## Objection 3: my answer {#answer-3}
-
-[My view]{.w14-tag .view}
 
 Two conditions.
 
@@ -713,8 +654,6 @@ Two conditions.
 
 
 ## Back to physical AI: data {#bridge-data}
-
-[Fact]{.w14-tag .fact}
 
 ::: {.w14-photo}
 ![](../../Figures/lectures/dgist-2026f-w14/egobrain-fig1.png)
@@ -730,8 +669,6 @@ Lin et al., EgoBrain, arXiv 2506.01353, ICLR 2026
 
 ## Back to physical AI: control and body {#bridge-control}
 
-[Fact]{.w14-tag .fact}
-
 {{< video-card ucla-copilot-arm >}}
 
 Building humanoids is a way of **understanding humans.**
@@ -743,8 +680,6 @@ Lee et al., Nature Machine Intelligence, 2025
 
 
 ## {#closing}
-
-[My view]{.w14-tag .view}
 
 Physical AI for Everyone.
 

@@ -10,7 +10,7 @@ videos:
     segment: "10-25"
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p1-incidents-safety/p1-incidents-safety-h1-flailing-osintdefender-x/p1-incidents-safety-h1-flailing-osintdefender-x.mp4"
     keep_audio: false
-    licence_note: "Social-media footage, all rights reserved. Local classroom playback only; the robot is claimed to be a Unitree H1 and the cause is unconfirmed. Reported by New Atlas on 7 May 2025."
+    licence_note: "Social-media footage, all rights reserved. the robot is claimed to be a Unitree H1 and the cause is unconfirmed. Reported by New Atlas on 7 May 2025."
   - slug: robopair-go2
     title: "RoboPAIR jailbreak of a Unitree Go2"
     publisher: "University of Pennsylvania (Robey et al.)"
@@ -21,7 +21,7 @@ videos:
     segment: "22-42"
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p1-security/p1-security-robopair-bomb-video/bomb.mp4"
     keep_audio: false
-    licence_note: "The authors' own lab demo with a prop, no real device. Local classroom playback."
+    licence_note: "The authors' own lab demo with a prop, no real device."
   - slug: neo-dishwasher
     title: "1X NEO unloading the dishwasher"
     publisher: "1X Technologies"
@@ -31,18 +31,7 @@ videos:
     speed: source playback
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/gap-01-fill/gap-01-fill-neo-chore-clip-5/gap-01-fill-neo-chore-clip-5.mp4"
     keep_audio: false
-    licence_note: "Vendor marketing clip, no licence stated. The page does not say whether the clip is autonomous or teleoperated. Local classroom playback."
-  - slug: autort-fleet
-    title: "AutoRT robot fleet collecting data"
-    publisher: "Google DeepMind"
-    source_url: "https://auto-rt.github.io/"
-    published: "2024-01"
-    autonomy: claimed
-    speed: "10x time-lapse"
-    segment: "0-14"
-    source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p1-asimov-autort/p1-asimov-autort-autort-timelapse/autort_time_lapse.mp4"
-    keep_audio: false
-    licence_note: "Project-page time-lapse, 10x speed. Robots are semi-autonomous with human supervisors and teleoperation fallback. Local classroom playback."
+    licence_note: "Vendor marketing clip, no licence stated. The page does not say whether the clip is autonomous or teleoperated."
   - slug: herr-powered-ankle
     title: "Powered ankle-foot prosthesis walking"
     publisher: "MIT Media Lab"
@@ -53,7 +42,7 @@ videos:
     segment: "43-54"
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/gap-08-audit/gap-08-audit-mit-labcast-powered-ankle/gap-08-audit-mit-labcast-powered-ankle.mp4"
     keep_audio: false
-    licence_note: "LabCast #10, Biomechatronics group, copyright MIT. 2007 motorised prototype, not the passive climbing feet. Local classroom playback."
+    licence_note: "LabCast #10, Biomechatronics group, copyright MIT. 2007 motorised prototype, not the passive climbing feet."
   - slug: ucla-copilot-arm
     title: "EEG copilot BCI moving blocks with a robot arm"
     publisher: "UCLA Neural Engineering and Computation Lab"
@@ -64,29 +53,7 @@ videos:
     segment: "100-120"
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/gap-01-fill/gap-01-fill-ucla-copilot-video1/lee-2025-supp-video-1.mp4"
     keep_audio: false
-    licence_note: "Supplementary Video 1 of Lee et al., Nature Machine Intelligence 2025, author manuscript, no CC licence. Non-invasive EEG, consenting participant with face blurred. Local classroom playback."
-  - slug: teleop-body-extension
-    title: "ALOHA bimanual teleoperation"
-    publisher: "Stanford University (Zhao et al.)"
-    source_url: "https://tonyzhaozh.github.io/aloha/"
-    published: "2023-04"
-    autonomy: teleop
-    speed: "10x (source label)"
-    segment: "82-96"
-    source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-physical-ai-bridge/p2-physical-ai-bridge-teleop-aloha/teleop_all.mp4"
-    keep_audio: false
-    licence_note: "Project-page montage reused from the W13 library. The operator drives leader arms and the follower arms mirror. Local classroom playback."
-  - slug: engelbart-demo
-    title: "Engelbart 1968 demo: keyset and mouse"
-    publisher: "SRI International / Doug Engelbart Institute"
-    source_url: "https://archive.org/details/XD300-23_68HighlightsAResearchCntAugHumanIntellect"
-    published: "1968-12"
-    autonomy: unknown
-    speed: source playback
-    segment: "8-18"
-    source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-cybernetics-lineage/p2-cybernetics-lineage-engelbart-1968-demo-reel1/p2-cybernetics-lineage-engelbart-1968-demo-reel1-s290-340.mp4"
-    keep_audio: false
-    licence_note: "Internet Archive item, no licence stated. Source resolution is 320x240. Segment 8-18 s of an excerpt cut from 4:50-5:40 of the highlight reel. Local classroom playback."
+    licence_note: "Supplementary Video 1 of Lee et al., Nature Machine Intelligence 2025, author manuscript, no CC licence. Non-invasive EEG, consenting participant with face blurred."
   - slug: egoscale-20k-hours
     title: "First-person work video recorded to train robots"
     publisher: "NVIDIA GEAR Lab, EgoScale"
@@ -97,4 +64,4 @@ videos:
     source: "/Users/iyunseong/maangeek/paper2pr/.local/dgist-w14-source-library/assets/p2-physical-ai-bridge/p2-physical-ai-bridge-egoscale-20khrs/20khrs.mp4"
     keep_audio: false
     caption: none
-    licence_note: "Project-page clip, 10 s, no licence stated on the page (the paper, arXiv 2602.16710, is CC BY 4.0). People at work in shops, stalls and workshops, filmed from their own point of view with hand-pose overlays. Shown as an example of first-person video recorded to train robots; it is not footage of the workers in the AFP report cited on the slide. Local classroom playback."
+    licence_note: "Project-page clip, 10 s, no licence stated on the page (the paper, arXiv 2602.16710, is CC BY 4.0). People at work in shops, stalls and workshops, filmed from their own point of view with hand-pose overlays. Shown as an example of first-person video recorded to train robots; it is not footage of the workers in the AFP report cited on the slide."
