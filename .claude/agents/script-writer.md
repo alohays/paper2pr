@@ -271,6 +271,41 @@ with `inline-svg` brings its own fragments. After rendering, run
 `--list` to see every step); it fails when a slide's cues and fragments
 differ. A clip placed with `video-card` plays by itself and takes no cue.
 
+### One Point per Slide (no asides)
+
+A note says what the slide is for and nothing else. An aside in the middle
+of a note splits the audience's attention, so leave out:
+
+- remarks that open another issue than the slide's point (how a clip was
+  made, what is still unknown, a debate the slide is not about)
+- a second case or more figures once the point is made
+- callbacks to an earlier session ("in week 9 we saw"), except on the
+  opening recap slide
+- glosses of words a school leaver knows; gloss only a term the audience is
+  unlikely to know, in one clause
+
+A limit of the evidence stays, as a very short phrase inside the sentence
+("by the company's own figures", "on appeal"), not as a sentence of its own.
+
+### Optional Text (blue in the speaker view)
+
+Some remarks the presenter may want but can skip while speaking. They are
+kept and marked, not deleted: self remarks, viewing tips before a clip, the
+other side's case, concessions on the presenter's own claim, and a limit of
+the evidence too long to fold into its sentence. Write each as a pandoc span
+with an inline colour, inside one paragraph:
+
+```markdown
+The union's ground is the collective agreement. [There is another view. One
+editorial called it an intrusion on management.]{style="color:#1a56db"}
+```
+
+The speaker view shows the notes' HTML as it is, so an inline style survives
+and a class would not. The main text must read correctly with the span
+skipped, so a connective that leans on it ("still", "so") goes inside the
+span. The title slide's note says what blue means. Optional text is left
+out of the time budget.
+
 ### What NOT to Include in Notes
 
 - Slide numbers or "Slide X:" prefixes
@@ -279,7 +314,8 @@ differ. A clip placed with `video-card` plays by itself and takes no cue.
   labels of a lecture's video and question notes (`Before play:` /
   `During:`, and the per-outcome follow-ups), which organize the note
   without being read aloud
-- Markdown formatting (bold, italic, links) - notes are plain spoken text
+- Markdown formatting (bold, italic, links) - notes are plain spoken text;
+  the one exception is the colour span of optional text above
 - References to "this slide" or "as you can see" excessively - the audience is already looking
 
 ## Quality Standards
