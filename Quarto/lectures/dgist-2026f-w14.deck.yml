@@ -18,7 +18,7 @@ title: "Ethics, Safety, and Social Responsibility in the Age of Embodied AI"
 audience:
   assumes: none    # none | practitioner | expert
   size: "about 90"
-  description: "Returning first- and second-year undergraduates of all majors, in the last lecture of this lecturer's series. Part 1 (20 min) is a conventional ethics overview, one case per question. Part 2 (30 min) is the lecturer's own argument, marked as his view on every slide, and is also published as a standalone video for a Korean-speaking public."
+  description: "Returning first- and second-year undergraduates of all majors, in the last lecture of this lecturer's series. Part 1 (20 min) covers the safety and social responsibility of physical AI, one case per question. Part 2 (30 min) covers ethics and philosophy for the age of AI: cited sources and the lecturer's own argument, each slide tagged Fact or My view. Part 2 is also published as a standalone video for a Korean-speaking public."
   prior: [W02 embodied AI and teleoperation, W06 learning from human activity, W09 policies and reinforcement learning, W13 commands, motors and control]
 delivery: in-person    # in-person | remote | hybrid
 

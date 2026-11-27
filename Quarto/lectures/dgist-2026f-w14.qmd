@@ -29,7 +29,8 @@ Questions go on the wall any time; we answer them in the last minutes.
 
 [When should a robot stop, and who decides?]{.statement}
 
-Part 1: the textbook view, 20 min. Part 2: **my own view**, 30 min.
+Part 1 · **Safety and social responsibility** of physical AI\
+Part 2 · **Ethics and philosophy** for the age of AI
 
 ::: {.footnote}
 W13, Nov 20: Foundations of Robot Hardware, Control, and Modern Platforms.
@@ -44,7 +45,7 @@ Part 1
 :::
 
 ::: {.divider-title}
-Ethics, safety and responsibility for physical AI
+Safety and social responsibility of physical AI
 :::
 
 ::: {.divider-sub}
@@ -183,7 +184,7 @@ Restraining AI Is Not Enough
 :::
 
 ::: {.divider-sub}
-My own view, as of 27 Nov 2026
+Ethics and philosophy for the age of AI
 :::
 
 
