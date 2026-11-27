@@ -1,0 +1,216 @@
+/* W14: Ethics, Safety, and Social Responsibility in the Age of Embodied AI
+   Main typography comes from clean-academic, as in W09 and W13: plain
+   paragraphs, .statement for a claim, drawn figures inlined with inline-svg.
+   This file only frames media and adds the few parts the theme lacks. */
+
+.reveal .slides section .footnote {
+  color: #3e5161;
+  font-size: 22px;
+}
+.reveal .slides section figure.video-card figcaption.video-caption .video-caption-title {
+  font-size: 25px;
+}
+.reveal .slides section figure.video-card figcaption.video-caption .video-caption-meta {
+  color: #495865;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+/* Keep the whole source frame of every clip. */
+.reveal .slides section figure.video-card video.video-inline {
+  height: 344px;
+  width: auto;
+  max-width: 100%;
+  max-height: none;
+  object-fit: contain;
+  aspect-ratio: auto;
+}
+
+/* A drawn figure and the sentence under it. */
+.reveal .slides section figure.chart-figure { margin-top: 0; margin-bottom: 0; }
+.reveal .slides section figure.chart-figure + p { margin-top: 0.7em; }
+.reveal .slides section > p strong { color: #183451; font-weight: 700; }
+
+/* ---- My view tag: only on the few slides that state the lecturer's own claim. */
+.reveal .slides section .w14-tag {
+  position: absolute;
+  top: 24px;
+  right: 56px;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 5px;
+  line-height: 1.2;
+}
+.reveal .slides section .w14-tag.fact {
+  background: #eaf0f2;
+  color: #173f58;
+  border: 2px solid #173f58;
+}
+.reveal .slides section .w14-tag.view {
+  background: #fbeadb;
+  color: #9c4a1e;
+  border: 2px solid #af5526;
+}
+.reveal .slides section .w14-asof {
+  position: absolute;
+  top: 31px;
+  right: 56px;
+  font-size: 19px;
+  color: #56677a;
+  white-space: nowrap;
+}
+.reveal .slides section > p:has(> .w14-tag),
+.reveal .slides section > p:has(> .w14-asof) {
+  margin-bottom: 0;
+  line-height: 0;
+}
+
+/* ---- Statements: the theme's .statement, with this deck's accent. */
+.reveal .slides section .statement { color: #183451; line-height: 1.22; }
+.reveal .slides section .statement strong { color: #9c4a1e; font-weight: 700; }
+.reveal .slides section > p:has(> .statement) { line-height: 1.22; }
+.reveal .slides section .statement.w14-thesis { font-size: 1.95em; line-height: 1.1; }
+.reveal .slides section .statement.w14-big { font-size: 1.45em; }
+.reveal .slides section .statement.w14-objection { color: #495865; font-size: 1.45em; }
+.reveal .slides section .w14-ask { font-weight: 700; color: #9c4a1e; }
+.reveal .slides section .w14-who { color: #495865; }
+
+/* ---- The five positions as a row; the current one is marked. */
+.reveal .slides section .w14-strip {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 46px;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+/* The strip keeps its place while the position under it changes. */
+.reveal .slides section.w14-pos > .w14-strip { margin-top: 118px; }
+.reveal .slides section.w14-pos > .w14-strip.w14-all { margin-top: 150px; }
+.reveal .w14-strip span {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #9aa7b3;
+  white-space: nowrap;
+}
+.reveal .w14-strip span.on {
+  color: #183451;
+  font-weight: 700;
+  padding-bottom: 6px;
+  border-bottom: 5px solid #af5526;
+}
+.reveal .slides section .w14-strip.w14-all { gap: 48px; margin-bottom: 1.2em; }
+.reveal .w14-strip.w14-all span { font-size: 52px; font-weight: 700; color: #56677a; }
+.reveal .w14-strip.w14-all span.on { color: #9c4a1e; border-bottom: 0; padding-bottom: 0; }
+
+/* ---- Three pictures in a row. */
+.reveal .slides section .w14-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px;
+  width: 100%;
+}
+.reveal .w14-row figure { margin: 0; }
+/* ---- Two events side by side: one picture, then a pair that belongs together. */
+.reveal .slides section .w14-events {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  column-gap: 96px;
+  width: 100%;
+}
+.reveal .w14-events figure { margin: 0; }
+.reveal .w14-events figure + figure { position: relative; }
+.reveal .w14-events figure + figure::before {
+  content: "";
+  position: absolute;
+  left: -48px;
+  top: 0;
+  bottom: 0;
+  border-left: 2px solid #c9d2da;
+}
+.reveal .w14-events .w14-twin {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.reveal .slides section .w14-events img {
+  display: block;
+  width: 100%;
+  height: 330px;
+  max-height: none;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.reveal .slides section .w14-events figcaption {
+  margin-top: 14px;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  color: #183451;
+  text-align: center;
+}
+.reveal .slides section .w14-row img {
+  display: block;
+  width: 100%;
+  height: 330px;
+  max-height: none;
+  margin: 0;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.reveal .slides section .w14-row img.contain { object-fit: contain; }
+.reveal .slides section .w14-row figcaption {
+  margin-top: 14px;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  color: #183451;
+  text-align: center;
+}
+
+/* ---- A photograph beside two or three lines. */
+.reveal .slides section .w14-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 52px;
+  width: 100%;
+}
+.reveal .slides section .w14-pair p:has(> img) { margin: 0; }
+.reveal .slides section .w14-pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 440px;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.reveal .slides section .w14-facts p {
+  margin: 0 0 0.9em;
+  text-align: left;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.reveal .slides section .w14-facts p:last-child { margin-bottom: 0; }
+.reveal .slides section .w14-facts strong { display: block; color: #183451; font-weight: 700; }
+
+/* ---- A single picture, or a small one above a statement. */
+.reveal .slides section .w14-photo { width: 100%; }
+.reveal .slides section .w14-photo p { margin: 0; }
+.reveal .slides section .w14-photo img {
+  display: block;
+  height: 380px;
+  width: auto;
+  max-width: 100%;
+  max-height: none;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.reveal .slides section .w14-photo.w14-small img { height: 170px; }
+.reveal .slides section .w14-photo + p { margin-top: 0.7em; }
