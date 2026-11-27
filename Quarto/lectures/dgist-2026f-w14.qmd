@@ -209,13 +209,13 @@ Ethics and philosophy for the age of AI
 
 ```{=html}
 <div class="w14-events">
-<figure><img src="../../Figures/lectures/dgist-2026f-w14/exam-silhouette.svg" alt="A plain silhouette of a masked person facing two microphones"><figcaption>Tax exam · 15 Nov</figcaption></figure>
+<figure><img src="../../Figures/lectures/dgist-2026f-w14/exam-candidate.png" alt="A person in a black mask, face blurred, in front of reporters' microphones"><figcaption>Tax exam · 15 Nov</figcaption></figure>
 <figure class="fragment"><div class="w14-twin"><img src="../../Figures/lectures/dgist-2026f-w14/riemann.png" alt="Engraved portrait of Bernhard Riemann"><img src="../../Figures/lectures/dgist-2026f-w14/alpoge.png" alt="Levent Alpöge standing outdoors"></div><figcaption>Riemann Hypothesis proof · 20 Nov</figcaption></figure>
 </div>
 ```
 
 ::: {.footnote}
-[Kyunghyang, 18 Nov](https://www.khan.co.kr/article/202611180600061), case under investigation · [Chosun, 21 Nov](https://www.chosun.com/economy/science/2026/11/21/EIBR47HSIBBSDBGW73KPAKA554/) · Riemann: Wikimedia · Alpöge: MFO
+Photo: Yonhap, in [Kyunghyang, 18 Nov](https://www.khan.co.kr/article/202611180600061), case under investigation · [Chosun, 21 Nov](https://www.chosun.com/economy/science/2026/11/21/EIBR47HSIBBSDBGW73KPAKA554/) · Riemann: Wikimedia · Alpöge: MFO
 :::
 
 
